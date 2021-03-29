@@ -1,9 +1,6 @@
 .container {
   background-color: white;
-  width: 356px;
+  width: 100%;
 }
 @media screen and (min-width: 600px) {
-  .container {
-    width: 496px;
-  }
 }

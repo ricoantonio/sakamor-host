@@ -230,10 +230,17 @@
   padding: 30px 27px;
   text-align: center;
 }
+
+.main {
+  width: 356px;
+}
 @media screen and (min-width: 600px) {
   .wrapper {
     margin: 0 auto;
     width: 540px;
+  }
+  .main {
+    width: 496px;
   }
   .main_menu_container {
     width: 500px;

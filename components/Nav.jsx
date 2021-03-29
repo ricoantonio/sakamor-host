@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/components/Nav.module.css";
 
-const Nav = ({ backHref, title, action, color, onClick }) => {
+const Nav = ({ backHref, title, action, color, onClick, backAction }) => {
   return (
     <div
       className={
@@ -13,11 +13,22 @@ const Nav = ({ backHref, title, action, color, onClick }) => {
           : styles.nav_container
       }
     >
-      <Link href={backHref ? backHref : "/"}>
-        <a>
-          <img style={{ width: "24px" }} src={"/arrow-left.svg"} />
-        </a>
-      </Link>
+      {backHref ? (
+        <Link href={backHref ? backHref : "/"}>
+          <a>
+            <img style={{ width: "24px" }} src={"/arrow-left.svg"} />
+          </a>
+        </Link>
+      ) : (
+        <img
+          onClick={() => {
+            backAction();
+          }}
+          style={{ width: "24px" }}
+          src={"/arrow-left.svg"}
+        />
+      )}
+
       <div
         // className={color == "green" ? styles.white : ""}
         style={{ textAlign: "center" }}

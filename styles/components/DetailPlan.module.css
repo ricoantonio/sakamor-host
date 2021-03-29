@@ -2,10 +2,13 @@
   width: 305px;
   display: grid;
   grid-template-columns: 50% 50%;
-  margin: 14px 0;
+  margin: 14px 0 0 0;
   column-gap: 16px;
 }
-
+.top_grid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
 .container {
   background-color: #f0f0f0;
   border-radius: 5px;
@@ -18,6 +21,14 @@
 .container_value {
   font-weight: 600;
   color: #5e5873;
+}
+.date {
+  background-color: #d1e4e1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #41867a;
+  padding: 1px 9px;
+  border-radius: 5px;
 }
 @media screen and (min-width: 600px) {
   .grid_container {

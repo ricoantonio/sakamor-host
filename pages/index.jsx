@@ -1,14 +1,16 @@
-import Head from "next/head";
-import Link from "next/link";
 import React, { useState, useContext, useEffect } from "react";
+import Head from "next/head";
 import styles from "../styles/pages/Home.module.css";
+import Router from "next/router";
+import Link from "next/link";
+import { Stores } from "../store";
+
 import Spinner from "../components/Spinner";
 import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { Stores } from "../store";
-import Router from "next/router";
+import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
 
 export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -19,18 +21,20 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    const userMenu = JSON.parse(localStorage.getItem("menu"));
     if (userData) {
+      // `http://10.100.4.116:8229/api/user/getmenu?username=${userData.email}`
       actions.userLogin(userData);
-      actions.setMenu(userMenu);
-      fetch(
-        `http://10.100.4.116:8229/api/user/getmenu?username=${userData.email}`
-      )
+      fetch(API_URL + API_USER + `/User/GetMenu?username=${userData.email}`, {
+        headers: {
+          apiKey: TOKEN,
+        },
+      })
         .then((response) => {
           return response.json();
         })
         .then((data) => {
           setTopMenu(data);
+          actions.setMenu(data);
         })
         .catch((err) => {
           console.log(err);
@@ -41,9 +45,12 @@ export default function Home() {
   }, [focus]);
 
   useEffect(() => {
-    fetch(
-      "http://10.100.4.116:8230/api/ActivityVisitPlan/GetAllActivityVisitPlan"
-    )
+    // "http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan"
+    fetch(API_URL + API_VISIT_PLAN + "/MasterVisitPlan/GetAllMasterVisitPlan", {
+      headers: {
+        apiKey: TOKEN,
+      },
+    })
       .then((response) => {
         return response.json();
       })
@@ -187,7 +194,7 @@ export default function Home() {
                 Your Plan Today
               </div>
               <div style={{ margin: "22px 0" }}>{planMap}</div>
-              <Link href="/activity/visit/plan">
+              <Link href="/visit/plan">
                 <a>
                   <Button text={"See Details"} />
                 </a>
@@ -224,7 +231,7 @@ export default function Home() {
                   <div style={{ fontSize: "12px" }}>{"user.role**"}</div>
                 </div>
                 <img className={styles.notif} src="/notif.svg" />
-                <div>
+                <div className={styles.main}>
                   {renderTopMenu()}
                   {focus === "PLAN"
                     ? renderPlan()
@@ -233,9 +240,9 @@ export default function Home() {
                     : focus === "SPREADING"
                     ? renderSpreading()
                     : focus === "WORK-VISIT"
-                    ? renderSpreading()
+                    ? renderWorkVisit()
                     : ""}
-                  <div style={{ marginBottom: "80px" }} />
+                  <div style={{ marginBottom: "120px" }} />
                 </div>
               </div>
             </div>

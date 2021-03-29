@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import { Stores } from "../store";
 import Router from "next/router";
 
+import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
+
 export default function Login() {
   const { state, dispatch, actions } = useContext(Stores);
 
@@ -20,11 +22,18 @@ export default function Login() {
       return Router.push("/");
     }
   });
+
   const onLogin = (values) => {
+    // `http://10.100.4.116:8229/api/user/login?username=${values.username}&&password=${values.password}`,
     fetch(
-      `http://10.100.4.116:8229/api/user/login?username=${values.username}&&password=${values.password}`,
+      API_URL +
+        API_USER +
+        `/User/Login?username=${values.username}&&password=${values.password}`,
       {
         method: "post",
+        headers: {
+          apiKey: TOKEN,
+        },
       }
     )
       .then((response) => {
@@ -52,64 +61,6 @@ export default function Login() {
         <title>Login</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <div className={styles.wrapper}>
-        <div className={styles.middle}>
-          <img className={styles.img_security} src={"/security.svg"} />
-          <div className={styles.border}>
-            <div className={styles.border_content}>
-              <div className={styles.main_text}>SAKA ARMOR</div>
-              {wrongUser ? (
-                <div style={{ color: "red" }}>Wrong password or username!</div>
-              ) : (
-                ""
-              )}
-              <Formik
-                initialValues={{
-                  username: "",
-                  password: "",
-                }}
-                onSubmit={async (values) => {
-                  if (values.username !== "" && values.password !== "") {
-                    onLogin(values);
-                  } else {
-                    setWrongUser(true);
-                  }
-                }}
-              >
-                <Form>
-                  <Field
-                    className={styles.input}
-                    id="username"
-                    name="username"
-                    placeholder="Employee ID"
-                  />
-                  <div className={styles.grid_pass}>
-                    <Field
-                      className={styles.input}
-                      id="password"
-                      name="password"
-                      type={passVisibility ? "password" : null}
-                      placeholder="Password"
-                    />
-                    <img
-                      onClick={toggleVisibility}
-                      className={styles.img_visibility}
-                      src={"/visibility.svg"}
-                    />
-                  </div>
-                  <button type="submit" className={styles.button}>
-                    <div className={styles.button_text}>Log In</div>
-                  </button>
-                </Form>
-              </Formik>
-            </div>
-          </div>
-          <div className={styles.grid_bot}>
-            <div className={styles.bot_text}>Forgot Password</div>
-            <div className={styles.right_bot_text}>Change Tenant</div>
-          </div>
-        </div>
-      </div> */}
       <div className={styles.middle}>
         <img className={styles.img_security} src={"/security.svg"} />
         <div className={styles.border_content}>

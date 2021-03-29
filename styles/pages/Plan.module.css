@@ -38,6 +38,14 @@
   color: #41867a;
   font-weight: 500;
 }
+.bottom_container {
+  padding: 10px 0 20px 0;
+  background-color: #f0f0f0;
+  position: fixed;
+  bottom: 1px;
+  width: 356px;
+}
+
 @media screen and (min-width: 600px) {
   .wrapper {
     margin: 0 auto;
@@ -49,10 +57,8 @@
   }
   .input {
     width: 512px;
-    height: 32px;
-    border: 1px solid #e9ecf2;
-    margin: 10px 14px;
-    padding: 0 10px 0 10px;
-    border-radius: 5px;
+  }
+  .bottom_container {
+    width: 496px;
   }
 }
