@@ -18,6 +18,7 @@ export default function index() {
   const [plan, setPlan] = useState([]);
   const router = useRouter();
   var now = new Date();
+
   useEffect(() => {
     if (router.query.id) {
       //`http://10.100.4.116:8230/api/MasterVisitPlan/GetMasterVisitPlanById/${router.query.id}`
@@ -38,6 +39,7 @@ export default function index() {
           setPlan(data);
           if (!state.visitPlanReducer.checkIn) {
             actions.setCheckIn(now);
+            console.log(now);
           }
           setLoading(false);
         })
@@ -139,52 +141,53 @@ export default function index() {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
-    if (visDone.length === 6) {
+    if (visDone.length === 6 || true) {
       const userData = JSON.parse(localStorage.getItem("user"));
 
-      const bodyPlan = {
-        id: plan.id,
-        idMasterPlanVisit: plan.id,
-        nomorDokumen: plan.nomorDokumen,
-        catatan: state.visitPlanReducer.catatan,
-        isCheckIn: true,
-        checkInDate: state.visitPlanReducer.checkIn,
-        isCheckOut: true,
-        checkOutDate: now,
-        createdBy: userData.username,
-        updatedBy: userData.username,
-      };
-      const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
-        return {
-          id: plan.id,
-          activityVisitPlanId: plan.id,
-          nomorDokumen: plan.nomorDokumen,
-          nomor: index,
-          tipe: val.type,
-          namaFile: val.file.name,
-          createdBy: userData.username,
-          updatedBy: userData.username,
-        };
-      });
-      const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
-        return {
-          id: plan.id,
-          activityVisitPlanId: plan.id,
-          nomorDokumen: plan.nomorDokumen,
-          nomor: index,
-          kodeProduk: val.productFocus.produkID,
-          namaProduk: val.productFocus.namaProduk,
-          stok: val.stock,
-          saranOrder: val.saranOrder,
-          jumlahOrder: val.order,
-          createdBy: userData.username,
-          updatedBy: userData.username,
-        };
-      });
+      // const bodyPlan = {
+      //   id: plan.id,
+      //   idMasterPlanVisit: plan.id,
+      //   nomorDokumen: plan.nomorDokumen,
+      //   catatan: state.visitPlanReducer.catatan,
+      //   isCheckIn: true,
+      //   checkInDate: state.visitPlanReducer.checkIn.toISOString(),
+      //   isCheckOut: true,
+      //   checkOutDate: now.toISOString(),
+      //   createdBy: userData.username,
+      //   updatedBy: userData.username,
+      // };
+      // const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
+      //   return {
+      //     id: plan.id,
+      //     activityVisitPlanId: plan.id,
+      //     nomorDokumen: plan.nomorDokumen,
+      //     nomor: index,
+      //     tipe: val.type,
+      //     namaFile: val.file.name,
+      //     createdBy: userData.username,
+      //     updatedBy: userData.username,
+      //   };
+      // });
+      // const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
+      //   return {
+      //     id: plan.id,
+      //     activityVisitPlanId: plan.id,
+      //     nomorDokumen: plan.nomorDokumen,
+      //     nomor: index,
+      //     kodeProduk: val.productFocus.produkID,
+      //     namaProduk: val.productFocus.namaProduk,
+      //     stok: val.stock,
+      //     saranOrder: val.saranOrder,
+      //     jumlahOrder: val.order,
+      //     createdBy: userData.username,
+      //     updatedBy: userData.username,
+      //   };
+      // });
       // http://10.100.4.116:8230/api/ActivityVisitPlan/SaveActivityVisitPlan
       // http://10.100.4.116:8230/api/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm
       // http://10.100.4.116:8230/api/ActivityVisitPlanDProduct/SaveActivityVisitPlanDProduct
-      console.log(bodyPlan, bodyPosm, bodyProduct);
+      // console.log(bodyPlan, bodyPosm, bodyProduct);
+      console.log(state.visitPlanReducer.visibility);
     }
   };
 

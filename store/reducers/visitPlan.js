@@ -14,7 +14,7 @@ const visitPlanReducer = (state, action) => {
     case "SET_CATATAN":
       return { ...state, catatan: action.payload };
     case "SET_CHECK_IN":
-      return { ...state, checkOut: action.payload };
+      return { ...state, checkIn: action.payload };
     case "SET_DEFAULT_VISIT_PLAN":
       return { ...defaultVisitPlan };
     default:

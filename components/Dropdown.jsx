@@ -5,14 +5,14 @@ import styles from "../styles/components/Dropdown.module.css";
 const Dropdown = ({ options = [], onChange, value }) => {
   const default_ = value
     ? { namaFile: value, value }
-    : { namaFile: "SELECT", value: "" };
+    : { namaFile: "SELECT", value: {} };
   return (
     <select className={styles.container} onChange={(e) => onChange(e)}>
       {[default_, ...options].map(
-        (opt, index) =>
-          opt && (
-            <option key={index} value={opt.value}>
-              {opt.namaFile}
+        (val, index) =>
+          val && (
+            <option key={index} value={val.value}>
+              {val.namaFile}
             </option>
           )
       )}

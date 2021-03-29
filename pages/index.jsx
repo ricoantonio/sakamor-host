@@ -18,7 +18,24 @@ export default function Home() {
   const [plan, setPlan] = useState([]);
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  var now = new Date();
+  var date = now.getDate();
+  var month = now.getMonth() + 1;
+  var year = now.getFullYear();
+  let monthName = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
@@ -46,11 +63,16 @@ export default function Home() {
 
   useEffect(() => {
     // "http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan"
-    fetch(API_URL + API_VISIT_PLAN + "/MasterVisitPlan/GetAllMasterVisitPlan", {
-      headers: {
-        apiKey: TOKEN,
-      },
-    })
+    fetch(
+      API_URL +
+        API_VISIT_PLAN +
+        `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+      {
+        headers: {
+          apiKey: TOKEN,
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })
@@ -124,10 +146,6 @@ export default function Home() {
     }
   };
   const renderPlan = () => {
-    var now = new Date();
-    var date = now.getDate();
-    var month = now.getMonth() + 1;
-    var year = now.getFullYear();
     const planMap = plan.map((val, index) => {
       return (
         <div
@@ -156,9 +174,9 @@ export default function Home() {
           <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
             <div className={styles.overview}>
               <div>
-                <span
-                  className={styles.date}
-                >{`${date} / ${month} / ${year}`}</span>
+                <span className={styles.date}>{`${date} / ${
+                  monthName[month - 1]
+                } / ${year}`}</span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
                   <span style={{ fontSize: "18px" }}>/{plan.length}</span>

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import styles from "../styles/Adminlayout.module.css";
+import styles from "../styles/AdminLayout.module.css";
 
 function AdminLayout({ children }) {
   const renderSidemenu = () => {

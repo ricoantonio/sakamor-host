@@ -95,13 +95,17 @@ export default function visibility() {
               <Dropdown
                 options={posm}
                 onChange={(e) => {
+                  var a = posm.filter((val) => {
+                    return val.namaFile == e.target.value;
+                  });
+                  console.log(a);
                   vis.splice(index, 1, {
                     ...vis[index],
-                    type: e.target.value,
+                    type: a[0],
                   });
                   setDummy(dummy + 1);
                 }}
-                value={val.type != null ? val.type : ""}
+                value={val.type != null ? val.type.namaFile : ""}
               />
               <span
                 style={{
@@ -142,6 +146,7 @@ export default function visibility() {
     return render;
   };
   const onSave = () => {
+    var saveVis = console.log(saveVis);
     actions.setVisibility(vis);
     Router.push(`/visit/plan/${router.query.id}`);
   };

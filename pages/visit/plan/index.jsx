@@ -16,6 +16,13 @@ export default function Plan() {
   const [plan, setPlan] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  var now = new Date();
+  var date = now.getDate();
+  var month = now.getMonth() + 1;
+  var year = now.getFullYear();
+  useEffect(() => {
+    actions.setDefaultVisitPlan();
+  }, [dispatch]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -53,11 +60,16 @@ export default function Plan() {
   }, [dispatch]);
   useEffect(() => {
     //   "http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan"
-    fetch(API_URL + API_VISIT_PLAN + "/MasterVisitPlan/GetAllMasterVisitPlan", {
-      headers: {
-        apiKey: TOKEN,
-      },
-    })
+    fetch(
+      API_URL +
+        API_VISIT_PLAN +
+        `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+      {
+        headers: {
+          apiKey: TOKEN,
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })

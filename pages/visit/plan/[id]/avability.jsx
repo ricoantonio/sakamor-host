@@ -33,7 +33,7 @@ export default function avability() {
   useEffect(() => {
     const notEmpty = avabilityList.length > 0;
     if (notEmpty > 0) {
-      window.onbeforeunload = function () {
+      window.onbeforeunload = () => {
         return "Data will be lost if you leave the page, are you sure?";
       };
     }
@@ -166,9 +166,9 @@ export default function avability() {
                   onClick={() => {
                     if (
                       productFocus.namaProduk &&
-                      stock &&
-                      saranOrder &&
-                      order
+                      stock.match("^[1-9][0-9]*$") &&
+                      saranOrder.match("^[1-9][0-9]*$") &&
+                      order.match("^[1-9][0-9]*$")
                     ) {
                       if (avabilityList.length > 0) {
                         var sameDataIndex = avabilityList.findIndex(
