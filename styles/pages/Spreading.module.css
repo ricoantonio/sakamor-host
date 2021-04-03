@@ -6,12 +6,11 @@
   width: 400px;
 }
 .main {
-  padding: 280px 22px 0 22px;
+  padding: 50px 22px 0 22px;
 }
 
 .title_container {
   z-index: 1;
-  position: fixed;
   width: 400px;
   padding-top: 120px;
   background: #f0f0f0;
