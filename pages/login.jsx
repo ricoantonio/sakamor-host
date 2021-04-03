@@ -5,6 +5,7 @@ import { Formik, Field, Form } from "formik";
 import Button from "../components/Button";
 import { Stores } from "../store";
 import Router from "next/router";
+import { onLogin } from "../helper";
 
 import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
 
@@ -17,28 +18,15 @@ export default function Login() {
   const toggleVisibility = () => {
     setPassVisibility(!passVisibility);
   };
+
   useEffect(() => {
     if (localStorage.getItem("user")) {
       return Router.push("/");
     }
   });
 
-  const onLogin = (values) => {
-    // `http://10.100.4.116:8229/api/user/login?username=${values.username}&&password=${values.password}`,
-    fetch(
-      API_URL +
-        API_USER +
-        `/User/Login?username=${values.username}&&password=${values.password}`,
-      {
-        method: "post",
-        headers: {
-          apiKey: TOKEN,
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
+  const onLoginClick = (values) => {
+    onLogin(values)
       .then((data) => {
         if (data.status === 404) {
           setWrongUser(true);
@@ -77,7 +65,7 @@ export default function Login() {
             }}
             onSubmit={async (values) => {
               if (values.username !== "" && values.password !== "") {
-                onLogin(values);
+                onLoginClick(values);
               } else {
                 setWrongUser(true);
               }

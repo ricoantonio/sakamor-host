@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/pages/Announcement.module.css";
 import Nav from "../components/Nav";
 import { Stores } from "../store";
-
+import BotNav from "../components/BotNav";
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
 
@@ -66,10 +66,13 @@ export default function Announcement() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <Nav title="Announcement" backHref="/" />
-      <div className={styles.main}>{renderAnnouncement()}</div>
-      <div></div>
-    </div>
+    <>
+      <div className={styles.wrapper}>
+        <Nav title="Announcement" backHref="/" />
+        <div className={styles.main}>{renderAnnouncement()}</div>
+        <div></div>
+      </div>
+      <BotNav focus={"profile"} />
+    </>
   );
 }

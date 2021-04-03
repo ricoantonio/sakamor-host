@@ -1,122 +1,193 @@
-// const onLogin = (values) => {
-//   fetch(
-//     `http://10.100.4.116:8229/api/user/login?username=${values.username}&&password=${values.password}`,
-//     {
-//       method: "post",
-//     }
-//   )
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       if (data.status === 404) {
-//         setWrongUser(true);
-//         console.log(data);
-//       } else {
-//         setWrongUser(false);
-//         actions.userLogin(data);
-//         Router.push("/");
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       setWrongUser(true);
-//     });
-// };
+import {
+  API_URL,
+  API_MASTER,
+  API_USER,
+  API_VISIT_PLAN,
+  TOKEN,
+} from "./constant";
 
-// const getAuth = () => {
-//   fetch(
-//     `http://10.100.4.116:8229/api/User/GetAuthorize?username=${userData.username}`
-//   )
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       var auth = data.filter((val) => {
-//         return val.moduleCode === "PLAN";
-//       });
-//       var menu = userMenu.filter((val) => {
-//         return val.moduleCode === "PLAN";
-//       });
-//       if (!(auth && menu)) {
-//         Router.push("/");
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+var now = new Date();
+var date = now.getDate();
+var month = now.getMonth() + 1;
+var year = now.getFullYear();
 
-// const getMenu = (username) => {
-//   fetch(`http://10.100.4.116:8229/api/user/getmenu?username=${username}`)
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       return data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
-// const getMasterVisitPlan = () => {
-//   fetch("http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan")
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       console.log(data);
-//       setPlan(data);
-//       setLoading(false);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+const getMenu = (userData) => {
+  return fetch(
+    API_URL + API_USER + `/User/GetMenu?username=${userData.email}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getPlanList = () => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getAuth = (userData) => {
+  return fetch(
+    API_URL + API_USER + `/User/GetAuthorize?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-// const getVisitPlanByID = () => {
-//   fetch(
-//     `http://10.100.4.116:8230/api/MasterVisitPlan/GetMasterVisitPlanById/${router.query.id}`
-//   )
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       setPlan(data);
-//       setLoading(false);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+const onLogin = (values) => {
+  return fetch(
+    API_URL +
+      API_USER +
+      `/User/Login?username=${values.username}&&password=${values.password}`,
+    {
+      method: "post",
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+      setWrongUser(true);
+    });
+};
 
-// const getPosmList = () => {
-//   fetch(
-//     `http://10.100.4.116:8230/api/ActivityVisitPlanDPOSM/GetAllActivityVisitPlanDposm`
-//   )
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       setPosm(data);
-//       setLoading(false);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+const getPlanId = (id) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((planList) => {
+      if (planList.length != 0) {
+        return fetch(
+          API_URL +
+            API_VISIT_PLAN +
+            `/MasterVisitPlan/GetMasterVisitPlanById/${id}`,
+          {
+            headers: {
+              apiKey: TOKEN,
+            },
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            var samePlan = planList.filter((val) => {
+              return val.id === data.id;
+            });
 
-// const getProductBySearch = () => {
-//   fetch(`http://10.100.4.116:8233/api/MasterData/GetProdukLike/${search}`)
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       setProduct(data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+            return samePlan, data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        return planList;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-// export default getMenu;
+const getPosm = () => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlanDPOSM/GetAllActivityVisitPlanDposm`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getProductSearch = (search) => {
+  return fetch(API_URL + API_MASTER + `/MasterData/GetProdukLike/${search}`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export {
+  getMenu,
+  getPlanList,
+  getAuth,
+  onLogin,
+  getPlanId,
+  getPosm,
+  getProductSearch,
+};

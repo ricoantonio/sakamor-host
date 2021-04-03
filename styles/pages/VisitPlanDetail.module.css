@@ -95,7 +95,7 @@
 }
 .avability_bot_container {
   position: fixed;
-  bottom: 1px;
+  bottom: 0;
   width: 400px;
   height: 75px;
   margin: auto;
@@ -107,7 +107,7 @@
 }
 .avability_modal_container {
   position: fixed;
-  bottom: 1px;
+  bottom: 0;
   z-index: 9999;
   width: 400px;
   height: 400px;

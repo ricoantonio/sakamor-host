@@ -10,48 +10,88 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
+import { getAuth, getMenu, getPlanList } from "../helper";
+
+import { Doughnut } from "react-chartjs-2";
 
 export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
-  const [focus, setFocus] = useState("PLAN");
+  const [focus, setFocus] = useState("");
   const [plan, setPlan] = useState([]);
+  const [role, setRole] = useState("");
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMenu, setLoadingMenu] = useState(true);
+
   var now = new Date();
   var date = now.getDate();
   var month = now.getMonth() + 1;
   var year = now.getFullYear();
-  let monthName = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+
+  const monthName = {
+    full: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    part: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+  };
+
+  const dataPlan = {
+    datasets: [
+      {
+        data: plan.length === 0 ? [0, 1] : [3, 8],
+        backgroundColor: ["#41867a", "#d1e4e1"],
+      },
+    ],
+  };
+  const dataSpreading = {
+    datasets: [
+      {
+        data: [4, 4],
+        backgroundColor: ["#41867a", "#d1e4e1"],
+      },
+    ],
+  };
+  const donutOptions = {
+    cutoutPercentage: 75,
+    tooltips: { enabled: false },
+    hover: { mode: null },
+    responsive: true,
+    maintainAspectRatio: true,
+  };
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      // `http://10.100.4.116:8229/api/user/getmenu?username=${userData.email}`
       actions.userLogin(userData);
-      fetch(API_URL + API_USER + `/User/GetMenu?username=${userData.email}`, {
-        headers: {
-          apiKey: TOKEN,
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
+      getMenu(userData)
         .then((data) => {
-          setTopMenu(data);
           actions.setMenu(data);
+          setTopMenu(data);
+          setLoadingMenu(false);
         })
         .catch((err) => {
           console.log(err);
@@ -59,93 +99,220 @@ export default function Home() {
     } else {
       Router.push("/");
     }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      if (focus === "PLAN") {
+        getPlanList()
+          .then((data) => {
+            setPlan(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (focus === "UNPLAN") {
+        console.log("unplan");
+      } else if (focus === "SPREADING") {
+        console.log("spreading");
+      } else if (focus === "WORK_VISIT") {
+        console.log("work visit");
+      }
+    } else {
+      Router.push("/");
+    }
   }, [focus]);
 
   useEffect(() => {
-    // "http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan"
-    fetch(
-      API_URL +
-        API_VISIT_PLAN +
-        `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
-      {
-        headers: {
-          apiKey: TOKEN,
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setPlan(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [focus]);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      getAuth(userData)
+        .then((data) => {
+          if (data[0].roleCode === "PIMCA") {
+            setRole("PIMCA");
+            setFocus("WORK_VISIT");
+          } else if (data[0].roleCode === "SMR") {
+            setRole("SMR");
+            setFocus("PLAN");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/");
+    }
+  }, [dispatch]);
 
-  // const renderMainMenu = () => {
-  //   var menuList =
-  //     state && state.menuReducer && state.menuReducer.menu
-  //       ? state.menuReducer.menu
-  //       : [];
-  //   const parentMenu = menuList.filter((val) => {
-  //     return val.isParentMenu === true;
-  //   });
-  //   const render = parentMenu.map((val, index) => {
-  //     return (
-  //       <Link href={"/" + val.moduleName.toLowerCase()} key={index}>
-  //         <a className={styles.menu_container}>
-  //           <img className={styles.menu_img} src={val.iconClass} />
-  //           <div className={styles.menu_text}>{val.moduleName}</div>
-  //         </a>
-  //       </Link>
-  //     );
-  //   });
-  //   return render;
-  // };
   const renderTopMenu = () => {
     var auth = topMenu.filter((val) => {
-      return (
-        val.moduleCode === "PLAN" ||
-        val.moduleCode === "UNPLAN" ||
-        val.moduleCode === "SPREADING"
-        // || val.moduleCode === "WORK-VISIT"
-      );
-    });
-    const render = () => {
-      if (auth.length === 3) {
-        return auth.map((val, index) => {
-          return (
-            <div
-              className={
-                focus === val.moduleCode ? styles.focus_menu : styles.menu
-              }
-              onClick={() => {
-                setFocus(val.moduleCode);
-              }}
-              key={index}
-            >
-              {val.moduleCode === "PLAN"
-                ? "Plan"
-                : val.moduleCode === "UNPLAN"
-                ? "Unplan"
-                : val.moduleCode === "SPREADING"
-                ? "Spreading"
-                : val.moduleCode === "WORK-VISIT"
-                ? "Work Visit"
-                : ""}
-            </div>
-          );
-        });
+      if (role === "SMR") {
+        return (
+          val.moduleCode === "PLAN" ||
+          val.moduleCode === "UNPLAN" ||
+          val.moduleCode === "SPREADING"
+        );
+      } else if (role === "PIMCA") {
+        return val.moduleCode === "WORK-VISIT";
       }
+    });
+
+    const render = () => {
+      return auth.map((val, index) => {
+        return (
+          <div
+            className={
+              focus === val.moduleCode ? styles.focus_menu : styles.menu
+            }
+            onClick={() => {
+              setFocus(val.moduleCode);
+            }}
+            key={index}
+          >
+            {val.moduleCode === "PLAN"
+              ? "Plan"
+              : val.moduleCode === "UNPLAN"
+              ? "Unplan"
+              : val.moduleCode === "SPREADING"
+              ? "Spreading"
+              : val.moduleCode === "WORK-VISIT"
+              ? "Work Visit"
+              : ""}
+          </div>
+        );
+      });
     };
     if (auth) {
-      return <div className={styles.menu_grid}>{render()}</div>;
+      return (
+        <div
+          className={
+            auth.length === 3
+              ? styles.menu_grid3
+              : auth.length === 1
+              ? styles.menu_grid1
+              : ""
+          }
+        >
+          {render()}
+        </div>
+      );
     }
   };
+
   const renderPlan = () => {
+    const planMap = plan.map((val, index) => {
+      return (
+        <div
+          style={{
+            fontSize: "15px",
+            fontWeight: "700",
+            color: "#5E5873",
+            textAlign: "left",
+            margin: "10px 0",
+          }}
+          key={index}
+        >
+          <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
+            <div
+              style={{
+                width: "20px",
+                height: "20px",
+                backgroundColor: "#d1e4e1",
+                borderRadius: "20px",
+                padding: "4px",
+              }}
+            >
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: "#41867a",
+                  borderRadius: "20px",
+                }}
+              />
+            </div>
+            <div>
+              <div>{val.namaOutlet}</div>
+              <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                {val.alamatOutlet}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return (
+        <>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+            <div className={styles.overview}>
+              <div>
+                <span className={styles.date}>{`${date} / ${
+                  monthName.part[month - 1]
+                } / ${year}`}</span>
+                <div style={{ color: "#5E5873", marginTop: "7px" }}>
+                  <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
+                  <span style={{ fontSize: "18px" }}>/{plan.length}</span>
+                </div>
+                <button
+                  style={{
+                    marginTop: "7px",
+                    backgroundColor: "#FEB800",
+                    padding: "10px 22px",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Add New Plan +
+                </button>
+              </div>
+              <div>
+                <div className={styles.pie_percentage}>
+                  {plan.length === 0 ? "0%" : "0%"}
+                </div>
+                <Doughnut
+                  data={dataPlan}
+                  options={donutOptions}
+                  width={100}
+                  height={100}
+                />
+              </div>
+            </div>
+          </Card>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
+            <div className={styles.plan_container}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  color: "#5E5873",
+                  textAlign: "left",
+                }}
+              >
+                Your Plan Today
+              </div>
+              <div style={{ margin: "22px 0" }}>{planMap}</div>
+              <Link href="/visit/plan">
+                <a>
+                  <Button text={"See Details"} />
+                </a>
+              </Link>
+            </div>
+          </Card>
+        </>
+      );
+    }
+  };
+
+  const renderSpreading = () => {
     const planMap = plan.map((val, index) => {
       return (
         <div
@@ -175,28 +342,40 @@ export default function Home() {
             <div className={styles.overview}>
               <div>
                 <span className={styles.date}>{`${date} / ${
-                  monthName[month - 1]
+                  monthName.part[month - 1]
                 } / ${year}`}</span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
                   <span style={{ fontSize: "18px" }}>/{plan.length}</span>
                 </div>
-                <button
-                  style={{
-                    marginTop: "7px",
-                    backgroundColor: "#FEB800",
-                    padding: "10px 22px",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Add New Plan +
-                </button>
+                <Link href={"/visit/spreading/"}>
+                  <a>
+                    <button
+                      style={{
+                        marginTop: "7px",
+                        backgroundColor: "#FEB800",
+                        padding: "10px 22px",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      Add New NOO +
+                    </button>
+                  </a>
+                </Link>
               </div>
-              <div></div>
+              <div>
+                <div className={styles.pie_percentage}>50%</div>
+                <Doughnut
+                  data={dataSpreading}
+                  options={donutOptions}
+                  width={100}
+                  height={100}
+                />
+              </div>
             </div>
           </Card>
           <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
@@ -204,15 +383,15 @@ export default function Home() {
               <div
                 style={{
                   fontSize: "18px",
-                  fontWeight: "600",
+                  fontWeight: "500",
                   color: "#5E5873",
                   textAlign: "left",
                 }}
               >
-                Your Plan Today
+                Spreading History
               </div>
-              <div style={{ margin: "22px 0" }}>{planMap}</div>
-              <Link href="/visit/plan">
+              <div style={{ margin: "22px 0" }}></div>
+              <Link href="/visit/spreading/history">
                 <a>
                   <Button text={"See Details"} />
                 </a>
@@ -223,8 +402,92 @@ export default function Home() {
       );
     }
   };
-  const renderUnplan = () => {};
-  const renderSpreading = () => {};
+
+  const renderUnplan = () => {
+    const planMap = plan.map((val, index) => {
+      return (
+        <div
+          style={{
+            fontSize: "15px",
+            fontWeight: "700",
+            color: "#5E5873",
+            textAlign: "left",
+            margin: "10px 0",
+          }}
+          key={index}
+        >
+          <div>{val.namaOutlet}</div>
+          <div style={{ fontSize: "14px", fontWeight: "300" }}>
+            {val.alamatOutlet}
+          </div>
+        </div>
+      );
+    });
+
+    if (loading && loadingMenu) {
+      return <Spinner />;
+    } else {
+      return (
+        <>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+            <div className={styles.unplan_grid}>
+              <div className={styles.num_total_unplan}>5</div>
+              <div style={{ fontSize: "14px" }}>Total Unplan Visit</div>
+              <div className={styles.date}>{monthName.full[month - 1]}</div>
+            </div>
+          </Card>
+          <Card style={{ borderRadius: "5px", marginTop: "11px" }}>
+            <Link href="/visit/unplan">
+              <a>
+                <div className={styles.unplan_grid2}>
+                  <div className={styles.add_unplan}>
+                    <div style={{ marginTop: "-8px" }}>+</div>
+                  </div>
+                  <div style={{ fontSize: "16px", fontWeight: "600" }}>
+                    Any Unplan Visit?
+                    <div
+                      style={{
+                        color: "#B9B9C3",
+                        fontWeight: "300",
+                        fontSize: "13px",
+                      }}
+                    >
+                      Add your unplan visit here
+                    </div>{" "}
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <img src={"/next.svg"} />
+                  </div>
+                </div>
+              </a>
+            </Link>
+          </Card>
+
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
+            <div className={styles.plan_container}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  color: "#5E5873",
+                  textAlign: "left",
+                }}
+              >
+                Unplan Visit History
+              </div>
+              <div style={{ margin: "22px 0" }}></div>
+              <Link href="/visit/unplan/history">
+                <a>
+                  <Button text={"See Details"} />
+                </a>
+              </Link>
+            </div>
+          </Card>
+        </>
+      );
+    }
+  };
+
   const renderWorkVisit = () => {};
 
   const renderPage = () => {
@@ -246,7 +509,7 @@ export default function Home() {
                   <div style={{ fontSize: "14px" }}>
                     {state.userReducer.user.name}
                   </div>
-                  <div style={{ fontSize: "12px" }}>{"user.role**"}</div>
+                  <div style={{ fontSize: "12px" }}>{role}</div>
                 </div>
                 <img className={styles.notif} src="/notif.svg" />
                 <div className={styles.main}>

@@ -9,7 +9,7 @@ import Spinner from "../../../components/Spinner";
 import DetailPlan from "../../../components/DetailPlan";
 import Button from "../../../components/Button";
 
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../../../constant";
+import { getAuth, getPlanList } from "../../../helper";
 
 export default function Plan() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -20,6 +20,7 @@ export default function Plan() {
   var date = now.getDate();
   var month = now.getMonth() + 1;
   var year = now.getFullYear();
+
   useEffect(() => {
     actions.setDefaultVisitPlan();
   }, [dispatch]);
@@ -28,18 +29,7 @@ export default function Plan() {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userMenu = JSON.parse(localStorage.getItem("menu"));
     if (userData) {
-      //   `http://10.100.4.116:8229/api/User/GetAuthorize?username=${userData.username}`
-      fetch(
-        API_URL + API_USER + `/User/GetAuthorize?username=${userData.username}`,
-        {
-          headers: {
-            apiKey: TOKEN,
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
+      getAuth(userData)
         .then((data) => {
           var auth = data.filter((val) => {
             return val.moduleCode === "PLAN";
@@ -58,21 +48,9 @@ export default function Plan() {
       Router.push("/");
     }
   }, [dispatch]);
+
   useEffect(() => {
-    //   "http://10.100.4.116:8230/api/MasterVisitPlan/GetAllMasterVisitPlan"
-    fetch(
-      API_URL +
-        API_VISIT_PLAN +
-        `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
-      {
-        headers: {
-          apiKey: TOKEN,
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
+    getPlanList()
       .then((data) => {
         setPlan(data);
         setLoading(false);

@@ -10,7 +10,7 @@ import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../../../../constant";
+import { getPlanId } from "../../../../helper";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -18,30 +18,25 @@ export default function index() {
   const [plan, setPlan] = useState([]);
   const router = useRouter();
   var now = new Date();
+  var date = now.getDate();
+  var month = now.getMonth() + 1;
+  var year = now.getFullYear();
 
   useEffect(() => {
+    //   /GetAllMasterVisitPlan"
     if (router.query.id) {
-      //`http://10.100.4.116:8230/api/MasterVisitPlan/GetMasterVisitPlanById/${router.query.id}`
-      fetch(
-        API_URL +
-          API_VISIT_PLAN +
-          `/MasterVisitPlan/GetMasterVisitPlanById/${router.query.id}`,
-        {
-          headers: {
-            apiKey: TOKEN,
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setPlan(data);
-          if (!state.visitPlanReducer.checkIn) {
-            actions.setCheckIn(now);
-            console.log(now);
+      getPlanId(router.query.id)
+        .then((samePlan, data) => {
+          console.log(samePlan, data);
+          if (samePlan.length == 0) {
+            Router.push("/visit/plan");
+          } else {
+            setPlan(data);
+            setLoading(false);
+            if (!state.visitPlanReducer.checkIn) {
+              actions.setCheckIn(now);
+            }
           }
-          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -61,6 +56,7 @@ export default function index() {
       </div>
     );
   };
+
   const renderDataDetail = (type, data) => {
     const doneFormVis = state.visitPlanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
@@ -137,57 +133,59 @@ export default function index() {
       </div>
     );
   };
+
   const onSubmit = () => {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
-    if (visDone.length === 6 || true) {
+    if (visDone.length === 6) {
       const userData = JSON.parse(localStorage.getItem("user"));
 
-      // const bodyPlan = {
-      //   id: plan.id,
-      //   idMasterPlanVisit: plan.id,
-      //   nomorDokumen: plan.nomorDokumen,
-      //   catatan: state.visitPlanReducer.catatan,
-      //   isCheckIn: true,
-      //   checkInDate: state.visitPlanReducer.checkIn.toISOString(),
-      //   isCheckOut: true,
-      //   checkOutDate: now.toISOString(),
-      //   createdBy: userData.username,
-      //   updatedBy: userData.username,
-      // };
-      // const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
-      //   return {
-      //     id: plan.id,
-      //     activityVisitPlanId: plan.id,
-      //     nomorDokumen: plan.nomorDokumen,
-      //     nomor: index,
-      //     tipe: val.type,
-      //     namaFile: val.file.name,
-      //     createdBy: userData.username,
-      //     updatedBy: userData.username,
-      //   };
-      // });
-      // const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
-      //   return {
-      //     id: plan.id,
-      //     activityVisitPlanId: plan.id,
-      //     nomorDokumen: plan.nomorDokumen,
-      //     nomor: index,
-      //     kodeProduk: val.productFocus.produkID,
-      //     namaProduk: val.productFocus.namaProduk,
-      //     stok: val.stock,
-      //     saranOrder: val.saranOrder,
-      //     jumlahOrder: val.order,
-      //     createdBy: userData.username,
-      //     updatedBy: userData.username,
-      //   };
-      // });
+      const bodyPlan = {
+        id: plan.id,
+        idMasterPlanVisit: plan.id,
+        nomorDokumen: plan.nomorDokumen,
+        catatan: state.visitPlanReducer.catatan,
+        isCheckIn: true,
+        checkInDate: state.visitPlanReducer.checkIn.toISOString(),
+        isCheckOut: true,
+        checkOutDate: now.toISOString(),
+        createdBy: userData.username,
+        updatedBy: userData.username,
+      };
+      const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
+        return {
+          id: plan.id,
+          activityVisitPlanId: val.id,
+          nomorDokumen: plan.nomorDokumen,
+          nomor: index,
+          tipe: val.type.tipe,
+          namaFile: val.file.name,
+          createdBy: userData.username,
+          updatedBy: userData.username,
+        };
+      });
+      const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
+        return {
+          id: plan.id,
+          activityVisitPlanId: val.id,
+          nomorDokumen: plan.nomorDokumen,
+          nomor: index,
+          kodeProduk: val.productFocus.produkID,
+          namaProduk: val.productFocus.namaProduk,
+          stok: val.stock,
+          saranOrder: val.saranOrder,
+          jumlahOrder: val.order,
+          createdBy: userData.username,
+          updatedBy: userData.username,
+        };
+      });
       // http://10.100.4.116:8230/api/ActivityVisitPlan/SaveActivityVisitPlan
       // http://10.100.4.116:8230/api/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm
       // http://10.100.4.116:8230/api/ActivityVisitPlanDProduct/SaveActivityVisitPlanDProduct
-      // console.log(bodyPlan, bodyPosm, bodyProduct);
       console.log(state.visitPlanReducer.visibility);
+      console.log(state.visitPlanReducer.avability);
+      console.log(bodyPlan, bodyPosm, bodyProduct);
     }
   };
 
@@ -222,5 +220,6 @@ export default function index() {
       );
     }
   };
+
   return render();
 }
