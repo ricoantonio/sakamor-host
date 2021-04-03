@@ -424,7 +424,7 @@ export default function Home() {
       );
     });
 
-    if (loading && loadingMenu) {
+    if (loading) {
       return <Spinner />;
     } else {
       return (
@@ -491,7 +491,7 @@ export default function Home() {
   const renderWorkVisit = () => {};
 
   const renderPage = () => {
-    if (state.menuReducer.menu == null) {
+    if (loading && loadingMenu) {
       return <Spinner />;
     } else
       return (
