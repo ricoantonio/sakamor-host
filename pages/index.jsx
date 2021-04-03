@@ -18,6 +18,8 @@ export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
   const [focus, setFocus] = useState("");
   const [plan, setPlan] = useState([]);
+  const [spreadingHistory, setSpreadingHistory] = useState([]);
+  const [unplanHistory, setUnplanHistory] = useState([]);
   const [role, setRole] = useState("");
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export default function Home() {
   const dataPlan = {
     datasets: [
       {
-        data: plan.length === 0 ? [0, 1] : [3, 8],
+        data: plan.length === 0 ? [0, 1] : [0, 1],
         backgroundColor: ["#41867a", "#d1e4e1"],
       },
     ],
@@ -70,7 +72,7 @@ export default function Home() {
   const dataSpreading = {
     datasets: [
       {
-        data: [4, 4],
+        data: spreadingHistory.length === 0 ? [0, 1] : [0, 1],
         backgroundColor: ["#41867a", "#d1e4e1"],
       },
     ],
@@ -201,8 +203,8 @@ export default function Home() {
     }
   };
 
-  const renderPlan = () => {
-    const planMap = plan.map((val, index) => {
+  const renderList = (data) => {
+    return data.map((val, index) => {
       return (
         <div
           style={{
@@ -243,7 +245,9 @@ export default function Home() {
         </div>
       );
     });
+  };
 
+  const renderPlan = () => {
     if (loading) {
       return <Spinner />;
     } else {
@@ -299,7 +303,7 @@ export default function Home() {
               >
                 Your Plan Today
               </div>
-              <div style={{ margin: "22px 0" }}>{planMap}</div>
+              <div style={{ margin: "22px 0" }}>{renderList(plan)}</div>
               <Link href="/visit/plan">
                 <a>
                   <Button text={"See Details"} />
@@ -313,26 +317,6 @@ export default function Home() {
   };
 
   const renderSpreading = () => {
-    const planMap = plan.map((val, index) => {
-      return (
-        <div
-          style={{
-            fontSize: "15px",
-            fontWeight: "700",
-            color: "#5E5873",
-            textAlign: "left",
-            margin: "10px 0",
-          }}
-          key={index}
-        >
-          <div>{val.namaOutlet}</div>
-          <div style={{ fontSize: "14px", fontWeight: "300" }}>
-            {val.alamatOutlet}
-          </div>
-        </div>
-      );
-    });
-
     if (loading) {
       return <Spinner />;
     } else {
@@ -368,7 +352,7 @@ export default function Home() {
                 </Link>
               </div>
               <div>
-                <div className={styles.pie_percentage}>50%</div>
+                <div className={styles.pie_percentage}>0%</div>
                 <Doughnut
                   data={dataSpreading}
                   options={donutOptions}
@@ -390,7 +374,9 @@ export default function Home() {
               >
                 Spreading History
               </div>
-              <div style={{ margin: "22px 0" }}></div>
+              <div style={{ margin: "22px 0" }}>
+                {renderList(spreadingHistory)}
+              </div>
               <Link href="/visit/spreading/history">
                 <a>
                   <Button text={"See Details"} />
@@ -404,26 +390,6 @@ export default function Home() {
   };
 
   const renderUnplan = () => {
-    const planMap = plan.map((val, index) => {
-      return (
-        <div
-          style={{
-            fontSize: "15px",
-            fontWeight: "700",
-            color: "#5E5873",
-            textAlign: "left",
-            margin: "10px 0",
-          }}
-          key={index}
-        >
-          <div>{val.namaOutlet}</div>
-          <div style={{ fontSize: "14px", fontWeight: "300" }}>
-            {val.alamatOutlet}
-          </div>
-        </div>
-      );
-    });
-
     if (loading) {
       return <Spinner />;
     } else {
@@ -438,7 +404,7 @@ export default function Home() {
           </Card>
           <Card style={{ borderRadius: "5px", marginTop: "11px" }}>
             <Link href="/visit/unplan">
-              <a>
+              <a style={{ textDecoration: "none" }}>
                 <div className={styles.unplan_grid2}>
                   <div className={styles.add_unplan}>
                     <div style={{ marginTop: "-8px" }}>+</div>
@@ -475,7 +441,9 @@ export default function Home() {
               >
                 Unplan Visit History
               </div>
-              <div style={{ margin: "22px 0" }}></div>
+              <div style={{ margin: "22px 0" }}>
+                {renderList(unplanHistory)}
+              </div>
               <Link href="/visit/unplan/history">
                 <a>
                   <Button text={"See Details"} />

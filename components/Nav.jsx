@@ -2,7 +2,15 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/components/Nav.module.css";
 
-const Nav = ({ backHref, title, action, color, onClick, backAction }) => {
+const Nav = ({
+  backHref,
+  title,
+  action,
+  color,
+  onClick,
+  backAction,
+  noBack,
+}) => {
   return (
     <div
       className={
@@ -19,6 +27,8 @@ const Nav = ({ backHref, title, action, color, onClick, backAction }) => {
             <img style={{ width: "24px" }} src={"/arrow-left.svg"} />
           </a>
         </Link>
+      ) : noBack ? (
+        <div />
       ) : (
         <img
           onClick={() => {

@@ -78,17 +78,16 @@ export default function Visibility({ type }) {
   }, [router.query.id]);
 
   useEffect(() => {
-    if (router.query.id) {
-      getPosm()
-        .then((data) => {
-          setPosm(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [router.query.id]);
+    getPosm()
+      .then((data) => {
+        setPosm(data);
+        setLoading(false);
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch]);
 
   const renderInputUpload = () => {
     var render = vis.map((val, index) => {

@@ -13,6 +13,7 @@ import DetailPlan from "./DetailPlan";
 import Button from "./Button";
 import Card from "./Card";
 import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
+import { getAuth } from "../helper";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
@@ -45,23 +46,13 @@ export default function History({ type }) {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userMenu = JSON.parse(localStorage.getItem("menu"));
     if (userData) {
-      fetch(
-        API_URL + API_USER + `/User/GetAuthorize?username=${userData.username}`,
-        {
-          headers: {
-            apiKey: TOKEN,
-          },
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
+      getAuth(userData)
         .then((data) => {
           var auth = data.filter((val) => {
-            return val.moduleCode === "PLAN";
+            return val.moduleCode === type;
           });
           var menu = userMenu.filter((val) => {
-            return val.moduleCode === "PLAN";
+            return val.moduleCode === type;
           });
           if (!(auth && menu)) {
             Router.push("/");
