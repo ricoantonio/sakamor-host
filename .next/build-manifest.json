@@ -24,10 +24,35 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/calender": [
+    "/visit/plan": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/calender.js"
+      "static/chunks/pages/visit/plan.js"
+    ],
+    "/visit/spreading/history": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/spreading/history.js"
+    ],
+    "/visit/spreading/submit": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/spreading/submit.js"
+    ],
+    "/visit/unplan/submit": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan/submit.js"
+    ],
+    "/visit/unplan/submit/avability": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan/submit/avability.js"
+    ],
+    "/visit/unplan/submit/visibility": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan/submit/visibility.js"
     ]
   },
   "ampFirstPages": []

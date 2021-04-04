@@ -2,5 +2,8 @@
   background-color: white;
   width: 100%;
 }
+.shadow {
+  box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
+}
 @media screen and (min-width: 600px) {
 }

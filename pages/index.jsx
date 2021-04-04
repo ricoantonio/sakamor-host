@@ -253,7 +253,7 @@ export default function Home() {
     } else {
       return (
         <>
-          <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.overview}>
               <div>
                 <span className={styles.date}>{`${date} / ${
@@ -291,7 +291,7 @@ export default function Home() {
               </div>
             </div>
           </Card>
-          <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }} shadow>
             <div className={styles.plan_container}>
               <div
                 style={{
@@ -322,7 +322,7 @@ export default function Home() {
     } else {
       return (
         <>
-          <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.overview}>
               <div>
                 <span className={styles.date}>{`${date} / ${
@@ -362,7 +362,7 @@ export default function Home() {
               </div>
             </div>
           </Card>
-          <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }} shadow>
             <div className={styles.plan_container}>
               <div
                 style={{
@@ -395,14 +395,14 @@ export default function Home() {
     } else {
       return (
         <>
-          <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.unplan_grid}>
               <div className={styles.num_total_unplan}>5</div>
               <div style={{ fontSize: "14px" }}>Total Unplan Visit</div>
               <div className={styles.date}>{monthName.full[month - 1]}</div>
             </div>
           </Card>
-          <Card style={{ borderRadius: "5px", marginTop: "11px" }}>
+          <Card style={{ borderRadius: "5px", marginTop: "11px" }} shadow>
             <Link href="/visit/unplan">
               <a style={{ textDecoration: "none" }}>
                 <div className={styles.unplan_grid2}>
@@ -429,7 +429,7 @@ export default function Home() {
             </Link>
           </Card>
 
-          <Card style={{ marginTop: "22px", borderRadius: "30px" }}>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }} shadow>
             <div className={styles.plan_container}>
               <div
                 style={{

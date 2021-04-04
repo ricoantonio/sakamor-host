@@ -58,7 +58,7 @@ export default function Plan() {
                     <div className={styles.view_history}>View History</div>
                   </a>
                 </Link>
-                <Card style={{ borderRadius: "5px", marginTop: "22px" }}>
+                <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
                   <div className={styles.unplan_grid2}>
                     <div className={styles.add_unplan}>
                       <div style={{ marginTop: "-8px" }}>+</div>

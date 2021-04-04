@@ -314,11 +314,13 @@ export default function Avability({ type }) {
           <div className={styles.wrapper}>
             <Nav
               title={"Avability"}
-              backHref={`/visit/plan/${router.query.id}`}
               color={"white"}
               action={"Save"}
               onClick={() => {
                 onSave();
+              }}
+              backAction={() => {
+                Router.back();
               }}
             />
             <div className={styles.main}>

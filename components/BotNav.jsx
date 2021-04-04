@@ -1,20 +1,21 @@
 import React from "react";
 import Link from "next/link";
 import styles from "../styles/components/BotNav.module.css";
-import Image from "next/image";
 import Router from "next/router";
+
 const Nav = ({ focus }) => {
   var active = (
     <div
       style={{
-        width: "6px",
-        height: "6px",
+        width: "5px",
+        height: "5px",
         backgroundColor: "#feb800",
         margin: "5px auto",
-        borderRadius: "20px",
+        borderRadius: "50px",
       }}
     />
   );
+
   return (
     <div className={styles.nav_container}>
       <div className={styles.nav_box}>
@@ -33,12 +34,12 @@ const Nav = ({ focus }) => {
             <div>
               <img
                 src={
-                  focus === "calender"
-                    ? "/calender-nav.svg"
-                    : "/calender-nav1.svg"
+                  focus === "calendar"
+                    ? "/calendar-nav.svg"
+                    : "/calendar-nav1.svg"
                 }
               />
-              {focus === "calender" ? active : ""}
+              {focus === "calendar" ? active : ""}
             </div>
           </a>
         </Link>

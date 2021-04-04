@@ -2,5 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/calender": "pages/calender.js"
+  "/visit/unplan/submit/visibility": "pages/visit/unplan/submit/visibility.js",
+  "/visit/plan": "pages/visit/plan.js",
+  "/visit/unplan/submit/avability": "pages/visit/unplan/submit/avability.js",
+  "/visit/unplan/submit": "pages/visit/unplan/submit.js",
+  "/visit/spreading/submit": "pages/visit/spreading/submit.js",
+  "/": "pages/index.js",
+  "/visit/spreading/history": "pages/visit/spreading/history.js"
 }

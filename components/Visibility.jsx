@@ -171,7 +171,7 @@ export default function Visibility({ type }) {
               } else {
                 setVis([...initialVis]);
               }
-              Router.push(`/visit/plan/${router.query.id}`);
+              Router.back();
             }}
           />
           <div className={styles.main}>{renderInputUpload()}</div>
