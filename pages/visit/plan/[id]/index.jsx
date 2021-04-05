@@ -10,7 +10,7 @@ import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
-import { getPlanId } from "../../../../helper";
+import { getPlanId, submitVisitPlan } from "../../../../helper";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -26,15 +26,14 @@ export default function index() {
     //   /GetAllMasterVisitPlan"
     if (router.query.id) {
       getPlanId(router.query.id)
-        .then((samePlan, data) => {
-          console.log(samePlan, data);
+        .then(({ samePlan, data }) => {
           if (samePlan.length == 0) {
             Router.push("/visit/plan");
           } else {
             setPlan(data);
             setLoading(false);
             if (!state.visitPlanReducer.checkIn) {
-              actions.setCheckIn(now);
+              actions.setPlanCheckIn(now);
             }
           }
         })
@@ -80,7 +79,7 @@ export default function index() {
               <textarea
                 style={{ width: "100%", border: "none", height: "70px" }}
                 onChange={(e) => {
-                  actions.setCatatan(e.target.value);
+                  actions.setPlanCatatan(e.target.value);
                 }}
                 value={state.visitPlanReducer.catatan}
               ></textarea>
@@ -155,8 +154,8 @@ export default function index() {
       };
       const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
         return {
-          id: plan.id,
-          activityVisitPlanId: val.id,
+          id: val.type.id,
+          activityVisitPlanId: plan.id,
           nomorDokumen: plan.nomorDokumen,
           nomor: index,
           tipe: val.type.tipe,
@@ -167,25 +166,35 @@ export default function index() {
       });
       const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
         return {
+          // id: val.productFocus.produkID,
           id: plan.id,
-          activityVisitPlanId: val.id,
+          activityVisitPlanId: plan.id,
           nomorDokumen: plan.nomorDokumen,
           nomor: index,
           kodeProduk: val.productFocus.produkID,
           namaProduk: val.productFocus.namaProduk,
-          stok: val.stock,
-          saranOrder: val.saranOrder,
-          jumlahOrder: val.order,
+          stok: parseInt(val.stock),
+          saranOrder: parseInt(val.saranOrder),
+          jumlahOrder: parseInt(val.order),
           createdBy: userData.username,
           updatedBy: userData.username,
         };
       });
-      // http://10.100.4.116:8230/api/ActivityVisitPlan/SaveActivityVisitPlan
-      // http://10.100.4.116:8230/api/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm
-      // http://10.100.4.116:8230/api/ActivityVisitPlanDProduct/SaveActivityVisitPlanDProduct
-      console.log(state.visitPlanReducer.visibility);
-      console.log(state.visitPlanReducer.avability);
-      console.log(bodyPlan, bodyPosm, bodyProduct);
+      var data = {
+        avp: bodyPlan,
+        dposmList: bodyPosm,
+        dProductList: bodyProduct,
+      };
+      submitVisitPlan(data)
+        .then((res) => {
+          console.log(res);
+          console.log("done");
+          actions.setDefaultVisitPlan();
+          Router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 

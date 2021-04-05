@@ -9,7 +9,7 @@ const DetailPlan = ({ data, history }) => {
   var date = dataCheckOutDate.getDate();
   var month = dataCheckOutDate.getMonth() + 1;
   var year = dataCheckOutDate.getFullYear();
-
+  console.log(data);
   return (
     <Card style={{ marginTop: "22px", borderRadius: "5px" }}>
       <div style={{ padding: "21px 18px" }}>
@@ -65,7 +65,7 @@ const DetailPlan = ({ data, history }) => {
         {history ? (
           ""
         ) : (
-          <Link href={`/visit/plan/${data.id}`}>
+          <Link href={`/visit/plan/${data.idMasterPlan}`}>
             <a>
               <div
                 style={{

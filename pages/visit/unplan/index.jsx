@@ -37,6 +37,7 @@ export default function Plan() {
           latitude: coords.latitude,
           longitude: coords.longitude,
         });
+        console.log(coords);
       },
       (err) => {
         setError(err.message);

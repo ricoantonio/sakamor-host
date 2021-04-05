@@ -12,12 +12,11 @@ import Spinner from "./Spinner";
 import DetailPlan from "./DetailPlan";
 import Button from "./Button";
 import Card from "./Card";
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
-import { getAuth } from "../helper";
+import { getAuth, getPlanHistory } from "../helper";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
-  const [plan, setPlan] = useState([]);
+  const [history, setHistory] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -67,25 +66,22 @@ export default function History({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
-    fetch(
-      API_URL + API_VISIT_PLAN + "/ActivityVisitPlan/GetAllActivityVisitPlan",
-      {
-        headers: {
-          apiKey: TOKEN,
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setPlan(data);
+    const userData = JSON.parse(localStorage.getItem("user"));
 
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (type === "PLAN") {
+      getPlanHistory(userData)
+        .then((data) => {
+          setHistory(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "UNPLAN") {
+      setLoading(false);
+    } else if (type === "SPREADING") {
+      setLoading(false);
+    }
   }, [dispatch]);
 
   const print = () => {
@@ -100,7 +96,7 @@ export default function History({ type }) {
   };
 
   const renderList = () => {
-    const filterData = plan.filter((val) => {
+    const filterData = history.filter((val) => {
       if (val.namaOutlet !== null) {
         return (
           val.namaOutlet.toLowerCase().includes(search.toLowerCase()) ||
@@ -108,7 +104,7 @@ export default function History({ type }) {
         );
       }
     });
-    const render = plan.map((val, index) => {
+    const render = history.map((val, index) => {
       return <DetailPlan key={index} data={val} history />;
     });
     if (filterData.length == 0) {

@@ -39,29 +39,37 @@ export default function Avability({ type }) {
   });
 
   useEffect(() => {
-    if (state.visitPlanReducer.avability.length > 0) {
-      setAvabilityList([...state.visitPlanReducer.avability]);
+    if (type === "PLAN") {
+      if (state.visitPlanReducer.avability.length > 0) {
+        setAvabilityList([...state.visitPlanReducer.avability]);
+      }
+    } else if (type === "UNPLAN") {
+    } else if (type === "SPREADING") {
     }
   }, [dispatch]);
 
   useEffect(() => {
-    if (router.query.id) {
-      getPlanId(router.query.id)
-        .then((samePlan, data) => {
-          console.log(samePlan, data);
-          if (samePlan.length == 0) {
-            Router.push("/visit/plan");
-          } else {
-            setPlan(data);
-            setLoading(false);
-            if (!state.visitPlanReducer.checkIn) {
-              actions.setCheckIn(now);
+    if (type === "PLAN") {
+      if (router.query.id) {
+        getPlanId(router.query.id)
+          .then(({ samePlan, data }) => {
+            // console.log(samePlan, data);
+            if (samePlan.length == 0) {
+              Router.push("/visit/plan");
+            } else {
+              setPlan(data);
+              setLoading(false);
+              if (!state.visitPlanReducer.checkIn) {
+                actions.setPlanCheckIn(now);
+              }
             }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else if (type === "UNPLAN") {
+    } else if (type === "SPREADING") {
     }
   }, [router.query.id]);
 
@@ -303,8 +311,15 @@ export default function Avability({ type }) {
     }
   };
   const onSave = () => {
-    actions.setAvability(avabilityList);
-    Router.push(`/visit/plan/${router.query.id}`);
+    if (type === "PLAN") {
+      actions.setPlanAvability(avabilityList);
+      // console.log(avabilityList);
+      Router.push(`/visit/plan/${router.query.id}`);
+    } else if (type === "UNPLAN") {
+      Router.push(`/visit/unplan/submit`);
+    } else if (type === "SPREADING") {
+      Router.push(`/visit/spreading/submit`);
+    }
   };
   const render = () => {
     return (

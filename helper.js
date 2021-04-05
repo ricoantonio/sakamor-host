@@ -30,11 +30,30 @@ const getMenu = (userData) => {
       console.log(err);
     });
 };
-const getPlanList = () => {
+const getPlanList = (userData) => {
+  // return fetch(
+  //   API_URL +
+  //     API_VISIT_PLAN +
+  //     `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+  //   {
+  //     headers: {
+  //       apiKey: TOKEN,
+  //     },
+  //   }
+  // )
+  //   .then((response) => {
+  //     return response.json();
+  //   })
+  //   .then((data) => {
+  //     return data;
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
   return fetch(
     API_URL +
       API_VISIT_PLAN +
-      `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${date}`,
+      `/ActivityVisitPlan/GetActivityVisitPlanBy?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -45,12 +64,16 @@ const getPlanList = () => {
       return response.json();
     })
     .then((data) => {
-      return data;
+      var res = data.filter((val) => {
+        return val.isCheckOut === false;
+      });
+      return res;
     })
     .catch((err) => {
       console.log(err);
     });
 };
+
 const getAuth = (userData) => {
   return fetch(
     API_URL + API_USER + `/User/GetAuthorize?username=${userData.username}`,
@@ -77,7 +100,7 @@ const onLogin = (values) => {
       API_USER +
       `/User/Login?username=${values.username}&&password=${values.password}`,
     {
-      method: "post",
+      method: "POST",
       headers: {
         apiKey: TOKEN,
       },
@@ -129,7 +152,7 @@ const getPlanId = (id) => {
               return val.id === data.id;
             });
 
-            return samePlan, data;
+            return { samePlan, data };
           })
           .catch((err) => {
             console.log(err);
@@ -182,6 +205,56 @@ const getProductSearch = (search) => {
     });
 };
 
+const getPlanHistory = (userData) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlan/GetActivityVisitPlanBy?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      var res = data.filter((val) => {
+        return val.isCheckOut === true;
+      });
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const submitVisitPlan = (data) => {
+  console.log(JSON.stringify(data));
+  return fetch(
+    API_URL + API_VISIT_PLAN + "/ActivityVisitPlan/SaveAllActivityVisitPlan",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getPlanList,
@@ -190,4 +263,6 @@ export {
   getPlanId,
   getPosm,
   getProductSearch,
+  getPlanHistory,
+  submitVisitPlan,
 };

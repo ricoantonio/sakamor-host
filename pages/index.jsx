@@ -10,7 +10,7 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { getAuth, getMenu, getPlanList } from "../helper";
+import { getAuth, getMenu, getPlanHistory, getPlanList } from "../helper";
 
 import { Doughnut } from "react-chartjs-2";
 
@@ -18,6 +18,7 @@ export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
   const [focus, setFocus] = useState("");
   const [plan, setPlan] = useState([]);
+  const [planHistory, setPlanHistory] = useState([]);
   const [spreadingHistory, setSpreadingHistory] = useState([]);
   const [unplanHistory, setUnplanHistory] = useState([]);
   const [role, setRole] = useState("");
@@ -64,7 +65,8 @@ export default function Home() {
   const dataPlan = {
     datasets: [
       {
-        data: plan.length === 0 ? [0, 1] : [0, 1],
+        data:
+          planHistory.length === 0 ? [0, 1] : [planHistory.length, plan.length],
         backgroundColor: ["#41867a", "#d1e4e1"],
       },
     ],
@@ -104,10 +106,11 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
+    setLoading(true);
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       if (focus === "PLAN") {
-        getPlanList()
+        getPlanList(userData)
           .then((data) => {
             setPlan(data);
             setLoading(false);
@@ -117,13 +120,36 @@ export default function Home() {
           });
       } else if (focus === "UNPLAN") {
         console.log("unplan");
+        setLoading(false);
       } else if (focus === "SPREADING") {
         console.log("spreading");
+        setLoading(false);
       } else if (focus === "WORK_VISIT") {
         console.log("work visit");
+        setLoading(false);
       }
     } else {
       Router.push("/");
+    }
+  }, [focus]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    if (focus === "PLAN") {
+      getPlanHistory(userData)
+        .then((data) => {
+          setPlanHistory(data);
+          setLoading(false);
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (focus === "UNPLAN") {
+      setLoading(false);
+    } else if (focus === "SPREADING") {
+      setLoading(false);
     }
   }, [focus]);
 
@@ -203,7 +229,7 @@ export default function Home() {
     }
   };
 
-  const renderList = (data) => {
+  const renderList = (type, data) => {
     return data.map((val, index) => {
       return (
         <div
@@ -221,7 +247,7 @@ export default function Home() {
               style={{
                 width: "20px",
                 height: "20px",
-                backgroundColor: "#d1e4e1",
+                backgroundColor: type === "PLAN" ? "#FFF1CC" : "#d1e4e1",
                 borderRadius: "20px",
                 padding: "4px",
               }}
@@ -230,7 +256,7 @@ export default function Home() {
                 style={{
                   width: "12px",
                   height: "12px",
-                  backgroundColor: "#41867a",
+                  backgroundColor: type === "PLAN" ? "#feb800" : "#41867a",
                   borderRadius: "20px",
                 }}
               />
@@ -260,8 +286,12 @@ export default function Home() {
                   monthName.part[month - 1]
                 } / ${year}`}</span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
-                  <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
-                  <span style={{ fontSize: "18px" }}>/{plan.length}</span>
+                  <span style={{ fontSize: "36px", fontWeight: "600" }}>
+                    {planHistory.length}
+                  </span>
+                  <span style={{ fontSize: "18px" }}>
+                    /{plan.length + planHistory.length}
+                  </span>
                 </div>
                 <button
                   style={{
@@ -280,7 +310,13 @@ export default function Home() {
               </div>
               <div>
                 <div className={styles.pie_percentage}>
-                  {plan.length === 0 ? "0%" : "0%"}
+                  {planHistory.length === 0
+                    ? "0%"
+                    : `${Math.round(
+                        (planHistory.length /
+                          (plan.length + planHistory.length)) *
+                          100
+                      )}%`}
                 </div>
                 <Doughnut
                   data={dataPlan}
@@ -303,7 +339,7 @@ export default function Home() {
               >
                 Your Plan Today
               </div>
-              <div style={{ margin: "22px 0" }}>{renderList(plan)}</div>
+              <div style={{ margin: "22px 0" }}>{renderList("PLAN", plan)}</div>
               <Link href="/visit/plan">
                 <a>
                   <Button text={"See Details"} />
@@ -375,7 +411,7 @@ export default function Home() {
                 Spreading History
               </div>
               <div style={{ margin: "22px 0" }}>
-                {renderList(spreadingHistory)}
+                {renderList("SPREADING", spreadingHistory)}
               </div>
               <Link href="/visit/spreading/history">
                 <a>
@@ -442,7 +478,7 @@ export default function Home() {
                 Unplan Visit History
               </div>
               <div style={{ margin: "22px 0" }}>
-                {renderList(unplanHistory)}
+                {renderList("UNPLAN", unplanHistory)}
               </div>
               <Link href="/visit/unplan/history">
                 <a>

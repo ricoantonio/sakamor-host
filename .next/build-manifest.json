@@ -14,6 +14,11 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/index.js"
+    ],
     "/_app": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
@@ -24,35 +29,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/visit/plan": [
+    "/visit/plan/[id]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/plan.js"
+      "static/chunks/pages/visit/plan/[id].js"
     ],
-    "/visit/spreading/history": [
+    "/visit/plan/history": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/spreading/history.js"
-    ],
-    "/visit/spreading/submit": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/visit/spreading/submit.js"
-    ],
-    "/visit/unplan/submit": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/visit/unplan/submit.js"
-    ],
-    "/visit/unplan/submit/avability": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/visit/unplan/submit/avability.js"
-    ],
-    "/visit/unplan/submit/visibility": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/visit/unplan/submit/visibility.js"
+      "static/chunks/pages/visit/plan/history.js"
     ]
   },
   "ampFirstPages": []

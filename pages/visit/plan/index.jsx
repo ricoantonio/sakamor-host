@@ -50,7 +50,9 @@ export default function Plan() {
   }, [dispatch]);
 
   useEffect(() => {
-    getPlanList()
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    getPlanList(userData)
       .then((data) => {
         setPlan(data);
         setLoading(false);

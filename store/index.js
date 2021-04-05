@@ -7,10 +7,10 @@ import { visitPlanReducer, defaultVisitPlan } from "./reducers/visitPlan";
 import userLogin from "./actions/userLogin";
 import setMenu from "./actions/setMenu";
 import keepState from "./actions/keepState";
-import setVisibility from "./actions/setVisibility";
-import setAvability from "./actions/setAvability";
-import setCatatan from "./actions/setCatatan";
-import setCheckIn from "./actions/setCheckIn";
+import setPlanVisibility from "./actions/setPlanVisibility";
+import setPlanAvability from "./actions/setPlanAvability";
+import setPlanCatatan from "./actions/setPlanCatatan";
+import setPlanCheckIn from "./actions/setPlanCheckIn";
 import setDefaultVisitPlan from "./actions/setDefaultVisitPlan";
 
 const Stores = createContext();
@@ -36,10 +36,10 @@ const Store = ({ children }) => {
       ...userLogin(dispatch),
       ...setMenu(dispatch),
       ...keepState(dispatch),
-      ...setVisibility(dispatch),
-      ...setAvability(dispatch),
-      ...setCatatan(dispatch),
-      ...setCheckIn(dispatch),
+      ...setPlanVisibility(dispatch),
+      ...setPlanAvability(dispatch),
+      ...setPlanCatatan(dispatch),
+      ...setPlanCheckIn(dispatch),
       ...setDefaultVisitPlan(dispatch),
     }),
     []

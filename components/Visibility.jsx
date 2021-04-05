@@ -51,29 +51,37 @@ export default function Visibility({ type }) {
   });
 
   useEffect(() => {
-    if (state.visitPlanReducer.visibility.length > 0) {
-      setVis([...state.visitPlanReducer.visibility]);
+    if (type === "PLAN") {
+      if (state.visitPlanReducer.visibility.length > 0) {
+        setVis([...state.visitPlanReducer.visibility]);
+      }
+    } else if (type === "UNPLAN") {
+    } else if (type === "SPREADING") {
     }
   }, [dispatch]);
 
   useEffect(() => {
-    if (router.query.id) {
-      getPlanId(router.query.id)
-        .then((samePlan, data) => {
-          console.log(samePlan, data);
-          if (samePlan.length == 0) {
-            Router.push("/visit/plan");
-          } else {
-            setPlan(data);
-            setLoading(false);
-            if (!state.visitPlanReducer.checkIn) {
-              actions.setCheckIn(now);
+    if (type === "PLAN") {
+      if (router.query.id) {
+        getPlanId(router.query.id)
+          .then(({ samePlan, data }) => {
+            // console.log(samePlan, data);
+            if (samePlan.length == 0) {
+              Router.push("/visit/plan");
+            } else {
+              setPlan(data);
+              setLoading(false);
+              if (!state.visitPlanReducer.checkIn) {
+                actions.setPlanCheckIn(now);
+              }
             }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else if (type === "UNPLAN") {
+    } else if (type === "SPREADING") {
     }
   }, [router.query.id]);
 
@@ -82,7 +90,7 @@ export default function Visibility({ type }) {
       .then((data) => {
         setPosm(data);
         setLoading(false);
-        console.log(data);
+        // console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -92,67 +100,71 @@ export default function Visibility({ type }) {
   const renderInputUpload = () => {
     var render = vis.map((val, index) => {
       return (
-        <>
-          <div key={index} className={styles.visibility_grid}>
-            <div>POSM {index + 1}</div>
-            <div className={styles.visibility_dropdown}>
-              <Dropdown
-                options={posm}
+        <div key={index} className={styles.visibility_grid}>
+          <div>POSM {index + 1}</div>
+          <div className={styles.visibility_dropdown}>
+            <Dropdown
+              options={posm}
+              onChange={(e) => {
+                var a = posm.filter((val) => {
+                  return val.namaFile == e.target.value;
+                });
+                console.log(a);
+                vis.splice(index, 1, {
+                  ...vis[index],
+                  type: a[0],
+                });
+                setDummy(dummy + 1);
+              }}
+              value={val.type != null ? val.type.namaFile : ""}
+            />
+            <span
+              style={{
+                fontSize: "10px",
+                color: "#41867A",
+                fontWeight: "500",
+              }}
+            >
+              {val.file != null ? val.file.name : ""}
+            </span>
+          </div>
+          <div>
+            <label className={styles.new_button} htmlFor={`upload${index}`}>
+              <img
+                src={"/camera.svg"}
+                style={{ width: "18px", verticalAlign: "baseline" }}
+              />
+              <input
+                className={styles.input_file}
                 onChange={(e) => {
-                  var a = posm.filter((val) => {
-                    return val.namaFile == e.target.value;
-                  });
-                  console.log(a);
                   vis.splice(index, 1, {
                     ...vis[index],
-                    type: a[0],
+                    file: e.target.files[0],
                   });
                   setDummy(dummy + 1);
                 }}
-                value={val.type != null ? val.type.namaFile : ""}
+                id={`upload${index}`}
+                type="file"
+                accept="image/*"
+                capture="environment"
               />
-              <span
-                style={{
-                  fontSize: "10px",
-                  color: "#41867A",
-                  fontWeight: "500",
-                }}
-              >
-                {val.file != null ? val.file.name : ""}
-              </span>
-            </div>
-            <div>
-              <label className={styles.new_button} htmlFor={`upload${index}`}>
-                <img
-                  src={"/camera.svg"}
-                  style={{ width: "18px", verticalAlign: "baseline" }}
-                />
-                <input
-                  className={styles.input_file}
-                  onChange={(e) => {
-                    vis.splice(index, 1, {
-                      ...vis[index],
-                      file: e.target.files[0],
-                    });
-                    setDummy(dummy + 1);
-                  }}
-                  id={`upload${index}`}
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                />
-              </label>
-            </div>
+            </label>
           </div>
-        </>
+        </div>
       );
     });
     return render;
   };
   const onSave = () => {
-    var saveVis = console.log(saveVis);
-    actions.setVisibility(vis);
-    Router.push(`/visit/plan/${router.query.id}`);
+    if (type === "PLAN") {
+      actions.setPlanVisibility(vis);
+      // console.log(vis);
+      Router.push(`/visit/plan/${router.query.id}`);
+    } else if (type === "UNPLAN") {
+      Router.push(`/visit/unplan/submit`);
+    } else if (type === "SPREADING") {
+      Router.push(`/visit/spreading/submit`);
+    }
   };
   const render = () => {
     return (
