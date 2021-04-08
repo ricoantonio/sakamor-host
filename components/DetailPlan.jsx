@@ -3,13 +3,13 @@ import styles from "../styles/components/DetailPlan.module.css";
 import Card from "./Card";
 import Button from "./Button";
 import Link from "next/link";
+import moment from "moment";
 
 const DetailPlan = ({ data, history }) => {
   var dataCheckOutDate = new Date(data.checkOutDate);
   var date = dataCheckOutDate.getDate();
   var month = dataCheckOutDate.getMonth() + 1;
   var year = dataCheckOutDate.getFullYear();
-  console.log(data);
   return (
     <Card style={{ marginTop: "22px", borderRadius: "5px" }}>
       <div style={{ padding: "21px 18px" }}>
@@ -17,9 +17,9 @@ const DetailPlan = ({ data, history }) => {
           <>
             <div className={styles.top_grid}>
               <div>
-                <span
-                  className={styles.date}
-                >{`${date} / ${month} / ${year}`}</span>
+                <span className={styles.date}>
+                  {moment(data.checkOutDate).format("d / MMM / YYYY")}
+                </span>
                 <div
                   style={{
                     fontSize: "18px",

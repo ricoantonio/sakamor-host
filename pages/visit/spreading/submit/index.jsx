@@ -188,6 +188,7 @@ export default function index() {
                   Router.push("/visit/spreading");
                 }
               }}
+              disable={false}
             />
             <div className={styles.main}>{renderDetail()}</div>
           </div>

@@ -105,14 +105,14 @@ export default function Visibility({ type }) {
           <div className={styles.visibility_dropdown}>
             <Dropdown
               options={posm}
+              type={"POSM"}
               onChange={(e) => {
-                var a = posm.filter((val) => {
-                  return val.namaFile == e.target.value;
+                var data = posm.filter((val) => {
+                  return val.program == e.target.value;
                 });
-                console.log(a);
                 vis.splice(index, 1, {
                   ...vis[index],
-                  type: a[0],
+                  type: data[0],
                 });
                 setDummy(dummy + 1);
               }}
@@ -185,6 +185,7 @@ export default function Visibility({ type }) {
               }
               Router.back();
             }}
+            disable={false}
           />
           <div className={styles.main}>{renderInputUpload()}</div>
         </div>

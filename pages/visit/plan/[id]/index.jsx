@@ -11,10 +11,12 @@ import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
 import { getPlanId, submitVisitPlan } from "../../../../helper";
+import Modal from "../../../../components/Modal";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [plan, setPlan] = useState([]);
   const router = useRouter();
   var now = new Date();
@@ -137,7 +139,10 @@ export default function index() {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
+    console.log(state.visitPlanReducer.visibility);
     if (visDone.length === 6) {
+      setLoadingSubmit(true);
+
       const userData = JSON.parse(localStorage.getItem("user"));
 
       const bodyPlan = {
@@ -154,11 +159,11 @@ export default function index() {
       };
       const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
         return {
-          id: val.type.id,
+          id: plan.id,
           activityVisitPlanId: plan.id,
           nomorDokumen: plan.nomorDokumen,
           nomor: index,
-          tipe: val.type.tipe,
+          tipe: val.type.program,
           namaFile: val.file.name,
           createdBy: userData.username,
           updatedBy: userData.username,
@@ -185,11 +190,12 @@ export default function index() {
         dposmList: bodyPosm,
         dProductList: bodyProduct,
       };
+      // console.log(data);
       submitVisitPlan(data)
         .then((res) => {
-          console.log(res);
-          console.log("done");
+          // console.log(res);
           actions.setDefaultVisitPlan();
+          setLoadingSubmit(false);
           Router.push("/");
         })
         .catch((err) => {
@@ -199,33 +205,45 @@ export default function index() {
   };
 
   const render = () => {
+    const visDone = state.visitPlanReducer.visibility.filter((val) => {
+      return val.file !== null && val.type !== null;
+    });
+
     if (loading) {
       return <Spinner />;
     } else {
       return (
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            <Nav
-              title={"Plan"}
-              color={"white"}
-              action={"Submit"}
-              onClick={() => {
-                onSubmit();
-              }}
-              backAction={() => {
-                if (
-                  confirm(
-                    "Data will be lost if you leave the page, are you sure?"
-                  )
-                ) {
-                  actions.setDefaultVisitPlan();
-                  Router.push("/visit/plan");
-                }
-              }}
-            />
-            <div className={styles.main}>{renderDetail()}</div>
+        <>
+          <div className={styles.container}>
+            {loadingSubmit ? (
+              <Modal>
+                <Spinner />
+              </Modal>
+            ) : null}
+            <div className={styles.wrapper}>
+              <Nav
+                title={"Plan"}
+                color={"white"}
+                action={"Submit"}
+                onClick={() => {
+                  onSubmit();
+                }}
+                disable={visDone.length === 6 ? false : true}
+                backAction={() => {
+                  if (
+                    confirm(
+                      "Data will be lost if you leave the page, are you sure?"
+                    )
+                  ) {
+                    actions.setDefaultVisitPlan();
+                    Router.push("/visit/plan");
+                  }
+                }}
+              />
+              <div className={styles.main}>{renderDetail()}</div>
+            </div>
           </div>
-        </div>
+        </>
       );
     }
   };

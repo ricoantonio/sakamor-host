@@ -167,16 +167,11 @@ const getPlanId = (id) => {
 };
 
 const getPosm = () => {
-  return fetch(
-    API_URL +
-      API_VISIT_PLAN +
-      `/ActivityVisitPlanDPOSM/GetAllActivityVisitPlanDposm`,
-    {
-      headers: {
-        apiKey: TOKEN,
-      },
-    }
-  )
+  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllDisplayProgram`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
     .then((response) => {
       return response.json();
     })
@@ -194,6 +189,28 @@ const getProductSearch = (search) => {
       apiKey: TOKEN,
     },
   })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getProdukByJenisChannel = (jenisChannelId) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetProdukJenisChannelBy/${jenisChannelId}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
     .then((response) => {
       return response.json();
     })
@@ -231,7 +248,6 @@ const getPlanHistory = (userData) => {
 };
 
 const submitVisitPlan = (data) => {
-  console.log(JSON.stringify(data));
   return fetch(
     API_URL + API_VISIT_PLAN + "/ActivityVisitPlan/SaveAllActivityVisitPlan",
     {
@@ -265,4 +281,5 @@ export {
   getProductSearch,
   getPlanHistory,
   submitVisitPlan,
+  getProdukByJenisChannel,
 };

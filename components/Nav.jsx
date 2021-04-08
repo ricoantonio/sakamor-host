@@ -10,6 +10,7 @@ const Nav = ({
   onClick,
   backAction,
   noBack,
+  disable,
 }) => {
   return (
     <div
@@ -46,13 +47,24 @@ const Nav = ({
       >
         {title}
       </div>
-      {action ? (
+      {action && disable === false ? (
         <div
           onClick={onClick}
           style={{
             fontSize: "14px",
             margin: "auto",
             color: "#41867A",
+            cursor: "pointer",
+          }}
+        >
+          {action}
+        </div>
+      ) : action && disable === true ? (
+        <div
+          style={{
+            fontSize: "14px",
+            margin: "auto",
+            color: "#c4c4c4",
             cursor: "pointer",
           }}
         >

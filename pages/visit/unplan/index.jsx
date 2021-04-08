@@ -61,7 +61,7 @@ export default function Plan() {
             </div>
             <div className={styles.main}>
               <div className={styles.subtitle}>Jenis Channel</div>
-              <Dropdown />
+              <Dropdown type={"JENIS_CHANNEL"} />
               <div className={styles.subtitle}>Outlet</div>
               <input
                 onChange={(e) => {

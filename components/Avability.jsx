@@ -9,14 +9,20 @@ import Spinner from "./Spinner";
 import Button from "./Button";
 import Card from "./Card";
 
-import { getPlanId, getProductSearch } from "../helper";
+import {
+  getPlanId,
+  getProductSearch,
+  getProdukByJenisChannel,
+} from "../helper";
 
 export default function Avability({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [renderProductList, setRenderProductList] = useState(false);
   const [search, setSearch] = useState("");
   const [product, setProduct] = useState([]);
+  const [productSearch, setProductSearch] = useState([]);
   const [productFocus, setProductFocus] = useState({});
   const [avabilityList, setAvabilityList] = useState([]);
   const [order, setOrder] = useState("");
@@ -73,31 +79,49 @@ export default function Avability({ type }) {
     }
   }, [router.query.id]);
 
+  useEffect(() => {
+    if (type === "PLAN") {
+      getProdukByJenisChannel(plan.idJenisChannel)
+        .then((data) => {
+          setProduct(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "UNPLAN") {
+    } else if (type === "SPREADING") {
+    }
+  }, [plan]);
+
   const onSearchProduct = (search) => {
-    setProductFocus(search);
-    getProductSearch(search)
-      .then((data) => {
-        setProduct(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // setProductFocus(search);
+    // getProductSearch(search)
+    //   .then((data) => {
+    //     setProduct(data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });;''''
+    setProductSearch(search);
   };
 
   const renderProductSearch = () => {
     const render = product.map((val, index) => {
-      return (
-        <div
-          onClick={() => {
-            setProduct([]);
-            setProductFocus(val);
-          }}
-          key={index}
-          style={{ borderBottom: ".5px solid #f0f0f0", width: "356px" }}
-        >
-          {val.namaProduk}
-        </div>
-      );
+      if (val.namaProduk.includes(productSearch)) {
+        return (
+          <div
+            onClick={() => {
+              // setProduct([]);
+              setProductFocus(val);
+              setRenderProductList(false);
+            }}
+            key={index}
+            style={{ borderBottom: ".5px solid #f0f0f0", width: "356px" }}
+          >
+            {val.namaProduk}
+          </div>
+        );
+      }
     });
     return render;
   };
@@ -123,9 +147,10 @@ export default function Avability({ type }) {
                 placeholder="Search"
                 value={productFocus.namaProduk}
                 className={styles.input_order_search}
-                onClick={() => {
-                  setProduct([]);
-                }}
+                // onClick={() => {
+                //   setProduct([]);
+                // }}
+                onFocus={() => setRenderProductList(true)}
               />
               {product ? (
                 <div
@@ -136,9 +161,10 @@ export default function Avability({ type }) {
                     overflowY: "scroll",
                     maxWidth: "400px",
                     padding: "0 4px",
+                    zIndex: 999999,
                   }}
                 >
-                  {renderProductSearch()}
+                  {renderProductList ? renderProductSearch() : null}
                 </div>
               ) : null}
               <div className={styles.stock_order_container}>
@@ -185,11 +211,12 @@ export default function Avability({ type }) {
                 <Button
                   text={"Add"}
                   onClick={() => {
+                    var reg = new RegExp(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g);
                     if (
                       productFocus.namaProduk &&
-                      stock.match("^[1-9][0-9]*$") &&
-                      saranOrder.match("^[1-9][0-9]*$") &&
-                      order.match("^[1-9][0-9]*$")
+                      stock.match(reg) &&
+                      saranOrder.match(reg) &&
+                      order.match(reg)
                     ) {
                       if (avabilityList.length > 0) {
                         var sameDataIndex = avabilityList.findIndex(
@@ -337,6 +364,7 @@ export default function Avability({ type }) {
               backAction={() => {
                 Router.back();
               }}
+              disable={false}
             />
             <div className={styles.main}>
               <div className={styles.search_fixed}>
@@ -368,7 +396,7 @@ export default function Avability({ type }) {
                 text={"Add"}
                 onClick={() => {
                   setModal(true);
-                  setProduct([]);
+                  // setProduct([]);
                   setProductFocus("");
                 }}
               />

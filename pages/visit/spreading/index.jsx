@@ -37,7 +37,7 @@ export default function Plan() {
             <div className={styles.main}>
               <div className={styles.subtitle}>Jenis Channel</div>
               <Card>
-                <Dropdown />
+                <Dropdown type={"JENIS_CHANNEL"} />
               </Card>
               <div className={styles.subtitle}>Outlet</div>
               <input

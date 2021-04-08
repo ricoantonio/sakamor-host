@@ -4,27 +4,5 @@
       "id": "./node_modules/next/dist/client/dev/noop.js",
       "file": "static/chunks/0.js"
     }
-  ],
-  "jspdf": [
-    {
-      "id": "./node_modules/jspdf/dist/jspdf.min.js",
-      "file": "static/chunks/1.js"
-    },
-    {
-      "id": "./node_modules/next/dist/compiled/webpack/amd-define.js",
-      "file": "static/chunks/1.js"
-    },
-    {
-      "id": "./node_modules/next/dist/compiled/webpack/amd-options.js",
-      "file": "static/chunks/1.js"
-    },
-    {
-      "id": "./node_modules/next/dist/compiled/webpack/global.js",
-      "file": "static/chunks/1.js"
-    },
-    {
-      "id": "./node_modules/process/browser.js",
-      "file": "static/chunks/1.js"
-    }
   ]
 }

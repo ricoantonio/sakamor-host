@@ -106,6 +106,27 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      getAuth(userData)
+        .then((data) => {
+          if (data[0].roleCode === "PIMCA") {
+            setRole("PIMCA");
+            setFocus("WORK_VISIT");
+          } else if (data[0].roleCode === "SMR") {
+            setRole("SMR");
+            setFocus("PLAN");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/");
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
     setLoading(true);
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
@@ -141,7 +162,7 @@ export default function Home() {
         .then((data) => {
           setPlanHistory(data);
           setLoading(false);
-          console.log(data);
+          // console.log(data);
         })
         .catch((err) => {
           console.log(err);
@@ -152,27 +173,6 @@ export default function Home() {
       setLoading(false);
     }
   }, [focus]);
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      getAuth(userData)
-        .then((data) => {
-          if (data[0].roleCode === "PIMCA") {
-            setRole("PIMCA");
-            setFocus("WORK_VISIT");
-          } else if (data[0].roleCode === "SMR") {
-            setRole("SMR");
-            setFocus("PLAN");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      Router.push("/");
-    }
-  }, [dispatch]);
 
   const renderTopMenu = () => {
     var auth = topMenu.filter((val) => {
@@ -230,47 +230,62 @@ export default function Home() {
   };
 
   const renderList = (type, data) => {
-    return data.map((val, index) => {
+    if (data.length === 0) {
       return (
         <div
           style={{
             fontSize: "15px",
-            fontWeight: "700",
-            color: "#5E5873",
+            color: "rgb(208, 208, 208)",
             textAlign: "left",
-            margin: "10px 0",
+            margin: "30px 0",
           }}
-          key={index}
         >
-          <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
-            <div
-              style={{
-                width: "20px",
-                height: "20px",
-                backgroundColor: type === "PLAN" ? "#FFF1CC" : "#d1e4e1",
-                borderRadius: "20px",
-                padding: "4px",
-              }}
-            >
+          No Item
+        </div>
+      );
+    } else {
+      return data.map((val, index) => {
+        return (
+          <div
+            style={{
+              fontSize: "15px",
+              fontWeight: "700",
+              color: "#5E5873",
+              textAlign: "left",
+              margin: "10px 0",
+            }}
+            key={index}
+          >
+            <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
               <div
                 style={{
-                  width: "12px",
-                  height: "12px",
-                  backgroundColor: type === "PLAN" ? "#feb800" : "#41867a",
+                  width: "20px",
+                  height: "20px",
+                  backgroundColor: type === "PLAN" ? "#FFF1CC" : "#d1e4e1",
                   borderRadius: "20px",
+                  padding: "4px",
                 }}
-              />
-            </div>
-            <div>
-              <div>{val.namaOutlet}</div>
-              <div style={{ fontSize: "14px", fontWeight: "300" }}>
-                {val.alamatOutlet}
+              >
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    backgroundColor: type === "PLAN" ? "#feb800" : "#41867a",
+                    borderRadius: "20px",
+                  }}
+                />
+              </div>
+              <div>
+                <div>{val.namaOutlet}</div>
+                <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                  {val.alamatOutlet}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
+    }
   };
 
   const renderPlan = () => {
