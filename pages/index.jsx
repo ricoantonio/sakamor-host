@@ -13,6 +13,7 @@ import Card from "../components/Card";
 import { getAuth, getMenu, getPlanHistory, getPlanList } from "../helper";
 
 import { Doughnut } from "react-chartjs-2";
+import moment from "moment";
 
 export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -25,42 +26,6 @@ export default function Home() {
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMenu, setLoadingMenu] = useState(true);
-
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
-
-  const monthName = {
-    full: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    part: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-  };
 
   const dataPlan = {
     datasets: [
@@ -297,9 +262,9 @@ export default function Home() {
           <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.overview}>
               <div>
-                <span className={styles.date}>{`${date} / ${
-                  monthName.part[month - 1]
-                } / ${year}`}</span>
+                <span className={styles.date}>
+                  {moment().format("D / MMM / YYYY")}
+                </span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "600" }}>
                     {planHistory.length}
@@ -376,9 +341,9 @@ export default function Home() {
           <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.overview}>
               <div>
-                <span className={styles.date}>{`${date} / ${
-                  monthName.part[month - 1]
-                } / ${year}`}</span>
+                <span className={styles.date}>
+                  {moment().format("D / MMM / YYYY")}
+                </span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
                   <span style={{ fontSize: "18px" }}>/{plan.length}</span>
@@ -450,7 +415,7 @@ export default function Home() {
             <div className={styles.unplan_grid}>
               <div className={styles.num_total_unplan}>5</div>
               <div style={{ fontSize: "14px" }}>Total Unplan Visit</div>
-              <div className={styles.date}>{monthName.full[month - 1]}</div>
+              <div className={styles.date}>{moment().format("MMMM")}</div>
             </div>
           </Card>
           <Card style={{ borderRadius: "5px", marginTop: "11px" }} shadow>

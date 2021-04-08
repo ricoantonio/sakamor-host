@@ -18,7 +18,7 @@ const DetailPlan = ({ data, history }) => {
             <div className={styles.top_grid}>
               <div>
                 <span className={styles.date}>
-                  {moment(data.checkOutDate).format("d / MMM / YYYY")}
+                  {moment(data.checkOutDate).format("D / MMM / YYYY")}
                 </span>
                 <div
                   style={{

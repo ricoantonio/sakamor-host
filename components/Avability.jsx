@@ -28,12 +28,9 @@ export default function Avability({ type }) {
   const [order, setOrder] = useState("");
   const [saranOrder, setSaranOrder] = useState("");
   const [stock, setStock] = useState("");
+  const [ket, setKet] = useState("");
   const [plan, setPlan] = useState([]);
   const router = useRouter();
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   useEffect(() => {
     const notEmpty = avabilityList.length > 0;
@@ -64,7 +61,7 @@ export default function Avability({ type }) {
               Router.push("/visit/plan");
             } else {
               setPlan(data);
-              setLoading(false);
+              // console.log(data);
               if (!state.visitPlanReducer.checkIn) {
                 actions.setPlanCheckIn(now);
               }
@@ -84,12 +81,16 @@ export default function Avability({ type }) {
       getProdukByJenisChannel(plan.idJenisChannel)
         .then((data) => {
           setProduct(data);
+          // console.log(data);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
         });
     } else if (type === "UNPLAN") {
+      setLoading(false);
     } else if (type === "SPREADING") {
+      setLoading(false);
     }
   }, [plan]);
 
@@ -207,6 +208,16 @@ export default function Avability({ type }) {
                 className={styles.input_order}
                 value={order}
               />
+              <div className={styles.avability_modal_subtitle}>Keterangan</div>
+              <input
+                onChange={(e) => {
+                  setKet(e.target.value);
+                }}
+                placeholder="Ket."
+                type="text"
+                className={styles.input_order}
+                value={ket}
+              />
               <div style={{ marginTop: "20px" }}>
                 <Button
                   text={"Add"}
@@ -231,22 +242,26 @@ export default function Avability({ type }) {
                             stock,
                             saranOrder,
                             order,
+                            ket,
                           });
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
                           setOrder("");
+                          setKet("");
                         } else {
                           avabilityList.push({
                             productFocus,
                             stock,
                             saranOrder,
                             order,
+                            ket,
                           });
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
                           setOrder("");
+                          setKet("");
                         }
                       } else {
                         avabilityList.push({
@@ -254,11 +269,13 @@ export default function Avability({ type }) {
                           stock,
                           saranOrder,
                           order,
+                          ket,
                         });
                         setModal(false);
                         setStock("");
                         setSaranOrder("");
                         setOrder("");
+                        setKet("");
                       }
                     }
                   }}
@@ -291,6 +308,7 @@ export default function Avability({ type }) {
               setStock(val.stock);
               setSaranOrder(val.saranOrder);
               setOrder(val.order);
+              setKet(val.ket);
               setModal(true);
             }}
           >
@@ -349,62 +367,66 @@ export default function Avability({ type }) {
     }
   };
   const render = () => {
-    return (
-      <>
-        {renderModalAdd()}
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            <Nav
-              title={"Avability"}
-              color={"white"}
-              action={"Save"}
-              onClick={() => {
-                onSave();
-              }}
-              backAction={() => {
-                Router.back();
-              }}
-              disable={false}
-            />
-            <div className={styles.main}>
-              <div className={styles.search_fixed}>
-                <div style={{ margin: "10px 0 0 0" }}>
-                  <div className={styles.progress_bar}></div>
-                  <div
-                    className={styles.progress_bar_now}
-                    style={{
-                      width: `${(avabilityList.length / 25) * 100}%`,
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return (
+        <>
+          {renderModalAdd()}
+          <div className={styles.container}>
+            <div className={styles.wrapper}>
+              <Nav
+                title={"Avability"}
+                color={"white"}
+                action={"Save"}
+                onClick={() => {
+                  onSave();
+                }}
+                backAction={() => {
+                  Router.back();
+                }}
+                disable={false}
+              />
+              <div className={styles.main}>
+                <div className={styles.search_fixed}>
+                  <div style={{ margin: "10px 0 0 0" }}>
+                    <div className={styles.progress_bar}></div>
+                    <div
+                      className={styles.progress_bar_now}
+                      style={{
+                        width: `${(avabilityList.length / 25) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <input
+                    onChange={(e) => {
+                      setSearch(e.target.value);
                     }}
-                  ></div>
+                    placeholder="Search"
+                    className={styles.input}
+                    style={{ marginTop: "0" }}
+                  />
                 </div>
-                <input
-                  onChange={(e) => {
-                    setSearch(e.target.value);
+                <div style={{ paddingTop: "60px" }}>
+                  {renderAvabilityList()}
+                  <div style={{ marginBottom: "100px" }} />
+                </div>
+              </div>
+              <div className={styles.avability_bot_container}>
+                <Button
+                  text={"Add"}
+                  onClick={() => {
+                    setModal(true);
+                    // setProduct([]);
+                    setProductFocus("");
                   }}
-                  placeholder="Search"
-                  className={styles.input}
-                  style={{ marginTop: "0" }}
                 />
               </div>
-              <div style={{ paddingTop: "60px" }}>
-                {renderAvabilityList()}
-                <div style={{ marginBottom: "100px" }} />
-              </div>
-            </div>
-            <div className={styles.avability_bot_container}>
-              <Button
-                text={"Add"}
-                onClick={() => {
-                  setModal(true);
-                  // setProduct([]);
-                  setProductFocus("");
-                }}
-              />
             </div>
           </div>
-        </div>
-      </>
-    );
+        </>
+      );
+    }
   };
   return render();
 }

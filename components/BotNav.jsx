@@ -29,7 +29,7 @@ const Nav = ({ focus }) => {
             </div>
           </a>
         </Link>
-        <Link href={"/calendar"}>
+        <Link href={"/"}>
           <a>
             <div>
               <img

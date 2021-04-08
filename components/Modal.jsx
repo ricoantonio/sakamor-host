@@ -4,8 +4,12 @@ import styles from "../styles/components/Modal.module.css";
 
 import Router from "next/router";
 
-const Modal = ({ children }) => {
-  return <div className={styles.modal}>{children}</div>;
+const Modal = ({ children, onClick }) => {
+  return (
+    <div onClick={onClick} className={styles.modal}>
+      {children}
+    </div>
+  );
 };
 
 export default Modal;
