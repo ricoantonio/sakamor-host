@@ -15,6 +15,7 @@ import Button from "./Button";
 import Card from "./Card";
 import { getAuth, getPlanHistory } from "../helper";
 import moment from "moment";
+import Invoice from "./Invoice";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
@@ -24,127 +25,6 @@ export default function History({ type }) {
   const [pdfDownload, setPdfDownload] = useState(false);
 
   let jsPDF = null;
-
-  const Prints = (data) => {
-    const renderProduct = () => {};
-    return (
-      <div
-        id="invoice"
-        style={{
-          color: "black",
-          fontSize: "10px",
-          backgroundColor: "white",
-          padding: "10px",
-        }}
-      >
-        <div
-          style={{
-            borderBottom: "1px solid black",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          Surat Pesanan
-        </div>
-        <div style={{ fontSize: "6px", margin: "5px" }}>
-          <div style={{ textAlign: "right", margin: "0 10px" }}>
-            {moment().format("D MMMM YYYY")}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
-            <div>Nama Outlet</div>
-            <div></div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
-            <div>Alamat</div>
-            <div></div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
-            <div>No. Sp</div>
-            <div></div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
-            <div>To</div>
-            <div></div>
-          </div>
-        </div>
-        <div style={{ fontSize: "6px", margin: "-2px" }}>
-          <table
-            style={{
-              width: "100%",
-              textAlign: "center",
-              borderTop: "1px solid black",
-              borderLeft: "1px solid black",
-            }}
-          >
-            <thead style={{ borderBottom: "1px solid black" }}>
-              <tr>
-                <th style={{ borderRight: "1px solid black" }}>No.</th>
-                <th style={{ borderRight: "1px solid black" }}>Nama Produk</th>
-                <th style={{ borderRight: "1px solid black" }}>Qty</th>
-                <th style={{ borderRight: "1px solid black" }}>Harga</th>
-                <th style={{ borderRight: "1px solid black" }}>Total</th>
-                <th style={{ borderRight: "1px solid black" }}>Ket</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ borderBottom: "1px solid black" }}>
-                <td style={{ borderRight: "1px solid black" }}>1</td>
-                <td style={{ borderRight: "1px solid black" }}>2</td>
-                <td
-                  style={{
-                    borderRight: "1px solid black",
-                    textAlign: "right",
-                    padding: "0 4px 0 0",
-                  }}
-                >
-                  3
-                </td>
-                <td
-                  style={{
-                    borderRight: "1px solid black",
-                    textAlign: "right",
-                    padding: "0 4px 0 0",
-                  }}
-                >
-                  4
-                </td>
-                <td
-                  style={{
-                    borderRight: "1px solid black",
-                    textAlign: "right",
-                    padding: "0 4px 0 0",
-                  }}
-                >
-                  5
-                </td>
-                <td style={{ borderRight: "1px solid black" }}>2</td>
-              </tr>
-              <tr style={{ borderBottom: "1px solid black" }}>
-                <td
-                  style={{
-                    borderRight: "1px solid black",
-                    textAlign: "right",
-                    padding: "0 4px 0 0",
-                  }}
-                  colSpan={2}
-                >
-                  Grand Total
-                </td>
-                <td
-                  style={{
-                    borderRight: "1px solid black",
-                    textAlign: "right",
-                    padding: "0 4px 0 0",
-                  }}
-                  colSpan={4}
-                ></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -203,14 +83,64 @@ export default function History({ type }) {
     };
     const divToDisplay = document.getElementById("invoice");
     html2canvas(divToDisplay, { scale: 5 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "px", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      const image = { type: "jpeg", quality: 0.98 };
+      const margin = [0.5, 0.5];
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("download.pdf");
+      var imgWidth = 8.5;
+      var pageHeight = 11;
+
+      var innerPageWidth = imgWidth - margin[0] * 2;
+      var innerPageHeight = pageHeight - margin[1] * 2;
+
+      // Calculate the number of pages.
+      var pxFullHeight = canvas.height;
+      var pxPageHeight = Math.floor(canvas.width * (pageHeight / imgWidth));
+      var nPages = Math.ceil(pxFullHeight / pxPageHeight);
+
+      // Define pageHeight separately so it can be trimmed on the final page.
+      var pageHeight = innerPageHeight;
+
+      // Create a one-page canvas to split up the full image.
+      var pageCanvas = document.createElement("canvas");
+      var pageCtx = pageCanvas.getContext("2d");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = pxPageHeight;
+
+      // Initialize the PDF.
+      var pdf = new jsPDF("p", "in", [8.5, 11]);
+
+      for (var page = 0; page < nPages; page++) {
+        // Trim the final page to reduce file size.
+        if (page === nPages - 1 && pxFullHeight % pxPageHeight !== 0) {
+          pageCanvas.height = pxFullHeight % pxPageHeight;
+          pageHeight = (pageCanvas.height * innerPageWidth) / pageCanvas.width;
+        }
+
+        // Display the page.
+        var w = pageCanvas.width;
+        var h = pageCanvas.height;
+        pageCtx.fillStyle = "white";
+        pageCtx.fillRect(0, 0, w, h);
+        pageCtx.drawImage(canvas, 0, page * pxPageHeight, w, h, 0, 0, w, h);
+
+        // Add the page to the PDF.
+        if (page > 0) pdf.addPage();
+        debugger;
+        var imgData = pageCanvas.toDataURL(
+          "image/" + image.type,
+          image.quality
+        );
+        pdf.addImage(
+          imgData,
+          image.type,
+          margin[1],
+          margin[0],
+          innerPageWidth,
+          pageHeight
+        );
+      }
+
+      pdf.save("file.pdf");
     });
   };
 
@@ -261,12 +191,12 @@ export default function History({ type }) {
                   style={{
                     width: "400px",
                     maxHeight: "100%",
-                    margin: "80px auto",
+                    margin: "100px auto",
                   }}
                 >
-                  <Prints />
-                  <div style={{ marginTop: "10px" }}>
-                    <Button onClick={print} text={"Download PDF"} />
+                  <Invoice />
+                  <div style={{ padding: "10px", backgroundColor: "white" }}>
+                    <Button onClick={() => print()} text={"Download PDF"} />
                   </div>
                 </div>
               </div>

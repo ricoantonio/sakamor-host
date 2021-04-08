@@ -24,10 +24,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/visit/plan/[id]/avability": [
+    "/visit/plan": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/plan/[id]/avability.js"
+      "static/chunks/pages/visit/plan.js"
     ],
     "/visit/plan/history": [
       "static/chunks/main.js",
