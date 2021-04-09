@@ -13,15 +13,11 @@ import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../../../constant";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
 
-export default function Plan() {
+export default function Spreading() {
   const { state, dispatch, actions } = useContext(Stores);
   const [plan, setPlan] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   const render = () => {
     if (loading) {

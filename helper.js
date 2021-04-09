@@ -271,6 +271,56 @@ const submitVisitPlan = (data) => {
     });
 };
 
+const getInvoiceData = (visitPlanId) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlan/GetProdukSuratPesanan/${visitPlanId}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getPlanMonthlyHistory = (userData) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlan/GetHistoryActivityVisitPlanBy?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getPlanList,
@@ -282,4 +332,6 @@ export {
   getPlanHistory,
   submitVisitPlan,
   getProdukByJenisChannel,
+  getInvoiceData,
+  getPlanMonthlyHistory,
 };

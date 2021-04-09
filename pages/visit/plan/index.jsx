@@ -16,10 +16,6 @@ export default function Plan() {
   const [plan, setPlan] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   useEffect(() => {
     actions.setDefaultVisitPlan();

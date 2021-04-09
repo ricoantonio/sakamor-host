@@ -1505,6 +1505,12 @@
       "file": "static/chunks/3.js"
     }
   ],
+  "html2canvas": [
+    {
+      "id": "./node_modules/html2canvas/dist/html2canvas.js",
+      "file": "static/chunks/4.js"
+    }
+  ],
   "jspdf": [
     {
       "id": "./node_modules/fflate/esm/browser.js",

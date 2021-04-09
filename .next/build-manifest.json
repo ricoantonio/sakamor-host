@@ -24,15 +24,20 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/visit/plan": [
+    "/visit/plan/[id]/avability": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/plan.js"
+      "static/chunks/pages/visit/plan/[id]/avability.js"
     ],
-    "/visit/plan/history": [
+    "/visit/plan/history/[id]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/plan/history.js"
+      "static/chunks/pages/visit/plan/history/[id].js"
+    ],
+    "/visit/plan/history/[id]/visibility": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/plan/history/[id]/visibility.js"
     ]
   },
   "ampFirstPages": []

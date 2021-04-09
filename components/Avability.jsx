@@ -10,7 +10,9 @@ import Button from "./Button";
 import Card from "./Card";
 
 import {
+  getInvoiceData,
   getPlanId,
+  getPlanMonthlyHistory,
   getProductSearch,
   getProdukByJenisChannel,
 } from "../helper";
@@ -33,11 +35,13 @@ export default function Avability({ type }) {
   const router = useRouter();
 
   useEffect(() => {
-    const notEmpty = avabilityList.length > 0;
-    if (notEmpty > 0) {
-      window.onbeforeunload = () => {
-        return "Data will be lost if you leave the page, are you sure?";
-      };
+    if (type !== "HISTORY") {
+      const notEmpty = avabilityList.length > 0;
+      if (notEmpty > 0) {
+        window.onbeforeunload = () => {
+          return "Data will be lost if you leave the page, are you sure?";
+        };
+      }
     }
   });
 
@@ -52,8 +56,8 @@ export default function Avability({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (type === "PLAN") {
-      if (router.query.id) {
+    if (router.query.id) {
+      if (type === "PLAN") {
         getPlanId(router.query.id)
           .then(({ samePlan, data }) => {
             // console.log(samePlan, data);
@@ -70,9 +74,18 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "UNPLAN") {
+      } else if (type === "SPREADING") {
+      } else if (type === "HISTORY") {
+        getInvoiceData(router.query.id)
+          .then((data) => {
+            setAvabilityList(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-    } else if (type === "UNPLAN") {
-    } else if (type === "SPREADING") {
     }
   }, [router.query.id]);
 
@@ -288,71 +301,158 @@ export default function Avability({ type }) {
     }
   };
   const renderAvabilityList = () => {
-    avabilityList.sort((a, b) =>
-      a.productFocus.namaProduk.localeCompare(b.productFocus.namaProduk)
-    );
-    const filterData = avabilityList.filter((val) => {
-      return val.productFocus.namaProduk
-        .toLowerCase()
-        .includes(search.toLowerCase());
-    });
-    const render = filterData.map((val, index) => {
-      return (
-        <Card
-          style={{ borderRadius: "5px", padding: "30px", marginTop: "14px" }}
-          key={index}
-        >
+    if (type === "HISTORY") {
+      console.log(avabilityList);
+      avabilityList.sort((a, b) => a.namaProduk.localeCompare(b.namaProduk));
+      const filterData = avabilityList.filter((val) => {
+        return val.namaProduk.toLowerCase().includes(search.toLowerCase());
+      });
+      const render = filterData.map((val, index) => {
+        return (
+          <Card
+            style={{ borderRadius: "5px", padding: "30px", marginTop: "14px" }}
+            key={index}
+          >
+            <div>
+              <div className={styles.avabilitylist_title}>{val.namaProduk}</div>
+              <div className={styles.avabilitylist_stock_container}>
+                <div
+                  className={styles.avabilitylist_container}
+                  style={{ marginRight: "5px" }}
+                >
+                  <div className={styles.avabilitylist_subtitle}>Stock</div>
+                  <div div className={styles.avabilitylist_value}>
+                    {val.stock} pcs
+                  </div>
+                </div>
+                <div
+                  className={styles.avabilitylist_container}
+                  style={{ marginLeft: "5px" }}
+                >
+                  <div className={styles.avabilitylist_subtitle}>
+                    Saran Order
+                  </div>
+                  <div div className={styles.avabilitylist_value}>
+                    {val.saranOrder} pcs
+                  </div>
+                </div>
+              </div>
+              <div className={styles.avabilitylist_container}>
+                <div className={styles.avabilitylist_subtitle}>Order</div>
+                <div className={styles.avabilitylist_value}>
+                  {val.order} pcs
+                </div>
+              </div>
+              {val.ket ? (
+                <div className={styles.avabilitylist_container}>
+                  <div className={styles.avabilitylist_subtitle}>
+                    Keterangan
+                  </div>
+                  <div className={styles.avabilitylist_value}>{val.ket}</div>
+                </div>
+              ) : null}
+            </div>
+          </Card>
+        );
+      });
+      if (filterData.length == 0) {
+        return (
           <div
-            onClick={() => {
-              setProductFocus(val.productFocus);
-              setStock(val.stock);
-              setSaranOrder(val.saranOrder);
-              setOrder(val.order);
-              setKet(val.ket);
-              setModal(true);
+            style={{
+              textAlign: "center",
+              marginTop: "150px",
+              color: "#d0d0d0",
             }}
           >
-            <div className={styles.avabilitylist_title}>
-              {val.productFocus.namaProduk}
-            </div>
-            <div className={styles.avabilitylist_stock_container}>
-              <div
-                className={styles.avabilitylist_container}
-                style={{ marginRight: "5px" }}
-              >
-                <div className={styles.avabilitylist_subtitle}>Stock</div>
-                <div div className={styles.avabilitylist_value}>
-                  {val.stock} pcs
-                </div>
-              </div>
-              <div
-                className={styles.avabilitylist_container}
-                style={{ marginLeft: "5px" }}
-              >
-                <div className={styles.avabilitylist_subtitle}>Saran Order</div>
-                <div div className={styles.avabilitylist_value}>
-                  {val.saranOrder} pcs
-                </div>
-              </div>
-            </div>
-            <div className={styles.avabilitylist_container}>
-              <div className={styles.avabilitylist_subtitle}>Order</div>
-              <div className={styles.avabilitylist_value}>{val.order} pcs</div>
-            </div>
+            No Item
           </div>
-        </Card>
-      );
-    });
-    if (filterData.length == 0) {
-      return (
-        <div
-          style={{ textAlign: "center", marginTop: "150px", color: "#d0d0d0" }}
-        >
-          No Item
-        </div>
-      );
+        );
+      } else {
+        return render;
+      }
     } else {
-      return render;
+      avabilityList.sort((a, b) =>
+        a.productFocus.namaProduk.localeCompare(b.productFocus.namaProduk)
+      );
+      const filterData = avabilityList.filter((val) => {
+        return val.productFocus.namaProduk
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+      const render = filterData.map((val, index) => {
+        return (
+          <Card
+            style={{ borderRadius: "5px", padding: "30px", marginTop: "14px" }}
+            key={index}
+          >
+            <div
+              onClick={() => {
+                setProductFocus(val.productFocus);
+                setStock(val.stock);
+                setSaranOrder(val.saranOrder);
+                setOrder(val.order);
+                setKet(val.ket);
+                setModal(true);
+              }}
+            >
+              <div className={styles.avabilitylist_title}>
+                {val.productFocus.namaProduk}
+              </div>
+              <div className={styles.avabilitylist_stock_container}>
+                <div
+                  className={styles.avabilitylist_container}
+                  style={{ marginRight: "5px" }}
+                >
+                  <div className={styles.avabilitylist_subtitle}>Stock</div>
+                  <div div className={styles.avabilitylist_value}>
+                    {val.stock} pcs
+                  </div>
+                </div>
+                <div
+                  className={styles.avabilitylist_container}
+                  style={{ marginLeft: "5px" }}
+                >
+                  <div className={styles.avabilitylist_subtitle}>
+                    Saran Order
+                  </div>
+                  <div div className={styles.avabilitylist_value}>
+                    {val.saranOrder} pcs
+                  </div>
+                </div>
+              </div>
+              <div className={styles.avabilitylist_container}>
+                <div className={styles.avabilitylist_subtitle}>Order</div>
+                <div className={styles.avabilitylist_value}>
+                  {val.order} pcs
+                </div>
+              </div>
+              {val.ket ? (
+                <div className={styles.avabilitylist_container}>
+                  <div className={styles.avabilitylist_subtitle}>
+                    Keterangan
+                  </div>
+                  <div className={styles.avabilitylist_value}>{val.ket}</div>
+                </div>
+              ) : null}
+            </div>
+          </Card>
+        );
+      });
+      if (filterData.length == 0) {
+        return (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "150px",
+              color: "#d0d0d0",
+            }}
+          >
+            No Item
+          </div>
+        );
+      } else {
+        return render;
+      }
     }
   };
   const onSave = () => {
@@ -375,18 +475,28 @@ export default function Avability({ type }) {
           {renderModalAdd()}
           <div className={styles.container}>
             <div className={styles.wrapper}>
-              <Nav
-                title={"Avability"}
-                color={"white"}
-                action={"Save"}
-                onClick={() => {
-                  onSave();
-                }}
-                backAction={() => {
-                  Router.back();
-                }}
-                disable={false}
-              />
+              {type === "HISTORY" ? (
+                <Nav
+                  title={"Avability"}
+                  color={"white"}
+                  backAction={() => {
+                    Router.back();
+                  }}
+                />
+              ) : (
+                <Nav
+                  title={"Avability"}
+                  color={"white"}
+                  action={"Save"}
+                  onClick={() => {
+                    onSave();
+                  }}
+                  backAction={() => {
+                    Router.back();
+                  }}
+                  disable={false}
+                />
+              )}
               <div className={styles.main}>
                 <div className={styles.search_fixed}>
                   <div style={{ margin: "10px 0 0 0" }}>
@@ -412,16 +522,18 @@ export default function Avability({ type }) {
                   <div style={{ marginBottom: "100px" }} />
                 </div>
               </div>
-              <div className={styles.avability_bot_container}>
-                <Button
-                  text={"Add"}
-                  onClick={() => {
-                    setModal(true);
-                    // setProduct([]);
-                    setProductFocus("");
-                  }}
-                />
-              </div>
+              {type === "HISTORY" ? null : (
+                <div className={styles.avability_bot_container}>
+                  <Button
+                    text={"Add"}
+                    onClick={() => {
+                      setModal(true);
+                      // setProduct([]);
+                      setProductFocus("");
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </>

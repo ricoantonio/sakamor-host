@@ -13,17 +13,13 @@ import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../../../constant";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
 
-export default function Plan() {
+export default function Unplan() {
   const { state, dispatch, actions } = useContext(Stores);
   const [plan, setPlan] = useState([]);
   const [search, setSearch] = useState("");
   const [position, setPosition] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   useEffect(() => {
     const geo = navigator.geolocation;

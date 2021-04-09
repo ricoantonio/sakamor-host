@@ -2,41 +2,45 @@ import React from "react";
 import moment from "moment";
 
 const Invoice = ({ data }) => {
+  var total = 0;
   const renderProduct = () => {
-    return (
-      <tr style={{ borderBottom: "1px solid black" }}>
-        <td style={{ borderRight: "1px solid black" }}>1</td>
-        <td style={{ borderRight: "1px solid black" }}>2</td>
-        <td
-          style={{
-            borderRight: "1px solid black",
-            textAlign: "right",
-            padding: "0 4px 0 0",
-          }}
-        >
-          3
-        </td>
-        <td
-          style={{
-            borderRight: "1px solid black",
-            textAlign: "right",
-            padding: "0 4px 0 0",
-          }}
-        >
-          4
-        </td>
-        <td
-          style={{
-            borderRight: "1px solid black",
-            textAlign: "right",
-            padding: "0 4px 0 0",
-          }}
-        >
-          5
-        </td>
-        <td style={{ borderRight: "1px solid black" }}>ket</td>
-      </tr>
-    );
+    return data.map((val, index) => {
+      total += val.totalHarga;
+      return (
+        <tr style={{ borderBottom: "1px solid black" }}>
+          <td style={{ borderRight: "1px solid black" }}>{index + 1}</td>
+          <td style={{ borderRight: "1px solid black" }}>{val.namaProduk}</td>
+          <td
+            style={{
+              borderRight: "1px solid black",
+              textAlign: "right",
+              padding: "0 4px 0 0",
+            }}
+          >
+            {val.jumlah}
+          </td>
+          <td
+            style={{
+              borderRight: "1px solid black",
+              textAlign: "right",
+              padding: "0 4px 0 0",
+            }}
+          >
+            {val.harga}
+          </td>
+          <td
+            style={{
+              borderRight: "1px solid black",
+              textAlign: "right",
+              padding: "0 4px 0 0",
+            }}
+          >
+            {val.totalHarga}
+          </td>
+          <td style={{ borderRight: "1px solid black" }}>{val.keterangan}</td>
+        </tr>
+      );
+    });
   };
 
   return (
@@ -126,11 +130,13 @@ const Invoice = ({ data }) => {
               <td
                 style={{
                   borderRight: "1px solid black",
-                  textAlign: "right",
-                  padding: "0 4px 0 0",
+                  textAlign: "left",
+                  padding: "0 4px 0 4px",
                 }}
                 colSpan={4}
-              ></td>
+              >
+                {total}
+              </td>
             </tr>
           </tbody>
         </table>

@@ -20,9 +20,6 @@ export default function index() {
   const [plan, setPlan] = useState([]);
   const router = useRouter();
   var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   useEffect(() => {
     //   /GetAllMasterVisitPlan"
@@ -183,6 +180,11 @@ export default function index() {
           jumlahOrder: parseInt(val.order),
           createdBy: userData.username,
           updatedBy: userData.username,
+          // harga:  val.productFocus.harga,
+          // total:  val.productFocus.harga * val.order,
+          harga: 0,
+          total: 0,
+          keterangan: val.ket,
         };
       });
       var data = {

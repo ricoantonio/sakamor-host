@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/visit/plan/history": "pages/visit/plan/history.js",
-  "/visit/plan": "pages/visit/plan.js"
+  "/visit/plan/history/[id]": "pages/visit/plan/history/[id].js",
+  "/visit/plan/[id]/avability": "pages/visit/plan/[id]/avability.js",
+  "/visit/plan/history/[id]/visibility": "pages/visit/plan/history/[id]/visibility.js"
 }

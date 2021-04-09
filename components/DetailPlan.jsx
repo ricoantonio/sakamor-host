@@ -5,20 +5,16 @@ import Button from "./Button";
 import Link from "next/link";
 import moment from "moment";
 
-const DetailPlan = ({ data, history }) => {
-  var dataCheckOutDate = new Date(data.checkOutDate);
-  var date = dataCheckOutDate.getDate();
-  var month = dataCheckOutDate.getMonth() + 1;
-  var year = dataCheckOutDate.getFullYear();
+const DetailPlan = ({ data, history, onClick }) => {
   return (
     <Card style={{ marginTop: "22px", borderRadius: "5px" }}>
-      <div style={{ padding: "21px 18px" }}>
+      <div style={{ padding: "21px 18px" }} onClick={history ? onClick : null}>
         {history ? (
           <>
             <div className={styles.top_grid}>
               <div>
                 <span className={styles.date}>
-                  {moment(data.checkOutDate).format("D / MMM / YYYY")}
+                  {moment(data.tanggal).format("D / MMM / YYYY")}
                 </span>
                 <div
                   style={{
