@@ -197,16 +197,19 @@ export default function Home() {
   const renderList = (type, data) => {
     if (data.length === 0) {
       return (
-        <div
-          style={{
-            fontSize: "15px",
-            color: "rgb(208, 208, 208)",
-            textAlign: "left",
-            margin: "30px 0",
-          }}
-        >
-          No Item
-        </div>
+        <>
+          <div
+            style={{
+              fontSize: "15px",
+              color: "rgb(208, 208, 208)",
+              textAlign: "left",
+              margin: "30px 0",
+            }}
+          >
+            No Item
+          </div>
+          <input type="date" />
+        </>
       );
     } else {
       return data.map((val, index) => {
