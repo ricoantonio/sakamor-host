@@ -197,19 +197,16 @@ export default function Home() {
   const renderList = (type, data) => {
     if (data.length === 0) {
       return (
-        <>
-          <div
-            style={{
-              fontSize: "15px",
-              color: "rgb(208, 208, 208)",
-              textAlign: "left",
-              margin: "30px 0",
-            }}
-          >
-            No Item
-          </div>
-          <input type="date" />
-        </>
+        <div
+          style={{
+            fontSize: "15px",
+            color: "rgb(208, 208, 208)",
+            textAlign: "left",
+            margin: "30px 0",
+          }}
+        >
+          No Item
+        </div>
       );
     } else {
       return data.map((val, index) => {
@@ -510,6 +507,7 @@ export default function Home() {
                     : focus === "WORK-VISIT"
                     ? renderWorkVisit()
                     : ""}
+                  <input type="Date" />
                   <div style={{ marginBottom: "120px" }} />
                 </div>
               </div>
