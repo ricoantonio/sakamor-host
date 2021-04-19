@@ -248,6 +248,7 @@ const getPlanHistory = (userData) => {
 };
 
 const submitVisitPlan = (data) => {
+  // console.log(data);
   return fetch(
     API_URL + API_VISIT_PLAN + "/ActivityVisitPlan/SaveAllActivityVisitPlan",
     {
@@ -264,7 +265,59 @@ const submitVisitPlan = (data) => {
       return response.json();
     })
     .then((data) => {
+      console.log("baikan saveall", data);
       return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const submitVisitPlanDposm = (dposm, file) => {
+  // console.log(dposm, file);
+  const formdata = new FormData();
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      "/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dposm),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("balikan psom", data);
+      formdata.append("file", file);
+      return fetch(
+        API_URL +
+          API_VISIT_PLAN +
+          `/ActivityVisitPlanDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`,
+        {
+          method: "POST",
+          headers: {
+            apiKey: TOKEN,
+          },
+          body: formdata,
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("balikan inserfile", data);
+          return data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -293,6 +346,50 @@ const getInvoiceData = (visitPlanId) => {
     });
 };
 
+const getInvoiceDataPosm = (visitPlanId) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlanDPOSM/GetActivityVisitPlanDPosmBy/${visitPlanId}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const viewFile = (id) => {
+  console.log(id);
+  return fetch(
+    API_URL + API_VISIT_PLAN + `/ActivityVisitPlanDPOSM/ViewFile/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.blob();
+    })
+    .then(function (data) {
+      var outside = URL.createObjectURL(data);
+      return outside;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const getPlanMonthlyHistory = (userData) => {
   return fetch(
     API_URL +
@@ -313,7 +410,6 @@ const getPlanMonthlyHistory = (userData) => {
           dateB = new Date(b.tanggal);
         return dateB - dateA;
       });
-      // console.log(data);
       return data;
     })
     .catch((err) => {
@@ -331,7 +427,10 @@ export {
   getProductSearch,
   getPlanHistory,
   submitVisitPlan,
+  submitVisitPlanDposm,
   getProdukByJenisChannel,
   getInvoiceData,
+  getInvoiceDataPosm,
   getPlanMonthlyHistory,
+  viewFile,
 };

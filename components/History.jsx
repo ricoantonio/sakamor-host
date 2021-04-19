@@ -55,6 +55,7 @@ export default function History({ type }) {
     if (type === "PLAN") {
       getPlanMonthlyHistory(userData)
         .then((data) => {
+          console.log(data);
           setHistory(data);
           setLoading(false);
         })

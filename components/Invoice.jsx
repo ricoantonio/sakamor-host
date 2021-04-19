@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 
-const Invoice = ({ data }) => {
+const Invoice = ({ data, plan }) => {
   var total = 0;
+  console.log(plan);
   const renderProduct = () => {
     return data.map((val, index) => {
       total += val.totalHarga;
@@ -64,21 +65,21 @@ const Invoice = ({ data }) => {
       </div>
       <div style={{ fontSize: "6px", margin: "5px" }}>
         <div style={{ textAlign: "right", margin: "0 10px" }}>
-          {moment().format("D MMMM YYYY")}
+          {moment(plan[0].tanggal).format("D MMMM YYYY")}
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
           <div>Nama Outlet</div>
-          <div></div>
+          <div>{plan[0].namaOutlet}</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
           <div>Alamat</div>
-          <div></div>
+          <div>{plan[0].alamatOutlet}</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
           <div>No. Sp</div>
           <div></div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
           <div>To</div>
           <div></div>
         </div>
@@ -130,13 +131,14 @@ const Invoice = ({ data }) => {
               <td
                 style={{
                   borderRight: "1px solid black",
-                  textAlign: "left",
+                  textAlign: "right",
                   padding: "0 4px 0 4px",
                 }}
-                colSpan={4}
+                colSpan={3}
               >
                 {total}
               </td>
+              <td></td>
             </tr>
           </tbody>
         </table>

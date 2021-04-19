@@ -6,15 +6,20 @@ import { Stores } from "../store";
 
 import Nav from "./Nav";
 import Spinner from "./Spinner";
+import Modal from "./Modal";
 import Dropdown from "./Dropdown";
 
-import { getPosm, getPlanId } from "../helper";
+import { getPosm, getPlanId, getInvoiceDataPosm, viewFile } from "../helper";
+import Card from "./Card";
 
 export default function Visibility({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
   const [posm, setPosm] = useState([]);
+  const [posmList, setPosmList] = useState([]);
   const [plan, setPlan] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [fileFocus, setFileFocus] = useState(null);
   const [dummy, setDummy] = useState(0);
   const [vis, setVis] = useState([
     { file: null, type: null },
@@ -33,6 +38,7 @@ export default function Visibility({ type }) {
     { file: null, type: null },
     { file: null, type: null },
   ];
+
   var now = new Date();
   var date = now.getDate();
   var month = now.getMonth() + 1;
@@ -61,8 +67,8 @@ export default function Visibility({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (type === "PLAN") {
-      if (router.query.id) {
+    if (router.query.id) {
+      if (type === "PLAN") {
         getPlanId(router.query.id)
           .then(({ samePlan, data }) => {
             // console.log(samePlan, data);
@@ -79,9 +85,18 @@ export default function Visibility({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "UNPLAN") {
+      } else if (type === "SPREADING") {
+      } else if (type === "HISTORY") {
+        getInvoiceDataPosm(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-    } else if (type === "UNPLAN") {
-    } else if (type === "SPREADING") {
     }
   }, [router.query.id]);
 
@@ -97,6 +112,17 @@ export default function Visibility({ type }) {
       });
   }, [dispatch]);
 
+  const onFileFocus = (id) => {
+    setModal(true);
+    viewFile(id)
+      .then((data) => {
+        console.log(data);
+        setFileFocus(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const renderInputUpload = () => {
     var render = vis.map((val, index) => {
       return (
@@ -125,7 +151,7 @@ export default function Visibility({ type }) {
                 fontWeight: "500",
               }}
             >
-              {val.file != null ? val.file.name : ""}
+              {val.file != null ? val.file.name : null}
             </span>
           </div>
           <div>
@@ -137,6 +163,11 @@ export default function Visibility({ type }) {
               <input
                 className={styles.input_file}
                 onChange={(e) => {
+                  // let reader = new FileReader();
+                  // reader.readAsDataURL(e.target.files[0]);
+                  // reader.onload = () => {
+                  //   console.log(reader.result);
+                  // };
                   vis.splice(index, 1, {
                     ...vis[index],
                     file: e.target.files[0],
@@ -155,6 +186,41 @@ export default function Visibility({ type }) {
     });
     return render;
   };
+
+  const renderHistoryPosm = () => {
+    var render = posmList.map((val, index) => {
+      return (
+        <div key={index} className={styles.visibility_grid_history}>
+          <div>POSM {index + 1}</div>
+          <div className={styles.visibility_dropdown}>
+            <Card
+              style={{
+                height: "32px",
+                border: "1px solid #e9ecf2",
+                padding: "6px 10px",
+                borderRadius: "5px",
+              }}
+            >
+              {val.tipe}
+            </Card>
+            <span
+              style={{
+                fontSize: "10px",
+                color: "#41867A",
+                fontWeight: "500",
+              }}
+              onClick={() => {
+                onFileFocus(val.id);
+              }}
+            >
+              {val.namaFile}
+            </span>
+          </div>
+        </div>
+      );
+    });
+    return render;
+  };
   const onSave = () => {
     if (type === "PLAN") {
       actions.setPlanVisibility(vis);
@@ -166,28 +232,78 @@ export default function Visibility({ type }) {
       Router.push(`/visit/spreading/submit`);
     }
   };
+
+  // const displayView = () => {
+  //   // let reader = new FileReader();
+  //   var objectURL = URL.createObjectURL(fileFocus);
+  //   // myImage.src = objectURL;
+  //   return objectURL;
+  // };
+
   const render = () => {
     return (
       <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <Nav
-            title={"Visibility"}
-            color={"white"}
-            action={"Save"}
+        {modal ? (
+          <Modal
             onClick={() => {
-              onSave();
+              setFileFocus(null);
+              setModal(false);
             }}
-            backAction={() => {
-              if (state.visitPlanReducer.visibility.length > 0) {
-                setVis([...state.visitPlanReducer.visibility]);
-              } else {
-                setVis([...initialVis]);
-              }
-              Router.back();
-            }}
-            disable={false}
-          />
-          <div className={styles.main}>{renderInputUpload()}</div>
+          >
+            <div
+              style={{
+                maxHeight: "100%",
+                overflow: "auto",
+                overflowX: "hidden",
+                overflowY: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: "400px",
+                  maxHeight: "100%",
+                  margin: "100px auto",
+                }}
+              >
+                <img
+                  style={{ width: "300px", margin: "0 50px" }}
+                  src={fileFocus}
+                />
+              </div>
+            </div>
+          </Modal>
+        ) : null}
+        <div className={styles.wrapper}>
+          {type === "HISTORY" ? (
+            <Nav
+              title={"Visibility"}
+              color={"white"}
+              backAction={() => {
+                Router.back();
+              }}
+            />
+          ) : (
+            <Nav
+              title={"Visibility"}
+              color={"white"}
+              action={"Save"}
+              onClick={() => {
+                onSave();
+              }}
+              backAction={() => {
+                if (state.visitPlanReducer.visibility.length > 0) {
+                  setVis([...state.visitPlanReducer.visibility]);
+                } else {
+                  setVis([...initialVis]);
+                }
+                Router.back();
+              }}
+              disable={false}
+            />
+          )}
+          <div className={styles.main}>
+            {type === "HISTORY" ? renderHistoryPosm() : renderInputUpload()}
+          </div>
         </div>
       </div>
     );

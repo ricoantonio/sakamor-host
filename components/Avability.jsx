@@ -28,6 +28,8 @@ export default function Avability({ type }) {
   const [productFocus, setProductFocus] = useState({});
   const [avabilityList, setAvabilityList] = useState([]);
   const [order, setOrder] = useState("");
+  const [pengiriman, setPengiriman] = useState("");
+  const [avgSales, setAvgSales] = useState("");
   const [saranOrder, setSaranOrder] = useState("");
   const [stock, setStock] = useState("");
   const [ket, setKet] = useState("");
@@ -192,25 +194,59 @@ export default function Avability({ type }) {
                     }}
                     placeholder="0"
                     type="number"
+                    min={0}
                     className={styles.input_order}
                     value={stock}
                   />
                 </div>
-                <div style={{ paddingLeft: "10px" }}>
+
+                <div style={{}}>
                   <div className={styles.avability_modal_subtitle}>
-                    Saran Order (pcs)
+                    Pengiriman (hari)
                   </div>
                   <input
                     onChange={(e) => {
-                      setSaranOrder(e.target.value);
+                      setPengiriman(e.target.value);
                     }}
                     placeholder="0"
                     type="number"
+                    min={0}
                     className={styles.input_order}
-                    value={saranOrder}
+                    value={pengiriman}
+                  />
+                </div>
+
+                <div style={{ paddingLeft: "10px" }}>
+                  <div className={styles.avability_modal_subtitle}>
+                    Avg Sales (pcs)
+                  </div>
+                  <input
+                    onChange={(e) => {
+                      setAvgSales(e.target.value);
+                    }}
+                    placeholder="0"
+                    type="number"
+                    min={0}
+                    className={styles.input_order}
+                    value={avgSales}
+                    disabled={true}
                   />
                 </div>
               </div>
+              <div className={styles.avability_modal_subtitle}>
+                Saran Order (pcs)
+              </div>
+              <input
+                onChange={(e) => {
+                  setSaranOrder(e.target.value);
+                }}
+                placeholder="0"
+                type="number"
+                min={0}
+                className={styles.input_order}
+                value={saranOrder}
+                disabled={true}
+              />
               <div className={styles.avability_modal_subtitle}>Order (pcs)</div>
               <input
                 onChange={(e) => {
@@ -218,6 +254,7 @@ export default function Avability({ type }) {
                 }}
                 placeholder="0"
                 type="number"
+                min={0}
                 className={styles.input_order}
                 value={order}
               />
@@ -238,8 +275,8 @@ export default function Avability({ type }) {
                     var reg = new RegExp(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g);
                     if (
                       productFocus.namaProduk &&
-                      stock.match(reg) &&
-                      saranOrder.match(reg) &&
+                      // stock.match(reg) &&
+                      // saranOrder.match(reg) &&
                       order.match(reg)
                     ) {
                       if (avabilityList.length > 0) {

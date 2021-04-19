@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import styles from "../styles/components/BotNav.module.css";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 const Nav = ({ focus }) => {
+  const router = useRouter();
   var active = (
     <div
       style={{
@@ -15,7 +16,6 @@ const Nav = ({ focus }) => {
       }}
     />
   );
-
   return (
     <div className={styles.nav_container}>
       <div className={styles.nav_box}>
@@ -23,23 +23,25 @@ const Nav = ({ focus }) => {
           <a>
             <div>
               <img
-                src={focus === "home" ? "/home-nav.svg" : "/home-nav1.svg"}
+                src={
+                  router.pathname === "/" ? "/home-nav.svg" : "/home-nav1.svg"
+                }
               />
-              {focus === "home" ? active : ""}
+              {router.pathname === "/" ? active : ""}
             </div>
           </a>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/calendar"}>
           <a>
             <div>
               <img
                 src={
-                  focus === "calendar"
+                  router.pathname === "/calendar"
                     ? "/calendar-nav.svg"
                     : "/calendar-nav1.svg"
                 }
               />
-              {focus === "calendar" ? active : ""}
+              {router.pathname === "/calendar" ? active : ""}
             </div>
           </a>
         </Link>

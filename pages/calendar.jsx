@@ -162,7 +162,7 @@ export default function Calender() {
               </div>
             </div>
           </div>
-          <BotNav focus={"calendar"} />
+          <BotNav />
         </div>
       );
   };

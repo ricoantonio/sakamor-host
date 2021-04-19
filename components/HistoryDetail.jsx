@@ -7,8 +7,13 @@ import Nav from "./Nav";
 import Card from "./Card";
 import Spinner from "./Spinner";
 import Button from "./Button";
+import html2canvas from "html2canvas";
 
-import { getInvoiceData, getPlanMonthlyHistory } from "../helper";
+import {
+  getInvoiceData,
+  getInvoiceDataPosm,
+  getPlanMonthlyHistory,
+} from "../helper";
 import Invoice from "./Invoice";
 import Modal from "./Modal";
 
@@ -16,6 +21,7 @@ export default function HistoryDetail() {
   const [loading, setLoading] = useState(true);
   const [plan, setPlan] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [posmList, setPosmList] = useState([]);
   const [pdfDownload, setPdfDownload] = useState(false);
   const router = useRouter();
   var now = new Date();
@@ -54,6 +60,14 @@ export default function HistoryDetail() {
         .catch((err) => {
           console.log(err);
         });
+
+      getInvoiceDataPosm(router.query.id)
+        .then((data) => {
+          setPosmList(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [router.query.id]);
 
@@ -81,7 +95,7 @@ export default function HistoryDetail() {
           {type}
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
-              ? `6/6`
+              ? `${posmList.length}/6`
               : type === "Avability"
               ? `${productList.length}/25`
               : ""}
@@ -102,7 +116,7 @@ export default function HistoryDetail() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `100%`,
+                          width: `${(posmList.length / 6) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -143,16 +157,7 @@ export default function HistoryDetail() {
     );
   };
 
-  const onRenderPDF = (val) => {
-    // getdatapdf
-    setPdfFocus(val);
-    setPdfDownload(true);
-  };
-
   const print = () => {
-    var data = {
-      name: "me",
-    };
     const divToDisplay = document.getElementById("invoice");
     html2canvas(divToDisplay, { scale: 5 }).then((canvas) => {
       const image = { type: "jpeg", quality: 0.98 };
@@ -244,14 +249,19 @@ export default function HistoryDetail() {
                       margin: "100px auto",
                     }}
                   >
-                    <Invoice data={productList} />
+                    <Invoice data={productList} plan={plan} />
                     <div
                       style={{
                         padding: "10px",
                         backgroundColor: "white",
                       }}
                     >
-                      <Button onClick={() => print()} text={"Download PDF"} />
+                      <Button
+                        onClick={() => {
+                          print();
+                        }}
+                        text={"Download PDF"}
+                      />
                     </div>
                   </div>
                 </div>

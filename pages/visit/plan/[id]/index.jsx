@@ -10,7 +10,11 @@ import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
-import { getPlanId, submitVisitPlan } from "../../../../helper";
+import {
+  getPlanId,
+  submitVisitPlan,
+  submitVisitPlanDposm,
+} from "../../../../helper";
 import Modal from "../../../../components/Modal";
 
 export default function index() {
@@ -29,6 +33,7 @@ export default function index() {
           if (samePlan.length == 0) {
             Router.push("/visit/plan");
           } else {
+            console.log(data);
             setPlan(data);
             setLoading(false);
             if (!state.visitPlanReducer.checkIn) {
@@ -154,17 +159,9 @@ export default function index() {
         createdBy: userData.username,
         updatedBy: userData.username,
       };
-      const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
-        return {
-          id: plan.id,
-          activityVisitPlanId: plan.id,
-          nomorDokumen: plan.nomorDokumen,
-          nomor: index,
-          tipe: val.type.program,
-          namaFile: val.file.name,
-          createdBy: userData.username,
-          updatedBy: userData.username,
-        };
+
+      const files = state.visitPlanReducer.visibility.map((val, index) => {
+        return val.file;
       });
       const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
         return {
@@ -181,24 +178,63 @@ export default function index() {
           createdBy: userData.username,
           updatedBy: userData.username,
           // harga:  val.productFocus.harga,
-          // total:  val.productFocus.harga * val.order,
+          // total:  val.productFocus.harga * val.order,x
           harga: 0,
           total: 0,
           keterangan: val.ket,
         };
       });
+
       var data = {
         avp: bodyPlan,
-        dposmList: bodyPosm,
         dProductList: bodyProduct,
       };
-      // console.log(data);
+
       submitVisitPlan(data)
         .then((res) => {
-          // console.log(res);
-          actions.setDefaultVisitPlan();
+          console.log("ini res", res);
+          const bodyPosm = state.visitPlanReducer.visibility.map(
+            (val, index) => {
+              return {
+                id: plan.id,
+                activityVisitPlanId: res.avp.id,
+                nomorDokumen: plan.nomorDokumen,
+                nomor: index,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                createdBy: userData.username,
+                updatedBy: userData.username,
+              };
+            }
+          );
+          for (let i = 0; i < files.length; i++) {
+            submitVisitPlanDposm(bodyPosm[i], files[i])
+              .then((res) => {
+                done++;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
           setLoadingSubmit(false);
+          actions.setDefaultVisitPlan();
           Router.push("/");
+
+          // var done = 0;
+          // for (let i = 0; i < files.length; i++) {
+          //   submitVisitPlanDposm(bodyPosm[i], files[i])
+          //     .then((res) => {
+          //       done++;
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // }
+          // if (done === 5) {
+          //   setLoadingSubmit(false);
+          //   actions.setDefaultVisitPlan();
+          //   Router.push("/");
+          // }
         })
         .catch((err) => {
           console.log(err);
