@@ -9,7 +9,15 @@ import Spinner from "./Spinner";
 import Modal from "./Modal";
 import Dropdown from "./Dropdown";
 
-import { getPosm, getPlanId, getInvoiceDataPosm, viewFile } from "../helper";
+import {
+  getPosm,
+  getPlanId,
+  getInvoiceDataPosm,
+  viewFile,
+  getInvoiceDataPosmUnplan,
+  viewFileUnplan,
+} from "../helper";
+
 import Card from "./Card";
 
 export default function Visibility({ type }) {
@@ -38,11 +46,6 @@ export default function Visibility({ type }) {
     { file: null, type: null },
     { file: null, type: null },
   ];
-
-  var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
 
   useEffect(() => {
     const notEmpty = vis.filter((val) => {
@@ -87,11 +90,22 @@ export default function Visibility({ type }) {
           });
       } else if (type === "UNPLAN") {
       } else if (type === "SPREADING") {
-      } else if (type === "HISTORY") {
+      } else if (type === "HISTORY_PLAN") {
         getInvoiceDataPosm(router.query.id)
           .then((data) => {
             setPosmList(data);
             console.log(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (type === "HISTORY_UNPLAN") {
+        getInvoiceDataPosmUnplan(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+            console.log(data);
+            setLoading(false);
           })
           .catch((err) => {
             console.log(err);
@@ -112,16 +126,25 @@ export default function Visibility({ type }) {
       });
   }, [dispatch]);
 
-  const onFileFocus = (id) => {
+  const onFileFocus = (val) => {
     setModal(true);
-    viewFile(id)
-      .then((data) => {
-        console.log(data);
-        setFileFocus(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (type === "HISTORY_PLAN") {
+      viewFile(val.id)
+        .then((data) => {
+          setFileFocus(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "HISTORY_UNPLAN") {
+      viewFileUnplan(val.id)
+        .then((data) => {
+          setFileFocus(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   const renderInputUpload = () => {
     var render = vis.map((val, index) => {
@@ -210,7 +233,7 @@ export default function Visibility({ type }) {
                 fontWeight: "500",
               }}
               onClick={() => {
-                onFileFocus(val.id);
+                onFileFocus(val);
               }}
             >
               {val.namaFile}
@@ -219,7 +242,11 @@ export default function Visibility({ type }) {
         </div>
       );
     });
-    return render;
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return render;
+    }
   };
   const onSave = () => {
     if (type === "PLAN") {
@@ -254,19 +281,17 @@ export default function Visibility({ type }) {
               style={{
                 maxHeight: "100%",
                 overflow: "auto",
-                overflowX: "hidden",
-                overflowY: "hidden",
               }}
             >
               <div
                 style={{
                   width: "400px",
                   maxHeight: "100%",
-                  margin: "100px auto",
+                  margin: "20px auto",
                 }}
               >
                 <img
-                  style={{ width: "300px", margin: "0 50px" }}
+                  style={{ width: "380px", margin: "0 10px" }}
                   src={fileFocus}
                 />
               </div>
@@ -274,7 +299,7 @@ export default function Visibility({ type }) {
           </Modal>
         ) : null}
         <div className={styles.wrapper}>
-          {type === "HISTORY" ? (
+          {type.includes("HISTORY") ? (
             <Nav
               title={"Visibility"}
               color={"white"}
@@ -302,7 +327,9 @@ export default function Visibility({ type }) {
             />
           )}
           <div className={styles.main}>
-            {type === "HISTORY" ? renderHistoryPosm() : renderInputUpload()}
+            {type.includes("HISTORY")
+              ? renderHistoryPosm()
+              : renderInputUpload()}
           </div>
         </div>
       </div>

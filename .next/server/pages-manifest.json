@@ -2,15 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/visit/plan/history/[id]": "pages/visit/plan/history/[id].js",
-  "/visit/plan/history/[id]/visibility": "pages/visit/plan/history/[id]/visibility.js",
-  "/visit/plan": "pages/visit/plan.js",
-  "/": "pages/index.js",
-  "/calendar": "pages/calendar.js",
-  "/visit/unplan": "pages/visit/unplan.js",
+  "/visit/unplan/history": "pages/visit/unplan/history.js",
   "/visit/unplan/submit": "pages/visit/unplan/submit.js",
-  "/visit/unplan/submit/avability": "pages/visit/unplan/submit/avability.js",
-  "/visit/spreading": "pages/visit/spreading.js",
-  "/visit/unplan/submit/visibility": "pages/visit/unplan/submit/visibility.js",
-  "/visit/spreading/submit": "pages/visit/spreading/submit.js"
+  "/visit/unplan": "pages/visit/unplan.js"
 }

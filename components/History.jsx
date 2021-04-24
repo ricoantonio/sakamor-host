@@ -13,7 +13,12 @@ import DetailPlan from "./DetailPlan";
 import Modal from "./Modal";
 import Button from "./Button";
 import Card from "./Card";
-import { getAuth, getPlanMonthlyHistory, getPlanHistory } from "../helper";
+import {
+  getAuth,
+  getPlanMonthlyHistory,
+  getPlanHistory,
+  getUnplanMonthlyHistory,
+} from "../helper";
 import moment from "moment";
 import Invoice from "./Invoice";
 
@@ -55,7 +60,7 @@ export default function History({ type }) {
     if (type === "PLAN") {
       getPlanMonthlyHistory(userData)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setHistory(data);
           setLoading(false);
         })
@@ -63,7 +68,15 @@ export default function History({ type }) {
           console.log(err);
         });
     } else if (type === "UNPLAN") {
-      setLoading(false);
+      getUnplanMonthlyHistory(userData)
+        .then((data) => {
+          // console.log(data);
+          setHistory(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (type === "SPREADING") {
       setLoading(false);
     }
@@ -86,7 +99,13 @@ export default function History({ type }) {
           history
           onClick={() => {
             // onRenderPDF(val);
-            Router.push(`/visit/plan/history/${val.idVisitPlan}`);
+            if (type === "PLAN") {
+              Router.push(`/visit/plan/history/${val.idVisitPlan}`);
+            } else if (type === "UNPLAN") {
+              Router.push(`/visit/unplan/history/${val.id}`);
+            } else if (type === "SPREADING") {
+              Router.push(`/visit/spreading/history/${val.idVisitPlan}`);
+            }
           }}
         />
       );

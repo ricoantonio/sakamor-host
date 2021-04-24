@@ -138,7 +138,6 @@ const Invoice = ({ data, plan }) => {
               >
                 {total}
               </td>
-              <td></td>
             </tr>
           </tbody>
         </table>

@@ -192,7 +192,7 @@ export default function index() {
 
       submitVisitPlan(data)
         .then((res) => {
-          console.log("ini res", res);
+          // console.log("ini res", res);
           const bodyPosm = state.visitPlanReducer.visibility.map(
             (val, index) => {
               return {

@@ -13,11 +13,14 @@ import {
   getInvoiceData,
   getInvoiceDataPosm,
   getPlanMonthlyHistory,
+  getInvoiceDataUnplan,
+  getInvoiceDataPosmUnplan,
+  getUnplanMonthlyHistory,
 } from "../helper";
 import Invoice from "./Invoice";
 import Modal from "./Modal";
 
-export default function HistoryDetail() {
+export default function HistoryDetail({ type }) {
   const [loading, setLoading] = useState(true);
   const [plan, setPlan] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -40,34 +43,66 @@ export default function HistoryDetail() {
     const userData = JSON.parse(localStorage.getItem("user"));
 
     if (router.query.id) {
-      getPlanMonthlyHistory(userData)
-        .then((data) => {
-          setPlan(
-            data.filter((val) => {
-              return val.idVisitPlan === router.query.id;
-            })
-          );
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (type === "PLAN") {
+        getPlanMonthlyHistory(userData)
+          .then((data) => {
+            setPlan(
+              data.filter((val) => {
+                return val.idVisitPlan === router.query.id;
+              })
+            );
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
-      getInvoiceData(router.query.id)
-        .then((data) => {
-          setProductList(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        getInvoiceData(router.query.id)
+          .then((data) => {
+            setProductList(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
-      getInvoiceDataPosm(router.query.id)
-        .then((data) => {
-          setPosmList(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        getInvoiceDataPosm(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (type === "UNPLAN") {
+        getUnplanMonthlyHistory(userData)
+          .then((data) => {
+            setPlan(
+              data.filter((val) => {
+                return val.id === router.query.id;
+              })
+            );
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        getInvoiceDataUnplan(router.query.id)
+          .then((data) => {
+            setProductList(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        getInvoiceDataPosmUnplan(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (type === "SPREADING") {
+      }
     }
   }, [router.query.id]);
 
@@ -84,7 +119,7 @@ export default function HistoryDetail() {
     );
   };
 
-  const renderDataDetail = (type, data) => {
+  const renderDataDetail = (subType, data) => {
     // const doneFormVis = state.visitPlanReducer.visibility.filter((val) => {
     //   return val.file !== null && val.type !== null;
     // });
@@ -92,25 +127,25 @@ export default function HistoryDetail() {
     return (
       <div>
         <div className={styles.render_data}>
-          {type}
+          {subType}
           <div style={{ textAlign: "right" }}>
-            {type === "Visibility"
+            {subType === "Visibility"
               ? `${posmList.length}/6`
-              : type === "Avability"
+              : subType === "Avability"
               ? `${productList.length}/25`
               : ""}
           </div>
         </div>
         <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
           <div className={styles.render_value}>
-            {type === "Catatan" ? (
+            {subType === "Catatan" ? (
               <div style={{ width: "100%", border: "none", height: "70px" }}>
                 {data}
               </div>
-            ) : type === "Visibility" || type === "Avability" ? (
+            ) : subType === "Visibility" || subType === "Avability" ? (
               <>
                 <div>
-                  {type === "Visibility" ? (
+                  {subType === "Visibility" ? (
                     <div>
                       <div className={styles.progress_bar}></div>
                       <div
@@ -120,7 +155,7 @@ export default function HistoryDetail() {
                         }}
                       ></div>
                     </div>
-                  ) : type === "Avability" ? (
+                  ) : subType === "Avability" ? (
                     <div>
                       <div className={styles.progress_bar}></div>
                       <div
@@ -134,19 +169,35 @@ export default function HistoryDetail() {
                     ""
                   )}
                 </div>
-                <Link
-                  href={
-                    type === "Visibility"
-                      ? `/visit/plan/history/${plan[0].idVisitPlan}/visibility`
-                      : type === "Avability"
-                      ? `/visit/plan/history/${plan[0].idVisitPlan}/avability`
-                      : ""
-                  }
-                >
-                  <a>
-                    <Button text="View" />
-                  </a>
-                </Link>
+                {type === "PLAN" ? (
+                  <Link
+                    href={
+                      subType === "Visibility"
+                        ? `/visit/plan/history/${plan[0].idVisitPlan}/visibility`
+                        : subType === "Avability"
+                        ? `/visit/plan/history/${plan[0].idVisitPlan}/avability`
+                        : ""
+                    }
+                  >
+                    <a>
+                      <Button text="View" />
+                    </a>
+                  </Link>
+                ) : type === "UNPLAN" ? (
+                  <Link
+                    href={
+                      subType === "Visibility"
+                        ? `/visit/unplan/history/${plan[0].id}/visibility`
+                        : subType === "Avability"
+                        ? `/visit/unplan/history/${plan[0].id}/avability`
+                        : ""
+                    }
+                  >
+                    <a>
+                      <Button text="View" />
+                    </a>
+                  </Link>
+                ) : null}
               </>
             ) : (
               <>{data}</>

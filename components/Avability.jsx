@@ -11,6 +11,7 @@ import Card from "./Card";
 
 import {
   getInvoiceData,
+  getInvoiceDataUnplan,
   getPlanId,
   getPlanMonthlyHistory,
   getProductSearch,
@@ -78,8 +79,17 @@ export default function Avability({ type }) {
           });
       } else if (type === "UNPLAN") {
       } else if (type === "SPREADING") {
-      } else if (type === "HISTORY") {
+      } else if (type === "HISTORY_PLAN") {
         getInvoiceData(router.query.id)
+          .then((data) => {
+            setAvabilityList(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (type === "HISTORY_UNPLAN") {
+        getInvoiceDataUnplan(router.query.id)
           .then((data) => {
             setAvabilityList(data);
             setLoading(false);
@@ -338,7 +348,7 @@ export default function Avability({ type }) {
     }
   };
   const renderAvabilityList = () => {
-    if (type === "HISTORY") {
+    if (type.includes("HISTORY")) {
       console.log(avabilityList);
       avabilityList.sort((a, b) => a.namaProduk.localeCompare(b.namaProduk));
       const filterData = avabilityList.filter((val) => {
@@ -512,7 +522,7 @@ export default function Avability({ type }) {
           {renderModalAdd()}
           <div className={styles.container}>
             <div className={styles.wrapper}>
-              {type === "HISTORY" ? (
+              {type.includes("HISTORY") ? (
                 <Nav
                   title={"Avability"}
                   color={"white"}
@@ -559,7 +569,7 @@ export default function Avability({ type }) {
                   <div style={{ marginBottom: "100px" }} />
                 </div>
               </div>
-              {type === "HISTORY" ? null : (
+              {type.includes("HISTORY") ? null : (
                 <div className={styles.avability_bot_container}>
                   <Button
                     text={"Add"}
