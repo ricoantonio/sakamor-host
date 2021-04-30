@@ -9,10 +9,7 @@ import Spinner from "../../../components/Spinner";
 import DetailPlan from "../../../components/DetailPlan";
 import Button from "../../../components/Button";
 
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../../../constant";
-import Card from "../../../components/Card";
-import Dropdown from "../../../components/Dropdown";
-import { getSearchJenisChannel } from "../../../helper";
+import { getSearchJenisChannel, getSearchOutlet } from "../../../helper";
 
 export default function Unplan() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -23,6 +20,8 @@ export default function Unplan() {
   const [focusJenisChannel, setFocusJenisChannel] = useState({});
   const [searchOutlet, setSearchOutlet] = useState("");
   const [listOutlet, setListOutlet] = useState([]);
+  const [renderListOutlet, setRenderListOutlet] = useState(false);
+  const [focusOutlet, setFocusOutlet] = useState({});
   const [position, setPosition] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,7 +38,7 @@ export default function Unplan() {
           latitude: coords.latitude,
           longitude: coords.longitude,
         });
-        console.log(coords);
+        // console.log(coords);
       },
       (err) => {
         setError(err.message);
@@ -63,6 +62,28 @@ export default function Unplan() {
       setListJenisChannel([]);
     }
   };
+  const onSearchOutlet = (search) => {
+    setRenderListOutlet(true);
+    setSearchOutlet(search);
+  };
+
+  useEffect(() => {
+    // fetch on stop typing
+    const timeoutId = setTimeout(() => {
+      if (searchOutlet) {
+        getSearchOutlet(searchOutlet)
+          .then((data) => {
+            setListOutlet(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        setListOutlet([]);
+      }
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [searchOutlet]);
 
   const renderSearchJenisChannel = () => {
     const render = listJenisChannel.map((val, index) => {
@@ -72,7 +93,6 @@ export default function Unplan() {
             setFocusJenisChannel(val);
             setSearchJenisChannel(val.namaJenisChannel);
             setListJenisChannel([]);
-            console.log("a");
           }}
           key={index}
           style={{
@@ -86,7 +106,35 @@ export default function Unplan() {
     });
     return render;
   };
+  const renderSearchOutlet = () => {
+    const render = listOutlet.map((val, index) => {
+      return (
+        <div
+          onClick={() => {
+            setFocusOutlet(val);
+            setSearchOutlet(val.namaOutlet);
+            setListOutlet([]);
+          }}
+          key={index}
+          style={{
+            borderBottom: ".5px solid #f0f0f0",
+            width: "350px",
+          }}
+        >
+          {val.namaOutlet}
+        </div>
+      );
+    });
+    return render;
+  };
 
+  const onSubmitUnplan = () => {
+    if (focusJenisChannel.namaJenisChannel && focusOutlet.namaOutlet) {
+      actions.setUnplanOutlet(focusOutlet);
+      actions.setUnplanJenisChannel(focusJenisChannel);
+      Router.push("/visit/unplan/submit");
+    }
+  };
   const render = () => {
     if (loading) {
       return <Spinner />;
@@ -134,22 +182,40 @@ export default function Unplan() {
               <div className={styles.subtitle}>Outlet</div>
               <input
                 onChange={(e) => {
-                  setSearchOutlet(e.target.value);
+                  onSearchOutlet(e.target.value);
                 }}
+                value={searchOutlet}
                 placeholder="Search"
                 className={styles.input}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setRenderListOutlet(false);
+                  }, 200);
+                }}
+                onFocus={(e) => onSearchOutlet(e.target.value)}
               />
-              <div className={styles.bottom_container}>
-                <Link
-                  href={{
-                    pathname: "/visit/unplan/submit",
-                    // query: { data: "hai" },
+              {renderListOutlet ? (
+                <div
+                  style={{
+                    position: "absolute",
+                    maxHeight: "180px",
+                    backgroundColor: "white",
+                    overflowY: "scroll",
+                    maxWidth: "400px",
+                    padding: "0 4px",
+                    zIndex: 999999,
                   }}
                 >
-                  <a>
-                    <Button text="Submit" />
-                  </a>
-                </Link>
+                  {renderSearchOutlet()}
+                </div>
+              ) : null}
+              <div className={styles.bottom_container}>
+                <Button
+                  text="Submit"
+                  onClick={() => {
+                    onSubmitUnplan();
+                  }}
+                />
                 <Link href="/visit/unplan/history">
                   <a>
                     <div className={styles.view_history}>View History</div>

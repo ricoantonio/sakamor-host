@@ -153,6 +153,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
+.avg_sales_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 .avabilitylist_title {
   font-size: 21px;
   color: #41867a;

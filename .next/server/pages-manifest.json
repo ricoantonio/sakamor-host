@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/visit/unplan/history": "pages/visit/unplan/history.js",
-  "/visit/unplan/submit": "pages/visit/unplan/submit.js",
-  "/visit/unplan": "pages/visit/unplan.js"
+  "/visit/spreading": "pages/visit/spreading.js",
+  "/visit/spreading/submit": "pages/visit/spreading/submit.js",
+  "/visit/unplan/history": "pages/visit/unplan/history.js"
 }

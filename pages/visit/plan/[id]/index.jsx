@@ -141,7 +141,7 @@ export default function index() {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
-    console.log(state.visitPlanReducer.visibility);
+    // console.log(state.visitPlanReducer.visibility);
     if (visDone.length === 6) {
       setLoadingSubmit(true);
 

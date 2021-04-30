@@ -200,9 +200,33 @@ const getProductSearch = (search) => {
       console.log(err);
     });
 };
-const getSearchJenisChannel = (search) => {
+
+const getProductByJenisChannel = (jenisChannelId) => {
   return fetch(
-    API_URL + API_MASTER + `/MasterData/GetJenisChannelLike/${search}`,
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetProdukJenisChannelBy/${jenisChannelId}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getProductAvgSales = (productCode, outletCode) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterData/GetAvgSales30DaysByOutletAndProduct?productCode=${productCode}&outletCode=${outletCode}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -220,11 +244,28 @@ const getSearchJenisChannel = (search) => {
     });
 };
 
-const getProdukByJenisChannel = (jenisChannelId) => {
+const getSearchJenisChannel = (search) => {
   return fetch(
-    API_URL +
-      API_MASTER +
-      `/MasterDataLokal/GetProdukJenisChannelBy/${jenisChannelId}`,
+    API_URL + API_MASTER + `/MasterData/GetJenisChannelLike?teks=${search}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getSearchOutlet = (search) => {
+  return fetch(
+    API_URL + API_MASTER + `/MasterData/GetOutletLike?teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -293,6 +334,34 @@ const submitVisitPlan = (data) => {
     });
 };
 
+const submitVisitUnplan = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlan/SaveAllActivityVisitUnPlan`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("baikan saveall", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const submitVisitPlanDposm = (dposm, file) => {
   // console.log(dposm, file);
   const formdata = new FormData();
@@ -314,12 +383,62 @@ const submitVisitPlanDposm = (dposm, file) => {
       return response.json();
     })
     .then((data) => {
-      console.log("balikan psom", data);
+      // console.log("balikan psom", data);
       formdata.append("file", file);
       return fetch(
         API_URL +
           API_VISIT_PLAN +
           `/ActivityVisitPlanDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`,
+        {
+          method: "POST",
+          headers: {
+            apiKey: TOKEN,
+          },
+          body: formdata,
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("balikan inserfile", data);
+          return data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const submitVisitUnplanDposm = (dposm, file) => {
+  // console.log(dposm, file);
+  const formdata = new FormData();
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanDPOSM/SaveActivityVisitUnPlanDposm`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dposm),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("balikan psom", data);
+      formdata.append("file", file);
+      return fetch(
+        API_URL +
+          API_VISIT_UNPLAN +
+          `/SakamorActivityVisitUnPlanDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`,
         {
           method: "POST",
           headers: {
@@ -408,11 +527,11 @@ const getInvoiceDataPosm = (visitPlanId) => {
       console.log(err);
     });
 };
-const getInvoiceDataPosmUnplan = (visitPlanId) => {
+const getInvoiceDataPosmUnplan = (visitUnplanId) => {
   return fetch(
     API_URL +
       API_VISIT_UNPLAN +
-      `/SakamorActivityVisitUnPlanDPOSM/GetActivityVisitPlanDPosmBy/${visitPlanId}`,
+      `/SakamorActivityVisitUnPlanDPOSM/GetActivityVisitUnPlanDPosmBy/${visitUnplanId}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -453,7 +572,9 @@ const viewFile = (id) => {
 const viewFileUnplan = (id) => {
   console.log(id);
   return fetch(
-    API_URL + API_VISIT_UNPLAN + `/ActivityVisitUnPlanDPOSM/ViewFile/${id}`,
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanDPOSM/ViewFile/${id}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -534,10 +655,14 @@ export {
   getPosm,
   getProductSearch,
   getSearchJenisChannel,
+  getProductAvgSales,
+  getSearchOutlet,
   getPlanHistory,
   submitVisitPlan,
   submitVisitPlanDposm,
-  getProdukByJenisChannel,
+  submitVisitUnplan,
+  submitVisitUnplanDposm,
+  getProductByJenisChannel,
   getInvoiceData,
   getInvoiceDataUnplan,
   getInvoiceDataPosm,

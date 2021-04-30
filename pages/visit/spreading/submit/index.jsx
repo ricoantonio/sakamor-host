@@ -6,26 +6,50 @@ import styles from "../../../../styles/pages/VisitPlanDetail.module.css";
 import { Stores } from "../../../../store";
 
 import Nav from "../../../../components/Nav";
+import Modal from "../../../../components/Modal";
 import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
+import { submitVisitUnplanDposm, submitVisitUnplan } from "../../../../helper";
+
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [plan, setPlan] = useState([]);
   const router = useRouter();
   var now = new Date();
-  var date = now.getDate();
-  var month = now.getMonth() + 1;
-  var year = now.getFullYear();
+
+  useEffect(() => {
+    if (
+      state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+      state.visitSpreadingReducer.outlet.namaOutlet
+    ) {
+      if (!state.visitSpreadingReducer.checkIn) {
+        actions.setSpreadingCheckIn(now);
+      }
+    } else {
+      Router.push("/visit/spreading");
+    }
+  }, []);
+
   const renderDetail = () => {
     return (
       <div>
-        {renderDataDetail("Jenis Channel", plan.jenisChannel)}
-        {renderDataDetail("Outlet", plan.namaOutlet)}
-        {renderDataDetail("Alamat", plan.alamatOutlet)}
-        {renderDataDetail("Catatan", plan.catatan)}
+        {renderDataDetail(
+          "Jenis Channel",
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+        )}
+        {renderDataDetail(
+          "Outlet",
+          state.visitSpreadingReducer.outlet.namaOutlet
+        )}
+        {renderDataDetail(
+          "Alamat",
+          state.visitSpreadingReducer.outlet.alamatOutlet
+        )}
+        {renderDataDetail("Catatan", state.visitSpreadingReducer.catatan)}
         {renderDataDetail("Visibility")}
         {renderDataDetail("Avability")}
       </div>
@@ -33,10 +57,10 @@ export default function index() {
   };
 
   const renderDataDetail = (type, data) => {
-    const doneFormVis = state.visitPlanReducer.visibility.filter((val) => {
+    const doneFormVis = state.visitSpreadingReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
-    const doneFormAva = state.visitPlanReducer.avability;
+    const doneFormAva = state.visitSpreadingReducer.avability;
     return (
       <div>
         <div className={styles.render_data}>
@@ -55,9 +79,9 @@ export default function index() {
               <textarea
                 style={{ width: "100%", border: "none", height: "70px" }}
                 onChange={(e) => {
-                  actions.setCatatan(e.target.value);
+                  actions.setSpreadingCatatan(e.target.value);
                 }}
-                value={state.visitPlanReducer.catatan}
+                value={state.visitSpreadingReducer.catatan}
               ></textarea>
             ) : type === "Visibility" || type === "Avability" ? (
               <>
@@ -89,9 +113,9 @@ export default function index() {
                 <Link
                   href={
                     type === "Visibility"
-                      ? `/visit/unplan/submit/visibility`
+                      ? `/visit/spreading/submit/visibility`
                       : type === "Avability"
-                      ? `/visit/unplan/submit/avability`
+                      ? `/visit/spreading/submit/avability`
                       : ""
                   }
                 >
@@ -110,57 +134,91 @@ export default function index() {
   };
 
   const onSubmit = () => {
-    const visDone = state.visitPlanReducer.visibility.filter((val) => {
+    const visDone = state.visitSpreadingReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
     if (visDone.length === 6) {
+      setLoadingSubmit(true);
+
       const userData = JSON.parse(localStorage.getItem("user"));
 
       const bodyPlan = {
-        id: plan.id,
-        idMasterPlanVisit: plan.id,
-        nomorDokumen: plan.nomorDokumen,
-        catatan: state.visitPlanReducer.catatan,
+        usernameSMR: userData.username,
+        nomorDokumen: "",
+        catatan: state.visitSpreadingReducer.catatan,
+        idJenisChannel: parseInt(
+          state.visitSpreadingReducer.jenisChannel.jenisChannelID
+        ),
+        jenisChannel: state.visitSpreadingReducer.jenisChannel.namaJenisChannel,
+        idOutlet: state.visitSpreadingReducer.outlet.outletID,
+        namaOutlet: state.visitSpreadingReducer.outlet.namaOutlet,
+        alamatOutlet: state.visitSpreadingReducer.outlet.alamatOutlet,
+        tanggal: now.toISOString(),
+        target: 0,
+        sales: 0,
         isCheckIn: true,
-        checkInDate: state.visitPlanReducer.checkIn.toISOString(),
+        checkInDate: state.visitSpreadingReducer.checkIn.toISOString(),
         isCheckOut: true,
         checkOutDate: now.toISOString(),
         createdBy: userData.username,
         updatedBy: userData.username,
       };
-      const bodyPosm = state.visitPlanReducer.visibility.map((val, index) => {
-        return {
-          id: plan.id,
-          activityVisitPlanId: plan.id,
-          nomorDokumen: plan.nomorDokumen,
-          nomor: index,
-          tipe: val.type.tipe,
-          namaFile: val.file.name,
-          createdBy: userData.username,
-          updatedBy: userData.username,
-        };
+
+      const files = state.visitSpreadingReducer.visibility.map((val, index) => {
+        return val.file;
       });
-      const bodyProduct = state.visitPlanReducer.avability.map((val, index) => {
-        return {
-          id: plan.id,
-          activityVisitPlanId: plan.id,
-          nomorDokumen: plan.nomorDokumen,
-          nomor: index,
-          kodeProduk: val.productFocus.produkID,
-          namaProduk: val.productFocus.namaProduk,
-          stok: val.stock,
-          saranOrder: val.saranOrder,
-          jumlahOrder: val.order,
-          createdBy: userData.username,
-          updatedBy: userData.username,
-        };
-      });
-      // http://10.100.4.116:8230/api/ActivityVisitPlan/SaveActivityVisitPlan
-      // http://10.100.4.116:8230/api/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm
-      // http://10.100.4.116:8230/api/ActivityVisitPlanDProduct/SaveActivityVisitPlanDProduct
-      console.log(state.visitPlanReducer.visibility);
-      console.log(state.visitPlanReducer.avability);
-      console.log(bodyPlan, bodyPosm, bodyProduct);
+
+      const bodyProduct = state.visitSpreadingReducer.avability.map(
+        (val, index) => {
+          return {
+            nomorDokumen: "",
+            nomor: index,
+            kodeProduk: val.productFocus.produkID,
+            namaProduk: val.productFocus.namaProduk,
+            stok: parseInt(val.stock),
+            saranOrder: parseInt(val.saranOrder),
+            jumlahOrder: parseInt(val.order),
+            harga: 0,
+            totalHarga: 0,
+            keterangan: val.ket,
+            createdBy: userData.username,
+            updatedBy: userData.username,
+          };
+        }
+      );
+
+      var data = {
+        avp: bodyPlan,
+        dProductList: bodyProduct,
+      };
+
+      console.log(data, state.visitSpreadingReducer.avability);
+
+      submitVisitSpreading(data)
+        .then((res) => {
+          console.log("ini res", res);
+          const bodyPosm = state.visitSpreadingReducer.visibility.map(
+            (val, index) => {
+              return {
+                activityVisitSpreadingId: res.avp.id,
+                nomor: index,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                createdBy: userData.username,
+                updatedBy: userData.username,
+              };
+            }
+          );
+          for (let i = 0; i < files.length; i++) {
+            submitVisitSpreadingDposm(bodyPosm[i], files[i]);
+          }
+          setLoadingSubmit(false);
+          actions.setDefaultVisitSpreading();
+          Router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -170,6 +228,11 @@ export default function index() {
     } else {
       return (
         <div className={styles.container}>
+          {loadingSubmit ? (
+            <Modal>
+              <Spinner />
+            </Modal>
+          ) : null}
           <div className={styles.wrapper}>
             <Nav
               title={"Spreading"}

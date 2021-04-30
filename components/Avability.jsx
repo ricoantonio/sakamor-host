@@ -15,7 +15,8 @@ import {
   getPlanId,
   getPlanMonthlyHistory,
   getProductSearch,
-  getProdukByJenisChannel,
+  getProductByJenisChannel,
+  getProductAvgSales,
 } from "../helper";
 
 export default function Avability({ type }) {
@@ -33,6 +34,7 @@ export default function Avability({ type }) {
   const [avgSales, setAvgSales] = useState("");
   const [saranOrder, setSaranOrder] = useState("");
   const [stock, setStock] = useState("");
+  const [minor, setMinor] = useState("");
   const [ket, setKet] = useState("");
   const [plan, setPlan] = useState([]);
   const router = useRouter();
@@ -57,6 +59,40 @@ export default function Avability({ type }) {
     } else if (type === "SPREADING") {
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (type === "UNPLAN") {
+      if (
+        state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
+        state.visitUnplanReducer.outlet.namaOutlet
+      ) {
+      } else {
+        Router.push("/visit/unplan");
+      }
+    } else if (type === "SPREADING") {
+    }
+  }, []);
+
+  useEffect(() => {
+    if (productFocus.produkID) {
+      if (type === "PLAN") {
+      } else if (type === "UNPLAN") {
+        console.log("a");
+        getProductAvgSales(
+          productFocus.produkID,
+          state.visitUnplanReducer.outlet.outletID
+        )
+          .then((data) => {
+            console.log(data);
+            // setAvgSales(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (type === "SPREADING") {
+      }
+    }
+  }, [productFocus]);
 
   useEffect(() => {
     if (router.query.id) {
@@ -103,7 +139,7 @@ export default function Avability({ type }) {
 
   useEffect(() => {
     if (type === "PLAN") {
-      getProdukByJenisChannel(plan.idJenisChannel)
+      getProductByJenisChannel(plan.idJenisChannel)
         .then((data) => {
           setProduct(data);
           // console.log(data);
@@ -113,7 +149,17 @@ export default function Avability({ type }) {
           console.log(err);
         });
     } else if (type === "UNPLAN") {
-      setLoading(false);
+      getProductByJenisChannel(
+        state.visitUnplanReducer.jenisChannel.jenisChannelID
+      )
+        .then((data) => {
+          setProduct(data);
+          // console.log(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (type === "SPREADING") {
       setLoading(false);
     }
@@ -138,6 +184,7 @@ export default function Avability({ type }) {
           <div
             onClick={() => {
               // setProduct([]);
+              console.log(val);
               setProductFocus(val);
               setRenderProductList(false);
             }}
@@ -225,8 +272,22 @@ export default function Avability({ type }) {
                     value={pengiriman}
                   />
                 </div>
-
                 <div style={{ paddingLeft: "10px" }}>
+                  <div className={styles.avability_modal_subtitle}>Minor</div>
+                  <input
+                    onChange={(e) => {
+                      setMinor(e.target.value);
+                    }}
+                    placeholder="0"
+                    type="number"
+                    min={0}
+                    className={styles.input_order}
+                    value={minor}
+                  />
+                </div>
+              </div>
+              <div className={styles.avg_sales_container}>
+                <div style={{ paddingRight: "5px" }}>
                   <div className={styles.avability_modal_subtitle}>
                     Avg Sales (pcs)
                   </div>
@@ -242,21 +303,23 @@ export default function Avability({ type }) {
                     disabled={true}
                   />
                 </div>
+                <div style={{ paddingLeft: "5px" }}>
+                  <div className={styles.avability_modal_subtitle}>
+                    Saran Order (pcs)
+                  </div>
+                  <input
+                    onChange={(e) => {
+                      setSaranOrder(e.target.value);
+                    }}
+                    placeholder="0"
+                    type="number"
+                    min={0}
+                    className={styles.input_order}
+                    value={saranOrder}
+                    disabled={true}
+                  />
+                </div>
               </div>
-              <div className={styles.avability_modal_subtitle}>
-                Saran Order (pcs)
-              </div>
-              <input
-                onChange={(e) => {
-                  setSaranOrder(e.target.value);
-                }}
-                placeholder="0"
-                type="number"
-                min={0}
-                className={styles.input_order}
-                value={saranOrder}
-                disabled={true}
-              />
               <div className={styles.avability_modal_subtitle}>Order (pcs)</div>
               <input
                 onChange={(e) => {
@@ -508,6 +571,7 @@ export default function Avability({ type }) {
       // console.log(avabilityList);
       Router.push(`/visit/plan/${router.query.id}`);
     } else if (type === "UNPLAN") {
+      actions.setUnplanAvability(avabilityList);
       Router.push(`/visit/unplan/submit`);
     } else if (type === "SPREADING") {
       Router.push(`/visit/spreading/submit`);

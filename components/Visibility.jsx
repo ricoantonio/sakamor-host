@@ -70,6 +70,19 @@ export default function Visibility({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
+    if (type === "UNPLAN") {
+      if (
+        state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
+        state.visitUnplanReducer.outlet.namaOutlet
+      ) {
+      } else {
+        Router.push("/visit/unplan");
+      }
+    } else if (type === "SPREADING") {
+    }
+  }, []);
+
+  useEffect(() => {
     if (router.query.id) {
       if (type === "PLAN") {
         getPlanId(router.query.id)
@@ -254,6 +267,7 @@ export default function Visibility({ type }) {
       // console.log(vis);
       Router.push(`/visit/plan/${router.query.id}`);
     } else if (type === "UNPLAN") {
+      actions.setUnplanVisibility(vis);
       Router.push(`/visit/unplan/submit`);
     } else if (type === "SPREADING") {
       Router.push(`/visit/spreading/submit`);
