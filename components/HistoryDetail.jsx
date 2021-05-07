@@ -16,6 +16,9 @@ import {
   getInvoiceDataUnplan,
   getInvoiceDataPosmUnplan,
   getUnplanMonthlyHistory,
+  getSpreadingMonthlyHistory,
+  getInvoiceDataSpreading,
+  getInvoiceDataPosmSpreading,
 } from "../helper";
 import Invoice from "./Invoice";
 import Modal from "./Modal";
@@ -102,6 +105,36 @@ export default function HistoryDetail({ type }) {
             console.log(err);
           });
       } else if (type === "SPREADING") {
+        getSpreadingMonthlyHistory(userData)
+          .then((data) => {
+            setPlan(
+              data.filter((val) => {
+                return val.id === router.query.id;
+              })
+            );
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        getInvoiceDataSpreading(router.query.id)
+          .then((data) => {
+            setProductList(data);
+            // console.log("produk", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        getInvoiceDataPosmSpreading(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+            // console.log("psom", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }, [router.query.id]);
@@ -190,6 +223,20 @@ export default function HistoryDetail({ type }) {
                         ? `/visit/unplan/history/${plan[0].id}/visibility`
                         : subType === "Avability"
                         ? `/visit/unplan/history/${plan[0].id}/avability`
+                        : ""
+                    }
+                  >
+                    <a>
+                      <Button text="View" />
+                    </a>
+                  </Link>
+                ) : type === "SPREADING" ? (
+                  <Link
+                    href={
+                      subType === "Visibility"
+                        ? `/visit/spreading/history/${plan[0].id}/visibility`
+                        : subType === "Avability"
+                        ? `/visit/spreading/history/${plan[0].id}/avability`
                         : ""
                     }
                   >

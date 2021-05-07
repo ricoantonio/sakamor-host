@@ -11,26 +11,40 @@ import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
-import { submitVisitUnplanDposm, submitVisitUnplan } from "../../../../helper";
+import {
+  submitVisitSpreadingDposm,
+  submitVisitSpreading,
+  getSearchJenisChannel,
+} from "../../../../helper";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [newNOO, setNewNOO] = useState(false);
   const [plan, setPlan] = useState([]);
+  const [searchJenisChannel, setSearchJenisChannel] = useState("");
+  const [listJenisChannel, setListJenisChannel] = useState([]);
+  const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
+  const [focusJenisChannel, setFocusJenisChannel] = useState({});
   const router = useRouter();
   var now = new Date();
 
   useEffect(() => {
-    if (
-      state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
-      state.visitSpreadingReducer.outlet.namaOutlet
-    ) {
-      if (!state.visitSpreadingReducer.checkIn) {
-        actions.setSpreadingCheckIn(now);
-      }
+    if (router.query.new) {
+      setNewNOO(true);
+      actions.setSpreadingCheckIn(now);
     } else {
-      Router.push("/visit/spreading");
+      if (
+        state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+        state.visitSpreadingReducer.outlet.namaOutlet
+      ) {
+        if (!state.visitSpreadingReducer.checkIn) {
+          actions.setSpreadingCheckIn(now);
+        }
+      } else {
+        Router.push("/visit/spreading");
+      }
     }
   }, []);
 
@@ -56,35 +70,138 @@ export default function index() {
     );
   };
 
+  const onSearchJenisChannel = (search) => {
+    setRenderListJenisChannel(true);
+    setSearchJenisChannel(search);
+    if (search) {
+      getSearchJenisChannel(search)
+        .then((data) => {
+          setListJenisChannel(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setListJenisChannel([]);
+    }
+  };
+  const renderSearchJenisChannel = () => {
+    const render = listJenisChannel.map((val, index) => {
+      return (
+        <div
+          onClick={() => {
+            setFocusJenisChannel(val);
+            actions.setSpreadingJenisChannel(val);
+            setSearchJenisChannel(val.namaJenisChannel);
+            setListJenisChannel([]);
+          }}
+          key={index}
+          style={{
+            borderBottom: ".5px solid #f0f0f0",
+            width: "350px",
+          }}
+        >
+          {val.namaJenisChannel}
+        </div>
+      );
+    });
+    return render;
+  };
+
   const renderDataDetail = (type, data) => {
     const doneFormVis = state.visitSpreadingReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
     const doneFormAva = state.visitSpreadingReducer.avability;
-    return (
-      <div>
-        <div className={styles.render_data}>
-          {type}
-          <div style={{ textAlign: "right" }}>
-            {type === "Visibility"
-              ? `${doneFormVis.length}/6`
-              : type === "Avability"
-              ? `${doneFormAva.length}/25`
-              : ""}
+    if (newNOO) {
+      return (
+        <div>
+          <div className={styles.render_data}>
+            {type}
+            <div style={{ textAlign: "right" }}>
+              {type === "Visibility"
+                ? `${doneFormVis.length}/6`
+                : type === "Avability"
+                ? `${doneFormAva.length}/25`
+                : ""}
+            </div>
           </div>
-        </div>
-        <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
-          <div className={styles.render_value}>
-            {type === "Catatan" ? (
-              <textarea
-                style={{ width: "100%", border: "none", height: "70px" }}
+          {type === "Jenis Channel" ? (
+            <>
+              <input
                 onChange={(e) => {
-                  actions.setSpreadingCatatan(e.target.value);
+                  onSearchJenisChannel(e.target.value);
                 }}
-                value={state.visitSpreadingReducer.catatan}
-              ></textarea>
-            ) : type === "Visibility" || type === "Avability" ? (
-              <>
+                value={
+                  state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+                    ? state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+                    : searchJenisChannel
+                }
+                placeholder="Search"
+                className={styles.input}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setRenderListJenisChannel(false);
+                  }, 200);
+                }}
+                onFocus={(e) => onSearchJenisChannel(e.target.value)}
+              />
+              {renderListJenisChannel ? (
+                <div
+                  style={{
+                    position: "absolute",
+                    maxHeight: "180px",
+                    backgroundColor: "white",
+                    overflowY: "scroll",
+                    maxWidth: "400px",
+                    padding: "0 4px",
+                    zIndex: 999999,
+                    marginTop: "-10px",
+                  }}
+                >
+                  {renderSearchJenisChannel()}
+                </div>
+              ) : null}
+            </>
+          ) : type === "Outlet" ? (
+            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+              <div className={styles.render_value}>
+                <textarea
+                  style={{ width: "100%", border: "none", height: "20px" }}
+                  onChange={(e) => {
+                    actions.setSpreadingNewOutlet(e.target.value);
+                  }}
+                  value={state.visitSpreadingReducer.newOutlet}
+                ></textarea>
+              </div>
+            </Card>
+          ) : type === "Alamat" ? (
+            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+              <div className={styles.render_value}>
+                <textarea
+                  style={{ width: "100%", border: "none", height: "70px" }}
+                  onChange={(e) => {
+                    actions.setSpreadingAlamat(e.target.value);
+                  }}
+                  value={state.visitSpreadingReducer.alamat}
+                ></textarea>
+              </div>
+            </Card>
+          ) : type === "Catatan" ? (
+            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+              <div className={styles.render_value}>
+                <textarea
+                  style={{ width: "100%", border: "none", height: "70px" }}
+                  onChange={(e) => {
+                    actions.setSpreadingCatatan(e.target.value);
+                  }}
+                  value={state.visitSpreadingReducer.catatan}
+                ></textarea>
+              </div>
+            </Card>
+          ) : type === "Visibility" || type === "Avability" ? (
+            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+              <div className={styles.render_value}>
                 <div>
                   {type === "Visibility" ? (
                     <div>
@@ -113,9 +230,9 @@ export default function index() {
                 <Link
                   href={
                     type === "Visibility"
-                      ? `/visit/spreading/submit/visibility`
+                      ? `/visit/spreading/submit/visibility?new=true`
                       : type === "Avability"
-                      ? `/visit/spreading/submit/avability`
+                      ? `/visit/spreading/submit/avability?new=true`
                       : ""
                   }
                 >
@@ -123,14 +240,89 @@ export default function index() {
                     <Button text="Add" />
                   </a>
                 </Link>
-              </>
-            ) : (
-              <>{data}</>
-            )}
+              </div>
+            </Card>
+          ) : (
+            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+              <div className={styles.render_value}>
+                <>{data}</>
+              </div>
+            </Card>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <div className={styles.render_data}>
+            {type}
+            <div style={{ textAlign: "right" }}>
+              {type === "Visibility"
+                ? `${doneFormVis.length}/6`
+                : type === "Avability"
+                ? `${doneFormAva.length}/25`
+                : ""}
+            </div>
           </div>
-        </Card>
-      </div>
-    );
+          <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+            <div className={styles.render_value}>
+              {type === "Catatan" ? (
+                <textarea
+                  style={{ width: "100%", border: "none", height: "70px" }}
+                  onChange={(e) => {
+                    actions.setSpreadingCatatan(e.target.value);
+                  }}
+                  value={state.visitSpreadingReducer.catatan}
+                ></textarea>
+              ) : type === "Visibility" || type === "Avability" ? (
+                <>
+                  <div>
+                    {type === "Visibility" ? (
+                      <div>
+                        <div className={styles.progress_bar}></div>
+                        <div
+                          className={styles.progress_bar_now}
+                          style={{
+                            width: `${(doneFormVis.length / 6) * 100}%`,
+                          }}
+                        ></div>
+                      </div>
+                    ) : type === "Avability" ? (
+                      <div>
+                        <div className={styles.progress_bar}></div>
+                        <div
+                          className={styles.progress_bar_now}
+                          style={{
+                            width: `${(doneFormAva.length / 25) * 100}%`,
+                          }}
+                        ></div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <Link
+                    href={
+                      type === "Visibility"
+                        ? `/visit/spreading/submit/visibility`
+                        : type === "Avability"
+                        ? `/visit/spreading/submit/avability`
+                        : ""
+                    }
+                  >
+                    <a>
+                      <Button text="Add" />
+                    </a>
+                  </Link>
+                </>
+              ) : (
+                <>{data}</>
+              )}
+            </div>
+          </Card>
+        </div>
+      );
+    }
   };
 
   const onSubmit = () => {
@@ -153,6 +345,28 @@ export default function index() {
         idOutlet: state.visitSpreadingReducer.outlet.outletID,
         namaOutlet: state.visitSpreadingReducer.outlet.namaOutlet,
         alamatOutlet: state.visitSpreadingReducer.outlet.alamatOutlet,
+        tanggal: now.toISOString(),
+        target: 0,
+        sales: 0,
+        isCheckIn: true,
+        checkInDate: state.visitSpreadingReducer.checkIn.toISOString(),
+        isCheckOut: true,
+        checkOutDate: now.toISOString(),
+        createdBy: userData.username,
+        updatedBy: userData.username,
+      };
+
+      const bodyPlanNewNOO = {
+        usernameSMR: userData.username,
+        nomorDokumen: "",
+        catatan: state.visitSpreadingReducer.catatan,
+        idJenisChannel: parseInt(
+          state.visitSpreadingReducer.jenisChannel.jenisChannelID
+        ),
+        jenisChannel: state.visitSpreadingReducer.jenisChannel.namaJenisChannel,
+        idOutlet: "",
+        namaOutlet: state.visitSpreadingReducer.newOutlet,
+        alamatOutlet: state.visitSpreadingReducer.alamat,
         tanggal: now.toISOString(),
         target: 0,
         sales: 0,
@@ -188,37 +402,82 @@ export default function index() {
       );
 
       var data = {
-        avp: bodyPlan,
+        spreadingSave: bodyPlan,
+        dProductList: bodyProduct,
+      };
+      var dataNewNOO = {
+        spreadingSave: bodyPlanNewNOO,
         dProductList: bodyProduct,
       };
 
       console.log(data, state.visitSpreadingReducer.avability);
-
-      submitVisitSpreading(data)
-        .then((res) => {
-          console.log("ini res", res);
-          const bodyPosm = state.visitSpreadingReducer.visibility.map(
-            (val, index) => {
-              return {
-                activityVisitSpreadingId: res.avp.id,
-                nomor: index,
-                tipe: val.type.program,
-                namaFile: val.file.name,
-                createdBy: userData.username,
-                updatedBy: userData.username,
-              };
+      if (newNOO) {
+        submitVisitSpreading(dataNewNOO)
+          .then((res) => {
+            console.log("ini res", res);
+            const bodyPosm = state.visitSpreadingReducer.visibility.map(
+              (val, index) => {
+                return {
+                  activitySpreadingId: res.spreadingSave.id,
+                  nomor: index,
+                  tipe: val.type.program,
+                  namaFile: val.file.name,
+                  createdBy: userData.username,
+                  updatedBy: userData.username,
+                };
+              }
+            );
+            for (let i = 0; i < files.length; i++) {
+              submitVisitSpreadingDposm(bodyPosm[i], files[i])
+                .then((res) => {
+                  if (i === 5) {
+                    setLoadingSubmit(false);
+                    Router.push("/");
+                    actions.setDefaultVisitUnplan();
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
-          );
-          for (let i = 0; i < files.length; i++) {
-            submitVisitSpreadingDposm(bodyPosm[i], files[i]);
-          }
-          setLoadingSubmit(false);
-          actions.setDefaultVisitSpreading();
-          Router.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        submitVisitSpreading(data)
+          .then((res) => {
+            console.log("ini res", res);
+            const bodyPosm = state.visitSpreadingReducer.visibility.map(
+              (val, index) => {
+                return {
+                  activitySpreadingId: res.spreadingSave.id,
+                  nomor: index,
+                  tipe: val.type.program,
+                  namaFile: val.file.name,
+                  createdBy: userData.username,
+                  updatedBy: userData.username,
+                };
+              }
+            );
+            for (let i = 0; i < files.length; i++) {
+              submitVisitSpreadingDposm(bodyPosm[i], files[i])
+                .then((res) => {
+                  if (i === 5) {
+                    setLoadingSubmit(false);
+                    Router.push("/");
+                    actions.setDefaultVisitUnplan();
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
 
@@ -235,7 +494,7 @@ export default function index() {
           ) : null}
           <div className={styles.wrapper}>
             <Nav
-              title={"Spreading"}
+              title={newNOO ? "New Outlet" : "Spreading"}
               color={"white"}
               action={"Submit"}
               onClick={() => {
@@ -247,7 +506,7 @@ export default function index() {
                     "Data will be lost if you leave the page, are you sure?"
                   )
                 ) {
-                  actions.setDefaultVisitPlan();
+                  actions.setDefaultVisitSpreading();
                   Router.push("/visit/spreading");
                 }
               }}

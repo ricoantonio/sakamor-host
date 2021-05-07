@@ -195,33 +195,37 @@ export default function Spreading() {
                     onSubmitSpreading();
                   }}
                 />
-                <Link href="/visit/unplan/history">
+                <Link href="/visit/spreading/history">
                   <a>
                     <div className={styles.view_history}>View History</div>
                   </a>
                 </Link>
-                <Card style={{ borderRadius: "5px", margin: "22px 0" }}>
-                  <div className={styles.unplan_grid2}>
-                    <div className={styles.add_unplan}>
-                      <div style={{ marginTop: "-8px" }}>+</div>
-                    </div>
-                    <div style={{ fontSize: "16px", fontWeight: "600" }}>
-                      Add new outlet
-                      <div
-                        style={{
-                          color: "#B9B9C3",
-                          fontWeight: "300",
-                          fontSize: "13px",
-                        }}
-                      >
-                        Outlet not available
-                      </div>{" "}
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                      <img src={"/next.svg"} />
-                    </div>
-                  </div>
-                </Card>
+                <Link href="/visit/spreading/submit?new=true">
+                  <a style={{ textDecoration: "none" }}>
+                    <Card style={{ borderRadius: "5px", margin: "22px 0" }}>
+                      <div className={styles.unplan_grid2}>
+                        <div className={styles.add_unplan}>
+                          <div style={{ marginTop: "-8px" }}>+</div>
+                        </div>
+                        <div style={{ fontSize: "16px", fontWeight: "600" }}>
+                          Add new outlet
+                          <div
+                            style={{
+                              color: "#B9B9C3",
+                              fontWeight: "300",
+                              fontSize: "13px",
+                            }}
+                          >
+                            Outlet not available
+                          </div>{" "}
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                          <img src={"/next.svg"} />
+                        </div>
+                      </div>
+                    </Card>
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

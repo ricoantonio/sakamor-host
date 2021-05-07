@@ -16,6 +16,8 @@ import {
   viewFile,
   getInvoiceDataPosmUnplan,
   viewFileUnplan,
+  getInvoiceDataPosmSpreading,
+  viewFileSpreading,
 } from "../helper";
 
 import Card from "./Card";
@@ -29,6 +31,7 @@ export default function Visibility({ type }) {
   const [modal, setModal] = useState(false);
   const [fileFocus, setFileFocus] = useState(null);
   const [dummy, setDummy] = useState(0);
+  const [newNOO, setNewNOO] = useState(false);
   const [vis, setVis] = useState([
     { file: null, type: null },
     { file: null, type: null },
@@ -65,20 +68,37 @@ export default function Visibility({ type }) {
         setVis([...state.visitPlanReducer.visibility]);
       }
     } else if (type === "UNPLAN") {
+      if (state.visitUnplanReducer.visibility.length > 0) {
+        setVis([...state.visitUnplanReducer.visibility]);
+      }
     } else if (type === "SPREADING") {
+      if (state.visitSpreadingReducer.visibility.length > 0) {
+        setVis([...state.visitSpreadingReducer.visibility]);
+      }
     }
   }, [dispatch]);
 
   useEffect(() => {
-    if (type === "UNPLAN") {
-      if (
-        state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
-        state.visitUnplanReducer.outlet.namaOutlet
-      ) {
-      } else {
-        Router.push("/visit/unplan");
+    if (router.query.new) {
+      setNewNOO(true);
+    } else {
+      if (type === "UNPLAN") {
+        if (
+          state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
+          state.visitUnplanReducer.outlet.namaOutlet
+        ) {
+        } else {
+          Router.push("/visit/unplan");
+        }
+      } else if (type === "SPREADING") {
+        if (
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+          state.visitSpreadingReducer.outlet.namaOutlet
+        ) {
+        } else {
+          Router.push("/visit/spreading?new=true");
+        }
       }
-    } else if (type === "SPREADING") {
     }
   }, []);
 
@@ -123,6 +143,15 @@ export default function Visibility({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "HISTORY_SPREADING") {
+        getInvoiceDataPosmSpreading(router.query.id)
+          .then((data) => {
+            setPosmList(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }, [router.query.id]);
@@ -157,6 +186,14 @@ export default function Visibility({ type }) {
         .catch((err) => {
           console.log(err);
         });
+    } else if (type === "HISTORY_SPREADING") {
+      viewFileSpreading(val.id)
+        .then((data) => {
+          setFileFocus(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   const renderInputUpload = () => {
@@ -178,7 +215,7 @@ export default function Visibility({ type }) {
                 });
                 setDummy(dummy + 1);
               }}
-              value={val.type != null ? val.type.namaFile : ""}
+              value={val.type != null ? val.type.program : ""}
             />
             <span
               style={{
@@ -262,15 +299,20 @@ export default function Visibility({ type }) {
     }
   };
   const onSave = () => {
-    if (type === "PLAN") {
-      actions.setPlanVisibility(vis);
-      // console.log(vis);
-      Router.push(`/visit/plan/${router.query.id}`);
-    } else if (type === "UNPLAN") {
-      actions.setUnplanVisibility(vis);
-      Router.push(`/visit/unplan/submit`);
-    } else if (type === "SPREADING") {
-      Router.push(`/visit/spreading/submit`);
+    if (newNOO) {
+      actions.setSpreadingVisibility(vis);
+      Router.push(`/visit/spreading/submit?new=true`);
+    } else {
+      if (type === "PLAN") {
+        actions.setPlanVisibility(vis);
+        Router.push(`/visit/plan/${router.query.id}`);
+      } else if (type === "UNPLAN") {
+        actions.setUnplanVisibility(vis);
+        Router.push(`/visit/unplan/submit`);
+      } else if (type === "SPREADING") {
+        actions.setSpreadingVisibility(vis);
+        Router.push(`/visit/spreading/submit`);
+      }
     }
   };
 
@@ -330,10 +372,26 @@ export default function Visibility({ type }) {
                 onSave();
               }}
               backAction={() => {
-                if (state.visitPlanReducer.visibility.length > 0) {
-                  setVis([...state.visitPlanReducer.visibility]);
-                } else {
-                  setVis([...initialVis]);
+                if (type === "PLAN") {
+                  if (state.visitPlanReducer.visibility.length > 0) {
+                    setVis([...state.visitPlanReducer.visibility]);
+                  } else {
+                    setVis([...initialVis]);
+                  }
+                }
+                if (type === "UNPLAN") {
+                  if (state.visitUnplanReducer.visibility.length > 0) {
+                    setVis([...state.visitUnplanReducer.visibility]);
+                  } else {
+                    setVis([...initialVis]);
+                  }
+                }
+                if (type === "SPREADING") {
+                  if (state.visitSpreadingReducer.visibility.length > 0) {
+                    setVis([...state.visitSpreadingReducer.visibility]);
+                  } else {
+                    setVis([...initialVis]);
+                  }
                 }
                 Router.back();
               }}

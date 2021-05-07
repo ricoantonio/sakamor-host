@@ -1,7 +1,7 @@
 export default (dispatch) => ({
-  setSpreadingCatatan: async (data) => {
+  setSpreadingAlamat: async (data) => {
     try {
-      dispatch({ type: "SET_SPREADING_CATATAN", payload: data });
+      dispatch({ type: "SET_SPREADING_ALAMAT", payload: data });
     } catch (e) {
       console.log(e);
     }

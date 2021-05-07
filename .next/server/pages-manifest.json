@@ -2,7 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/visit/spreading": "pages/visit/spreading.js",
   "/visit/spreading/submit": "pages/visit/spreading/submit.js",
-  "/visit/unplan/history": "pages/visit/unplan/history.js"
+  "/visit/spreading/submit/visibility": "pages/visit/spreading/submit/visibility.js",
+  "/": "pages/index.js",
+  "/visit/spreading": "pages/visit/spreading.js",
+  "/visit/unplan": "pages/visit/unplan.js",
+  "/visit/unplan/submit/visibility": "pages/visit/unplan/submit/visibility.js",
+  "/visit/unplan/submit": "pages/visit/unplan/submit.js"
 }

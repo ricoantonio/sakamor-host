@@ -18,6 +18,7 @@ import {
   getPlanMonthlyHistory,
   getPlanHistory,
   getUnplanMonthlyHistory,
+  getSpreadingMonthlyHistory,
 } from "../helper";
 import moment from "moment";
 import Invoice from "./Invoice";
@@ -78,7 +79,15 @@ export default function History({ type }) {
           console.log(err);
         });
     } else if (type === "SPREADING") {
-      setLoading(false);
+      getSpreadingMonthlyHistory(userData)
+        .then((data) => {
+          console.log(data);
+          setHistory(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [dispatch]);
 
@@ -104,7 +113,7 @@ export default function History({ type }) {
             } else if (type === "UNPLAN") {
               Router.push(`/visit/unplan/history/${val.id}`);
             } else if (type === "SPREADING") {
-              Router.push(`/visit/spreading/history/${val.idVisitPlan}`);
+              Router.push(`/visit/spreading/history/${val.id}`);
             }
           }}
         />

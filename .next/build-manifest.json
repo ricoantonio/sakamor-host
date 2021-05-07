@@ -14,6 +14,11 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/index.js"
+    ],
     "/_app": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
@@ -34,10 +39,25 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/visit/spreading/submit.js"
     ],
-    "/visit/unplan/history": [
+    "/visit/spreading/submit/visibility": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/visit/unplan/history.js"
+      "static/chunks/pages/visit/spreading/submit/visibility.js"
+    ],
+    "/visit/unplan": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan.js"
+    ],
+    "/visit/unplan/submit": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan/submit.js"
+    ],
+    "/visit/unplan/submit/visibility": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/visit/unplan/submit/visibility.js"
     ]
   },
   "ampFirstPages": []

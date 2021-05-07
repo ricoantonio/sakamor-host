@@ -208,11 +208,18 @@ export default function index() {
             }
           );
           for (let i = 0; i < files.length; i++) {
-            submitVisitUnplanDposm(bodyPosm[i], files[i]);
+            submitVisitUnplanDposm(bodyPosm[i], files[i])
+              .then((res) => {
+                if (i === 5) {
+                  setLoadingSubmit(false);
+                  Router.push("/");
+                  actions.setDefaultVisitUnplan();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }
-          setLoadingSubmit(false);
-          actions.setDefaultVisitUnplan();
-          Router.push("/");
         })
         .catch((err) => {
           console.log(err);

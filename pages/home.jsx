@@ -10,7 +10,13 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { getAuth, getMenu, getPlanHistory, getPlanList } from "../helper";
+import {
+  getAuth,
+  getMenu,
+  getPlanHistory,
+  getPlanList,
+  getUnplanMonthlyHistory,
+} from "../helper";
 
 import { Doughnut } from "react-chartjs-2";
 import moment from "moment";
@@ -104,12 +110,6 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
-      } else if (focus === "UNPLAN") {
-        console.log("unplan");
-        setLoading(false);
-      } else if (focus === "SPREADING") {
-        console.log("spreading");
-        setLoading(false);
       } else if (focus === "WORK_VISIT") {
         console.log("work visit");
         setLoading(false);
@@ -133,7 +133,15 @@ export default function Home() {
           console.log(err);
         });
     } else if (focus === "UNPLAN") {
-      setLoading(false);
+      getUnplanMonthlyHistory(userData)
+        .then((data) => {
+          // console.log(data);
+          setUnplanHistory(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (focus === "SPREADING") {
       setLoading(false);
     }
@@ -413,7 +421,9 @@ export default function Home() {
         <>
           <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
             <div className={styles.unplan_grid}>
-              <div className={styles.num_total_unplan}>5</div>
+              <div className={styles.num_total_unplan}>
+                {unplanHistory.length}
+              </div>
               <div style={{ fontSize: "14px" }}>Total Unplan Visit</div>
               <div className={styles.date}>{moment().format("MMMM")}</div>
             </div>

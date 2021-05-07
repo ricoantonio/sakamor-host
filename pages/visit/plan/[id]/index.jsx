@@ -210,31 +210,16 @@ export default function index() {
           for (let i = 0; i < files.length; i++) {
             submitVisitPlanDposm(bodyPosm[i], files[i])
               .then((res) => {
-                done++;
+                if (i === 5) {
+                  setLoadingSubmit(false);
+                  Router.push("/");
+                  actions.setDefaultVisitPlan();
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
           }
-          setLoadingSubmit(false);
-          actions.setDefaultVisitPlan();
-          Router.push("/");
-
-          // var done = 0;
-          // for (let i = 0; i < files.length; i++) {
-          //   submitVisitPlanDposm(bodyPosm[i], files[i])
-          //     .then((res) => {
-          //       done++;
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          // }
-          // if (done === 5) {
-          //   setLoadingSubmit(false);
-          //   actions.setDefaultVisitPlan();
-          //   Router.push("/");
-          // }
         })
         .catch((err) => {
           console.log(err);

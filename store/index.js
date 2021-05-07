@@ -28,6 +28,8 @@ import setUnplanOutlet from "./actions/setUnplanOutlet";
 import setSpreadingAvability from "./actions/setSpreadingAvability";
 import setSpreadingVisibility from "./actions/setSpreadingVisibility";
 import setSpreadingCatatan from "./actions/setSpreadingCatatan";
+import setSpreadingAlamat from "./actions/setSpreadingAlamat";
+import setSpreadingNewOutlet from "./actions/setSpreadingNewOutlet";
 import setSpreadingCheckIn from "./actions/setSpreadingCheckIn";
 import setSpreadingJenisChannel from "./actions/setSpreadingJenisChannel";
 import setSpreadingOutlet from "./actions/setSpreadingOutlet";
@@ -87,6 +89,8 @@ const Store = ({ children }) => {
       ...setSpreadingVisibility(dispatch),
       ...setSpreadingAvability(dispatch),
       ...setSpreadingCatatan(dispatch),
+      ...setSpreadingAlamat(dispatch),
+      ...setSpreadingNewOutlet(dispatch),
       ...setSpreadingCheckIn(dispatch),
       ...setSpreadingJenisChannel(dispatch),
       ...setSpreadingOutlet(dispatch),

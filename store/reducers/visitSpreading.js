@@ -2,6 +2,8 @@ const defaultVisitSpreading = {
   visibility: [],
   avability: [],
   catatan: "",
+  alamat: "",
+  newOutlet: "",
   checkIn: "",
   jenisChannel: {},
   outlet: {},
@@ -15,6 +17,10 @@ const visitSpreadingReducer = (state, action) => {
       return { ...state, avability: action.payload };
     case "SET_SPREADING_CATATAN":
       return { ...state, catatan: action.payload };
+    case "SET_SPREADING_ALAMAT":
+      return { ...state, alamat: action.payload };
+    case "SET_SPREADING_NEW_OUTLET":
+      return { ...state, newOutlet: action.payload };
     case "SET_SPREADING_CHECK_IN":
       return { ...state, checkIn: action.payload };
     case "SET_SPREADING_JENIS_CHANNEL":
