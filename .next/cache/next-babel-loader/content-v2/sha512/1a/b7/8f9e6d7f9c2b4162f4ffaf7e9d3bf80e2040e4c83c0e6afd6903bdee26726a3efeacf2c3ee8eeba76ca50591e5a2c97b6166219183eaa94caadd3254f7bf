@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { jsx as _jsx } from \"react/jsx-runtime\";\nimport React, { useState, useEffect, useContext } from \"react\";\nimport History from \"../../../../components/History\";\nexport default function PlanHistory() {\n  return /*#__PURE__*/_jsx(History, {\n    type: \"PLAN\"\n  });\n}","map":null,"metadata":{},"sourceType":"module"}

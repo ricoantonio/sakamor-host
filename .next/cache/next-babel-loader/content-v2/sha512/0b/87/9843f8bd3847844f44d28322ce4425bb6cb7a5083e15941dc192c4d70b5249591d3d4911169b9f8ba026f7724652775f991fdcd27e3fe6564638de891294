@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default (dispatch => ({\n  setDefaultVisitUnplan: async () => {\n    try {\n      dispatch({\n        type: \"SET_DEFAULT_VISIT_UNPLAN\"\n      });\n    } catch (e) {\n      console.log(e);\n    }\n  }\n}));","map":null,"metadata":{},"sourceType":"module"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default (dispatch => ({\n  setSpreadingVisibility: async data => {\n    try {\n      dispatch({\n        type: \"SET_SPREADING_VISIBILITY\",\n        payload: data\n      });\n    } catch (e) {\n      console.log(e);\n    }\n  }\n}));","map":null,"metadata":{},"sourceType":"module"}

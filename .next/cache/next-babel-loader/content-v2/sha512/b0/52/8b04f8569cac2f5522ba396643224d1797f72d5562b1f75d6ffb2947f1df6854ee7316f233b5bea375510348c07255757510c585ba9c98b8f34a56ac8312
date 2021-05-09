@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { jsx as _jsx } from \"react/jsx-runtime\";\nimport React from \"react\";\nimport Avability from \"../../../../../components/Avability\";\nexport default function avability() {\n  return /*#__PURE__*/_jsx(Avability, {\n    type: \"HISTORY_UNPLAN\"\n  });\n}","map":null,"metadata":{},"sourceType":"module"}
