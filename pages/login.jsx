@@ -7,8 +7,6 @@ import { Stores } from "../store";
 import Router from "next/router";
 import { onLogin } from "../helper";
 
-import { API_URL, API_USER, TOKEN, API_VISIT_PLAN } from "../constant";
-
 export default function Login() {
   const { state, dispatch, actions } = useContext(Stores);
 

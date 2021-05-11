@@ -1,18 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Head from "next/head";
 import moment from "moment";
 import styles from "../styles/pages/Calendar.module.css";
-import Router from "next/router";
-import Link from "next/link";
 import { Stores } from "../store";
 
 import Spinner from "../components/Spinner";
 import BotNav from "../components/BotNav";
 import Nav from "../components/Nav";
-import Button from "../components/Button";
 import Card from "../components/Card";
-
-import { getAuth, getMenu, getPlanList } from "../helper";
 
 export default function Calender() {
   const { state, dispatch, actions } = useContext(Stores);

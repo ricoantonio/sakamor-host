@@ -25,6 +25,7 @@ import Card from "./Card";
 export default function Visibility({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
+  const [loadingView, setLoadingView] = useState(false);
   const [posm, setPosm] = useState([]);
   const [posmList, setPosmList] = useState([]);
   const [plan, setPlan] = useState([]);
@@ -170,10 +171,12 @@ export default function Visibility({ type }) {
 
   const onFileFocus = (val) => {
     setModal(true);
+    setLoadingView(true);
     if (type === "HISTORY_PLAN") {
       viewFile(val.id)
         .then((data) => {
           setFileFocus(data);
+          setLoadingView(false);
         })
         .catch((err) => {
           console.log(err);
@@ -182,6 +185,7 @@ export default function Visibility({ type }) {
       viewFileUnplan(val.id)
         .then((data) => {
           setFileFocus(data);
+          setLoadingView(false);
         })
         .catch((err) => {
           console.log(err);
@@ -190,6 +194,7 @@ export default function Visibility({ type }) {
       viewFileSpreading(val.id)
         .then((data) => {
           setFileFocus(data);
+          setLoadingView(false);
         })
         .catch((err) => {
           console.log(err);
@@ -346,10 +351,14 @@ export default function Visibility({ type }) {
                   margin: "20px auto",
                 }}
               >
-                <img
-                  style={{ width: "380px", margin: "0 10px" }}
-                  src={fileFocus}
-                />
+                {loadingView ? (
+                  <Spinner />
+                ) : (
+                  <img
+                    style={{ width: "380px", margin: "0 10px" }}
+                    src={fileFocus}
+                  />
+                )}
               </div>
             </div>
           </Modal>

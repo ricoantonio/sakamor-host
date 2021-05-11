@@ -1,35 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import Router from "next/router";
-import Link from "next/link";
-import { renderToString } from "react-dom/server";
-
 import { Stores } from "../store";
 
 import styles from "../styles/components/History.module.css";
-import html2canvas from "html2canvas";
 import Nav from "./Nav";
 import Spinner from "./Spinner";
 import DetailPlan from "./DetailPlan";
-import Modal from "./Modal";
-import Button from "./Button";
-import Card from "./Card";
 import {
   getAuth,
   getPlanMonthlyHistory,
-  getPlanHistory,
   getUnplanMonthlyHistory,
   getSpreadingMonthlyHistory,
 } from "../helper";
-import moment from "moment";
-import Invoice from "./Invoice";
-
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
   const [history, setHistory] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [pdfDownload, setPdfDownload] = useState(false);
-  const [pdfFocus, setPdfFocus] = useState([]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -81,7 +68,7 @@ export default function History({ type }) {
     } else if (type === "SPREADING") {
       getSpreadingMonthlyHistory(userData)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setHistory(data);
           setLoading(false);
         })
@@ -100,7 +87,7 @@ export default function History({ type }) {
         );
       }
     });
-    const render = history.map((val, index) => {
+    const render = filterData.map((val, index) => {
       return (
         <DetailPlan
           key={index}

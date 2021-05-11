@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import styles from "../../../../styles/pages/VisitPlanDetail.module.css";
 
 import { Stores } from "../../../../store";
@@ -17,8 +17,6 @@ export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [plan, setPlan] = useState([]);
-  const router = useRouter();
   var now = new Date();
 
   useEffect(() => {

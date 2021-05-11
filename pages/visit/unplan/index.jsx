@@ -6,7 +6,6 @@ import styles from "../../../styles/pages/Unplan.module.css";
 
 import Nav from "../../../components/Nav";
 import Spinner from "../../../components/Spinner";
-import DetailPlan from "../../../components/DetailPlan";
 import Button from "../../../components/Button";
 
 import { getSearchJenisChannel, getSearchOutlet } from "../../../helper";
@@ -22,30 +21,30 @@ export default function Unplan() {
   const [listOutlet, setListOutlet] = useState([]);
   const [renderListOutlet, setRenderListOutlet] = useState(false);
   const [focusOutlet, setFocusOutlet] = useState({});
-  const [position, setPosition] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const geo = navigator.geolocation;
-    if (!geo) {
-      setError("Geolocation is not supported");
-      return;
-    }
-    var watcher = geo.watchPosition(
-      ({ coords }) => {
-        setPosition({
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
-        // console.log(coords);
-      },
-      (err) => {
-        setError(err.message);
-      }
-    );
-    return () => geo.clearWatch(watcher);
-  }, []);
+  // const [position, setPosition] = useState({});
+  // useEffect(() => {
+  //   const geo = navigator.geolocation;
+  //   if (!geo) {
+  //     setError("Geolocation is not supported");
+  //     return;
+  //   }
+  //   var watcher = geo.watchPosition(
+  //     ({ coords }) => {
+  //       setPosition({
+  //         latitude: coords.latitude,
+  //         longitude: coords.longitude,
+  //       });
+  //       // console.log(coords);
+  //     },
+  //     (err) => {
+  //       setError(err.message);
+  //     }
+  //   );
+  //   return () => geo.clearWatch(watcher);
+  // }, []);
 
   const onSearchJenisChannel = (search) => {
     setRenderListJenisChannel(true);
@@ -221,8 +220,13 @@ export default function Unplan() {
                     <div className={styles.view_history}>View History</div>
                   </a>
                 </Link>
-                <div>{`latitude: ${position.latitude}`}</div>
-                <div>{`longitude: ${position.longitude}`}</div>
+                <Link href="/visit/unplan/nearme">
+                  <a>
+                    <div className={styles.view_history}>Near Me</div>
+                  </a>
+                </Link>
+                {/* <div>{`latitude: ${position.latitude}`}</div> */}
+                {/* <div>{`longitude: ${position.longitude}`}</div> */}
               </div>
             </div>
           </div>

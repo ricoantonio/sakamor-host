@@ -412,38 +412,46 @@ export default function index() {
 
       console.log(data, state.visitSpreadingReducer.avability);
       if (newNOO) {
-        submitVisitSpreading(dataNewNOO)
-          .then((res) => {
-            console.log("ini res", res);
-            const bodyPosm = state.visitSpreadingReducer.visibility.map(
-              (val, index) => {
-                return {
-                  activitySpreadingId: res.spreadingSave.id,
-                  nomor: index,
-                  tipe: val.type.program,
-                  namaFile: val.file.name,
-                  createdBy: userData.username,
-                  updatedBy: userData.username,
-                };
+        if (
+          state.visitSpreadingReducer.newOutlet &&
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+          state.visitSpreadingReducer.alamat
+        ) {
+          submitVisitSpreading(dataNewNOO)
+            .then((res) => {
+              console.log("ini res", res);
+              const bodyPosm = state.visitSpreadingReducer.visibility.map(
+                (val, index) => {
+                  return {
+                    activitySpreadingId: res.spreadingSave.id,
+                    nomor: index,
+                    tipe: val.type.program,
+                    namaFile: val.file.name,
+                    createdBy: userData.username,
+                    updatedBy: userData.username,
+                  };
+                }
+              );
+              for (let i = 0; i < files.length; i++) {
+                submitVisitSpreadingDposm(bodyPosm[i], files[i])
+                  .then((res) => {
+                    if (i === 5) {
+                      setLoadingSubmit(false);
+                      Router.push("/");
+                      actions.setDefaultVisitUnplan();
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               }
-            );
-            for (let i = 0; i < files.length; i++) {
-              submitVisitSpreadingDposm(bodyPosm[i], files[i])
-                .then((res) => {
-                  if (i === 5) {
-                    setLoadingSubmit(false);
-                    Router.push("/");
-                    actions.setDefaultVisitUnplan();
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          setLoadingSubmit(false);
+        }
       } else {
         submitVisitSpreading(data)
           .then((res) => {

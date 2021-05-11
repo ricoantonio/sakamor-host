@@ -15,6 +15,7 @@ import {
   getMenu,
   getPlanHistory,
   getPlanList,
+  getSpreadingMonthlyHistory,
   getUnplanMonthlyHistory,
 } from "../helper";
 
@@ -143,7 +144,15 @@ export default function Home() {
           console.log(err);
         });
     } else if (focus === "SPREADING") {
-      setLoading(false);
+      getSpreadingMonthlyHistory(userData)
+        .then((data) => {
+          // console.log(data);
+          setSpreadingHistory(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [focus]);
 
@@ -353,7 +362,9 @@ export default function Home() {
                   {moment().format("D / MMM / YYYY")}
                 </span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
-                  <span style={{ fontSize: "36px", fontWeight: "600" }}>0</span>
+                  <span style={{ fontSize: "36px", fontWeight: "600" }}>
+                    {spreadingHistory.length}
+                  </span>
                   <span style={{ fontSize: "18px" }}>/{plan.length}</span>
                 </div>
                 <Link href={"/visit/spreading/"}>
