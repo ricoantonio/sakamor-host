@@ -643,6 +643,23 @@ const getUnplanMonthlyHistory = (userData) => {
     });
 };
 
+const getUnplanNearMe = () => {
+  return fetch(API_URL + API_MASTER + `/GetOutletNearMe/-6.123456/123.98754`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // SPREADING =======================================================================================================================
 
 const submitVisitSpreading = (data) => {
@@ -842,6 +859,7 @@ export {
   getInvoiceDataPosmUnplan,
   getUnplanMonthlyHistory,
   viewFileUnplan,
+  getUnplanNearMe,
   submitVisitSpreading,
   submitVisitSpreadingDposm,
   getInvoiceDataSpreading,

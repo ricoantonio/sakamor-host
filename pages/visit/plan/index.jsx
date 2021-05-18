@@ -51,6 +51,7 @@ export default function Plan() {
     getPlanList(userData)
       .then((data) => {
         setPlan(data);
+        console.log(data);
         setLoading(false);
       })
       .catch((err) => {

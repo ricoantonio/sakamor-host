@@ -3,7 +3,7 @@ import moment from "moment";
 
 const Invoice = ({ data, plan }) => {
   var total = 0;
-  console.log(plan);
+  console.log(data);
   const renderProduct = () => {
     return data.map((val, index) => {
       total += val.totalHarga;

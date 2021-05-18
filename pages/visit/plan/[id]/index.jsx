@@ -177,10 +177,8 @@ export default function index() {
           jumlahOrder: parseInt(val.order),
           createdBy: userData.username,
           updatedBy: userData.username,
-          // harga:  val.productFocus.harga,
-          // total:  val.productFocus.harga * val.order,x
-          harga: 0,
-          total: 0,
+          harga: parseInt(val.harga),
+          total: parseInt(val.harga) * parseInt(val.order),
           keterangan: val.ket,
         };
       });

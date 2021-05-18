@@ -6,14 +6,15 @@ import styles from "../../../../styles/components/History.module.css";
 import Nav from "../../../../components/Nav";
 import Spinner from "../../../../components/Spinner";
 import DetailPlan from "../../../../components/DetailPlan";
-import { getAuth } from "../../../../helper";
+import { getAuth, getUnplanNearMe } from "../../../../helper";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
-  const [history, setHistory] = useState([]);
+  const [nearMe, setNearMe] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [position, setPosition] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const geo = navigator.geolocation;
@@ -65,7 +66,7 @@ export default function History({ type }) {
   }, [dispatch]);
 
   const renderList = () => {
-    const filterData = history.filter((val) => {
+    const filterData = nearMe.filter((val) => {
       if (val.namaOutlet !== null) {
         return (
           val.namaOutlet.toLowerCase().includes(search.toLowerCase()) ||
@@ -73,7 +74,7 @@ export default function History({ type }) {
         );
       }
     });
-    const render = history.map((val, index) => {
+    const render = filterData.map((val, index) => {
       return (
         <DetailPlan
           key={index}

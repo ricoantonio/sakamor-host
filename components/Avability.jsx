@@ -17,6 +17,7 @@ import {
   getProductSearch,
   getProductByJenisChannel,
   getProductAvgSales,
+  getInvoiceDataSpreading,
 } from "../helper";
 
 export default function Avability({ type }) {
@@ -25,18 +26,20 @@ export default function Avability({ type }) {
   const [modal, setModal] = useState(false);
   const [renderProductList, setRenderProductList] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchListProduct, setSearchListProduct] = useState("");
   const [product, setProduct] = useState([]);
-  const [productSearch, setProductSearch] = useState([]);
   const [productFocus, setProductFocus] = useState({});
   const [avabilityList, setAvabilityList] = useState([]);
   const [order, setOrder] = useState("");
   const [pengiriman, setPengiriman] = useState("");
   const [avgSales, setAvgSales] = useState("");
+  const [harga, setHarga] = useState("");
   const [saranOrder, setSaranOrder] = useState("");
   const [stock, setStock] = useState("");
   const [minor, setMinor] = useState("");
   const [ket, setKet] = useState("");
   const [plan, setPlan] = useState([]);
+  const [newNOO, setNewNOO] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,43 +59,82 @@ export default function Avability({ type }) {
         setAvabilityList([...state.visitPlanReducer.avability]);
       }
     } else if (type === "UNPLAN") {
+      if (state.visitUnplanReducer.avability.length > 0) {
+        setAvabilityList([...state.visitUnplanReducer.avability]);
+      }
     } else if (type === "SPREADING") {
+      if (state.visitSpreadingReducer.avability.length > 0) {
+        setAvabilityList([...state.visitSpreadingReducer.avability]);
+      }
     }
   }, [dispatch]);
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    if (type === "UNPLAN") {
-      if (
-        state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
-        state.visitUnplanReducer.outlet.namaOutlet
-      ) {
-      } else {
-        Router.push("/visit/unplan");
+    if (router.query.new) {
+      setNewNOO(true);
+    } else {
+      if (type === "UNPLAN") {
+        if (
+          state.visitUnplanReducer.jenisChannel.namaJenisChannel &&
+          state.visitUnplanReducer.outlet.namaOutlet
+        ) {
+        } else {
+          Router.push("/visit/unplan");
+        }
+      } else if (type === "SPREADING") {
       }
-    } else if (type === "SPREADING") {
     }
   }, []);
 
   useEffect(() => {
     if (productFocus.produkID) {
       if (type === "PLAN") {
+        setAvgSales(10);
+        setHarga(5000);
       } else if (type === "UNPLAN") {
-        console.log("a");
-        getProductAvgSales(
-          productFocus.produkID,
-          state.visitUnplanReducer.outlet.outletID
-        )
-          .then((data) => {
-            console.log(data);
-            // setAvgSales(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        setAvgSales(10);
+        setHarga(5000);
+        // getProductAvgSales(
+        //   productFocus.produkID,
+        //   state.visitUnplanReducer.outlet.outletID
+        // )
+        //   .then((data) => {
+        //     console.log(data);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
       } else if (type === "SPREADING") {
+        setAvgSales(10);
+        setHarga(5000);
       }
     }
   }, [productFocus]);
+
+  useEffect(() => {
+    if (productFocus.produkID) {
+      if (stock && pengiriman && minor) {
+        if (type === "PLAN") {
+          setSaranOrder(
+            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
+              parseInt(minor)
+          );
+        } else if (type === "UNPLAN") {
+          setSaranOrder(
+            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
+              parseInt(minor)
+          );
+        } else if (type === "SPREADING") {
+          setSaranOrder(
+            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
+              parseInt(minor)
+          );
+        }
+      }
+    }
+  }, [stock, pengiriman, minor]);
 
   useEffect(() => {
     if (router.query.id) {
@@ -133,6 +175,15 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "HISTORY_SPREADING") {
+        getInvoiceDataSpreading(router.query.id)
+          .then((data) => {
+            setAvabilityList(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }, [router.query.id]);
@@ -161,7 +212,17 @@ export default function Avability({ type }) {
           console.log(err);
         });
     } else if (type === "SPREADING") {
-      setLoading(false);
+      getProductByJenisChannel(
+        state.visitSpreadingReducer.jenisChannel.jenisChannelID
+      )
+        .then((data) => {
+          setProduct(data);
+          // console.log(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [plan]);
 
@@ -174,18 +235,20 @@ export default function Avability({ type }) {
     //   .catch((err) => {
     //     console.log(err);
     //   });;''''
-    setProductSearch(search);
+    // setProductSearch(search);
+    setSearchListProduct(search);
   };
 
   const renderProductSearch = () => {
     const render = product.map((val, index) => {
-      if (val.namaProduk.includes(productSearch)) {
+      if (val.namaProduk.includes(searchListProduct.toUpperCase())) {
         return (
           <div
             onClick={() => {
               // setProduct([]);
               console.log(val);
               setProductFocus(val);
+              setSearchListProduct(val.namaProduk);
               setRenderProductList(false);
             }}
             key={index}
@@ -218,14 +281,14 @@ export default function Avability({ type }) {
                   onSearchProduct(e.target.value);
                 }}
                 placeholder="Search"
-                value={productFocus.namaProduk}
+                value={searchListProduct}
                 className={styles.input_order_search}
                 // onClick={() => {
                 //   setProduct([]);
                 // }}
                 onFocus={() => setRenderProductList(true)}
               />
-              {product ? (
+              {renderProductList ? (
                 <div
                   style={{
                     position: "absolute",
@@ -237,7 +300,7 @@ export default function Avability({ type }) {
                     zIndex: 999999,
                   }}
                 >
-                  {renderProductList ? renderProductSearch() : null}
+                  {renderProductSearch()}
                 </div>
               ) : null}
               <div className={styles.stock_order_container}>
@@ -348,9 +411,8 @@ export default function Avability({ type }) {
                     var reg = new RegExp(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g);
                     if (
                       productFocus.namaProduk &&
-                      // stock.match(reg) &&
-                      // saranOrder.match(reg) &&
-                      order.match(reg)
+                      order.match(reg) &&
+                      order != 0
                     ) {
                       if (avabilityList.length > 0) {
                         var sameDataIndex = avabilityList.findIndex(
@@ -366,12 +428,16 @@ export default function Avability({ type }) {
                             saranOrder,
                             order,
                             ket,
+                            pengiriman,
+                            minor,
+                            harga,
                           });
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
                           setOrder("");
                           setKet("");
+                          setHarga("");
                         } else {
                           avabilityList.push({
                             productFocus,
@@ -379,12 +445,16 @@ export default function Avability({ type }) {
                             saranOrder,
                             order,
                             ket,
+                            pengiriman,
+                            minor,
+                            harga,
                           });
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
                           setOrder("");
                           setKet("");
+                          setHarga("");
                         }
                       } else {
                         avabilityList.push({
@@ -393,12 +463,16 @@ export default function Avability({ type }) {
                           saranOrder,
                           order,
                           ket,
+                          pengiriman,
+                          minor,
+                          harga,
                         });
                         setModal(false);
                         setStock("");
                         setSaranOrder("");
                         setOrder("");
                         setKet("");
+                        setHarga("");
                       }
                     }
                   }}
@@ -425,7 +499,7 @@ export default function Avability({ type }) {
           >
             <div>
               <div className={styles.avabilitylist_title}>{val.namaProduk}</div>
-              <div className={styles.avabilitylist_stock_container}>
+              {/* <div className={styles.avabilitylist_stock_container}>
                 <div
                   className={styles.avabilitylist_container}
                   style={{ marginRight: "5px" }}
@@ -446,19 +520,21 @@ export default function Avability({ type }) {
                     {val.saranOrder} pcs
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className={styles.avabilitylist_container}>
                 <div className={styles.avabilitylist_subtitle}>Order</div>
                 <div className={styles.avabilitylist_value}>
-                  {val.order} pcs
+                  {val.jumlah} pcs
                 </div>
               </div>
-              {val.ket ? (
+              {val.keterangan ? (
                 <div className={styles.avabilitylist_container}>
                   <div className={styles.avabilitylist_subtitle}>
                     Keterangan
                   </div>
-                  <div className={styles.avabilitylist_value}>{val.ket}</div>
+                  <div className={styles.avabilitylist_value}>
+                    {val.keterangan}
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -503,6 +579,9 @@ export default function Avability({ type }) {
                 setOrder(val.order);
                 setKet(val.ket);
                 setModal(true);
+                setPengiriman(val.pengiriman);
+                setMinor(val.minor);
+                setHarga(val.harga);
               }}
             >
               <div className={styles.avabilitylist_title}>
@@ -566,15 +645,21 @@ export default function Avability({ type }) {
     }
   };
   const onSave = () => {
-    if (type === "PLAN") {
-      actions.setPlanAvability(avabilityList);
-      // console.log(avabilityList);
-      Router.push(`/visit/plan/${router.query.id}`);
-    } else if (type === "UNPLAN") {
-      actions.setUnplanAvability(avabilityList);
-      Router.push(`/visit/unplan/submit`);
-    } else if (type === "SPREADING") {
-      Router.push(`/visit/spreading/submit`);
+    if (newNOO) {
+      actions.setSpreadingAvability(avabilityList);
+      Router.push(`/visit/spreading/submit?new=true`);
+    } else {
+      if (type === "PLAN") {
+        actions.setPlanAvability(avabilityList);
+        // console.log(avabilityList);
+        Router.push(`/visit/plan/${router.query.id}`);
+      } else if (type === "UNPLAN") {
+        actions.setUnplanAvability(avabilityList);
+        Router.push(`/visit/unplan/submit`);
+      } else if (type === "SPREADING") {
+        actions.setSpreadingAvability(avabilityList);
+        Router.push(`/visit/spreading/submit`);
+      }
     }
   };
   const render = () => {
@@ -641,6 +726,15 @@ export default function Avability({ type }) {
                       setModal(true);
                       // setProduct([]);
                       setProductFocus("");
+                      setAvgSales("");
+                      setStock("");
+                      setPengiriman("");
+                      setOrder("");
+                      setSaranOrder("");
+                      setKet("");
+                      setMinor("");
+                      setHarga("");
+                      setSearchListProduct("");
                     }}
                   />
                 </div>
