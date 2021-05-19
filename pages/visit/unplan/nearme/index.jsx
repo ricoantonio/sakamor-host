@@ -149,7 +149,6 @@ export default function History({ type }) {
           <div className={styles.wrapper}>
             <Nav
               title={"Near Me"}
-              backAction={() => Router.back()}
               color={"white"}
               backAction={() => {
                 if (
