@@ -149,7 +149,7 @@ export default function History({ type }) {
           <div className={styles.wrapper}>
             <Nav
               title={"Near Me"}
-              backAction={() => Router.back()}
+              backAction={() => Router.push("/visit/unplan")}
               color={"white"}
             />
             <div className={styles.main}>
