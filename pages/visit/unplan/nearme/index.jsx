@@ -157,7 +157,7 @@ export default function History({ type }) {
                   )
                 ) {
                   actions.setDefaultVisitPlan();
-                  Router.push("/visit/unplan");
+                  Router.push("/visit/unplan/naerme");
                 }
               }}
             />
