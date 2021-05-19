@@ -582,19 +582,9 @@ const visitSpreadingReducer = (state, action) => {
     }
   }
 }));
-// CONCATENATED MODULE: ./store/actions/setUnplanOutlet.js
-/* harmony default export */ var setUnplanOutlet = (dispatch => ({
-  setUnplanOutlet: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_OUTLET",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
+// EXTERNAL MODULE: ./store/actions/setUnplanOutlet.js
+var setUnplanOutlet = __webpack_require__("srvB");
+
 // CONCATENATED MODULE: ./store/actions/setSpreadingAvability.js
 /* harmony default export */ var setSpreadingAvability = (dispatch => ({
   setSpreadingAvability: async data => {
@@ -797,7 +787,7 @@ const Store = ({
     visitUnplanReducer: defaultVisitUnplan,
     visitSpreadingReducer: defaultVisitSpreading
   });
-  const actions = Object(external_react_["useMemo"])(() => store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread({}, userLogin(dispatch)), setMenu(dispatch)), keepState(dispatch)), setPlanVisibility(dispatch)), setPlanAvability(dispatch)), setPlanCatatan(dispatch)), setPlanCheckIn(dispatch)), setDefaultVisitPlan(dispatch)), setUnplanVisibility(dispatch)), setUnplanAvability(dispatch)), setUnplanCatatan(dispatch)), setUnplanCheckIn(dispatch)), setUnplanJenisChannel(dispatch)), setUnplanOutlet(dispatch)), setDefaultVisitUnplan(dispatch)), setSpreadingVisibility(dispatch)), setSpreadingAvability(dispatch)), setSpreadingCatatan(dispatch)), setSpreadingAlamat(dispatch)), setSpreadingNewOutlet(dispatch)), setSpreadingCheckIn(dispatch)), setSpreadingJenisChannel(dispatch)), setSpreadingOutlet(dispatch)), setDefaultVisitSpreading(dispatch)), []);
+  const actions = Object(external_react_["useMemo"])(() => store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread({}, userLogin(dispatch)), setMenu(dispatch)), keepState(dispatch)), setPlanVisibility(dispatch)), setPlanAvability(dispatch)), setPlanCatatan(dispatch)), setPlanCheckIn(dispatch)), setDefaultVisitPlan(dispatch)), setUnplanVisibility(dispatch)), setUnplanAvability(dispatch)), setUnplanCatatan(dispatch)), setUnplanCheckIn(dispatch)), setUnplanJenisChannel(dispatch)), Object(setUnplanOutlet["a" /* default */])(dispatch)), setDefaultVisitUnplan(dispatch)), setSpreadingVisibility(dispatch)), setSpreadingAvability(dispatch)), setSpreadingCatatan(dispatch)), setSpreadingAlamat(dispatch)), setSpreadingNewOutlet(dispatch)), setSpreadingCheckIn(dispatch)), setSpreadingJenisChannel(dispatch)), setSpreadingOutlet(dispatch)), setDefaultVisitSpreading(dispatch)), []);
   return /*#__PURE__*/Object(jsx_runtime_["jsx"])(Stores.Provider, {
     value: {
       state,
@@ -816,6 +806,25 @@ const Store = ({
 /***/ (function(module, exports) {
 
 
+
+/***/ }),
+
+/***/ "srvB":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (dispatch => ({
+  setUnplanOutlet: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_OUTLET",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
 
 /***/ }),
 

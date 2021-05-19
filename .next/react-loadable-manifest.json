@@ -2,21 +2,21 @@
   "..\\components\\HistoryDetail.jsx -> jspdf": {
     "id": "i680",
     "files": [
-      "static/chunks/e78312c5.a1dea8229c4b383bf6bc.js",
-      "static/chunks/51.361a353d409deccff11a.js"
+      "static/chunks/e78312c5.826443913a5cfd6e845f.js",
+      "static/chunks/54.8ae9e667867ee45d99a1.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
     "id": "DXPr",
     "files": [
       "static/chunks/72a30a16.a56c4df53397a31cb322.js",
-      "static/chunks/50.895578f0e85efe050b1a.js"
+      "static/chunks/53.7f87f5bc9aad81a83167.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> dompurify": {
     "id": "wMS7",
     "files": [
-      "static/chunks/52.6b26a8eed35645cbe502.js"
+      "static/chunks/55.1ebaaed4a2c2bf96cbc1.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> html2canvas": {

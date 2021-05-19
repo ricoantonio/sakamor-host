@@ -5,8 +5,12 @@ import { Stores } from "../../../../store";
 import styles from "../../../../styles/components/History.module.css";
 import Nav from "../../../../components/Nav";
 import Spinner from "../../../../components/Spinner";
+import Button from "../../../../components/Button";
 import DetailPlan from "../../../../components/DetailPlan";
+import Link from "next/link";
+import Card from "../../../../components/Card";
 import { getAuth, getUnplanNearMe } from "../../../../helper";
+import setUnplanOutlet from "../../../../store/actions/setUnplanOutlet";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
@@ -62,7 +66,15 @@ export default function History({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
-    setLoading(false);
+    getUnplanNearMe()
+      .then((res) => {
+        setNearMe(res);
+        console.log(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [dispatch]);
 
   const renderList = () => {
@@ -76,20 +88,44 @@ export default function History({ type }) {
     });
     const render = filterData.map((val, index) => {
       return (
-        <DetailPlan
-          key={index}
-          data={val}
-          history
-          onClick={() => {
-            if (type === "PLAN") {
-              Router.push(`/visit/plan/history/${val.idVisitPlan}`);
-            } else if (type === "UNPLAN") {
-              Router.push(`/visit/unplan/history/${val.id}`);
-            } else if (type === "SPREADING") {
-              Router.push(`/visit/spreading/history/${val.id}`);
-            }
-          }}
-        />
+        <Card style={{ marginTop: "22px", borderRadius: "5px" }}>
+          <div style={{ padding: "21px 18px" }}>
+            <div className={styles.top_grid}>
+              <div>
+                <div
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {val.namaOutlet}
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: "400" }}>
+                  {val.alamatOutlet}
+                </div>
+                <Link href={`/visit/unplan/nearme/${val.outletID}`}>
+                  <a>
+                    <div
+                      style={{
+                        textAlign: "center",
+                        margin: "10px 0",
+                        paddingTop: "14px",
+                      }}
+                    >
+                      <Button
+                        color={"white"}
+                        text={"More"}
+                        onClick={() => {
+                          actions.setUnplanOutlet(val);
+                        }}
+                      />
+                    </div>
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
       );
     });
     if (filterData.length == 0) {
@@ -115,6 +151,16 @@ export default function History({ type }) {
               title={"Near Me"}
               backAction={() => Router.back()}
               color={"white"}
+              backAction={() => {
+                if (
+                  confirm(
+                    "Data will be lost if you leave the page, are you sure?"
+                  )
+                ) {
+                  actions.setDefaultVisitPlan();
+                  Router.push("/visit/unplan");
+                }
+              }}
             />
             <div className={styles.main}>
               <div className={styles.search_fixed}>

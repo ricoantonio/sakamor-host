@@ -85,6 +85,7 @@ export default function index() {
       setListJenisChannel([]);
     }
   };
+
   const renderSearchJenisChannel = () => {
     const render = listJenisChannel.map((val, index) => {
       return (
@@ -438,7 +439,7 @@ export default function index() {
                     if (i === 5) {
                       setLoadingSubmit(false);
                       Router.push("/");
-                      actions.setDefaultVisitUnplan();
+                      actions.setDefaultVisitSpreading();
                     }
                   })
                   .catch((err) => {
@@ -474,7 +475,7 @@ export default function index() {
                   if (i === 5) {
                     setLoadingSubmit(false);
                     Router.push("/");
-                    actions.setDefaultVisitUnplan();
+                    actions.setDefaultVisitSpreading();
                   }
                 })
                 .catch((err) => {

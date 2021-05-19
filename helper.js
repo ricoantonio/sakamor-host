@@ -644,11 +644,14 @@ const getUnplanMonthlyHistory = (userData) => {
 };
 
 const getUnplanNearMe = () => {
-  return fetch(API_URL + API_MASTER + `/GetOutletNearMe/-6.123456/123.98754`, {
-    headers: {
-      apiKey: TOKEN,
-    },
-  })
+  return fetch(
+    API_URL + API_MASTER + `/MasterData/GetOutletNearMe/-6.123456/12.987654`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
     .then((response) => {
       return response.json();
     })
