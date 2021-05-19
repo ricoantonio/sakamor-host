@@ -360,7 +360,7 @@ export default function index() {
                     )
                   ) {
                     actions.setDefaultVisitPlan();
-                    Router.push("/visit/plan");
+                    Router.push("/visit/unplan/nearme");
                   }
                 }}
               />

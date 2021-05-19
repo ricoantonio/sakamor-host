@@ -149,17 +149,8 @@ export default function History({ type }) {
           <div className={styles.wrapper}>
             <Nav
               title={"Near Me"}
+              backAction={() => Router.back()}
               color={"white"}
-              backAction={() => {
-                if (
-                  confirm(
-                    "Data will be lost if you leave the page, are you sure?"
-                  )
-                ) {
-                  actions.setDefaultVisitPlan();
-                  Router.push("/visit/unplan/naerme");
-                }
-              }}
             />
             <div className={styles.main}>
               <div className={styles.search_fixed}>
