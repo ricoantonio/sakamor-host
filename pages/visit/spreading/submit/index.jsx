@@ -33,7 +33,20 @@ export default function index() {
   useEffect(() => {
     if (router.query.new) {
       setNewNOO(true);
-      actions.setSpreadingCheckIn(now);
+      if (!state.visitSpreadingReducer.checkIn) {
+        actions.setSpreadingCheckIn(now);
+      }
+      setSearchJenisChannel(
+        state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+      );
+      if (
+        state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+        state.visitSpreadingReducer.outlet.namaOutlet
+      ) {
+        setSearchJenisChannel(
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+        );
+      }
     } else {
       if (
         state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
@@ -42,6 +55,9 @@ export default function index() {
         if (!state.visitSpreadingReducer.checkIn) {
           actions.setSpreadingCheckIn(now);
         }
+        setSearchJenisChannel(
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+        );
       } else {
         Router.push("/visit/spreading");
       }
@@ -132,12 +148,9 @@ export default function index() {
               <input
                 onChange={(e) => {
                   onSearchJenisChannel(e.target.value);
+                  actions.setSpreadingAvability([]);
                 }}
-                value={
-                  state.visitSpreadingReducer.jenisChannel.namaJenisChannel
-                    ? state.visitSpreadingReducer.jenisChannel.namaJenisChannel
-                    : searchJenisChannel
-                }
+                value={searchJenisChannel}
                 placeholder="Search"
                 className={styles.input}
                 onBlur={() => {
@@ -228,19 +241,23 @@ export default function index() {
                     ""
                   )}
                 </div>
-                <Link
-                  href={
-                    type === "Visibility"
-                      ? `/visit/spreading/submit/visibility?new=true`
-                      : type === "Avability"
-                      ? `/visit/spreading/submit/avability?new=true`
-                      : ""
-                  }
-                >
-                  <a>
+                {type === "Avability" ? (
+                  state.visitSpreadingReducer.jenisChannel.namaJenisChannel ? (
+                    <Link href={`/visit/spreading/submit/avability?new=true`}>
+                      <a>
+                        <Button text="Add" />
+                      </a>
+                    </Link>
+                  ) : (
                     <Button text="Add" />
-                  </a>
-                </Link>
+                  )
+                ) : type === "Visibility" ? (
+                  <Link href={`/visit/spreading/submit/visibility?new=true`}>
+                    <a>
+                      <Button text="Add" />
+                    </a>
+                  </Link>
+                ) : null}
               </div>
             </Card>
           ) : (
