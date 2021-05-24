@@ -27,6 +27,8 @@ export default function index() {
   const [listJenisChannel, setListJenisChannel] = useState([]);
   const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
   const [focusJenisChannel, setFocusJenisChannel] = useState({});
+  const [visNotDone, setVisNotDone] = useState(false);
+
   const router = useRouter();
   var now = new Date();
 
@@ -349,7 +351,7 @@ export default function index() {
     });
     if (visDone.length === 6) {
       setLoadingSubmit(true);
-
+      setVisNotDone(false);
       const userData = JSON.parse(localStorage.getItem("user"));
 
       const bodyPlan = {
@@ -504,10 +506,16 @@ export default function index() {
             console.log(err);
           });
       }
+    } else {
+      setVisNotDone(true);
     }
   };
 
   const render = () => {
+    const visDone = state.visitSpreadingReducer.visibility.filter((val) => {
+      return val.file !== null && val.type !== null;
+    });
+
     if (loading) {
       return <Spinner />;
     } else {
@@ -536,9 +544,24 @@ export default function index() {
                   Router.push("/visit/spreading");
                 }
               }}
-              disable={false}
+              disable={visDone.length === 6 ? false : true}
             />
-            <div className={styles.main}>{renderDetail()}</div>
+            <div className={styles.main}>
+              {visNotDone ? (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    textAlign: "center",
+                  }}
+                >
+                  Please complete visibility data
+                </div>
+              ) : (
+                ""
+              )}
+              {renderDetail()}
+            </div>
           </div>
         </div>
       );

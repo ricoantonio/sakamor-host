@@ -315,7 +315,7 @@ export default function HistoryDetail({ type }) {
         );
       }
 
-      pdf.save("file.pdf");
+      pdf.save(`${"file"}.pdf`);
     });
   };
 

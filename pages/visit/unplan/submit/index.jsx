@@ -17,6 +17,8 @@ export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [visNotDone, setVisNotDone] = useState(false);
+
   var now = new Date();
 
   useEffect(() => {
@@ -135,6 +137,7 @@ export default function index() {
     });
     if (visDone.length === 6) {
       setLoadingSubmit(true);
+      setVisNotDone(false);
 
       const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -222,10 +225,15 @@ export default function index() {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      setVisNotDone(true);
     }
   };
 
   const render = () => {
+    const visDone = state.visitUnplanReducer.visibility.filter((val) => {
+      return val.file !== null && val.type !== null;
+    });
     if (loading) {
       return <Spinner />;
     } else {
@@ -254,9 +262,24 @@ export default function index() {
                   Router.push("/visit/unplan");
                 }
               }}
-              disable={false}
+              disable={visDone.length === 6 ? false : true}
             />
-            <div className={styles.main}>{renderDetail()}</div>
+            <div className={styles.main}>
+              {visNotDone ? (
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    textAlign: "center",
+                  }}
+                >
+                  Please complete visibility data
+                </div>
+              ) : (
+                ""
+              )}
+              {renderDetail()}
+            </div>
           </div>
         </div>
       );

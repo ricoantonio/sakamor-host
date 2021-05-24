@@ -28,6 +28,8 @@ export default function index() {
   const [listJenisChannel, setListJenisChannel] = useState([]);
   const [focusJenisChannel, setFocusJenisChannel] = useState({});
   const [plan, setPlan] = useState([]);
+  const [visNotDone, setVisNotDone] = useState(false);
+
   const router = useRouter();
   var now = new Date();
 
@@ -172,9 +174,9 @@ export default function index() {
               <textarea
                 style={{ width: "100%", border: "none", height: "70px" }}
                 onChange={(e) => {
-                  actions.setSpreadingCatatan(e.target.value);
+                  actions.setUnplanCatatan(e.target.value);
                 }}
-                value={state.visitSpreadingReducer.catatan}
+                value={state.visitUnplanReducer.catatan}
               ></textarea>
             </div>
           </Card>
@@ -219,13 +221,17 @@ export default function index() {
                   <Button text="Add" />
                 )
               ) : type === "Visibility" ? (
-                <Link
-                  href={`/visit/unplan/nearme/${plan[0].outletID}/visibility`}
-                >
-                  <a>
-                    <Button text="Add" />
-                  </a>
-                </Link>
+                state.visitUnplanReducer.jenisChannel.namaJenisChannel ? (
+                  <Link
+                    href={`/visit/unplan/nearme/${plan[0].outletID}/visibility`}
+                  >
+                    <a>
+                      <Button text="Add" />
+                    </a>
+                  </Link>
+                ) : (
+                  <Button text="Add" />
+                )
               ) : null}
             </div>
           </Card>
@@ -247,6 +253,7 @@ export default function index() {
     // console.log(state.visitPlanReducer.visibility);
     if (visDone.length === 6) {
       setLoadingSubmit(true);
+      setVisNotDone(false);
 
       const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -325,11 +332,13 @@ export default function index() {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      setVisNotDone(true);
     }
   };
 
   const render = () => {
-    const visDone = state.visitPlanReducer.visibility.filter((val) => {
+    const visDone = state.visitUnplanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null;
     });
 
@@ -359,12 +368,27 @@ export default function index() {
                       "Data will be lost if you leave the page, are you sure?"
                     )
                   ) {
-                    actions.setDefaultVisitPlan();
+                    actions.setDefaultVisitUnplan();
                     Router.push("/visit/unplan/nearme");
                   }
                 }}
               />
-              <div className={styles.main}>{renderDetail()}</div>
+              <div className={styles.main}>
+                {visNotDone ? (
+                  <div
+                    style={{
+                      color: "red",
+                      fontSize: "13px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Please complete visibility data
+                  </div>
+                ) : (
+                  ""
+                )}
+                {renderDetail()}
+              </div>
             </div>
           </div>
         </>

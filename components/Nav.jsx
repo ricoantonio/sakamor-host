@@ -61,6 +61,7 @@ const Nav = ({
         </div>
       ) : action && disable === true ? (
         <div
+          onClick={onClick}
           style={{
             fontSize: "14px",
             margin: "auto",

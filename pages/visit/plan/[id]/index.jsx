@@ -22,6 +22,8 @@ export default function index() {
   const [loading, setLoading] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [plan, setPlan] = useState([]);
+  const [visNotDone, setVisNotDone] = useState(false);
+
   const router = useRouter();
   var now = new Date();
 
@@ -144,6 +146,7 @@ export default function index() {
     // console.log(state.visitPlanReducer.visibility);
     if (visDone.length === 6) {
       setLoadingSubmit(true);
+      setVisNotDone(false);
 
       const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -222,6 +225,8 @@ export default function index() {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      setVisNotDone(true);
     }
   };
 
@@ -261,7 +266,22 @@ export default function index() {
                   }
                 }}
               />
-              <div className={styles.main}>{renderDetail()}</div>
+              <div className={styles.main}>
+                {visNotDone ? (
+                  <div
+                    style={{
+                      color: "red",
+                      fontSize: "13px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Please complete visibility data
+                  </div>
+                ) : (
+                  ""
+                )}
+                {renderDetail()}
+              </div>
             </div>
           </div>
         </>

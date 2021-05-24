@@ -10,7 +10,15 @@ const Invoice = ({ data, plan }) => {
       return (
         <tr style={{ borderBottom: "1px solid black" }}>
           <td style={{ borderRight: "1px solid black" }}>{index + 1}</td>
-          <td style={{ borderRight: "1px solid black" }}>{val.namaProduk}</td>
+          <td
+            style={{
+              borderRight: "1px solid black",
+              textAlign: "left",
+              paddingLeft: "2px",
+            }}
+          >
+            {val.namaProduk}
+          </td>
           <td
             style={{
               borderRight: "1px solid black",
@@ -27,7 +35,7 @@ const Invoice = ({ data, plan }) => {
               padding: "0 4px 0 0",
             }}
           >
-            {val.harga}
+            {val.harga.toLocaleString("id-ID")}
           </td>
           <td
             style={{
@@ -36,7 +44,7 @@ const Invoice = ({ data, plan }) => {
               padding: "0 4px 0 0",
             }}
           >
-            {val.totalHarga}
+            {val.totalHarga.toLocaleString("id-ID")}
           </td>
           <td style={{ borderRight: "1px solid black" }}>{val.keterangan}</td>
         </tr>
@@ -136,7 +144,16 @@ const Invoice = ({ data, plan }) => {
                 }}
                 colSpan={3}
               >
-                {total}
+                {total.toLocaleString("id-ID")}
+              </td>
+              <td
+                style={{
+                  borderRight: "1px solid black",
+                  textAlign: "right",
+                  padding: "0 4px 0 4px",
+                }}
+              >
+                {" "}
               </td>
             </tr>
           </tbody>
