@@ -18,6 +18,7 @@ import {
   viewFileUnplan,
   getInvoiceDataPosmSpreading,
   viewFileSpreading,
+  getBrand,
 } from "../helper";
 
 import Card from "./Card";
@@ -25,8 +26,10 @@ import Card from "./Card";
 export default function Visibility({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
-  const [loadingView, setLoadingView] = useState(false);
+  const [loadingBrand, setLoadingBrand] = useState(true);
+  const [loadingView, setLoadingView] = useState(true);
   const [posm, setPosm] = useState([]);
+  const [brand, setBrand] = useState([]);
   const [posmList, setPosmList] = useState([]);
   const [plan, setPlan] = useState([]);
   const [modal, setModal] = useState(false);
@@ -34,21 +37,25 @@ export default function Visibility({ type }) {
   const [dummy, setDummy] = useState(0);
   const [newNOO, setNewNOO] = useState(false);
   const [vis, setVis] = useState([
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
   ]);
   const router = useRouter();
   const initialVis = [
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
-    { file: null, type: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null },
   ];
 
   useEffect(() => {
@@ -167,6 +174,16 @@ export default function Visibility({ type }) {
       .catch((err) => {
         console.log(err);
       });
+
+    getBrand()
+      .then((data) => {
+        setBrand(data);
+        setLoadingBrand(false);
+        // console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [dispatch]);
 
   const onFileFocus = (val) => {
@@ -204,62 +221,83 @@ export default function Visibility({ type }) {
   const renderInputUpload = () => {
     var render = vis.map((val, index) => {
       return (
-        <div key={index} className={styles.visibility_grid}>
-          <div>POSM {index + 1}</div>
-          <div className={styles.visibility_dropdown}>
-            <Dropdown
-              options={posm}
-              type={"POSM"}
-              onChange={(e) => {
-                var data = posm.filter((val) => {
-                  return val.program == e.target.value;
-                });
-                vis.splice(index, 1, {
-                  ...vis[index],
-                  type: data[0],
-                });
-                setDummy(dummy + 1);
-              }}
-              value={val.type != null ? val.type.program : ""}
-            />
-            <span
-              style={{
-                fontSize: "10px",
-                color: "#41867A",
-                fontWeight: "500",
-              }}
-            >
-              {val.file != null ? val.file.name : null}
-            </span>
+        <>
+          <div style={{ fontSize: "12px", color: "#b9b9c3" }}>
+            POSM {index + 1}
           </div>
-          <div>
-            <label className={styles.new_button} htmlFor={`upload${index}`}>
-              <img
-                src={"/camera.svg"}
-                style={{ width: "18px", verticalAlign: "baseline" }}
-              />
-              <input
-                className={styles.input_file}
-                onChange={(e) => {
-                  // let reader = new FileReader();
-                  // reader.readAsDataURL(e.target.files[0]);
-                  // reader.onload = () => {
-                  //   console.log(reader.result);
-                  // };
-                  vis.splice(index, 1, {
-                    ...vis[index],
-                    file: e.target.files[0],
-                  });
-                  setDummy(dummy + 1);
+          <div key={index} className={styles.visibility_grid}>
+            <div className={styles.visibility_dropdown}>
+              <div className={styles.grid_50}>
+                <Dropdown
+                  options={posm}
+                  type={"POSM"}
+                  onChange={(e) => {
+                    var data = posm.filter((val) => {
+                      return val.program == e.target.value;
+                    });
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      type: data[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  value={val.type != null ? val.type.program : ""}
+                />
+                <Dropdown
+                  options={brand}
+                  type={"BRAND"}
+                  onChange={(e) => {
+                    var data = brand.filter((val) => {
+                      return val.namaBrand == e.target.value;
+                    });
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      brand: data[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  value={val.brand != null ? val.brand.namaBrand : ""}
+                />
+              </div>
+              <span
+                style={{
+                  fontSize: "10px",
+                  color: "#41867A",
+                  fontWeight: "500",
                 }}
-                id={`upload${index}`}
-                type="file"
-                accept="image/*"
-                capture="environment"
-              />
-            </label>
+              >
+                {val.file != null ? val.file.name : null}
+              </span>
+            </div>
+            <div>
+              <label className={styles.new_button} htmlFor={`upload${index}`}>
+                <img
+                  src={"/camera.svg"}
+                  style={{ width: "18px", verticalAlign: "baseline" }}
+                />
+                <input
+                  className={styles.input_file}
+                  onChange={(e) => {
+                    // let reader = new FileReader();
+                    // reader.readAsDataURL(e.target.files[0]);
+                    // reader.onload = () => {
+                    //   console.log(reader.result);
+                    // };
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      file: e.target.files[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  id={`upload${index}`}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                />
+              </label>
+            </div>
           </div>
-        </div>
+        </>
       );
     });
     return render;
@@ -268,42 +306,86 @@ export default function Visibility({ type }) {
   const renderHistoryPosm = () => {
     var render = posmList.map((val, index) => {
       return (
-        <div key={index} className={styles.visibility_grid_history}>
-          <div>POSM {index + 1}</div>
-          <div className={styles.visibility_dropdown}>
-            <Card
-              style={{
-                height: "32px",
-                border: "1px solid #e9ecf2",
-                padding: "6px 10px",
-                borderRadius: "5px",
-              }}
-            >
-              {val.tipe}
-            </Card>
-            <span
-              style={{
-                fontSize: "10px",
-                color: "#41867A",
-                fontWeight: "500",
-              }}
-              onClick={() => {
-                onFileFocus(val);
-              }}
-            >
-              {val.namaFile}
-            </span>
+        <>
+          <div style={{ fontSize: "12px", color: "#b9b9c3" }}>
+            POSM {index + 1}
           </div>
-        </div>
+          <div key={index} className={styles.visibility_grid_history}>
+            <div>
+              <div className={styles.grid_50}>
+                <Card
+                  style={{
+                    height: "32px",
+                    border: "1px solid #e9ecf2",
+                    padding: "6px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {val.tipe}
+                </Card>
+                <Card
+                  style={{
+                    height: "32px",
+                    border: "1px solid #e9ecf2",
+                    padding: "6px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  {val.namaBrand}
+                </Card>
+              </div>
+              <span
+                style={{
+                  fontSize: "10px",
+                  color: "#41867A",
+                  fontWeight: "500",
+                }}
+                onClick={() => {
+                  onFileFocus(val);
+                }}
+              >
+                {val.namaFile}
+              </span>
+            </div>
+          </div>
+        </>
+        // <div key={index} className={styles.visibility_grid_history}>
+        //   <div>POSM {index + 1}</div>
+        //   <div className={styles.visibility_dropdown}>
+        //     <Card
+        //       style={{
+        //         height: "32px",
+        //         border: "1px solid #e9ecf2",
+        //         padding: "6px 10px",
+        //         borderRadius: "5px",
+        //       }}
+        //     >
+        //       {val.tipe}
+        //     </Card>
+        //     <span
+        //       style={{
+        //         fontSize: "10px",
+        //         color: "#41867A",
+        //         fontWeight: "500",
+        //       }}
+        //       onClick={() => {
+        //         onFileFocus(val);
+        //       }}
+        //     >
+        //       {val.namaFile}
+        //     </span>
+        //   </div>
+        // </div>
       );
     });
-    if (loading) {
+    if (loading || loadingBrand) {
       return <Spinner />;
     } else {
       return render;
     }
   };
   const onSave = () => {
+    console.log(vis);
     if (newNOO) {
       actions.setSpreadingVisibility(vis);
       Router.push(`/visit/spreading/submit?new=true`);
@@ -329,92 +411,96 @@ export default function Visibility({ type }) {
   // };
 
   const render = () => {
-    return (
-      <div className={styles.container}>
-        {modal ? (
-          <Modal
-            onClick={() => {
-              setFileFocus(null);
-              setModal(false);
-            }}
-          >
-            <div
-              style={{
-                maxHeight: "100%",
-                overflow: "auto",
+    if (loading || loadingBrand) {
+      return <Spinner />;
+    } else {
+      return (
+        <div className={styles.container}>
+          {modal ? (
+            <Modal
+              onClick={() => {
+                setFileFocus(null);
+                setModal(false);
               }}
             >
               <div
                 style={{
-                  width: "400px",
                   maxHeight: "100%",
-                  margin: "20px auto",
+                  overflow: "auto",
                 }}
               >
-                {loadingView ? (
-                  <Spinner />
-                ) : (
-                  <img
-                    style={{ width: "380px", margin: "0 10px" }}
-                    src={fileFocus}
-                  />
-                )}
+                <div
+                  style={{
+                    width: "400px",
+                    maxHeight: "100%",
+                    margin: "20px auto",
+                  }}
+                >
+                  {loadingView ? (
+                    <Spinner />
+                  ) : (
+                    <img
+                      style={{ width: "380px", margin: "0 10px" }}
+                      src={fileFocus}
+                    />
+                  )}
+                </div>
               </div>
+            </Modal>
+          ) : null}
+          <div className={styles.wrapper}>
+            {type.includes("HISTORY") ? (
+              <Nav
+                title={"Visibility"}
+                color={"white"}
+                backAction={() => {
+                  Router.back();
+                }}
+              />
+            ) : (
+              <Nav
+                title={"Visibility"}
+                color={"white"}
+                action={"Save"}
+                onClick={() => {
+                  onSave();
+                }}
+                backAction={() => {
+                  if (type === "PLAN") {
+                    if (state.visitPlanReducer.visibility.length > 0) {
+                      setVis([...state.visitPlanReducer.visibility]);
+                    } else {
+                      setVis([...initialVis]);
+                    }
+                  }
+                  if (type === "UNPLAN") {
+                    if (state.visitUnplanReducer.visibility.length > 0) {
+                      setVis([...state.visitUnplanReducer.visibility]);
+                    } else {
+                      setVis([...initialVis]);
+                    }
+                  }
+                  if (type === "SPREADING") {
+                    if (state.visitSpreadingReducer.visibility.length > 0) {
+                      setVis([...state.visitSpreadingReducer.visibility]);
+                    } else {
+                      setVis([...initialVis]);
+                    }
+                  }
+                  Router.back();
+                }}
+                disable={false}
+              />
+            )}
+            <div className={styles.main}>
+              {type.includes("HISTORY")
+                ? renderHistoryPosm()
+                : renderInputUpload()}
             </div>
-          </Modal>
-        ) : null}
-        <div className={styles.wrapper}>
-          {type.includes("HISTORY") ? (
-            <Nav
-              title={"Visibility"}
-              color={"white"}
-              backAction={() => {
-                Router.back();
-              }}
-            />
-          ) : (
-            <Nav
-              title={"Visibility"}
-              color={"white"}
-              action={"Save"}
-              onClick={() => {
-                onSave();
-              }}
-              backAction={() => {
-                if (type === "PLAN") {
-                  if (state.visitPlanReducer.visibility.length > 0) {
-                    setVis([...state.visitPlanReducer.visibility]);
-                  } else {
-                    setVis([...initialVis]);
-                  }
-                }
-                if (type === "UNPLAN") {
-                  if (state.visitUnplanReducer.visibility.length > 0) {
-                    setVis([...state.visitUnplanReducer.visibility]);
-                  } else {
-                    setVis([...initialVis]);
-                  }
-                }
-                if (type === "SPREADING") {
-                  if (state.visitSpreadingReducer.visibility.length > 0) {
-                    setVis([...state.visitSpreadingReducer.visibility]);
-                  } else {
-                    setVis([...initialVis]);
-                  }
-                }
-                Router.back();
-              }}
-              disable={false}
-            />
-          )}
-          <div className={styles.main}>
-            {type.includes("HISTORY")
-              ? renderHistoryPosm()
-              : renderInputUpload()}
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   };
   return render();
 }

@@ -11,6 +11,7 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 
 import {
+  getAllWorkVisit,
   getAuth,
   getMenu,
   getPlanHistory,
@@ -26,6 +27,7 @@ export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
   const [focus, setFocus] = useState("");
   const [plan, setPlan] = useState([]);
+  const [workVisit, setWorkVisit] = useState([]);
   const [planHistory, setPlanHistory] = useState([]);
   const [spreadingHistory, setSpreadingHistory] = useState([]);
   const [unplanHistory, setUnplanHistory] = useState([]);
@@ -82,9 +84,9 @@ export default function Home() {
     if (userData) {
       getAuth(userData)
         .then((data) => {
-          if (data[0].roleCode === "PIMCA") {
-            setRole("PIMCA");
-            setFocus("WORK_VISIT");
+          if (data[0].roleCode === "PIMCAB") {
+            setRole("PIMCAB");
+            setFocus("WORK-VISIT");
           } else if (data[0].roleCode === "SMR") {
             setRole("SMR");
             setFocus("PLAN");
@@ -111,9 +113,16 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
-      } else if (focus === "WORK_VISIT") {
-        console.log("work visit");
-        setLoading(false);
+      } else if (focus === "WORK-VISIT") {
+        getAllWorkVisit(userData)
+          .then((data) => {
+            console.log(data);
+            setWorkVisit(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } else {
       Router.push("/");
@@ -164,7 +173,7 @@ export default function Home() {
           val.moduleCode === "UNPLAN" ||
           val.moduleCode === "SPREADING"
         );
-      } else if (role === "PIMCA") {
+      } else if (role === "PIMCAB") {
         return val.moduleCode === "WORK-VISIT";
       }
     });
@@ -261,6 +270,68 @@ export default function Home() {
                 <div>{val.namaOutlet}</div>
                 <div style={{ fontSize: "14px", fontWeight: "300" }}>
                   {val.alamatOutlet}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      });
+    }
+  };
+
+  const renderListWorkVisit = (data) => {
+    if (data.length === 0) {
+      return (
+        <div
+          style={{
+            fontSize: "15px",
+            color: "rgb(208, 208, 208)",
+            textAlign: "left",
+            margin: "30px 0",
+          }}
+        >
+          No Item
+        </div>
+      );
+    } else {
+      return data.map((val, index) => {
+        return (
+          <div
+            style={{
+              fontSize: "15px",
+              fontWeight: "700",
+              color: "#5E5873",
+              textAlign: "left",
+              margin: "10px 0",
+            }}
+            key={index}
+          >
+            <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
+              <div
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  backgroundColor: "#FFF1CC",
+                  borderRadius: "20px",
+                  padding: "4px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    backgroundColor: "#feb800",
+                    borderRadius: "20px",
+                  }}
+                />
+              </div>
+              <div>
+                <div>{val.namaSMR}</div>
+                <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                  Rayon - {val.rayon}
+                </div>
+                <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                  Produk Focus - {val.produkFokus}
                 </div>
               </div>
             </div>
@@ -493,7 +564,86 @@ export default function Home() {
     }
   };
 
-  const renderWorkVisit = () => {};
+  const renderWorkVisit = () => {
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return (
+        <>
+          <Card style={{ borderRadius: "5px", marginTop: "22px" }} shadow>
+            <div className={styles.overview}>
+              <div>
+                <span className={styles.date}>
+                  {moment().format("D / MMM / YYYY")}
+                </span>
+                <div style={{ color: "#5E5873", marginTop: "7px" }}>
+                  <span style={{ fontSize: "36px", fontWeight: "600" }}>
+                    {planHistory.length}
+                  </span>
+                  <span style={{ fontSize: "18px" }}>
+                    /{plan.length + planHistory.length}
+                  </span>
+                </div>
+                <button
+                  style={{
+                    marginTop: "7px",
+                    backgroundColor: "#FEB800",
+                    padding: "10px 22px",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Add New +
+                </button>
+              </div>
+              <div>
+                <div className={styles.pie_percentage}>
+                  {planHistory.length === 0
+                    ? "0%"
+                    : `${Math.round(
+                        (planHistory.length /
+                          (plan.length + planHistory.length)) *
+                          100
+                      )}%`}
+                </div>
+                <Doughnut
+                  data={dataPlan}
+                  options={donutOptions}
+                  width={100}
+                  height={100}
+                />
+              </div>
+            </div>
+          </Card>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }} shadow>
+            <div className={styles.plan_container}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  color: "#5E5873",
+                  textAlign: "left",
+                }}
+              >
+                Your Work Visit Today
+              </div>
+              <div style={{ margin: "22px 0" }}>
+                {renderListWorkVisit(workVisit)}
+              </div>
+              <Link href="/work-visit">
+                <a>
+                  <Button text={"See Details"} />
+                </a>
+              </Link>
+            </div>
+          </Card>
+        </>
+      );
+    }
+  };
 
   const renderPage = () => {
     if (loading && loadingMenu) {

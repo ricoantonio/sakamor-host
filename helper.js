@@ -6,12 +6,23 @@ import {
   API_VISIT_PLAN,
   API_VISIT_UNPLAN,
   API_VISIT_SPREADING,
+  API_WORK_VISIT,
 } from "./constant";
 
 var now = new Date();
 var date = now.getDate();
 var month = now.getMonth() + 1;
 var year = now.getFullYear();
+
+function compare(a, b) {
+  if (a.nomor < b.nomor) {
+    return -1;
+  }
+  if (a.nomor > b.nomor) {
+    return 1;
+  }
+  return 0;
+}
 
 // USER =============================================================================================================================
 
@@ -178,6 +189,7 @@ const getSearchJenisChannel = (search) => {
       console.log(err);
     });
 };
+
 const getSearchOutlet = (search) => {
   return fetch(
     API_URL + API_MASTER + `/MasterData/GetOutletLike?teks=${search}`,
@@ -187,6 +199,23 @@ const getSearchOutlet = (search) => {
       },
     }
   )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getBrand = (search) => {
+  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllBrand`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
     .then((response) => {
       return response.json();
     })
@@ -412,7 +441,8 @@ const getInvoiceDataPosm = (visitPlanId) => {
       return response.json();
     })
     .then((data) => {
-      return data;
+      var sortData = data.sort(compare);
+      return sortData;
     })
     .catch((err) => {
       console.log(err);
@@ -585,7 +615,8 @@ const getInvoiceDataPosmUnplan = (visitUnplanId) => {
       return response.json();
     })
     .then((data) => {
-      return data;
+      var sortData = data.sort(compare);
+      return sortData;
     })
     .catch((err) => {
       console.log(err);
@@ -781,7 +812,8 @@ const getInvoiceDataPosmSpreading = (visitUnplanId) => {
       return response.json();
     })
     .then((data) => {
-      return data;
+      var sortData = data.sort(compare);
+      return sortData;
     })
     .catch((err) => {
       console.log(err);
@@ -837,6 +869,28 @@ const getSpreadingMonthlyHistory = (userData) => {
     });
 };
 
+// WORK VISIT ================================================================================================================================
+
+const getAllWorkVisit = (userData) => {
+  return fetch(
+    API_URL + API_WORK_VISIT + `/ActivityWorkVisit/GetAllActivityWorkVisit`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getAuth,
@@ -845,6 +899,7 @@ export {
   getSearchJenisChannel,
   getProductAvgSales,
   getSearchOutlet,
+  getBrand,
   getProductByJenisChannel,
   getPlanList,
   getPlanId,
@@ -869,4 +924,5 @@ export {
   getInvoiceDataPosmSpreading,
   viewFileSpreading,
   getSpreadingMonthlyHistory,
+  getAllWorkVisit,
 };

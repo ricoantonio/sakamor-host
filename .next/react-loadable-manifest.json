@@ -1,30 +1,26 @@
 {
   "..\\components\\HistoryDetail.jsx -> jspdf": {
-    "id": "./node_modules/jspdf/dist/jspdf.es.min.js",
+    "id": "i680",
     "files": [
-      "static/chunks/2.js"
+      "static/chunks/e78312c5.9abb2edd9441f8c7c0d8.js",
+      "static/chunks/56.2ad0481f0ef1e11bd1a8.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
-    "id": "./node_modules/canvg/lib/index.es.js",
+    "id": "DXPr",
     "files": [
-      "static/chunks/1.js"
+      "static/chunks/72a30a16.a56c4df53397a31cb322.js",
+      "static/chunks/55.9c0fd56b8eb096ccf8be.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> dompurify": {
-    "id": "./node_modules/dompurify/dist/purify.js",
+    "id": "wMS7",
     "files": [
-      "static/chunks/3.js"
+      "static/chunks/57.bb4ec8ef07822d42851a.js"
     ]
   },
   "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> html2canvas": {
-    "id": "./node_modules/html2canvas/dist/html2canvas.js",
+    "id": "wOnQ",
     "files": []
-  },
-  "..\\node_modules\\next\\dist\\client\\next-dev.js -> ./dev/noop": {
-    "id": "./node_modules/next/dist/client/dev/noop.js",
-    "files": [
-      "static/chunks/0.js"
-    ]
   }
 }

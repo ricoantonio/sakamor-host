@@ -115,22 +115,31 @@ export default function Avability({ type }) {
 
   useEffect(() => {
     if (productFocus.produkID) {
-      if (stock && pengiriman && minor) {
+      if (stock) {
         if (type === "PLAN") {
-          setSaranOrder(
-            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
-              parseInt(minor)
-          );
+          if (parseInt(avgSales) > parseInt(stock)) {
+            setSaranOrder(parseInt(avgSales) - parseInt(stock));
+            setKet("Understock");
+          } else {
+            setSaranOrder(0);
+            setKet("Overstock");
+          }
         } else if (type === "UNPLAN") {
-          setSaranOrder(
-            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
-              parseInt(minor)
-          );
+          if (parseInt(avgSales) > parseInt(stock)) {
+            setSaranOrder(parseInt(avgSales) - parseInt(stock));
+            setKet("Understock");
+          } else {
+            setSaranOrder(0);
+            setKet("Overstock");
+          }
         } else if (type === "SPREADING") {
-          setSaranOrder(
-            avgSales * (parseInt(pengiriman) + parseInt(stock)) +
-              parseInt(minor)
-          );
+          if (parseInt(avgSales) > parseInt(stock)) {
+            setSaranOrder(parseInt(avgSales) - parseInt(stock));
+            setKet("Understock");
+          } else {
+            setSaranOrder(0);
+            setKet("Overstock");
+          }
         }
       }
     }
@@ -303,7 +312,7 @@ export default function Avability({ type }) {
                   {renderProductSearch()}
                 </div>
               ) : null}
-              <div className={styles.stock_order_container}>
+              {/* <div className={styles.stock_order_container}>
                 <div style={{ paddingRight: "10px" }}>
                   <div className={styles.avability_modal_subtitle}>
                     Stock (pcs)
@@ -319,7 +328,6 @@ export default function Avability({ type }) {
                     value={stock}
                   />
                 </div>
-
                 <div style={{}}>
                   <div className={styles.avability_modal_subtitle}>
                     Pengiriman (hari)
@@ -348,7 +356,29 @@ export default function Avability({ type }) {
                     value={minor}
                   />
                 </div>
-              </div>
+              </div> */}
+              {/* <div className={styles.avability_modal_subtitle}>Keterangan</div> */}
+              {/* <input
+                onChange={(e) => {
+                  setKet(e.target.value);
+                }}
+                placeholder="Ket."
+                type="text"
+                className={styles.input_order}
+                value={ket}
+                
+              /> */}
+              <div className={styles.avability_modal_subtitle}>Stock (pcs)</div>
+              <input
+                onChange={(e) => {
+                  setStock(e.target.value);
+                }}
+                placeholder="0"
+                type="number"
+                min={0}
+                className={styles.input_order}
+                value={stock}
+              />
               <div className={styles.avg_sales_container}>
                 <div style={{ paddingRight: "5px" }}>
                   <div className={styles.avability_modal_subtitle}>
@@ -395,7 +425,7 @@ export default function Avability({ type }) {
                 value={order}
               />
               <div className={styles.avability_modal_subtitle}>Keterangan</div>
-              <input
+              {/* <input
                 onChange={(e) => {
                   setKet(e.target.value);
                 }}
@@ -403,7 +433,8 @@ export default function Avability({ type }) {
                 type="text"
                 className={styles.input_order}
                 value={ket}
-              />
+              /> */}
+              <div style={{ height: "24px" }}>{ket}</div>
               <div style={{ marginTop: "20px" }}>
                 <Button
                   text={"Add"}
@@ -486,7 +517,7 @@ export default function Avability({ type }) {
   };
   const renderAvabilityList = () => {
     if (type.includes("HISTORY")) {
-      console.log(avabilityList);
+      // console.log(avabilityList);
       avabilityList.sort((a, b) => a.namaProduk.localeCompare(b.namaProduk));
       const filterData = avabilityList.filter((val) => {
         return val.namaProduk.toLowerCase().includes(search.toLowerCase());

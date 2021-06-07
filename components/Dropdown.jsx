@@ -5,7 +5,11 @@ const Dropdown = ({ options = [], onChange, value, type }) => {
   if (type === "POSM") {
     var default_ = value
       ? { program: value, value }
-      : { program: "SELECT", value: {} };
+      : { program: "SELECT TYPE", value: {} };
+  } else if (type === "BRAND") {
+    var default_ = value
+      ? { namaBrand: value, value }
+      : { namaBrand: "SELECT BRAND", value: {} };
   }
   return (
     <select className={styles.container} onChange={(e) => onChange(e)}>
@@ -13,7 +17,13 @@ const Dropdown = ({ options = [], onChange, value, type }) => {
         (val, index) =>
           val && (
             <option key={index} value={val.value}>
-              {type == "POSM" ? val.program : ""}
+              {type == "POSM"
+                ? val.program
+                : type === "BRAND"
+                ? val.namaBrand
+                : type === "NILAI_WORKVISIT"
+                ? val
+                : ""}
             </option>
           )
       )}

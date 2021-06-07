@@ -64,7 +64,7 @@ export default function index() {
 
   const renderDataDetail = (type, data) => {
     const doneFormVis = state.visitPlanReducer.visibility.filter((val) => {
-      return val.file !== null && val.type !== null;
+      return val.file !== null && val.type !== null && val.brand !== null;
     });
     const doneFormAva = state.visitPlanReducer.avability;
     return (
@@ -73,7 +73,7 @@ export default function index() {
           {type}
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
-              ? `${doneFormVis.length}/6`
+              ? `${doneFormVis.length}/8`
               : type === "Avability"
               ? `${doneFormAva.length}/25`
               : ""}
@@ -98,7 +98,7 @@ export default function index() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(doneFormVis.length / 6) * 100}%`,
+                          width: `${(doneFormVis.length / 8) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -141,10 +141,10 @@ export default function index() {
 
   const onSubmit = () => {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
-      return val.file !== null && val.type !== null;
+      return val.file !== null && val.type !== null && val.brand !== null;
     });
     // console.log(state.visitPlanReducer.visibility);
-    if (visDone.length === 6) {
+    if (visDone.length === 8) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -205,13 +205,15 @@ export default function index() {
                 namaFile: val.file.name,
                 createdBy: userData.username,
                 updatedBy: userData.username,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
               };
             }
           );
           for (let i = 0; i < files.length; i++) {
             submitVisitPlanDposm(bodyPosm[i], files[i])
               .then((res) => {
-                if (i === 5) {
+                if (i === 7) {
                   setLoadingSubmit(false);
                   Router.push("/");
                   actions.setDefaultVisitPlan();
@@ -232,7 +234,7 @@ export default function index() {
 
   const render = () => {
     const visDone = state.visitPlanReducer.visibility.filter((val) => {
-      return val.file !== null && val.type !== null;
+      return val.file !== null && val.type !== null && val.brand !== null;
     });
 
     if (loading) {
@@ -254,7 +256,7 @@ export default function index() {
                 onClick={() => {
                   onSubmit();
                 }}
-                disable={visDone.length === 6 ? false : true}
+                disable={visDone.length === 8 ? false : true}
                 backAction={() => {
                   if (
                     confirm(

@@ -31,6 +31,7 @@ export default function Login() {
           console.log(data);
         } else {
           setWrongUser(false);
+          console.log(data);
           actions.userLogin(data);
           Router.push("/");
         }

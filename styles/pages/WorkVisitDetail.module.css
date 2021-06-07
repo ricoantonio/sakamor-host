@@ -1,0 +1,74 @@
+.container {
+  background-color: #f0f0f0;
+}
+.wrapper {
+  margin: 0 auto;
+  width: 400px;
+}
+.main {
+  padding: 80px 20px 0 20px;
+  margin-bottom: 100px;
+}
+.produk_fokus_container {
+  background-color: #d1e4e1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #41867a;
+  padding: 1px 9px;
+  border-radius: 5px;
+  text-align: center;
+}
+.rayon_container {
+  background-color: #feb800;
+  font-size: 12px;
+  font-weight: 400;
+  color: white;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-align: right;
+  margin: auto;
+}
+.data_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.bottom_container {
+  position: fixed;
+  bottom: 0;
+  width: 400px;
+  margin: auto;
+  padding: 12px 12px;
+  justify-items: center;
+}
+.nilai_container {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.penilaian_top_container {
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 20px;
+  color: white;
+  background-color: #41867a;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+.penilaian_bot_container {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: white;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    margin: 0 auto;
+    width: 540px;
+  }
+  .bottom_container {
+    width: 540px;
+  }
+}

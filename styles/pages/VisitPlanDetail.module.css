@@ -7,6 +7,7 @@
 }
 .main {
   padding: 80px 20px 0 20px;
+  margin-bottom: 100px;
 }
 .render_data {
   color: #5e5873;
@@ -56,22 +57,27 @@
 
 .visibility_grid {
   display: grid;
-  grid-template-columns: 15% 75% 10%;
-  margin: 20px 0;
+  grid-template-columns: 90% 10%;
+  margin: 10px 0;
   color: #b9b9c3;
   font-size: 12px;
   height: 50px;
 }
+.grid_50 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
 .visibility_grid_history {
   display: grid;
-  grid-template-columns: 15% 85%;
-  margin: 20px 0;
+  /* grid-template-columns: 90% 10%; */
+  margin: 10px 0;
   color: #b9b9c3;
   font-size: 12px;
   height: 50px;
 }
 .visibility_dropdown {
-  margin: 0 14px;
+  margin: 0 14px 0 0;
 }
 .new_button {
   padding: 9px;
@@ -119,7 +125,7 @@
   bottom: 0;
   z-index: 9999;
   width: 400px;
-  height: 520px;
+  height: 500px;
   margin: auto;
   padding: 38px 22px;
   border-top-left-radius: 30px;
