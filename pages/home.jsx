@@ -28,6 +28,7 @@ export default function Home() {
   const [focus, setFocus] = useState("");
   const [plan, setPlan] = useState([]);
   const [workVisit, setWorkVisit] = useState([]);
+  const [workVisitHistory, setWorkVisitHistory] = useState([]);
   const [planHistory, setPlanHistory] = useState([]);
   const [spreadingHistory, setSpreadingHistory] = useState([]);
   const [unplanHistory, setUnplanHistory] = useState([]);
@@ -49,6 +50,18 @@ export default function Home() {
     datasets: [
       {
         data: spreadingHistory.length === 0 ? [0, 1] : [0, 1],
+        backgroundColor: ["#41867a", "#d1e4e1"],
+      },
+    ],
+  };
+
+  const dataWorkVisit = {
+    datasets: [
+      {
+        data:
+          workVisitHistory.length === 0
+            ? [0, 1]
+            : [workVisitHistory.length, workVisit.length],
         backgroundColor: ["#41867a", "#d1e4e1"],
       },
     ],
@@ -117,7 +130,16 @@ export default function Home() {
         getAllWorkVisit(userData)
           .then((data) => {
             console.log(data);
-            setWorkVisit(data);
+            setWorkVisit(
+              data.filter((val) => {
+                return val.isPenilaian === false;
+              })
+            );
+            setWorkVisitHistory(
+              data.filter((val) => {
+                return val.isPenilaian === true;
+              })
+            );
             setLoading(false);
           })
           .catch((err) => {
@@ -237,43 +259,52 @@ export default function Home() {
     } else {
       return data.map((val, index) => {
         return (
-          <div
-            style={{
-              fontSize: "15px",
-              fontWeight: "700",
-              color: "#5E5873",
-              textAlign: "left",
-              margin: "10px 0",
-            }}
-            key={index}
+          <Link
+            href={focus === "PLAN" ? `/visit/plan/${data.idMasterPlan}` : "/"}
           >
-            <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
+            <a>
               <div
                 style={{
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: type === "PLAN" ? "#FFF1CC" : "#d1e4e1",
-                  borderRadius: "20px",
-                  padding: "4px",
+                  fontSize: "15px",
+                  fontWeight: "700",
+                  color: "#5E5873",
+                  textAlign: "left",
+                  margin: "10px 0",
                 }}
+                key={index}
               >
                 <div
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: type === "PLAN" ? "#feb800" : "#41867a",
-                    borderRadius: "20px",
-                  }}
-                />
-              </div>
-              <div>
-                <div>{val.namaOutlet}</div>
-                <div style={{ fontSize: "14px", fontWeight: "300" }}>
-                  {val.alamatOutlet}
+                  style={{ display: "grid", gridTemplateColumns: "12% 88%" }}
+                >
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      backgroundColor: type === "PLAN" ? "#FFF1CC" : "#d1e4e1",
+                      borderRadius: "20px",
+                      padding: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "12px",
+                        height: "12px",
+                        backgroundColor:
+                          type === "PLAN" ? "#feb800" : "#41867a",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <div>{val.namaOutlet}</div>
+                    <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                      {val.alamatOutlet}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </a>
+          </Link>
         );
       });
     }
@@ -296,46 +327,52 @@ export default function Home() {
     } else {
       return data.map((val, index) => {
         return (
-          <div
-            style={{
-              fontSize: "15px",
-              fontWeight: "700",
-              color: "#5E5873",
-              textAlign: "left",
-              margin: "10px 0",
-            }}
-            key={index}
-          >
-            <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
+          <Link href={`work-visit/${val.idMasterPlan}`}>
+            <a>
               <div
                 style={{
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: "#FFF1CC",
-                  borderRadius: "20px",
-                  padding: "4px",
+                  fontSize: "15px",
+                  fontWeight: "700",
+                  color: "#5E5873",
+                  textAlign: "left",
+                  margin: "10px 0",
                 }}
+                key={index}
               >
                 <div
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: "#feb800",
-                    borderRadius: "20px",
-                  }}
-                />
-              </div>
-              <div>
-                <div>{val.namaSMR}</div>
-                <div style={{ fontSize: "14px", fontWeight: "300" }}>
-                  Rayon - {val.rayon}
+                  style={{ display: "grid", gridTemplateColumns: "12% 88%" }}
+                >
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      backgroundColor: "#FFF1CC",
+                      borderRadius: "20px",
+                      padding: "4px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "12px",
+                        height: "12px",
+                        backgroundColor: "#feb800",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <div>{val.namaSMR}</div>
+                    <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                      Rayon - {val.rayon}
+                    </div>
+                    <div style={{ fontSize: "14px", fontWeight: "300" }}>
+                      Produk Focus - {val.produkFokus}
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: "14px", fontWeight: "300" }}>
-                  Produk Focus - {val.produkFokus}
-                </div>
               </div>
-            </div>
-          </div>
+            </a>
+          </Link>
         );
       });
     }
@@ -578,10 +615,10 @@ export default function Home() {
                 </span>
                 <div style={{ color: "#5E5873", marginTop: "7px" }}>
                   <span style={{ fontSize: "36px", fontWeight: "600" }}>
-                    {planHistory.length}
+                    {workVisitHistory.length}
                   </span>
                   <span style={{ fontSize: "18px" }}>
-                    /{plan.length + planHistory.length}
+                    /{workVisit.length + workVisitHistory.length}
                   </span>
                 </div>
                 <button
@@ -601,16 +638,16 @@ export default function Home() {
               </div>
               <div>
                 <div className={styles.pie_percentage}>
-                  {planHistory.length === 0
+                  {workVisitHistory.length === 0
                     ? "0%"
                     : `${Math.round(
-                        (planHistory.length /
-                          (plan.length + planHistory.length)) *
+                        (workVisitHistory.length /
+                          (workVisit.length + workVisitHistory.length)) *
                           100
                       )}%`}
                 </div>
                 <Doughnut
-                  data={dataPlan}
+                  data={dataWorkVisit}
                   options={donutOptions}
                   width={100}
                   height={100}

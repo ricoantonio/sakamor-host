@@ -43,10 +43,15 @@ export default function History({ type }) {
   }, [dispatch]);
 
   useEffect(() => {
-    getAllWorkVisit()
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    getAllWorkVisit(userData)
       .then((res) => {
-        console.log(res);
-        setWorkVisit(res);
+        setWorkVisit(
+          res.filter((val) => {
+            return val.isPenilaian === false;
+          })
+        );
         setLoading(false);
       })
       .catch((err) => {
@@ -93,7 +98,7 @@ export default function History({ type }) {
                     {val.produkFokus}
                   </span>
                 </div>
-                <Link href={`/work-visit/${val.id}`}>
+                <Link href={`/work-visit/${val.idMasterPlan}`}>
                   <a>
                     <div
                       style={{
@@ -158,7 +163,7 @@ export default function History({ type }) {
 
               <div className={styles.bottom_container}>
                 <Button text="Add" />
-                <Link href="/visit/plan/history">
+                <Link href="/work-visit/history">
                   <a>
                     <div className={styles.view_history}>View History</div>
                   </a>

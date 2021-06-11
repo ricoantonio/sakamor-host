@@ -1,1 +1,0 @@
-_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[55],{HZxw:function(n,w,_){(window.__NEXT_P=window.__NEXT_P||[]).push(["/work-visit/history/[id]",function(){return _("VE2a")}])},VE2a:function(n,w){}},[["HZxw",0]]]);

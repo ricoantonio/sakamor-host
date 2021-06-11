@@ -227,6 +227,26 @@ const getBrand = (search) => {
     });
 };
 
+const getKontenWorkVisit = () => {
+  return fetch(
+    API_URL + API_MASTER + `/MasterDataLokal/GetAllKontenWorkVisit`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // VISIT PLAN ======================================================================================================================
 
 const getPlanList = (userData) => {
@@ -821,7 +841,6 @@ const getInvoiceDataPosmSpreading = (visitUnplanId) => {
 };
 
 const viewFileSpreading = (id) => {
-  console.log(id);
   return fetch(
     API_URL + API_VISIT_SPREADING + `/ActivitySpreadingDPOSM/ViewFile/${id}`,
     {
@@ -873,7 +892,9 @@ const getSpreadingMonthlyHistory = (userData) => {
 
 const getAllWorkVisit = (userData) => {
   return fetch(
-    API_URL + API_WORK_VISIT + `/ActivityWorkVisit/GetAllActivityWorkVisit`,
+    API_URL +
+      API_WORK_VISIT +
+      `/ActivityWorkVisit/GetActivityWorkVisitBy?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -891,6 +912,80 @@ const getAllWorkVisit = (userData) => {
     });
 };
 
+const getWorkVisitMonthlyHistory = (userData) => {
+  return fetch(
+    API_URL +
+      API_WORK_VISIT +
+      `/ActivityWorkVisit/GetHistoryActivityWorkVisitBy?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getWorkVisitRating = (id) => {
+  return fetch(
+    API_URL +
+      API_WORK_VISIT +
+      `/ActivityWorkVisitRating/GetActivityWorkVisitRatingBy/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const submitWorkVisit = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL + API_WORK_VISIT + "/ActivityWorkVisit/SaveAllActivityWorkVisit",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("baikan saveall", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getAuth,
@@ -901,6 +996,7 @@ export {
   getSearchOutlet,
   getBrand,
   getProductByJenisChannel,
+  getKontenWorkVisit,
   getPlanList,
   getPlanId,
   getPosm,
@@ -925,4 +1021,7 @@ export {
   viewFileSpreading,
   getSpreadingMonthlyHistory,
   getAllWorkVisit,
+  getWorkVisitMonthlyHistory,
+  getWorkVisitRating,
+  submitWorkVisit,
 };

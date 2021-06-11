@@ -84,6 +84,13 @@ export default function Avability({ type }) {
           Router.push("/visit/unplan");
         }
       } else if (type === "SPREADING") {
+        if (
+          state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+          state.visitSpreadingReducer.outlet.namaOutlet
+        ) {
+        } else {
+          Router.push("/visit/spreading");
+        }
       }
     }
   }, []);
@@ -143,7 +150,7 @@ export default function Avability({ type }) {
         }
       }
     }
-  }, [stock, pengiriman, minor]);
+  }, [stock]);
 
   useEffect(() => {
     if (router.query.id) {

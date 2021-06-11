@@ -71,6 +71,19 @@
   text-align: center;
 }
 
+.history_workvisit_container {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.date {
+  background-color: #d1e4e1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #41867a;
+  padding: 1px 9px;
+  border-radius: 5px;
+}
 @media screen and (min-width: 600px) {
   .wrapper {
     margin: 0 auto;
