@@ -103,6 +103,10 @@ export default function Avability({ type }) {
       } else if (type === "UNPLAN") {
         setAvgSales(10);
         setHarga(5000);
+        console.log(
+          productFocus.produkID,
+          state.visitUnplanReducer.outlet.outletID
+        );
         // getProductAvgSales(
         //   productFocus.produkID,
         //   state.visitUnplanReducer.outlet.outletID

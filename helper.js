@@ -7,6 +7,8 @@ import {
   API_VISIT_UNPLAN,
   API_VISIT_SPREADING,
   API_WORK_VISIT,
+  API_CALENDAR_PROMO,
+  API_CALENDAR_PROGRAM,
 } from "./constant";
 
 var now = new Date();
@@ -172,7 +174,7 @@ const getProductAvgSales = (productCode, outletCode) => {
 
 const getSearchJenisChannel = (search) => {
   return fetch(
-    API_URL + API_MASTER + `/MasterData/GetJenisChannelLike?teks=${search}`,
+    API_URL + API_MASTER + `/MasterDataLokal/GetJenisChannelBy?teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -192,7 +194,7 @@ const getSearchJenisChannel = (search) => {
 
 const getSearchOutlet = (search) => {
   return fetch(
-    API_URL + API_MASTER + `/MasterData/GetOutletLike?teks=${search}`,
+    API_URL + API_MASTER + `/MasterDataLokal/GetOutletBy?teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -210,7 +212,7 @@ const getSearchOutlet = (search) => {
     });
 };
 
-const getBrand = (search) => {
+const getBrand = () => {
   return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllBrand`, {
     headers: {
       apiKey: TOKEN,
@@ -986,6 +988,96 @@ const submitWorkVisit = (data) => {
     });
 };
 
+// Calendar ================================================================================================================================
+
+const getDayPromo = (date) => {
+  return fetch(
+    API_URL +
+      API_CALENDAR_PROMO +
+      `/SakamorInfoPromo/GetInfoPromoByDate/${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getDayProgram = (date) => {
+  return fetch(
+    API_URL +
+      API_CALENDAR_PROGRAM +
+      `/SakamorKalenderProgram/GetKalenderProgramByDate/${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getMonthPromo = (date) => {
+  return fetch(
+    API_URL +
+      API_CALENDAR_PROMO +
+      `/SakamorInfoPromo/GetInfoPromoByMonthYear/${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getMonthProgram = (date) => {
+  return fetch(
+    API_URL +
+      API_CALENDAR_PROGRAM +
+      `/SakamorKalenderProgram/GetKalenderProgramByMonthYear/${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getAuth,
@@ -1024,4 +1116,8 @@ export {
   getWorkVisitMonthlyHistory,
   getWorkVisitRating,
   submitWorkVisit,
+  getDayProgram,
+  getDayPromo,
+  getMonthProgram,
+  getMonthPromo,
 };

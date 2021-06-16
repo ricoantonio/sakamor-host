@@ -1,0 +1,103 @@
+.container {
+  display: block;
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #5e5873;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark_green {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  border-radius: 4px;
+  background-color: #eee;
+}
+.checkmark_yellow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  border-radius: 4px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark_green {
+  background-color: #ccc;
+}
+.container:hover input ~ .checkmark_yellow {
+  background-color: #ccc;
+}
+
+.container input:checked ~ .checkmark_green {
+  background-color: #41867a;
+}
+.container input:checked ~ .checkmark_yellow {
+  background-color: #feb800;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark_green:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.checkmark_yellow:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark_green:after {
+  display: block;
+}
+.container input:checked ~ .checkmark_yellow:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark_green:after {
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.container .checkmark_yellow:after {
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+@media screen and (min-width: 600px) {
+}
