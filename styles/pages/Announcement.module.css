@@ -1,47 +1,51 @@
+.container {
+  background-color: #f0f0f0;
+}
 .wrapper {
-  margin: 0 auto;
-  width: 360px;
+  margin: auto;
+  width: 400px;
 }
 .main {
-  padding: 60px 16px 0 16px;
+  width: 400px;
+  margin: 80px auto;
 }
-.list_container {
-  border-bottom: 1px solid #e9ecf2;
-  padding-top: 12px;
-  font-size: 12px;
-}
-.list_date_container {
-  display: grid;
-  grid-template-columns: 20% 5% 75%;
-  margin-bottom: 12px;
-}
-.list_detail_container {
+.announcement_container_unread {
+  padding: 10px 18px;
   font-size: 14px;
-  color: #424752;
-  padding-bottom: 12px;
+  background-color: #fff;
+  color: #5e5873;
+  border-top: 0.5px solid #ebe9f1;
+  border-bottom: 0.5px solid #ebe9f1;
 }
-.date_text {
-  color: #076535;
+.announcement_container {
+  padding: 10px 18px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  color: #5e5873;
+  border-top: 0.5px solid #ebe9f1;
+  border-bottom: 0.5px solid #ebe9f1;
 }
-.time_text {
-  color: #87bd40;
+.announcement_container :last-child {
+  margin: auto 0;
 }
-.dot {
-  width: 4px;
-  height: 4px;
-  background-color: #abb6cc;
-  border-radius: 4px;
-}
-.dot_container {
+.announcement_circle {
+  height: 42px;
+  width: 42px;
+  background-color: #ccc;
+  border-radius: 50px;
   margin: auto;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  padding-top: 12px;
 }
-
 @media screen and (min-width: 600px) {
   .wrapper {
     margin: 0 auto;
     width: 540px;
   }
   .main {
-    padding: 60px 20px 0 20px;
+    width: 496px;
   }
 }

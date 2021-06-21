@@ -546,7 +546,10 @@ export default function Calender() {
                     <div className={styles.month_program_date}>
                       {moment(val.tanggalMulai).format("D")}
                     </div>
-                    <div>{val.namaProduk}</div>
+                    <div>
+                      <div>{val.namaProduk}</div>
+                      <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
+                    </div>
                   </div>
                 ) : (
                   ""

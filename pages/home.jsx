@@ -703,7 +703,11 @@ export default function Home() {
                   </div>
                   <div style={{ fontSize: "12px" }}>{role}</div>
                 </div>
-                <img className={styles.notif} src="/notif.svg" />
+                <Link href={"/announcement"}>
+                  <a>
+                    <img className={styles.notif} src="/notif.svg" />
+                  </a>
+                </Link>
                 <div className={styles.main}>
                   {renderTopMenu()}
                   {focus === "PLAN"

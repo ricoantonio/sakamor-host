@@ -9,6 +9,7 @@ import {
   API_WORK_VISIT,
   API_CALENDAR_PROMO,
   API_CALENDAR_PROGRAM,
+  API_ANNOUNCEMENT,
 } from "./constant";
 
 var now = new Date();
@@ -1078,6 +1079,51 @@ const getMonthProgram = (date) => {
     });
 };
 
+// Announcement ======================================================================================================================================
+
+const getAllAnnouncement = (userData) => {
+  return fetch(
+    API_URL +
+      API_ANNOUNCEMENT +
+      `/SakamorAnnouncement/GetAnnouncementByUser?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const updateReadAnnouncement = (id, data) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorAnnouncement/v1/api/SakamorAnnouncement/UpdateAnnouncementStatus/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getAuth,
@@ -1120,4 +1166,6 @@ export {
   getDayPromo,
   getMonthProgram,
   getMonthPromo,
+  getAllAnnouncement,
+  updateReadAnnouncement,
 };

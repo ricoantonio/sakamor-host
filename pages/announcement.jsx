@@ -3,76 +3,118 @@ import styles from "../styles/pages/Announcement.module.css";
 import Nav from "../components/Nav";
 import { Stores } from "../store";
 import BotNav from "../components/BotNav";
+import { getAllAnnouncement, updateReadAnnouncement } from "../helper";
+import moment from "moment";
+import Spinner from "../components/Spinner";
+
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
+  const [announcementList, setAnnouncementList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    actions.keepState();
+    const userData = JSON.parse(localStorage.getItem("user"));
+    getAllAnnouncement(userData)
+      .then((data) => {
+        setAnnouncementList(data);
+        console.log(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [dispatch]);
 
-  const [announcementList, setAnnouncementList] = useState([
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-    {
-      date: "21/03/2020",
-      time: "10:30",
-      detail:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-    },
-  ]);
   const renderAnnouncement = () => {
-    return announcementList.map((val) => {
-      return (
-        <div className={styles.list_container}>
-          <div className={styles.list_date_container}>
-            <div className={styles.date_text}>{val.date}</div>
-            <div className={styles.dot_container}>
-              <div className={styles.dot}></div>
-            </div>
-            <div className={styles.time_text}>{val.time}</div>
-          </div>
-          <div className={styles.list_detail_container}>{val.detail}</div>
-        </div>
-      );
-    });
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return announcementList.map((val) => {
+        if (val.isRead) {
+          return (
+            <>
+              <div className={styles.announcement_container}>
+                <div>{val.judul}</div>
+                <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
+                <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
+                  {moment(val.createdDate).fromNow()}
+                </div>
+              </div>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <div
+                onClick={() => {
+                  const userData = JSON.parse(localStorage.getItem("user"));
+
+                  var data = {
+                    id: val.announcementStatusId,
+                    username: userData.username,
+                    isRead: true,
+                  };
+                  updateReadAnnouncement(val.announcementStatusId, data)
+                    .then((data) => {
+                      getAllAnnouncement(userData)
+                        .then((data) => {
+                          setAnnouncementList(data);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+                className={styles.announcement_container_unread}
+              >
+                <div>{val.judul}</div>
+                <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
+                <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
+                  {moment(val.createdDate).fromNow()}
+                </div>
+              </div>
+            </>
+          );
+        }
+        return render;
+      });
+    }
   };
 
+  const newAnnouncement = announcementList.filter((val) => {
+    return val.isRead === false;
+  });
   return (
     <>
       <div className={styles.wrapper}>
-        <Nav title="Announcement" backHref="/" />
-        <div className={styles.main}>{renderAnnouncement()}</div>
-        <div></div>
+        <Nav title={"Announcement"} color={"white"} backHref={"/"} />
+        <div className={styles.main}>
+          <div
+            style={{ textAlign: "right" }}
+            className={styles.announcement_container_unread}
+          >
+            <div style={{ margin: "6px 0px" }}>
+              <span
+                style={{
+                  color: "#FEB800",
+                  backgroundColor: "rgba(254, 184, 0, 0.12)",
+                  padding: "2px 10px",
+                  borderRadius: "20px",
+                  fontSize: "12px",
+                }}
+              >
+                {newAnnouncement.length} New
+              </span>
+            </div>
+          </div>
+          {renderAnnouncement()}
+          <div style={{ marginBottom: "120px" }} />
+        </div>
       </div>
-      <BotNav focus={"profile"} />
+      <BotNav />
     </>
   );
 }
