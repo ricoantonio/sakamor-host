@@ -1,4 +1,4 @@
-import { getMessaging } from "firebase/messaging";
+// import { getMessaging } from "firebase/messaging";
 import firebase from "firebase/app";
 
 const firebaseCloudMessaging = {
@@ -24,7 +24,7 @@ const firebaseCloudMessaging = {
       });
 
       try {
-        const messaging = getMessaging();
+        const messaging = firebase.messaging();
         const tokenInLocalForage = await this.tokenInlocalforage();
         const userInlocalforage = await this.userInlocalforage();
 
