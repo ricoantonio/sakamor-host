@@ -1,1 +1,0 @@
-_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[24],{TetW:function(_,n,w){(window.__NEXT_P=window.__NEXT_P||[]).push(["/home",function(){return w("USUq")}])}},[["TetW",0,2,5,13,1,3,4,6,9,15]]]);

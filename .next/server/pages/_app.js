@@ -93,35 +93,39 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/bootstrap/dist/css/bootstrap.min.css":
+/*!***********************************************************!*\
+  !*** ./node_modules/bootstrap/dist/css/bootstrap.min.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__("1TCz");
 
 
 /***/ }),
 
-/***/ "1TCz":
+/***/ "./pages/_app.js":
+/*!***********************!*\
+  !*** ./pages/_app.js ***!
+  \***********************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("F5FC");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("zPlV");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ "react/jsx-dev-runtime");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/globals.css */ "./styles/globals.css");
 /* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_styles_globals_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("q4sD");
+/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
 /* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("kQFM");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("cDcd");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store */ "./store/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("4Q3z");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/router */ "next/router");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _webPush__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("9Bxp");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("wVQA");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("ECGM");
 
+var _jsxFileName = "C:\\Users\\Rico\\Desktop\\Home\\Kalbe app\\host-sakamor\\pages\\_app.js";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -133,10 +137,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
-
-
+ // import { firebaseCloudMessaging } from "../webPush";
+// import firebase from "firebase/app";
+// import { getAllAnnouncement } from "../helper";
 
 function MyApp({
   Component,
@@ -169,966 +172,776 @@ function MyApp({
   //   }
   // });
 
-  return /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])(_store__WEBPACK_IMPORTED_MODULE_3__[/* Store */ "a"], {
-    children: /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])(Component, _objectSpread({}, pageProps))
-  });
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(_store__WEBPACK_IMPORTED_MODULE_3__["Store"], {
+    children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(Component, _objectSpread({}, pageProps), void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 40,
+      columnNumber: 7
+    }, this)
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 39,
+    columnNumber: 5
+  }, this);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (MyApp);
 
 /***/ }),
 
-/***/ "4Q3z":
-/***/ (function(module, exports) {
-
-module.exports = require("next/router");
-
-/***/ }),
-
-/***/ "9Bxp":
+/***/ "./store/actions/keepState.js":
+/*!************************************!*\
+  !*** ./store/actions/keepState.js ***!
+  \************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return firebaseCloudMessaging; });
-/* harmony import */ var firebase_messaging__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("dIt4");
-/* harmony import */ var firebase_messaging__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(firebase_messaging__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("wVQA");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_1__);
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  keepState: async data => {
+    try {
+      dispatch({
+        type: "KEEP_STATE",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setDefaultVisitPlan.js":
+/*!**********************************************!*\
+  !*** ./store/actions/setDefaultVisitPlan.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setDefaultVisitPlan: async () => {
+    try {
+      dispatch({
+        type: "SET_DEFAULT_VISIT_PLAN"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setDefaultVisitSpreading.js":
+/*!***************************************************!*\
+  !*** ./store/actions/setDefaultVisitSpreading.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setDefaultVisitSpreading: async () => {
+    try {
+      dispatch({
+        type: "SET_DEFAULT_VISIT_SPREADING"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setDefaultVisitUnplan.js":
+/*!************************************************!*\
+  !*** ./store/actions/setDefaultVisitUnplan.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setDefaultVisitUnplan: async () => {
+    try {
+      dispatch({
+        type: "SET_DEFAULT_VISIT_UNPLAN"
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setMenu.js":
+/*!**********************************!*\
+  !*** ./store/actions/setMenu.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setMenu: async data => {
+    try {
+      dispatch({
+        type: "SET_MENU",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setPlanAvability.js":
+/*!*******************************************!*\
+  !*** ./store/actions/setPlanAvability.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setPlanAvability: async data => {
+    try {
+      dispatch({
+        type: "SET_PLAN_AVABILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setPlanCatatan.js":
+/*!*****************************************!*\
+  !*** ./store/actions/setPlanCatatan.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setPlanCatatan: async data => {
+    try {
+      dispatch({
+        type: "SET_PLAN_CATATAN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setPlanCheckIn.js":
+/*!*****************************************!*\
+  !*** ./store/actions/setPlanCheckIn.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setPlanCheckIn: async data => {
+    try {
+      dispatch({
+        type: "SET_PLAN_CHECK_IN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setPlanVisibility.js":
+/*!********************************************!*\
+  !*** ./store/actions/setPlanVisibility.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setPlanVisibility: async data => {
+    try {
+      dispatch({
+        type: "SET_PLAN_VISIBILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingAlamat.js":
+/*!*********************************************!*\
+  !*** ./store/actions/setSpreadingAlamat.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingCatatan: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_CATATAN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingAvability.js":
+/*!************************************************!*\
+  !*** ./store/actions/setSpreadingAvability.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingAvability: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_AVABILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingCatatan.js":
+/*!**********************************************!*\
+  !*** ./store/actions/setSpreadingCatatan.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingAlamat: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_ALAMAT",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingCheckIn.js":
+/*!**********************************************!*\
+  !*** ./store/actions/setSpreadingCheckIn.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingCheckIn: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_CHECK_IN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingJenisChannel.js":
+/*!***************************************************!*\
+  !*** ./store/actions/setSpreadingJenisChannel.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingJenisChannel: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_JENIS_CHANNEL",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingNewOutlet.js":
+/*!************************************************!*\
+  !*** ./store/actions/setSpreadingNewOutlet.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingNewOutlet: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_NEW_OUTLET",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingOutlet.js":
+/*!*********************************************!*\
+  !*** ./store/actions/setSpreadingOutlet.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingOutlet: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_OUTLET",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setSpreadingVisibility.js":
+/*!*************************************************!*\
+  !*** ./store/actions/setSpreadingVisibility.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setSpreadingVisibility: async data => {
+    try {
+      dispatch({
+        type: "SET_SPREADING_VISIBILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanAvability.js":
+/*!*********************************************!*\
+  !*** ./store/actions/setUnplanAvability.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanAvability: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_AVABILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanCatatan.js":
+/*!*******************************************!*\
+  !*** ./store/actions/setUnplanCatatan.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanCatatan: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_CATATAN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanCheckIn.js":
+/*!*******************************************!*\
+  !*** ./store/actions/setUnplanCheckIn.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanCheckIn: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_CHECK_IN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanJenisChannel.js":
+/*!************************************************!*\
+  !*** ./store/actions/setUnplanJenisChannel.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanJenisChannel: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_JENIS_CHANNEL",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanOutlet.js":
+/*!******************************************!*\
+  !*** ./store/actions/setUnplanOutlet.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanOutlet: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_OUTLET",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/setUnplanVisibility.js":
+/*!**********************************************!*\
+  !*** ./store/actions/setUnplanVisibility.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  setUnplanVisibility: async data => {
+    try {
+      dispatch({
+        type: "SET_UNPLAN_VISIBILITY",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/actions/userLogin.js":
+/*!************************************!*\
+  !*** ./store/actions/userLogin.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (dispatch => ({
+  userLogin: async data => {
+    try {
+      dispatch({
+        type: "USER_LOGIN",
+        payload: data
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./store/index.js":
+/*!************************!*\
+  !*** ./store/index.js ***!
+  \************************/
+/*! exports provided: Stores, Store */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Stores", function() { return Stores; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ "react/jsx-dev-runtime");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reducers/user */ "./store/reducers/user.js");
+/* harmony import */ var _reducers_menu__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./reducers/menu */ "./store/reducers/menu.js");
+/* harmony import */ var _reducers_visitPlan__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./reducers/visitPlan */ "./store/reducers/visitPlan.js");
+/* harmony import */ var _reducers_visitUnplan__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./reducers/visitUnplan */ "./store/reducers/visitUnplan.js");
+/* harmony import */ var _reducers_visitSpreading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./reducers/visitSpreading */ "./store/reducers/visitSpreading.js");
+/* harmony import */ var _actions_userLogin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./actions/userLogin */ "./store/actions/userLogin.js");
+/* harmony import */ var _actions_setMenu__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./actions/setMenu */ "./store/actions/setMenu.js");
+/* harmony import */ var _actions_keepState__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./actions/keepState */ "./store/actions/keepState.js");
+/* harmony import */ var _actions_setPlanVisibility__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./actions/setPlanVisibility */ "./store/actions/setPlanVisibility.js");
+/* harmony import */ var _actions_setPlanAvability__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./actions/setPlanAvability */ "./store/actions/setPlanAvability.js");
+/* harmony import */ var _actions_setPlanCatatan__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./actions/setPlanCatatan */ "./store/actions/setPlanCatatan.js");
+/* harmony import */ var _actions_setPlanCheckIn__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./actions/setPlanCheckIn */ "./store/actions/setPlanCheckIn.js");
+/* harmony import */ var _actions_setUnplanAvability__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./actions/setUnplanAvability */ "./store/actions/setUnplanAvability.js");
+/* harmony import */ var _actions_setUnplanVisibility__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./actions/setUnplanVisibility */ "./store/actions/setUnplanVisibility.js");
+/* harmony import */ var _actions_setUnplanCatatan__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./actions/setUnplanCatatan */ "./store/actions/setUnplanCatatan.js");
+/* harmony import */ var _actions_setUnplanCheckIn__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./actions/setUnplanCheckIn */ "./store/actions/setUnplanCheckIn.js");
+/* harmony import */ var _actions_setUnplanJenisChannel__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./actions/setUnplanJenisChannel */ "./store/actions/setUnplanJenisChannel.js");
+/* harmony import */ var _actions_setUnplanOutlet__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./actions/setUnplanOutlet */ "./store/actions/setUnplanOutlet.js");
+/* harmony import */ var _actions_setSpreadingAvability__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./actions/setSpreadingAvability */ "./store/actions/setSpreadingAvability.js");
+/* harmony import */ var _actions_setSpreadingVisibility__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./actions/setSpreadingVisibility */ "./store/actions/setSpreadingVisibility.js");
+/* harmony import */ var _actions_setSpreadingCatatan__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./actions/setSpreadingCatatan */ "./store/actions/setSpreadingCatatan.js");
+/* harmony import */ var _actions_setSpreadingAlamat__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./actions/setSpreadingAlamat */ "./store/actions/setSpreadingAlamat.js");
+/* harmony import */ var _actions_setSpreadingNewOutlet__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./actions/setSpreadingNewOutlet */ "./store/actions/setSpreadingNewOutlet.js");
+/* harmony import */ var _actions_setSpreadingCheckIn__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./actions/setSpreadingCheckIn */ "./store/actions/setSpreadingCheckIn.js");
+/* harmony import */ var _actions_setSpreadingJenisChannel__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./actions/setSpreadingJenisChannel */ "./store/actions/setSpreadingJenisChannel.js");
+/* harmony import */ var _actions_setSpreadingOutlet__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./actions/setSpreadingOutlet */ "./store/actions/setSpreadingOutlet.js");
+/* harmony import */ var _actions_setDefaultVisitPlan__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./actions/setDefaultVisitPlan */ "./store/actions/setDefaultVisitPlan.js");
+/* harmony import */ var _actions_setDefaultVisitUnplan__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./actions/setDefaultVisitUnplan */ "./store/actions/setDefaultVisitUnplan.js");
+/* harmony import */ var _actions_setDefaultVisitSpreading__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./actions/setDefaultVisitSpreading */ "./store/actions/setDefaultVisitSpreading.js");
+
+var _jsxFileName = "C:\\Users\\Rico\\Desktop\\Home\\Kalbe app\\host-sakamor\\store\\index.js";
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-const firebaseCloudMessaging = {
-  //checking whether token is available in indexed DB
-  tokenInlocalforage: async () => {
-    return localStorage.getItem("fcm_token");
-  },
-  userInlocalforage: async () => {
-    return localStorage.getItem("user");
-  },
-  //initializing firebase app
-  init: async function () {
-    if (!firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.apps.length) {
-      firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializeApp({
-        apiKey: "AIzaSyAMTirYpyzY7QWDkzSPsofpo68jaFltnrk",
-        authDomain: "sakamor-8f28d.firebaseapp.com",
-        projectId: "sakamor-8f28d",
-        storageBucket: "sakamor-8f28d.appspot.com",
-        messagingSenderId: "400720458166",
-        appId: "1:400720458166:web:cf7afc06ec3ac419d69117"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Stores = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_1__["createContext"])();
+
+const Store = ({
+  children
+}) => {
+  const {
+    0: state,
+    1: dispatch
+  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useReducer"])((prevState, action) => {
+    return {
+      userReducer: Object(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["userReducer"])(prevState.userReducer, action),
+      menuReducer: Object(_reducers_menu__WEBPACK_IMPORTED_MODULE_3__["menuReducer"])(prevState.menuReducer, action),
+      visitPlanReducer: Object(_reducers_visitPlan__WEBPACK_IMPORTED_MODULE_4__["visitPlanReducer"])(prevState.visitPlanReducer, action),
+      visitUnplanReducer: Object(_reducers_visitUnplan__WEBPACK_IMPORTED_MODULE_5__["visitUnplanReducer"])(prevState.visitUnplanReducer, action),
+      visitSpreadingReducer: Object(_reducers_visitSpreading__WEBPACK_IMPORTED_MODULE_6__["visitSpreadingReducer"])(prevState.visitSpreadingReducer, action)
+    };
+  }, {
+    userReducer: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["defaultUser"],
+    menuReducer: _reducers_menu__WEBPACK_IMPORTED_MODULE_3__["defaultMenu"],
+    visitPlanReducer: _reducers_visitPlan__WEBPACK_IMPORTED_MODULE_4__["defaultVisitPlan"],
+    visitUnplanReducer: _reducers_visitUnplan__WEBPACK_IMPORTED_MODULE_5__["defaultVisitUnplan"],
+    visitSpreadingReducer: _reducers_visitSpreading__WEBPACK_IMPORTED_MODULE_6__["defaultVisitSpreading"]
+  });
+  const actions = Object(react__WEBPACK_IMPORTED_MODULE_1__["useMemo"])(() => _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(_actions_userLogin__WEBPACK_IMPORTED_MODULE_7__["default"])(dispatch)), Object(_actions_setMenu__WEBPACK_IMPORTED_MODULE_8__["default"])(dispatch)), Object(_actions_keepState__WEBPACK_IMPORTED_MODULE_9__["default"])(dispatch)), Object(_actions_setPlanVisibility__WEBPACK_IMPORTED_MODULE_10__["default"])(dispatch)), Object(_actions_setPlanAvability__WEBPACK_IMPORTED_MODULE_11__["default"])(dispatch)), Object(_actions_setPlanCatatan__WEBPACK_IMPORTED_MODULE_12__["default"])(dispatch)), Object(_actions_setPlanCheckIn__WEBPACK_IMPORTED_MODULE_13__["default"])(dispatch)), Object(_actions_setDefaultVisitPlan__WEBPACK_IMPORTED_MODULE_28__["default"])(dispatch)), Object(_actions_setUnplanVisibility__WEBPACK_IMPORTED_MODULE_15__["default"])(dispatch)), Object(_actions_setUnplanAvability__WEBPACK_IMPORTED_MODULE_14__["default"])(dispatch)), Object(_actions_setUnplanCatatan__WEBPACK_IMPORTED_MODULE_16__["default"])(dispatch)), Object(_actions_setUnplanCheckIn__WEBPACK_IMPORTED_MODULE_17__["default"])(dispatch)), Object(_actions_setUnplanJenisChannel__WEBPACK_IMPORTED_MODULE_18__["default"])(dispatch)), Object(_actions_setUnplanOutlet__WEBPACK_IMPORTED_MODULE_19__["default"])(dispatch)), Object(_actions_setDefaultVisitUnplan__WEBPACK_IMPORTED_MODULE_29__["default"])(dispatch)), Object(_actions_setSpreadingVisibility__WEBPACK_IMPORTED_MODULE_21__["default"])(dispatch)), Object(_actions_setSpreadingAvability__WEBPACK_IMPORTED_MODULE_20__["default"])(dispatch)), Object(_actions_setSpreadingCatatan__WEBPACK_IMPORTED_MODULE_22__["default"])(dispatch)), Object(_actions_setSpreadingAlamat__WEBPACK_IMPORTED_MODULE_23__["default"])(dispatch)), Object(_actions_setSpreadingNewOutlet__WEBPACK_IMPORTED_MODULE_24__["default"])(dispatch)), Object(_actions_setSpreadingCheckIn__WEBPACK_IMPORTED_MODULE_25__["default"])(dispatch)), Object(_actions_setSpreadingJenisChannel__WEBPACK_IMPORTED_MODULE_26__["default"])(dispatch)), Object(_actions_setSpreadingOutlet__WEBPACK_IMPORTED_MODULE_27__["default"])(dispatch)), Object(_actions_setDefaultVisitSpreading__WEBPACK_IMPORTED_MODULE_30__["default"])(dispatch)), []);
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__["jsxDEV"])(Stores.Provider, {
+    value: {
+      state,
+      dispatch,
+      actions
+    },
+    children: children
+  }, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 103,
+    columnNumber: 5
+  }, undefined);
+};
+
+
+
+/***/ }),
+
+/***/ "./store/reducers/menu.js":
+/*!********************************!*\
+  !*** ./store/reducers/menu.js ***!
+  \********************************/
+/*! exports provided: menuReducer, defaultMenu */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "menuReducer", function() { return menuReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultMenu", function() { return defaultMenu; });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+const defaultMenu = {
+  menu: []
+};
+
+const menuReducer = (state, action) => {
+  switch (action.type) {
+    case "SET_MENU":
+      localStorage.setItem("menu", JSON.stringify(action.payload));
+      return _objectSpread(_objectSpread({}, state), {}, {
+        menu: action.payload
       });
 
-      try {
-        const messaging = firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.messaging();
-        const tokenInLocalForage = await this.tokenInlocalforage();
-        const userInlocalforage = await this.userInlocalforage(); //if FCM token is already there just return the token
-
-        if (tokenInLocalForage !== null) {
-          return tokenInLocalForage;
-        }
-
-        if (userInlocalforage) {
-          //requesting notification permission from browser
-          const status = await Notification.requestPermission();
-
-          if (status && status === "granted") {
-            //getting token from FCM
-            const fcm_token = await messaging.getToken();
-
-            if (fcm_token) {
-              //setting FCM token in indexed db using localforage
-              localStorage.setItem("fcm_token", fcm_token); //return the FCM token after saving it
-
-              return fcm_token;
-            }
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    }
-  }
-};
-
-
-/***/ }),
-
-/***/ "ECGM":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "n", function() { return /* binding */ getMenu; });
-__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ getAuth; });
-__webpack_require__.d(__webpack_exports__, "D", function() { return /* binding */ onLogin; });
-__webpack_require__.d(__webpack_exports__, "w", function() { return /* binding */ getSearchJenisChannel; });
-__webpack_require__.d(__webpack_exports__, "x", function() { return /* binding */ getSearchOutlet; });
-__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ getBrand; });
-__webpack_require__.d(__webpack_exports__, "v", function() { return /* binding */ getProductByJenisChannel; });
-__webpack_require__.d(__webpack_exports__, "m", function() { return /* binding */ getKontenWorkVisit; });
-__webpack_require__.d(__webpack_exports__, "s", function() { return /* binding */ getPlanList; });
-__webpack_require__.d(__webpack_exports__, "r", function() { return /* binding */ getPlanId; });
-__webpack_require__.d(__webpack_exports__, "u", function() { return /* binding */ getPosm; });
-__webpack_require__.d(__webpack_exports__, "q", function() { return /* binding */ getPlanHistory; });
-__webpack_require__.d(__webpack_exports__, "E", function() { return /* binding */ submitVisitPlan; });
-__webpack_require__.d(__webpack_exports__, "F", function() { return /* binding */ submitVisitPlanDposm; });
-__webpack_require__.d(__webpack_exports__, "h", function() { return /* binding */ getInvoiceDataPosm; });
-__webpack_require__.d(__webpack_exports__, "g", function() { return /* binding */ getInvoiceData; });
-__webpack_require__.d(__webpack_exports__, "t", function() { return /* binding */ getPlanMonthlyHistory; });
-__webpack_require__.d(__webpack_exports__, "M", function() { return /* binding */ viewFile; });
-__webpack_require__.d(__webpack_exports__, "I", function() { return /* binding */ submitVisitUnplan; });
-__webpack_require__.d(__webpack_exports__, "J", function() { return /* binding */ submitVisitUnplanDposm; });
-__webpack_require__.d(__webpack_exports__, "l", function() { return /* binding */ getInvoiceDataUnplan; });
-__webpack_require__.d(__webpack_exports__, "j", function() { return /* binding */ getInvoiceDataPosmUnplan; });
-__webpack_require__.d(__webpack_exports__, "z", function() { return /* binding */ getUnplanMonthlyHistory; });
-__webpack_require__.d(__webpack_exports__, "O", function() { return /* binding */ viewFileUnplan; });
-__webpack_require__.d(__webpack_exports__, "A", function() { return /* binding */ getUnplanNearMe; });
-__webpack_require__.d(__webpack_exports__, "G", function() { return /* binding */ submitVisitSpreading; });
-__webpack_require__.d(__webpack_exports__, "H", function() { return /* binding */ submitVisitSpreadingDposm; });
-__webpack_require__.d(__webpack_exports__, "k", function() { return /* binding */ getInvoiceDataSpreading; });
-__webpack_require__.d(__webpack_exports__, "i", function() { return /* binding */ getInvoiceDataPosmSpreading; });
-__webpack_require__.d(__webpack_exports__, "N", function() { return /* binding */ viewFileSpreading; });
-__webpack_require__.d(__webpack_exports__, "y", function() { return /* binding */ getSpreadingMonthlyHistory; });
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ getAllWorkVisit; });
-__webpack_require__.d(__webpack_exports__, "B", function() { return /* binding */ getWorkVisitMonthlyHistory; });
-__webpack_require__.d(__webpack_exports__, "C", function() { return /* binding */ getWorkVisitRating; });
-__webpack_require__.d(__webpack_exports__, "K", function() { return /* binding */ submitWorkVisit; });
-__webpack_require__.d(__webpack_exports__, "e", function() { return /* binding */ getDayProgram; });
-__webpack_require__.d(__webpack_exports__, "f", function() { return /* binding */ getDayPromo; });
-__webpack_require__.d(__webpack_exports__, "o", function() { return /* binding */ getMonthProgram; });
-__webpack_require__.d(__webpack_exports__, "p", function() { return /* binding */ getMonthPromo; });
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ getAllAnnouncement; });
-__webpack_require__.d(__webpack_exports__, "L", function() { return /* binding */ updateReadAnnouncement; });
-
-// UNUSED EXPORTS: getProductSearch, getProductAvgSales
-
-// CONCATENATED MODULE: ./constant.js
-var API_URL = "https://m-one.kalbe.co.id:8243/t/kalbe.co.id";
-var API_USER = "/UserProfileExternal/v1/api";
-var API_MASTER = "/SakamorMasterData/v1/api";
-var API_VISIT_PLAN = "/SakamorActivityVisitPlan/v1/api";
-var API_VISIT_UNPLAN = "/SakamorActivityVisitUnPlan/v1/api";
-var API_VISIT_SPREADING = "/SakamorActivitySpreading/v1/api";
-var API_WORK_VISIT = "/SakamorActivityWorkVisit/v1/api";
-var API_CALENDAR_PROGRAM = "/SakamorKalenderProgram/v1/api";
-var API_CALENDAR_PROMO = "/SakamorInfoPromo/v1/api";
-var API_ANNOUNCEMENT = "/SakamorAnnouncement/v1/api";
-var TOKEN = "eyJ4NXQiOiJZamt5WkRVM05tRTRZbVZqT1RjeE4yRTRNbVZrT1dSak1XVmhZVGhoWWpjeE9UZzJNemt4WVE9PSIsImtpZCI6ImdhdGV3YXlfY2VydGlmaWNhdGVfYWxpYXMiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJub2Jvbi5hbmRyYUBrYWxiZS5jby5pZCIsImFwcGxpY2F0aW9uIjp7Im93bmVyIjoibm9ib24uYW5kcmFAa2FsYmUuY28uaWQiLCJ0aWVyUXVvdGFUeXBlIjpudWxsLCJ0aWVyIjoiVW5saW1pdGVkIiwibmFtZSI6IlNha2Ftb3IgMi4wIiwiaWQiOjE5LCJ1dWlkIjoiMTQ5ZWU0NmUtZDE3Ni00NWQxLWE3NmEtOTAzM2RhNzc4OTU4In0sImlzcyI6Imh0dHBzOlwvXC9tLW9uZS5rYWxiZS5jby5pZDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwidGllckluZm8iOnsiVW5saW1pdGVkIjp7InRpZXJRdW90YVR5cGUiOiJyZXF1ZXN0Q291bnQiLCJncmFwaFFMTWF4Q29tcGxleGl0eSI6MCwiZ3JhcGhRTE1heERlcHRoIjowLCJzdG9wT25RdW90YVJlYWNoIjp0cnVlLCJzcGlrZUFycmVzdExpbWl0IjowLCJzcGlrZUFycmVzdFVuaXQiOm51bGx9fSwia2V5dHlwZSI6IlBST0RVQ1RJT04iLCJwZXJtaXR0ZWRSZWZlcmVyIjoiIiwic3Vic2NyaWJlZEFQSXMiOlt7InN1YnNjcmliZXJUZW5hbnREb21haW4iOiJrYWxiZS5jby5pZCIsIm5hbWUiOiJTYWthbW9yQWN0aXZpdHlWaXNpdFBsYW4iLCJjb250ZXh0IjoiXC90XC9rYWxiZS5jby5pZFwvU2FrYW1vckFjdGl2aXR5VmlzaXRQbGFuXC92MSIsInB1Ymxpc2hlciI6Im5vYm9uLmFuZHJhQGthbGJlLmNvLmlkIiwidmVyc2lvbiI6InYxIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9LHsic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImthbGJlLmNvLmlkIiwibmFtZSI6IlVzZXJQcm9maWxlRXh0ZXJuYWwiLCJjb250ZXh0IjoiXC90XC9rYWxiZS5jby5pZFwvVXNlclByb2ZpbGVFeHRlcm5hbFwvdjEiLCJwdWJsaXNoZXIiOiJub2Jvbi5hbmRyYUBrYWxiZS5jby5pZCIsInZlcnNpb24iOiJ2MSIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifSx7InN1YnNjcmliZXJUZW5hbnREb21haW4iOiJrYWxiZS5jby5pZCIsIm5hbWUiOiJTYWthbW9yTWFzdGVyRGF0YSIsImNvbnRleHQiOiJcL3RcL2thbGJlLmNvLmlkXC9TYWthbW9yTWFzdGVyRGF0YVwvdjEiLCJwdWJsaXNoZXIiOiJub2Jvbi5hbmRyYUBrYWxiZS5jby5pZCIsInZlcnNpb24iOiJ2MSIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifSx7InN1YnNjcmliZXJUZW5hbnREb21haW4iOiJrYWxiZS5jby5pZCIsIm5hbWUiOiJTYWthbW9yQWN0aXZpdHlTcHJlYWRpbmciLCJjb250ZXh0IjoiXC90XC9rYWxiZS5jby5pZFwvU2FrYW1vckFjdGl2aXR5U3ByZWFkaW5nXC92MSIsInB1Ymxpc2hlciI6Im5vYm9uLmFuZHJhQGthbGJlLmNvLmlkIiwidmVyc2lvbiI6InYxIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9LHsic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImthbGJlLmNvLmlkIiwibmFtZSI6IlNha2Ftb3JBY3Rpdml0eVZpc2l0VW5QbGFuIiwiY29udGV4dCI6IlwvdFwva2FsYmUuY28uaWRcL1Nha2Ftb3JBY3Rpdml0eVZpc2l0VW5QbGFuXC92MSIsInB1Ymxpc2hlciI6Im5vYm9uLmFuZHJhQGthbGJlLmNvLmlkIiwidmVyc2lvbiI6InYxIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9LHsic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImthbGJlLmNvLmlkIiwibmFtZSI6IlNha2Ftb3JBY3Rpdml0eVdvcmtWaXNpdCIsImNvbnRleHQiOiJcL3RcL2thbGJlLmNvLmlkXC9TYWthbW9yQWN0aXZpdHlXb3JrVmlzaXRcL3YxIiwicHVibGlzaGVyIjoibm9ib24uYW5kcmFAa2FsYmUuY28uaWQiLCJ2ZXJzaW9uIjoidjEiLCJzdWJzY3JpcHRpb25UaWVyIjoiVW5saW1pdGVkIn0seyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoia2FsYmUuY28uaWQiLCJuYW1lIjoiU2FrYW1vckthbGVuZGVyUHJvZ3JhbSIsImNvbnRleHQiOiJcL3RcL2thbGJlLmNvLmlkXC9TYWthbW9yS2FsZW5kZXJQcm9ncmFtXC92MSIsInB1Ymxpc2hlciI6Im5vYm9uLmFuZHJhQGthbGJlLmNvLmlkIiwidmVyc2lvbiI6InYxIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9LHsic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImthbGJlLmNvLmlkIiwibmFtZSI6IlNha2Ftb3JJbmZvUHJvbW8iLCJjb250ZXh0IjoiXC90XC9rYWxiZS5jby5pZFwvU2FrYW1vckluZm9Qcm9tb1wvdjEiLCJwdWJsaXNoZXIiOiJub2Jvbi5hbmRyYUBrYWxiZS5jby5pZCIsInZlcnNpb24iOiJ2MSIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifSx7InN1YnNjcmliZXJUZW5hbnREb21haW4iOiJrYWxiZS5jby5pZCIsIm5hbWUiOiJTYWthbW9yQW5ub3VuY2VtZW50IiwiY29udGV4dCI6IlwvdFwva2FsYmUuY28uaWRcL1Nha2Ftb3JBbm5vdW5jZW1lbnRcL3YxIiwicHVibGlzaGVyIjoibm9ib24uYW5kcmFAa2FsYmUuY28uaWQiLCJ2ZXJzaW9uIjoidjEiLCJzdWJzY3JpcHRpb25UaWVyIjoiVW5saW1pdGVkIn1dLCJwZXJtaXR0ZWRJUCI6IiIsImlhdCI6MTYyMzkwMzc1NCwianRpIjoiYjE1NGZlYWUtMjlhYi00M2Y2LWExYjEtZjY0ZmM4MzE3MzFiIn0=.iPf5hTGUsLN5Xms6YOvyTRbKeomaeuapWnUy0K94H1hOyXvpAJUZ8J4hk4PYI6eNuxsPPyv5_vEdEyoMl_t8On15f-bEAldR78vU1pAQ8CoffJ5c9K8scInbyqOA9tb6tAZ6JTCGObc0AB6Dc57ZJZacMlAoEkW9VhGFUxFlBj6HJgS9Ft-eAgpzDB3pYTvDpy9JssPqlK7HjnNhP61SerKftD46l3ZgLH64mWLG3EpUAH1_oTW7PHpPuMayiVJQ0U7cLK4JpNY3onbRktRM-NeRae9PARajhJUyxale9frXFqAomcDubnox2rv9K7LSl3IM8zmxF0Lc0m7-MWaSZA==";
-
-// CONCATENATED MODULE: ./helper.js
-
-var now = new Date();
-var helper_date = now.getDate();
-var month = now.getMonth() + 1;
-var year = now.getFullYear();
-
-function compare(a, b) {
-  if (a.nomor < b.nomor) {
-    return -1;
-  }
-
-  if (a.nomor > b.nomor) {
-    return 1;
-  }
-
-  return 0;
-} // USER =============================================================================================================================
-
-
-const getMenu = userData => {
-  return fetch(API_URL + API_USER + `/User/GetMenu?username=${userData.email}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getAuth = userData => {
-  return fetch(API_URL + API_USER + `/User/GetAuthorize?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const onLogin = values => {
-  return fetch(API_URL + API_USER + `/User/Login?username=${values.username}&&password=${values.password}`, {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-    setWrongUser(true);
-  });
-}; // MASTER ============================================================================================================================
-
-
-const getPosm = () => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllDisplayProgram`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getProductSearch = search => {
-  return fetch(API_URL + API_MASTER + `/MasterData/GetProdukLike/${search}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getProductByJenisChannel = jenisChannelId => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetProdukJenisChannelBy/${jenisChannelId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getProductAvgSales = (productCode, outletCode) => {
-  return fetch(API_URL + API_MASTER + `/MasterData/GetAvgSales30DaysByOutletAndProduct?productCode=${productCode}&outletCode=${outletCode}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getSearchJenisChannel = search => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetJenisChannelBy?teks=${search}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getSearchOutlet = search => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetOutletBy?teks=${search}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getBrand = () => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllBrand`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getKontenWorkVisit = () => {
-  return fetch(API_URL + API_MASTER + `/MasterDataLokal/GetAllKontenWorkVisit`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // VISIT PLAN ======================================================================================================================
-
-
-const getPlanList = userData => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlan/GetActivityVisitPlanBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    var res = data.filter(val => {
-      return val.isCheckOut === false;
-    });
-    return res;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getPlanId = id => {
-  return fetch(API_URL + API_VISIT_PLAN + `/MasterVisitPlan/GetMasterVisitPlanBy?parameter=${year}-${month}-${helper_date}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(planList => {
-    if (planList.length != 0) {
-      return fetch(API_URL + API_VISIT_PLAN + `/MasterVisitPlan/GetMasterVisitPlanById/${id}`, {
-        headers: {
-          apiKey: TOKEN
-        }
-      }).then(response => {
-        return response.json();
-      }).then(data => {
-        var samePlan = planList.filter(val => {
-          return val.id === data.id;
-        });
-        return {
-          samePlan,
-          data
-        };
-      }).catch(err => {
-        console.log(err);
+    case "KEEP_STATE":
+      const userMenu = JSON.parse(localStorage.getItem("menu"));
+      return _objectSpread(_objectSpread({}, state), {}, {
+        menu: userMenu
       });
-    } else {
-      return planList;
-    }
-  }).catch(err => {
-    console.log(err);
-  });
-};
 
-const getPlanHistory = userData => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlan/GetActivityVisitPlanBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    var res = data.filter(val => {
-      return val.isCheckOut === true;
-    });
-    return res;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const submitVisitPlan = data => {
-  // console.log(data);
-  return fetch(API_URL + API_VISIT_PLAN + "/ActivityVisitPlan/SaveAllActivityVisitPlan", {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("baikan saveall", data);
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const submitVisitPlanDposm = (dposm, file) => {
-  // console.log(dposm, file);
-  const formdata = new FormData();
-  return fetch(API_URL + API_VISIT_PLAN + "/ActivityVisitPlanDPOSM/SaveActivityVisitPlanDposm", {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dposm)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    // console.log("balikan psom", data);
-    formdata.append("file", file);
-    return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlanDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`, {
-      method: "POST",
-      headers: {
-        apiKey: TOKEN
-      },
-      body: formdata
-    }).then(response => {
-      return response.json();
-    }).then(data => {
-      console.log("balikan inserfile", data);
-      return data;
-    }).catch(err => {
-      console.log(err);
-    });
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceData = visitPlanId => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlan/GetProdukSuratPesanan/${visitPlanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceDataPosm = visitPlanId => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlanDPOSM/GetActivityVisitPlanDPosmBy/${visitPlanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    var sortData = data.sort(compare);
-    return sortData;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const viewFile = id => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlanDPOSM/ViewFile/${id}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.blob();
-  }).then(function (data) {
-    var outside = URL.createObjectURL(data);
-    return outside;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getPlanMonthlyHistory = userData => {
-  return fetch(API_URL + API_VISIT_PLAN + `/ActivityVisitPlan/GetHistoryActivityVisitPlanBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    data.sort(function (a, b) {
-      var dateA = new Date(a.tanggal),
-          dateB = new Date(b.tanggal);
-      return dateB - dateA;
-    });
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // VISIT UNPLAN =================================================================================================================
-
-
-const submitVisitUnplan = data => {
-  // console.log(data);
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlan/SaveAllActivityVisitUnPlan`, {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("baikan saveall", data);
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const submitVisitUnplanDposm = (dposm, file) => {
-  // console.log(dposm, file);
-  const formdata = new FormData();
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlanDPOSM/SaveActivityVisitUnPlanDposm`, {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dposm)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("balikan psom", data);
-    formdata.append("file", file);
-    return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlanDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`, {
-      method: "POST",
-      headers: {
-        apiKey: TOKEN
-      },
-      body: formdata
-    }).then(response => {
-      return response.json();
-    }).then(data => {
-      console.log("balikan inserfile", data);
-      return data;
-    }).catch(err => {
-      console.log(err);
-    });
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceDataUnplan = visitPlanId => {
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlan/GetProdukSuratPesanan/${visitPlanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceDataPosmUnplan = visitUnplanId => {
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlanDPOSM/GetActivityVisitUnPlanDPosmBy/${visitUnplanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    var sortData = data.sort(compare);
-    return sortData;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const viewFileUnplan = id => {
-  console.log(id);
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlanDPOSM/ViewFile/${id}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.blob();
-  }).then(function (data) {
-    var outside = URL.createObjectURL(data);
-    return outside;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getUnplanMonthlyHistory = userData => {
-  return fetch(API_URL + API_VISIT_UNPLAN + `/SakamorActivityVisitUnPlan/GetHistoryActivityVisitUnPlanBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    data.sort(function (a, b) {
-      var dateA = new Date(a.tanggal),
-          dateB = new Date(b.tanggal);
-      return dateB - dateA;
-    });
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getUnplanNearMe = () => {
-  return fetch(API_URL + API_MASTER + `/MasterData/GetOutletNearMe/-6.123456/12.987654`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // SPREADING =======================================================================================================================
-
-
-const submitVisitSpreading = data => {
-  // console.log(data);
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreading/SaveAllActivitySpreading`, {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("baikan saveall", data);
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const submitVisitSpreadingDposm = (dposm, file) => {
-  // console.log(dposm, file);
-  const formdata = new FormData();
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreadingDPOSM/SaveActivitySpreadingDposm`, {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dposm)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("balikan psom", data);
-    formdata.append("file", file);
-    return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreadingDPOSM/InsertFileBy?id=${data.id}&namaFile=${data.namaFile}`, {
-      method: "POST",
-      headers: {
-        apiKey: TOKEN
-      },
-      body: formdata
-    }).then(response => {
-      return response.json();
-    }).then(data => {
-      console.log("balikan inserfile", data);
-      return data;
-    }).catch(err => {
-      console.log(err);
-    });
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceDataSpreading = visitPlanId => {
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreading/GetProdukSuratPesanan/${visitPlanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getInvoiceDataPosmSpreading = visitUnplanId => {
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreadingDPOSM/GetActivityVisitUnPlanDPosmBy/${visitUnplanId}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    var sortData = data.sort(compare);
-    return sortData;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const viewFileSpreading = id => {
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreadingDPOSM/ViewFile/${id}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.blob();
-  }).then(function (data) {
-    var outside = URL.createObjectURL(data);
-    return outside;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getSpreadingMonthlyHistory = userData => {
-  return fetch(API_URL + API_VISIT_SPREADING + `/ActivitySpreading/GetHistoryActivitySpreadingBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    data.sort(function (a, b) {
-      var dateA = new Date(a.tanggal),
-          dateB = new Date(b.tanggal);
-      return dateB - dateA;
-    });
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // WORK VISIT ================================================================================================================================
-
-
-const getAllWorkVisit = userData => {
-  return fetch(API_URL + API_WORK_VISIT + `/ActivityWorkVisit/GetActivityWorkVisitBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getWorkVisitMonthlyHistory = userData => {
-  return fetch(API_URL + API_WORK_VISIT + `/ActivityWorkVisit/GetHistoryActivityWorkVisitBy?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    data.sort(function (a, b) {
-      var dateA = new Date(a.tanggal),
-          dateB = new Date(b.tanggal);
-      return dateB - dateA;
-    });
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getWorkVisitRating = id => {
-  return fetch(API_URL + API_WORK_VISIT + `/ActivityWorkVisitRating/GetActivityWorkVisitRatingBy/${id}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const submitWorkVisit = data => {
-  // console.log(data);
-  return fetch(API_URL + API_WORK_VISIT + "/ActivityWorkVisit/SaveAllActivityWorkVisit", {
-    method: "POST",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    console.log("baikan saveall", data);
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // Calendar ================================================================================================================================
-
-
-const getDayPromo = date => {
-  return fetch(API_URL + API_CALENDAR_PROMO + `/SakamorInfoPromo/GetInfoPromoByDate/${date}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getDayProgram = date => {
-  return fetch(API_URL + API_CALENDAR_PROGRAM + `/SakamorKalenderProgram/GetKalenderProgramByDate/${date}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getMonthPromo = date => {
-  return fetch(API_URL + API_CALENDAR_PROMO + `/SakamorInfoPromo/GetInfoPromoByMonthYear/${date}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const getMonthProgram = date => {
-  return fetch(API_URL + API_CALENDAR_PROGRAM + `/SakamorKalenderProgram/GetKalenderProgramByMonthYear/${date}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-}; // Announcement ======================================================================================================================================
-
-
-const getAllAnnouncement = userData => {
-  return fetch(API_URL + API_ANNOUNCEMENT + `/SakamorAnnouncement/GetAnnouncementByUser?username=${userData.username}`, {
-    headers: {
-      apiKey: TOKEN
-    }
-  }).then(response => {
-    return response.json();
-  }).then(data => {
-    return data;
-  }).catch(err => {
-    console.log(err);
-  });
-};
-
-const updateReadAnnouncement = (id, data) => {
-  return fetch(`https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorAnnouncement/v1/api/SakamorAnnouncement/UpdateAnnouncementStatus/${id}`, {
-    method: "PUT",
-    headers: {
-      apiKey: TOKEN,
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).then(response => {
-    return response;
-  }).catch(err => {
-    console.log(err);
-  });
+    default:
+      return state;
+  }
 };
 
 
 
 /***/ }),
 
-/***/ "F5FC":
-/***/ (function(module, exports) {
-
-module.exports = require("react/jsx-runtime");
-
-/***/ }),
-
-/***/ "cDcd":
-/***/ (function(module, exports) {
-
-module.exports = require("react");
-
-/***/ }),
-
-/***/ "dIt4":
-/***/ (function(module, exports) {
-
-module.exports = require("firebase/messaging");
-
-/***/ }),
-
-/***/ "kQFM":
+/***/ "./store/reducers/user.js":
+/*!********************************!*\
+  !*** ./store/reducers/user.js ***!
+  \********************************/
+/*! exports provided: userReducer, defaultUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ Stores; });
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ Store; });
-
-// EXTERNAL MODULE: external "react/jsx-runtime"
-var jsx_runtime_ = __webpack_require__("F5FC");
-
-// EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__("cDcd");
-
-// CONCATENATED MODULE: ./store/reducers/user.js
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "userReducer", function() { return userReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultUser", function() { return defaultUser; });
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -1165,43 +978,25 @@ const userReducer = (state, action) => {
 };
 
 
-// CONCATENATED MODULE: ./store/reducers/menu.js
-function menu_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function menu_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { menu_ownKeys(Object(source), true).forEach(function (key) { menu_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { menu_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+/***/ }),
 
-function menu_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/***/ "./store/reducers/visitPlan.js":
+/*!*************************************!*\
+  !*** ./store/reducers/visitPlan.js ***!
+  \*************************************/
+/*! exports provided: visitPlanReducer, defaultVisitPlan */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-const defaultMenu = {
-  menu: []
-};
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "visitPlanReducer", function() { return visitPlanReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultVisitPlan", function() { return defaultVisitPlan; });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-const menuReducer = (state, action) => {
-  switch (action.type) {
-    case "SET_MENU":
-      localStorage.setItem("menu", JSON.stringify(action.payload));
-      return menu_objectSpread(menu_objectSpread({}, state), {}, {
-        menu: action.payload
-      });
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-    case "KEEP_STATE":
-      const userMenu = JSON.parse(localStorage.getItem("menu"));
-      return menu_objectSpread(menu_objectSpread({}, state), {}, {
-        menu: userMenu
-      });
-
-    default:
-      return state;
-  }
-};
-
-
-// CONCATENATED MODULE: ./store/reducers/visitPlan.js
-function visitPlan_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function visitPlan_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { visitPlan_ownKeys(Object(source), true).forEach(function (key) { visitPlan_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { visitPlan_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function visitPlan_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 const defaultVisitPlan = {
   visibility: [],
@@ -1213,27 +1008,27 @@ const defaultVisitPlan = {
 const visitPlanReducer = (state, action) => {
   switch (action.type) {
     case "SET_PLAN_VISIBILITY":
-      return visitPlan_objectSpread(visitPlan_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         visibility: action.payload
       });
 
     case "SET_PLAN_AVABILITY":
-      return visitPlan_objectSpread(visitPlan_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         avability: action.payload
       });
 
     case "SET_PLAN_CATATAN":
-      return visitPlan_objectSpread(visitPlan_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         catatan: action.payload
       });
 
     case "SET_PLAN_CHECK_IN":
-      return visitPlan_objectSpread(visitPlan_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         checkIn: action.payload
       });
 
     case "SET_DEFAULT_VISIT_PLAN":
-      return visitPlan_objectSpread({}, defaultVisitPlan);
+      return _objectSpread({}, defaultVisitPlan);
 
     default:
       return state;
@@ -1241,69 +1036,25 @@ const visitPlanReducer = (state, action) => {
 };
 
 
-// CONCATENATED MODULE: ./store/reducers/visitUnplan.js
-function visitUnplan_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function visitUnplan_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { visitUnplan_ownKeys(Object(source), true).forEach(function (key) { visitUnplan_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { visitUnplan_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+/***/ }),
 
-function visitUnplan_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/***/ "./store/reducers/visitSpreading.js":
+/*!******************************************!*\
+  !*** ./store/reducers/visitSpreading.js ***!
+  \******************************************/
+/*! exports provided: visitSpreadingReducer, defaultVisitSpreading */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-const defaultVisitUnplan = {
-  visibility: [],
-  avability: [],
-  catatan: "",
-  checkIn: "",
-  jenisChannel: {},
-  outlet: {}
-};
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "visitSpreadingReducer", function() { return visitSpreadingReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultVisitSpreading", function() { return defaultVisitSpreading; });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-const visitUnplanReducer = (state, action) => {
-  switch (action.type) {
-    case "SET_UNPLAN_VISIBILITY":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        visibility: action.payload
-      });
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-    case "SET_UNPLAN_AVABILITY":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        avability: action.payload
-      });
-
-    case "SET_UNPLAN_CATATAN":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        catatan: action.payload
-      });
-
-    case "SET_UNPLAN_CHECK_IN":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        checkIn: action.payload
-      });
-
-    case "SET_UNPLAN_JENIS_CHANNEL":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        jenisChannel: action.payload
-      });
-
-    case "SET_UNPLAN_OUTLET":
-      return visitUnplan_objectSpread(visitUnplan_objectSpread({}, state), {}, {
-        outlet: action.payload
-      });
-
-    case "SET_DEFAULT_VISIT_UNPLAN":
-      return visitUnplan_objectSpread({}, defaultVisitUnplan);
-
-    default:
-      return state;
-  }
-};
-
-
-// CONCATENATED MODULE: ./store/reducers/visitSpreading.js
-function visitSpreading_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function visitSpreading_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { visitSpreading_ownKeys(Object(source), true).forEach(function (key) { visitSpreading_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { visitSpreading_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function visitSpreading_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 const defaultVisitSpreading = {
   visibility: [],
@@ -1319,47 +1070,47 @@ const defaultVisitSpreading = {
 const visitSpreadingReducer = (state, action) => {
   switch (action.type) {
     case "SET_SPREADING_VISIBILITY":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         visibility: action.payload
       });
 
     case "SET_SPREADING_AVABILITY":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         avability: action.payload
       });
 
     case "SET_SPREADING_CATATAN":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         catatan: action.payload
       });
 
     case "SET_SPREADING_ALAMAT":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         alamat: action.payload
       });
 
     case "SET_SPREADING_NEW_OUTLET":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         newOutlet: action.payload
       });
 
     case "SET_SPREADING_CHECK_IN":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         checkIn: action.payload
       });
 
     case "SET_SPREADING_JENIS_CHANNEL":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         jenisChannel: action.payload
       });
 
     case "SET_SPREADING_OUTLET":
-      return visitSpreading_objectSpread(visitSpreading_objectSpread({}, state), {}, {
+      return _objectSpread(_objectSpread({}, state), {}, {
         outlet: action.payload
       });
 
     case "SET_DEFAULT_VISIT_SPREADING":
-      return visitSpreading_objectSpread({}, defaultVisitSpreading);
+      return _objectSpread({}, defaultVisitSpreading);
 
     default:
       return state;
@@ -1367,420 +1118,134 @@ const visitSpreadingReducer = (state, action) => {
 };
 
 
-// CONCATENATED MODULE: ./store/actions/userLogin.js
-/* harmony default export */ var userLogin = (dispatch => ({
-  userLogin: async data => {
-    try {
-      dispatch({
-        type: "USER_LOGIN",
-        payload: data
+
+/***/ }),
+
+/***/ "./store/reducers/visitUnplan.js":
+/*!***************************************!*\
+  !*** ./store/reducers/visitUnplan.js ***!
+  \***************************************/
+/*! exports provided: visitUnplanReducer, defaultVisitUnplan */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "visitUnplanReducer", function() { return visitUnplanReducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultVisitUnplan", function() { return defaultVisitUnplan; });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+const defaultVisitUnplan = {
+  visibility: [],
+  avability: [],
+  catatan: "",
+  checkIn: "",
+  jenisChannel: {},
+  outlet: {}
+};
+
+const visitUnplanReducer = (state, action) => {
+  switch (action.type) {
+    case "SET_UNPLAN_VISIBILITY":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        visibility: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setMenu.js
-/* harmony default export */ var setMenu = (dispatch => ({
-  setMenu: async data => {
-    try {
-      dispatch({
-        type: "SET_MENU",
-        payload: data
+
+    case "SET_UNPLAN_AVABILITY":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        avability: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/keepState.js
-/* harmony default export */ var keepState = (dispatch => ({
-  keepState: async data => {
-    try {
-      dispatch({
-        type: "KEEP_STATE",
-        payload: data
+
+    case "SET_UNPLAN_CATATAN":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        catatan: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setPlanVisibility.js
-/* harmony default export */ var setPlanVisibility = (dispatch => ({
-  setPlanVisibility: async data => {
-    try {
-      dispatch({
-        type: "SET_PLAN_VISIBILITY",
-        payload: data
+
+    case "SET_UNPLAN_CHECK_IN":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        checkIn: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setPlanAvability.js
-/* harmony default export */ var setPlanAvability = (dispatch => ({
-  setPlanAvability: async data => {
-    try {
-      dispatch({
-        type: "SET_PLAN_AVABILITY",
-        payload: data
+
+    case "SET_UNPLAN_JENIS_CHANNEL":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        jenisChannel: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setPlanCatatan.js
-/* harmony default export */ var setPlanCatatan = (dispatch => ({
-  setPlanCatatan: async data => {
-    try {
-      dispatch({
-        type: "SET_PLAN_CATATAN",
-        payload: data
+
+    case "SET_UNPLAN_OUTLET":
+      return _objectSpread(_objectSpread({}, state), {}, {
+        outlet: action.payload
       });
-    } catch (e) {
-      console.log(e);
-    }
+
+    case "SET_DEFAULT_VISIT_UNPLAN":
+      return _objectSpread({}, defaultVisitUnplan);
+
+    default:
+      return state;
   }
-}));
-// CONCATENATED MODULE: ./store/actions/setPlanCheckIn.js
-/* harmony default export */ var setPlanCheckIn = (dispatch => ({
-  setPlanCheckIn: async data => {
-    try {
-      dispatch({
-        type: "SET_PLAN_CHECK_IN",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setUnplanAvability.js
-/* harmony default export */ var setUnplanAvability = (dispatch => ({
-  setUnplanAvability: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_AVABILITY",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setUnplanVisibility.js
-/* harmony default export */ var setUnplanVisibility = (dispatch => ({
-  setUnplanVisibility: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_VISIBILITY",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setUnplanCatatan.js
-/* harmony default export */ var setUnplanCatatan = (dispatch => ({
-  setUnplanCatatan: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_CATATAN",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setUnplanCheckIn.js
-/* harmony default export */ var setUnplanCheckIn = (dispatch => ({
-  setUnplanCheckIn: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_CHECK_IN",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setUnplanJenisChannel.js
-/* harmony default export */ var setUnplanJenisChannel = (dispatch => ({
-  setUnplanJenisChannel: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_JENIS_CHANNEL",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// EXTERNAL MODULE: ./store/actions/setUnplanOutlet.js
-var setUnplanOutlet = __webpack_require__("srvB");
-
-// CONCATENATED MODULE: ./store/actions/setSpreadingAvability.js
-/* harmony default export */ var setSpreadingAvability = (dispatch => ({
-  setSpreadingAvability: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_AVABILITY",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingVisibility.js
-/* harmony default export */ var setSpreadingVisibility = (dispatch => ({
-  setSpreadingVisibility: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_VISIBILITY",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingCatatan.js
-/* harmony default export */ var setSpreadingCatatan = (dispatch => ({
-  setSpreadingAlamat: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_ALAMAT",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingAlamat.js
-/* harmony default export */ var setSpreadingAlamat = (dispatch => ({
-  setSpreadingCatatan: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_CATATAN",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingNewOutlet.js
-/* harmony default export */ var setSpreadingNewOutlet = (dispatch => ({
-  setSpreadingNewOutlet: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_NEW_OUTLET",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingCheckIn.js
-/* harmony default export */ var setSpreadingCheckIn = (dispatch => ({
-  setSpreadingCheckIn: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_CHECK_IN",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingJenisChannel.js
-/* harmony default export */ var setSpreadingJenisChannel = (dispatch => ({
-  setSpreadingJenisChannel: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_JENIS_CHANNEL",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setSpreadingOutlet.js
-/* harmony default export */ var setSpreadingOutlet = (dispatch => ({
-  setSpreadingOutlet: async data => {
-    try {
-      dispatch({
-        type: "SET_SPREADING_OUTLET",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setDefaultVisitPlan.js
-/* harmony default export */ var setDefaultVisitPlan = (dispatch => ({
-  setDefaultVisitPlan: async () => {
-    try {
-      dispatch({
-        type: "SET_DEFAULT_VISIT_PLAN"
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setDefaultVisitUnplan.js
-/* harmony default export */ var setDefaultVisitUnplan = (dispatch => ({
-  setDefaultVisitUnplan: async () => {
-    try {
-      dispatch({
-        type: "SET_DEFAULT_VISIT_UNPLAN"
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/actions/setDefaultVisitSpreading.js
-/* harmony default export */ var setDefaultVisitSpreading = (dispatch => ({
-  setDefaultVisitSpreading: async () => {
-    try {
-      dispatch({
-        type: "SET_DEFAULT_VISIT_SPREADING"
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
-// CONCATENATED MODULE: ./store/index.js
-
-
-function store_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function store_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const Stores = /*#__PURE__*/Object(external_react_["createContext"])();
-
-const Store = ({
-  children
-}) => {
-  const {
-    0: state,
-    1: dispatch
-  } = Object(external_react_["useReducer"])((prevState, action) => {
-    return {
-      userReducer: userReducer(prevState.userReducer, action),
-      menuReducer: menuReducer(prevState.menuReducer, action),
-      visitPlanReducer: visitPlanReducer(prevState.visitPlanReducer, action),
-      visitUnplanReducer: visitUnplanReducer(prevState.visitUnplanReducer, action),
-      visitSpreadingReducer: visitSpreadingReducer(prevState.visitSpreadingReducer, action)
-    };
-  }, {
-    userReducer: defaultUser,
-    menuReducer: defaultMenu,
-    visitPlanReducer: defaultVisitPlan,
-    visitUnplanReducer: defaultVisitUnplan,
-    visitSpreadingReducer: defaultVisitSpreading
-  });
-  const actions = Object(external_react_["useMemo"])(() => store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread(store_objectSpread({}, userLogin(dispatch)), setMenu(dispatch)), keepState(dispatch)), setPlanVisibility(dispatch)), setPlanAvability(dispatch)), setPlanCatatan(dispatch)), setPlanCheckIn(dispatch)), setDefaultVisitPlan(dispatch)), setUnplanVisibility(dispatch)), setUnplanAvability(dispatch)), setUnplanCatatan(dispatch)), setUnplanCheckIn(dispatch)), setUnplanJenisChannel(dispatch)), Object(setUnplanOutlet["a" /* default */])(dispatch)), setDefaultVisitUnplan(dispatch)), setSpreadingVisibility(dispatch)), setSpreadingAvability(dispatch)), setSpreadingCatatan(dispatch)), setSpreadingAlamat(dispatch)), setSpreadingNewOutlet(dispatch)), setSpreadingCheckIn(dispatch)), setSpreadingJenisChannel(dispatch)), setSpreadingOutlet(dispatch)), setDefaultVisitSpreading(dispatch)), []);
-  return /*#__PURE__*/Object(jsx_runtime_["jsx"])(Stores.Provider, {
-    value: {
-      state,
-      dispatch,
-      actions
-    },
-    children: children
-  });
 };
 
 
 
 /***/ }),
 
-/***/ "q4sD":
+/***/ "./styles/globals.css":
+/*!****************************!*\
+  !*** ./styles/globals.css ***!
+  \****************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
 
-/***/ "srvB":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 0:
+/*!****************************************!*\
+  !*** multi private-next-pages/_app.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (dispatch => ({
-  setUnplanOutlet: async data => {
-    try {
-      dispatch({
-        type: "SET_UNPLAN_OUTLET",
-        payload: data
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}));
+module.exports = __webpack_require__(/*! private-next-pages/_app.js */"./pages/_app.js");
+
 
 /***/ }),
 
-/***/ "wVQA":
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("firebase/app");
+module.exports = require("next/router");
 
 /***/ }),
 
-/***/ "zPlV":
+/***/ "react":
+/*!************************!*\
+  !*** external "react" ***!
+  \************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
+module.exports = require("react");
 
+/***/ }),
+
+/***/ "react/jsx-dev-runtime":
+/*!****************************************!*\
+  !*** external "react/jsx-dev-runtime" ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("react/jsx-dev-runtime");
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFjay9ib290c3RyYXAiLCJ3ZWJwYWNrOi8vLy4vcGFnZXMvX2FwcC5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL2tlZXBTdGF0ZS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldERlZmF1bHRWaXNpdFBsYW4uanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXREZWZhdWx0VmlzaXRTcHJlYWRpbmcuanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXREZWZhdWx0VmlzaXRVbnBsYW4uanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXRNZW51LmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0UGxhbkF2YWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFBsYW5DYXRhdGFuLmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0UGxhbkNoZWNrSW4uanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXRQbGFuVmlzaWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFNwcmVhZGluZ0FsYW1hdC5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFNwcmVhZGluZ0F2YWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFNwcmVhZGluZ0NhdGF0YW4uanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXRTcHJlYWRpbmdDaGVja0luLmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0U3ByZWFkaW5nSmVuaXNDaGFubmVsLmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0U3ByZWFkaW5nTmV3T3V0bGV0LmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0U3ByZWFkaW5nT3V0bGV0LmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0U3ByZWFkaW5nVmlzaWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFVucGxhbkF2YWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3NldFVucGxhbkNhdGF0YW4uanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvYWN0aW9ucy9zZXRVbnBsYW5DaGVja0luLmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0VW5wbGFuSmVuaXNDaGFubmVsLmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0VW5wbGFuT3V0bGV0LmpzIiwid2VicGFjazovLy8uL3N0b3JlL2FjdGlvbnMvc2V0VW5wbGFuVmlzaWJpbGl0eS5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9hY3Rpb25zL3VzZXJMb2dpbi5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9pbmRleC5qcyIsIndlYnBhY2s6Ly8vLi9zdG9yZS9yZWR1Y2Vycy9tZW51LmpzIiwid2VicGFjazovLy8uL3N0b3JlL3JlZHVjZXJzL3VzZXIuanMiLCJ3ZWJwYWNrOi8vLy4vc3RvcmUvcmVkdWNlcnMvdmlzaXRQbGFuLmpzIiwid2VicGFjazovLy8uL3N0b3JlL3JlZHVjZXJzL3Zpc2l0U3ByZWFkaW5nLmpzIiwid2VicGFjazovLy8uL3N0b3JlL3JlZHVjZXJzL3Zpc2l0VW5wbGFuLmpzIiwid2VicGFjazovLy9leHRlcm5hbCBcIm5leHQvcm91dGVyXCIiLCJ3ZWJwYWNrOi8vL2V4dGVybmFsIFwicmVhY3RcIiIsIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJyZWFjdC9qc3gtZGV2LXJ1bnRpbWVcIiJdLCJuYW1lcyI6WyJNeUFwcCIsIkNvbXBvbmVudCIsInBhZ2VQcm9wcyIsInVzZUVmZmVjdCIsInVzZXIiLCJsb2NhbFN0b3JhZ2UiLCJnZXRJdGVtIiwiUm91dGVyIiwicHVzaCIsImRpc3BhdGNoIiwia2VlcFN0YXRlIiwiZGF0YSIsInR5cGUiLCJwYXlsb2FkIiwiZSIsImNvbnNvbGUiLCJsb2ciLCJzZXREZWZhdWx0VmlzaXRQbGFuIiwic2V0RGVmYXVsdFZpc2l0U3ByZWFkaW5nIiwic2V0RGVmYXVsdFZpc2l0VW5wbGFuIiwic2V0TWVudSIsInNldFBsYW5BdmFiaWxpdHkiLCJzZXRQbGFuQ2F0YXRhbiIsInNldFBsYW5DaGVja0luIiwic2V0UGxhblZpc2liaWxpdHkiLCJzZXRTcHJlYWRpbmdDYXRhdGFuIiwic2V0U3ByZWFkaW5nQXZhYmlsaXR5Iiwic2V0U3ByZWFkaW5nQWxhbWF0Iiwic2V0U3ByZWFkaW5nQ2hlY2tJbiIsInNldFNwcmVhZGluZ0plbmlzQ2hhbm5lbCIsInNldFNwcmVhZGluZ05ld091dGxldCIsInNldFNwcmVhZGluZ091dGxldCIsInNldFNwcmVhZGluZ1Zpc2liaWxpdHkiLCJzZXRVbnBsYW5BdmFiaWxpdHkiLCJzZXRVbnBsYW5DYXRhdGFuIiwic2V0VW5wbGFuQ2hlY2tJbiIsInNldFVucGxhbkplbmlzQ2hhbm5lbCIsInNldFVucGxhbk91dGxldCIsInNldFVucGxhblZpc2liaWxpdHkiLCJ1c2VyTG9naW4iLCJTdG9yZXMiLCJjcmVhdGVDb250ZXh0IiwiU3RvcmUiLCJjaGlsZHJlbiIsInN0YXRlIiwidXNlUmVkdWNlciIsInByZXZTdGF0ZSIsImFjdGlvbiIsInVzZXJSZWR1Y2VyIiwibWVudVJlZHVjZXIiLCJ2aXNpdFBsYW5SZWR1Y2VyIiwidmlzaXRVbnBsYW5SZWR1Y2VyIiwidmlzaXRTcHJlYWRpbmdSZWR1Y2VyIiwiZGVmYXVsdFVzZXIiLCJkZWZhdWx0TWVudSIsImRlZmF1bHRWaXNpdFBsYW4iLCJkZWZhdWx0VmlzaXRVbnBsYW4iLCJkZWZhdWx0VmlzaXRTcHJlYWRpbmciLCJhY3Rpb25zIiwidXNlTWVtbyIsIm1lbnUiLCJzZXRJdGVtIiwiSlNPTiIsInN0cmluZ2lmeSIsInVzZXJNZW51IiwicGFyc2UiLCJjbGVhciIsInVzZXJEYXRhIiwidmlzaWJpbGl0eSIsImF2YWJpbGl0eSIsImNhdGF0YW4iLCJj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Syx1QkFBTDtBQUNFLDZDQUFZZ0MsS0FBWjtBQUFtQndCLGtCQUFVLEVBQUVyQixNQUFNLENBQUNsQztBQUF0Qzs7QUFDRixTQUFLLHNCQUFMO0FBQ0UsNkNBQVkrQixLQUFaO0FBQW1CeUIsaUJBQVMsRUFBRXRCLE1BQU0sQ0FBQ2xDO0FBQXJDOztBQUNGLFNBQUssb0JBQUw7QUFDRSw2Q0FBWStCLEtBQVo7QUFBbUIwQixlQUFPLEVBQUV2QixNQUFNLENBQUNsQztBQUFuQzs7QUFDRixTQUFLLHFCQUFMO0FBQ0UsNkNBQVkrQixLQUFaO0FBQW1CMkIsZUFBTyxFQUFFeEIsTUFBTSxDQUFDbEM7QUFBbkM7O0FBQ0YsU0FBSywwQkFBTDtBQUNFLDZDQUFZK0IsS0FBWjtBQUFtQjhCLG9CQUFZLEVBQUUzQixNQUFNLENBQUNsQztBQUF4Qzs7QUFDRixTQUFLLG1CQUFMO0FBQ0UsNkNBQVkrQixLQUFaO0FBQW1CK0IsY0FBTSxFQUFFNUIsTUFBTSxDQUFDbEM7QUFBbEM7O0FBQ0YsU0FBSywwQkFBTDtBQUNFLCtCQUFZMkMsa0JBQVo7O0FBQ0Y7QUFDRSxhQUFPWixLQUFQO0FBaEJKO0FBa0JELENBbkJEOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUNUQSx3Qzs7Ozs7Ozs7Ozs7QUNBQSxrQzs7Ozs7Ozs7Ozs7QUNBQSxrRCIsImZpbGUiOiJwYWdlcy9fYXBwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiIFx0Ly8gVGhlIG1vZHVsZSBjYWNoZVxuIFx0dmFyIGluc3RhbGxlZE1vZHVsZXMgPSByZXF1aXJlKCcuLi9zc3ItbW9kdWxlLWNhY2hlLmpzJyk7XG5cbiBcdC8vIFRoZSByZXF1aXJlIGZ1bmN0aW9uXG4gXHRmdW5jdGlvbiBfX3dlYnBhY2tfcmVxdWlyZV9fKG1vZHVsZUlkKSB7XG5cbiBcdFx0Ly8gQ2hlY2sgaWYgbW9kdWxlIGlzIGluIGNhY2hlXG4gXHRcdGlmKGluc3RhbGxlZE1vZHVsZXNbbW9kdWxlSWRdKSB7XG4gXHRcdFx0cmV0dXJuIGluc3RhbGxlZE1vZHVsZXNbbW9kdWxlSWRdLmV4cG9ydHM7XG4gXHRcdH1cbiBcdFx0Ly8gQ3JlYXRlIGEgbmV3IG1vZHVsZSAoYW5kIHB1dCBpdCBpbnRvIHRoZSBjYWNoZSlcbiBcdFx0dmFyIG1vZHVsZSA9IGluc3RhbGxlZE1vZHVsZXNbbW9kdWxlSWRdID0ge1xuIFx0XHRcdGk6IG1vZHVsZUlkLFxuIFx0XHRcdGw6IGZhbHNlLFxuIFx0XHRcdGV4cG9ydHM6IHt9XG4gXHRcdH07XG5cbiBcdFx0Ly8gRXhlY3V0ZSB0aGUgbW9kdWxlIGZ1bmN0aW9uXG4gXHRcdHZhciB0aHJldyA9IHRydWU7XG4gXHRcdHRyeSB7XG4gXHRcdFx0bW9kdWxlc1ttb2R1bGVJZF0uY2FsbChtb2R1bGUuZXhwb3J0cywgbW9kdWxlLCBtb2R1bGUuZXhwb3J0cywgX193ZWJwYWNrX3JlcXVpcmVfXyk7XG4gXHRcdFx0dGhyZXcgPSBmYWxzZTtcbiBcdFx0fSBmaW5hbGx5IHtcbiBcdFx0XHRpZih0aHJldykgZGVsZXRlIGluc3RhbGxlZE1vZHVsZXNbbW9kdWxlSWRdO1xuIFx0XHR9XG5cbiBcdFx0Ly8gRmxhZyB0aGUgbW9kdWxlIGFzIGxvYWRlZFxuIFx0XHRtb2R1bGUubCA9IHRydWU7XG5cbiBcdFx0Ly8gUmV0dXJuIHRoZSBleHBvcnRzIG9mIHRoZSBtb2R1bGVcbiBcdFx0cmV0dXJuIG1vZHVsZS5leHBvcnRzO1xuIFx0fVxuXG5cbiBcdC8vIGV4cG9zZSB0aGUgbW9kdWxlcyBvYmplY3QgKF9fd2VicGFja19tb2R1bGVzX18pXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLm0gPSBtb2R1bGVzO1xuXG4gXHQvLyBleHBvc2UgdGhlIG1vZHVsZSBjYWNoZVxuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5jID0gaW5zdGFsbGVkTW9kdWxlcztcblxuIFx0Ly8gZGVmaW5lIGdldHRlciBmdW5jdGlvbiBmb3IgaGFybW9ueSBleHBvcnRzXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLmQgPSBmdW5jdGlvbihleHBvcnRzLCBuYW1lLCBnZXR0ZXIpIHtcbiBcdFx0aWYoIV9fd2VicGFja19yZXF1aXJlX18ubyhleHBvcnRzLCBuYW1lKSkge1xuIFx0XHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBuYW1lLCB7IGVudW1lcmFibGU6IHRydWUsIGdldDogZ2V0dGVyIH0pO1xuIFx0XHR9XG4gXHR9O1xuXG4gXHQvLyBkZWZpbmUgX19lc01vZHVsZSBvbiBleHBvcnRzXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLnIgPSBmdW5jdGlvbihleHBvcnRzKSB7XG4gXHRcdGlmKHR5cGVvZiBTeW1ib2wgIT09ICd1bmRlZmluZWQnICYmIFN5bWJvbC50b1N0cmluZ1RhZykge1xuIFx0XHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBTeW1ib2wudG9TdHJpbmdUYWcsIHsgdmFsdWU6ICdNb2R1bGUnIH0pO1xuIFx0XHR9XG4gXHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCAnX19lc01vZHVsZScsIHsgdmFsdWU6IHRydWUgfSk7XG4gXHR9O1xuXG4gXHQvLyBjcmVhdGUgYSBmYWtlIG5hbWVzcGFjZSBvYmplY3RcbiBcdC8vIG1vZGUgJiAxOiB2YWx1ZSBpcyBhIG1vZHVsZSBpZCwgcmVxdWlyZSBpdFxuIFx0Ly8gbW9kZSAmIDI6IG1lcmdlIGFsbCBwcm9wZXJ0aWVzIG9mIHZhbHVlIGludG8gdGhlIG5zXG4gXHQvLyBtb2RlICYgNDogcmV0dXJuIHZhbHVlIHdoZW4gYWxyZWFkeSBucyBvYmplY3RcbiBcdC8vIG1vZGUgJiA4fDE6IGJlaGF2ZSBsaWtlIHJlcXVpcmVcbiBcdF9fd2VicGFja19yZXF1aXJlX18udCA9IGZ1bmN0aW9uKHZhbHVlLCBtb2RlKSB7XG4gXHRcdGlmKG1vZGUgJiAxKSB2YWx1ZSA9IF9fd2VicGFja19yZXF1aXJlX18odmFsdWUpO1xuIFx0XHRpZihtb2RlICYgOCkgcmV0dXJuIHZhbHVlO1xuIFx0XHRpZigobW9kZSAmIDQpICYmIHR5cGVvZiB2YWx1ZSA9PT0gJ29iamVjdCcgJiYgdmFsdWUgJiYgdmFsdWUuX19lc01vZHVsZSkgcmV0dXJuIHZhbHVlO1xuIFx0XHR2YXIgbnMgPSBPYmplY3QuY3JlYXRlKG51bGwpO1xuIFx0XHRfX3dlYnBhY2tfcmVxdWlyZV9fLnIobnMpO1xuIFx0XHRPYmplY3QuZGVmaW5lUHJvcGVydHkobnMsICdkZWZhdWx0JywgeyBlbnVtZXJhYmxlOiB0cnVlLCB2YWx1ZTogdmFsdWUgfSk7XG4gXHRcdGlmKG1vZGUgJiAyICYmIHR5cGVvZiB2YWx1ZSAhPSAnc3RyaW5nJykgZm9yKHZhciBrZXkgaW4gdmFsdWUpIF9fd2VicGFja19yZXF1aXJlX18uZChucywga2V5LCBmdW5jdGlvbihrZXkpIHsgcmV0dXJuIHZhbHVlW2tleV07IH0uYmluZChudWxsLCBrZXkpKTtcbiBcdFx0cmV0dXJuIG5zO1xuIFx0fTtcblxuIFx0Ly8gZ2V0RGVmYXVsdEV4cG9ydCBmdW5jdGlvbiBmb3IgY29tcGF0aWJpbGl0eSB3aXRoIG5vbi1oYXJtb255IG1vZHVsZXNcbiBcdF9fd2VicGFja19yZXF1aXJlX18ubiA9IGZ1bmN0aW9uKG1vZHVsZSkge1xuIFx0XHR2YXIgZ2V0dGVyID0gbW9kdWxlICYmIG1vZHVsZS5fX2VzTW9kdWxlID9cbiBcdFx0XHRmdW5jdGlvbiBnZXREZWZhdWx0KCkgeyByZXR1cm4gbW9kdWxlWydkZWZhdWx0J107IH0gOlxuIFx0XHRcdGZ1bmN0aW9uIGdldE1vZHVsZUV4cG9ydHMoKSB7IHJldHVybiBtb2R1bGU7IH07XG4gXHRcdF9fd2VicGFja19yZXF1aXJlX18uZChnZXR0ZXIsICdhJywgZ2V0dGVyKTtcbiBcdFx0cmV0dXJuIGdldHRlcjtcbiBcdH07XG5cbiBcdC8vIE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbFxuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5vID0gZnVuY3Rpb24ob2JqZWN0LCBwcm9wZXJ0eSkgeyByZXR1cm4gT2JqZWN0LnByb3RvdHlwZS5oYXNPd25Qcm9wZXJ0eS5jYWxsKG9iamVjdCwgcHJvcGVydHkpOyB9O1xuXG4gXHQvLyBfX3dlYnBhY2tfcHVibGljX3BhdGhfX1xuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5wID0gXCJcIjtcblxuXG4gXHQvLyBMb2FkIGVudHJ5IG1vZHVsZSBhbmQgcmV0dXJuIGV4cG9ydHNcbiBcdHJldHVybiBfX3dlYnBhY2tfcmVxdWlyZV9fKF9fd2VicGFja19yZXF1aXJlX18ucyA9IDApO1xuIiwiaW1wb3J0IFwiLi4vc3R5bGVzL2dsb2JhbHMuY3NzXCI7XG5pbXBvcnQgXCJib290c3RyYXAvZGlzdC9jc3MvYm9vdHN0cmFwLm1pbi5jc3NcIjtcbmltcG9ydCB7IFN0b3JlIH0gZnJvbSBcIi4uL3N0b3JlXCI7XG5pbXBvcnQgeyB1c2VFZmZlY3QgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBSb3V0ZXIgZnJvbSBcIm5leHQvcm91dGVyXCI7XG4vLyBpbXBvcnQgeyBmaXJlYmFzZUNsb3VkTWVzc2FnaW5nIH0gZnJvbSBcIi4uL3dlYlB1c2hcIjtcbi8vIGltcG9ydCBmaXJlYmFzZSBmcm9tIFwiZmlyZWJhc2UvYXBwXCI7XG4vLyBpbXBvcnQgeyBnZXRBbGxBbm5vdW5jZW1lbnQgfSBmcm9tIFwiLi4vaGVscGVyXCI7XG5cbmZ1bmN0aW9uIE15QXBwKHsgQ29tcG9uZW50LCBwYWdlUHJvcHMgfSkge1xuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IHVzZXIgPSBsb2NhbFN0b3JhZ2UuZ2V0SXRlbShcInVzZXJcIik7XG4gICAgaWYgKCF1c2VyKSB7XG4gICAgICBSb3V0ZXIucHVzaChcIi9sb2dpblwiKTtcbiAgICB9XG4gIH0sIFtdKTtcblxuICAvLyB1c2VFZmZlY3QoKCkgPT4ge1xuICAvLyAgIHNldFRva2VuKCk7XG4gIC8vICAgYXN5bmMgZnVuY3Rpb24gc2V0VG9rZW4oKSB7XG4gIC8vICAgICB0cnkge1xuICAvLyAgICAgICBjb25zdCB0b2tlbiA9IGF3YWl0IGZpcmViYXNlQ2xvdWRNZXNzYWdpbmcuaW5pdCgpO1xuICAvLyAgICAgICBpZiAodG9rZW4pIHtcbiAgLy8gICAgICAgICBnZXRNZXNzYWdlKCk7XG4gIC8vICAgICAgIH1cbiAgLy8gICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gIC8vICAgICAgIGNvbnNvbGUubG9nKGVycm9yKTtcbiAgLy8gICAgIH1cbiAgLy8gICB9XG4gIC8vICAgZnVuY3Rpb24gZ2V0TWVzc2FnZSgpIHtcbiAgLy8gICAgIGNvbnN0IG1lc3NhZ2luZyA9IGZpcmViYXNlLm1lc3NhZ2luZygpO1xuICAvLyAgICAgY29uc29sZS5sb2coeyBtZXNzYWdpbmcgfSk7XG4gIC8vICAgICBtZXNzYWdpbmcub25NZXNzYWdlKChtZXNzYWdlKSA9PiB7XG4gIC8vICAgICAgIC8vIGxvY2FsU3RvcmFnZS5zZXRJdGVtKFwibm90aWZcIiwgdHJ1ZSk7XG4gIC8vICAgICB9KTtcbiAgLy8gICB9XG4gIC8vIH0pO1xuICByZXR1cm4gKFxuICAgIDxTdG9yZT5cbiAgICAgIDxDb21wb25lbnQgey4uLnBhZ2VQcm9wc30gLz5cbiAgICA8L1N0b3JlPlxuICApO1xufVxuXG5leHBvcnQgZGVmYXVsdCBNeUFwcDtcbiIsImV4cG9ydCBkZWZhdWx0IChkaXNwYXRjaCkgPT4gKHtcclxuICBrZWVwU3RhdGU6IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiS0VFUF9TVEFURVwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldERlZmF1bHRWaXNpdFBsYW46IGFzeW5jICgpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfREVGQVVMVF9WSVNJVF9QTEFOXCIgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0RGVmYXVsdFZpc2l0U3ByZWFkaW5nOiBhc3luYyAoKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX0RFRkFVTFRfVklTSVRfU1BSRUFESU5HXCIgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0RGVmYXVsdFZpc2l0VW5wbGFuOiBhc3luYyAoKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX0RFRkFVTFRfVklTSVRfVU5QTEFOXCIgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0TWVudTogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfTUVOVVwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFBsYW5BdmFiaWxpdHk6IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1BMQU5fQVZBQklMSVRZXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0UGxhbkNhdGF0YW46IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1BMQU5fQ0FUQVRBTlwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFBsYW5DaGVja0luOiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9QTEFOX0NIRUNLX0lOXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0UGxhblZpc2liaWxpdHk6IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1BMQU5fVklTSUJJTElUWVwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFNwcmVhZGluZ0NhdGF0YW46IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1NQUkVBRElOR19DQVRBVEFOXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0U3ByZWFkaW5nQXZhYmlsaXR5OiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9TUFJFQURJTkdfQVZBQklMSVRZXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0U3ByZWFkaW5nQWxhbWF0OiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9TUFJFQURJTkdfQUxBTUFUXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0U3ByZWFkaW5nQ2hlY2tJbjogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfU1BSRUFESU5HX0NIRUNLX0lOXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0U3ByZWFkaW5nSmVuaXNDaGFubmVsOiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9TUFJFQURJTkdfSkVOSVNfQ0hBTk5FTFwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFNwcmVhZGluZ05ld091dGxldDogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfU1BSRUFESU5HX05FV19PVVRMRVRcIiwgcGF5bG9hZDogZGF0YSB9KTtcclxuICAgIH0gY2F0Y2ggKGUpIHtcclxuICAgICAgY29uc29sZS5sb2coZSk7XHJcbiAgICB9XHJcbiAgfSxcclxufSk7XHJcbiIsImV4cG9ydCBkZWZhdWx0IChkaXNwYXRjaCkgPT4gKHtcclxuICBzZXRTcHJlYWRpbmdPdXRsZXQ6IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1NQUkVBRElOR19PVVRMRVRcIiwgcGF5bG9hZDogZGF0YSB9KTtcclxuICAgIH0gY2F0Y2ggKGUpIHtcclxuICAgICAgY29uc29sZS5sb2coZSk7XHJcbiAgICB9XHJcbiAgfSxcclxufSk7XHJcbiIsImV4cG9ydCBkZWZhdWx0IChkaXNwYXRjaCkgPT4gKHtcclxuICBzZXRTcHJlYWRpbmdWaXNpYmlsaXR5OiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9TUFJFQURJTkdfVklTSUJJTElUWVwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFVucGxhbkF2YWJpbGl0eTogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfVU5QTEFOX0FWQUJJTElUWVwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFVucGxhbkNhdGF0YW46IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1VOUExBTl9DQVRBVEFOXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0VW5wbGFuQ2hlY2tJbjogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfVU5QTEFOX0NIRUNLX0lOXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgc2V0VW5wbGFuSmVuaXNDaGFubmVsOiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlNFVF9VTlBMQU5fSkVOSVNfQ0hBTk5FTFwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFVucGxhbk91dGxldDogYXN5bmMgKGRhdGEpID0+IHtcclxuICAgIHRyeSB7XHJcbiAgICAgIGRpc3BhdGNoKHsgdHlwZTogXCJTRVRfVU5QTEFOX09VVExFVFwiLCBwYXlsb2FkOiBkYXRhIH0pO1xyXG4gICAgfSBjYXRjaCAoZSkge1xyXG4gICAgICBjb25zb2xlLmxvZyhlKTtcclxuICAgIH1cclxuICB9LFxyXG59KTtcclxuIiwiZXhwb3J0IGRlZmF1bHQgKGRpc3BhdGNoKSA9PiAoe1xyXG4gIHNldFVucGxhblZpc2liaWxpdHk6IGFzeW5jIChkYXRhKSA9PiB7XHJcbiAgICB0cnkge1xyXG4gICAgICBkaXNwYXRjaCh7IHR5cGU6IFwiU0VUX1VOUExBTl9WSVNJQklMSVRZXCIsIHBheWxvYWQ6IGRhdGEgfSk7XHJcbiAgICB9IGNhdGNoIChlKSB7XHJcbiAgICAgIGNvbnNvbGUubG9nKGUpO1xyXG4gICAgfVxyXG4gIH0sXHJcbn0pO1xyXG4iLCJleHBvcnQgZGVmYXVsdCAoZGlzcGF0Y2gpID0+ICh7XHJcbiAgdXNlckxvZ2luOiBhc3luYyAoZGF0YSkgPT4ge1xyXG4gICAgdHJ5IHtcclxuICAgICAgZGlzcGF0Y2goeyB0eXBlOiBcIlVTRVJfTE9HSU5cIiwgcGF5bG9hZDogZGF0YSB9KTtcclxuICAgIH0gY2F0Y2ggKGUpIHtcclxuICAgICAgY29uc29sZS5sb2coZSk7XHJcbiAgICB9XHJcbiAgfSxcclxufSk7XHJcbiIsImltcG9ydCBSZWFjdCwgeyBjcmVhdGVDb250ZXh0LCB1c2VSZWR1Y2VyLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XHJcblxyXG5pbXBvcnQgeyB1c2VyUmVkdWNlciwgZGVmYXVsdFVzZXIgfSBmcm9tIFwiLi9yZWR1Y2Vycy91c2VyXCI7XHJcbmltcG9ydCB7IG1lbnVSZWR1Y2VyLCBkZWZhdWx0TWVudSB9IGZyb20gXCIuL3JlZHVjZXJzL21lbnVcIjtcclxuaW1wb3J0IHsgdmlzaXRQbGFuUmVkdWNlciwgZGVmYXVsdFZpc2l0UGxhbiB9IGZyb20gXCIuL3JlZHVjZXJzL3Zpc2l0UGxhblwiO1xyXG5pbXBvcnQgeyB2aXNpdFVucGxhblJlZHVjZXIsIGRlZmF1bHRWaXNpdFVucGxhbiB9IGZyb20gXCIuL3JlZHVjZXJzL3Zpc2l0VW5wbGFuXCI7XHJcbmltcG9ydCB7XHJcbiAgdmlzaXRTcHJlYWRpbmdSZWR1Y2VyLFxyXG4gIGRlZmF1bHRWaXNpdFNwcmVhZGluZyxcclxufSBmcm9tIFwiLi9yZWR1Y2Vycy92aXNpdFNwcmVhZGluZ1wiO1xyXG5cclxuaW1wb3J0IHVzZXJMb2dpbiBmcm9tIFwiLi9hY3Rpb25zL3VzZXJMb2dpblwiO1xyXG5pbXBvcnQgc2V0TWVudSBmcm9tIFwiLi9hY3Rpb25zL3NldE1lbnVcIjtcclxuaW1wb3J0IGtlZXBTdGF0ZSBmcm9tIFwiLi9hY3Rpb25zL2tlZXBTdGF0ZVwiO1xyXG5cclxuaW1wb3J0IHNldFBsYW5WaXNpYmlsaXR5IGZyb20gXCIuL2FjdGlvbnMvc2V0UGxhblZpc2liaWxpdHlcIjtcclxuaW1wb3J0IHNldFBsYW5BdmFiaWxpdHkgZnJvbSBcIi4vYWN0aW9ucy9zZXRQbGFuQXZhYmlsaXR5XCI7XHJcbmltcG9ydCBzZXRQbGFuQ2F0YXRhbiBmcm9tIFwiLi9hY3Rpb25zL3NldFBsYW5DYXRhdGFuXCI7XHJcbmltcG9ydCBzZXRQbGFuQ2hlY2tJbiBmcm9tIFwiLi9hY3Rpb25zL3NldFBsYW5DaGVja0luXCI7XHJcblxyXG5pbXBvcnQgc2V0VW5wbGFuQXZhYmlsaXR5IGZyb20gXCIuL2FjdGlvbnMvc2V0VW5wbGFuQXZhYmlsaXR5XCI7XHJcbmltcG9ydCBzZXRVbnBsYW5WaXNpYmlsaXR5IGZyb20gXCIuL2FjdGlvbnMvc2V0VW5wbGFuVmlzaWJpbGl0eVwiO1xyXG5pbXBvcnQgc2V0VW5wbGFuQ2F0YXRhbiBmcm9tIFwiLi9hY3Rpb25zL3NldFVucGxhbkNhdGF0YW5cIjtcclxuaW1wb3J0IHNldFVucGxhbkNoZWNrSW4gZnJvbSBcIi4vYWN0aW9ucy9zZXRVbnBsYW5DaGVja0luXCI7XHJcbmltcG9ydCBzZXRVbnBsYW5KZW5pc0NoYW5uZWwgZnJvbSBcIi4vYWN0aW9ucy9zZXRVbnBsYW5KZW5pc0NoYW5uZWxcIjtcclxuaW1wb3J0IHNldFVucGxhbk91dGxldCBmcm9tIFwiLi9hY3Rpb25zL3NldFVucGxhbk91dGxldFwiO1xyXG5cclxuaW1wb3J0IHNldFNwcmVhZGluZ0F2YWJpbGl0eSBmcm9tIFwiLi9hY3Rpb25zL3NldFNwcmVhZGluZ0F2YWJpbGl0eVwiO1xyXG5pbXBvcnQgc2V0U3ByZWFkaW5nVmlzaWJpbGl0eSBmcm9tIFwiLi9hY3Rpb25zL3NldFNwcmVhZGluZ1Zpc2liaWxpdHlcIjtcclxuaW1wb3J0IHNldFNwcmVhZGluZ0NhdGF0YW4gZnJvbSBcIi4vYWN0aW9ucy9zZXRTcHJlYWRpbmdDYXRhdGFuXCI7XHJcbmltcG9ydCBzZXRTcHJlYWRpbmdBbGFtYXQgZnJvbSBcIi4vYWN0aW9ucy9zZXRTcHJlYWRpbmdBbGFtYXRcIjtcclxuaW1wb3J0IHNldFNwcmVhZGluZ05ld091dGxldCBmcm9tIFwiLi9hY3Rpb25zL3NldFNwcmVhZGluZ05ld091dGxldFwiO1xyXG5pbXBvcnQgc2V0U3ByZWFkaW5nQ2hlY2tJbiBmcm9tIFwiLi9hY3Rpb25zL3NldFNwcmVhZGluZ0NoZWNrSW5cIjtcclxuaW1wb3J0IHNldFNwcmVhZGluZ0plbmlzQ2hhbm5lbCBmcm9tIFwiLi9hY3Rpb25zL3NldFNwcmVhZGluZ0plbmlzQ2hhbm5lbFwiO1xyXG5pbXBvcnQgc2V0U3ByZWFkaW5nT3V0bGV0IGZyb20gXCIuL2FjdGlvbnMvc2V0U3ByZWFkaW5nT3V0bGV0XCI7XHJcblxyXG5pbXBvcnQgc2V0RGVmYXVsdFZpc2l0UGxhbiBmcm9tIFwiLi9hY3Rpb25zL3NldERlZmF1bHRWaXNpdFBsYW5cIjtcclxuaW1wb3J0IHNldERlZmF1bHRWaXNpdFVucGxhbiBmcm9tIFwiLi9hY3Rpb25zL3NldERlZmF1bHRWaXNpdFVucGxhblwiO1xyXG5pbXBvcnQgc2V0RGVmYXVsdFZpc2l0U3ByZWFkaW5nIGZyb20gXCIuL2FjdGlvbnMvc2V0RGVmYXVsdFZpc2l0U3ByZWFkaW5nXCI7XHJcblxyXG5jb25zdCBTdG9yZXMgPSBjcmVhdGVDb250ZXh0KCk7XHJcblxyXG5jb25zdCBTdG9yZSA9ICh7IGNoaWxkcmVuIH0pID0+IHtcclxuICBjb25zdCBbc3RhdGUsIGRpc3BhdGNoXSA9IHVzZVJlZHVjZXIoXHJcbiAgICAocHJldlN0YXRlLCBhY3Rpb24pID0+IHtcclxuICAgICAgcmV0dXJuIHtcclxuICAgICAgICB1c2VyUmVkdWNlcjogdXNlclJlZHVjZXIocHJldlN0YXRlLnVzZXJSZWR1Y2VyLCBhY3Rpb24pLFxyXG4gICAgICAgIG1lbnVSZWR1Y2VyOiBtZW51UmVkdWNlcihwcmV2U3RhdGUubWVudVJlZHVjZXIsIGFjdGlvbiksXHJcbiAgICAgICAgdmlzaXRQbGFuUmVkdWNlcjogdmlzaXRQbGFuUmVkdWNlcihwcmV2U3RhdGUudmlzaXRQbGFuUmVkdWNlciwgYWN0aW9uKSxcclxuICAgICAgICB2aXNpdFVucGxhblJlZHVjZXI6IHZpc2l0VW5wbGFuUmVkdWNlcihcclxuICAgICAgICAgIHByZXZTdGF0ZS52aXNpdFVucGxhblJlZHVjZXIsXHJcbiAgICAgICAgICBhY3Rpb25cclxuICAgICAgICApLFxyXG4gICAgICAgIHZpc2l0U3ByZWFkaW5nUmVkdWNlcjogdmlzaXRTcHJlYWRpbmdSZWR1Y2VyKFxyXG4gICAgICAgICAgcHJldlN0YXRlLnZpc2l0U3ByZWFkaW5nUmVkdWNlcixcclxuICAgICAgICAgIGFjdGlvblxyXG4gICAgICAgICksXHJcbiAgICAgIH07XHJcbiAgICB9LFxyXG4gICAge1xyXG4gICAgICB1c2VyUmVkdWNlcjogZGVmYXVsdFVzZXIsXHJcbiAgICAgIG1lbnVSZWR1Y2VyOiBkZWZhdWx0TWVudSxcclxuICAgICAgdmlzaXRQbGFuUmVkdWNlcjogZGVmYXVsdFZpc2l0UGxhbixcclxuICAgICAgdmlzaXRVbnBsYW5SZWR1Y2VyOiBkZWZhdWx0VmlzaXRVbnBsYW4sXHJcbiAgICAgIHZpc2l0U3ByZWFkaW5nUmVkdWNlcjogZGVmYXVsdFZpc2l0U3ByZWFkaW5nLFxyXG4gICAgfVxyXG4gICk7XHJcblxyXG4gIGNvbnN0IGFjdGlvbnMgPSB1c2VNZW1vKFxyXG4gICAgKCkgPT4gKHtcclxuICAgICAgLi4udXNlckxvZ2luKGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0TWVudShkaXNwYXRjaCksXHJcbiAgICAgIC4uLmtlZXBTdGF0ZShkaXNwYXRjaCksXHJcblxyXG4gICAgICAuLi5zZXRQbGFuVmlzaWJpbGl0eShkaXNwYXRjaCksXHJcbiAgICAgIC4uLnNldFBsYW5BdmFiaWxpdHkoZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRQbGFuQ2F0YXRhbihkaXNwYXRjaCksXHJcbiAgICAgIC4uLnNldFBsYW5DaGVja0luKGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0RGVmYXVsdFZpc2l0UGxhbihkaXNwYXRjaCksXHJcblxyXG4gICAgICAuLi5zZXRVbnBsYW5WaXNpYmlsaXR5KGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0VW5wbGFuQXZhYmlsaXR5KGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0VW5wbGFuQ2F0YXRhbihkaXNwYXRjaCksXHJcbiAgICAgIC4uLnNldFVucGxhbkNoZWNrSW4oZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRVbnBsYW5KZW5pc0NoYW5uZWwoZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRVbnBsYW5PdXRsZXQoZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXREZWZhdWx0VmlzaXRVbnBsYW4oZGlzcGF0Y2gpLFxyXG5cclxuICAgICAgLi4uc2V0U3ByZWFkaW5nVmlzaWJpbGl0eShkaXNwYXRjaCksXHJcbiAgICAgIC4uLnNldFNwcmVhZGluZ0F2YWJpbGl0eShkaXNwYXRjaCksXHJcbiAgICAgIC4uLnNldFNwcmVhZGluZ0NhdGF0YW4oZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRTcHJlYWRpbmdBbGFtYXQoZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRTcHJlYWRpbmdOZXdPdXRsZXQoZGlzcGF0Y2gpLFxyXG4gICAgICAuLi5zZXRTcHJlYWRpbmdDaGVja0luKGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0U3ByZWFkaW5nSmVuaXNDaGFubmVsKGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0U3ByZWFkaW5nT3V0bGV0KGRpc3BhdGNoKSxcclxuICAgICAgLi4uc2V0RGVmYXVsdFZpc2l0U3ByZWFkaW5nKGRpc3BhdGNoKSxcclxuICAgIH0pLFxyXG4gICAgW11cclxuICApO1xyXG5cclxuICByZXR1cm4gKFxyXG4gICAgPFN0b3Jlcy5Qcm92aWRlciB2YWx1ZT17eyBzdGF0ZSwgZGlzcGF0Y2gsIGFjdGlvbnMgfX0+XHJcbiAgICAgIHtjaGlsZHJlbn1cclxuICAgIDwvU3RvcmVzLlByb3ZpZGVyPlxyXG4gICk7XHJcbn07XHJcblxyXG5leHBvcnQgeyBTdG9yZXMsIFN0b3JlIH07XHJcbiIsImNvbnN0IGRlZmF1bHRNZW51ID0ge1xyXG4gIG1lbnU6IFtdLFxyXG59O1xyXG5cclxuY29uc3QgbWVudVJlZHVjZXIgPSAoc3RhdGUsIGFjdGlvbikgPT4ge1xyXG4gIHN3aXRjaCAoYWN0aW9uLnR5cGUpIHtcclxuICAgIGNhc2UgXCJTRVRfTUVOVVwiOlxyXG4gICAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbShcIm1lbnVcIiwgSlNPTi5zdHJpbmdpZnkoYWN0aW9uLnBheWxvYWQpKTtcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIG1lbnU6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiS0VFUF9TVEFURVwiOlxyXG4gICAgICBjb25zdCB1c2VyTWVudSA9IEpTT04ucGFyc2UobG9jYWxTdG9yYWdlLmdldEl0ZW0oXCJtZW51XCIpKTtcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIG1lbnU6IHVzZXJNZW51IH07XHJcbiAgICBkZWZhdWx0OlxyXG4gICAgICByZXR1cm4gc3RhdGU7XHJcbiAgfVxyXG59O1xyXG5cclxuZXhwb3J0IHsgbWVudVJlZHVjZXIsIGRlZmF1bHRNZW51IH07XHJcbiIsImNvbnN0IGRlZmF1bHRVc2VyID0ge1xyXG4gIHVzZXI6IFtdLFxyXG59O1xyXG5cclxuY29uc3QgdXNlclJlZHVjZXIgPSAoc3RhdGUsIGFjdGlvbikgPT4ge1xyXG4gIHN3aXRjaCAoYWN0aW9uLnR5cGUpIHtcclxuICAgIGNhc2UgXCJVU0VSX0xPR0lOXCI6XHJcbiAgICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKFwidXNlclwiLCBKU09OLnN0cmluZ2lmeShhY3Rpb24ucGF5bG9hZCkpO1xyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgdXNlcjogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJVU0VSX0xPR09VVFwiOlxyXG4gICAgICBsb2NhbFN0b3JhZ2UuY2xlYXIoKTtcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIHVzZXI6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiS0VFUF9TVEFURVwiOlxyXG4gICAgICBjb25zdCB1c2VyRGF0YSA9IEpTT04ucGFyc2UobG9jYWxTdG9yYWdlLmdldEl0ZW0oXCJ1c2VyXCIpKTtcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIHVzZXI6IHVzZXJEYXRhIH07XHJcblxyXG4gICAgZGVmYXVsdDpcclxuICAgICAgcmV0dXJuIHN0YXRlO1xyXG4gIH1cclxufTtcclxuXHJcbmV4cG9ydCB7IHVzZXJSZWR1Y2VyLCBkZWZhdWx0VXNlciB9O1xyXG4iLCJjb25zdCBkZWZhdWx0VmlzaXRQbGFuID0ge1xyXG4gIHZpc2liaWxpdHk6IFtdLFxyXG4gIGF2YWJpbGl0eTogW10sXHJcbiAgY2F0YXRhbjogXCJcIixcclxuICBjaGVja0luOiBcIlwiLFxyXG59O1xyXG5cclxuY29uc3QgdmlzaXRQbGFuUmVkdWNlciA9IChzdGF0ZSwgYWN0aW9uKSA9PiB7XHJcbiAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xyXG4gICAgY2FzZSBcIlNFVF9QTEFOX1ZJU0lCSUxJVFlcIjpcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIHZpc2liaWxpdHk6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiU0VUX1BMQU5fQVZBQklMSVRZXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLnN0YXRlLCBhdmFiaWxpdHk6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiU0VUX1BMQU5fQ0FUQVRBTlwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgY2F0YXRhbjogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfUExBTl9DSEVDS19JTlwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgY2hlY2tJbjogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfREVGQVVMVF9WSVNJVF9QTEFOXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLmRlZmF1bHRWaXNpdFBsYW4gfTtcclxuICAgIGRlZmF1bHQ6XHJcbiAgICAgIHJldHVybiBzdGF0ZTtcclxuICB9XHJcbn07XHJcblxyXG5leHBvcnQgeyB2aXNpdFBsYW5SZWR1Y2VyLCBkZWZhdWx0VmlzaXRQbGFuIH07XHJcbiIsImNvbnN0IGRlZmF1bHRWaXNpdFNwcmVhZGluZyA9IHtcclxuICB2aXNpYmlsaXR5OiBbXSxcclxuICBhdmFiaWxpdHk6IFtdLFxyXG4gIGNhdGF0YW46IFwiXCIsXHJcbiAgYWxhbWF0OiBcIlwiLFxyXG4gIG5ld091dGxldDogXCJcIixcclxuICBjaGVja0luOiBcIlwiLFxyXG4gIGplbmlzQ2hhbm5lbDoge30sXHJcbiAgb3V0bGV0OiB7fSxcclxufTtcclxuXHJcbmNvbnN0IHZpc2l0U3ByZWFkaW5nUmVkdWNlciA9IChzdGF0ZSwgYWN0aW9uKSA9PiB7XHJcbiAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xyXG4gICAgY2FzZSBcIlNFVF9TUFJFQURJTkdfVklTSUJJTElUWVwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgdmlzaWJpbGl0eTogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfU1BSRUFESU5HX0FWQUJJTElUWVwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgYXZhYmlsaXR5OiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9TUFJFQURJTkdfQ0FUQVRBTlwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgY2F0YXRhbjogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfU1BSRUFESU5HX0FMQU1BVFwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgYWxhbWF0OiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9TUFJFQURJTkdfTkVXX09VVExFVFwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgbmV3T3V0bGV0OiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9TUFJFQURJTkdfQ0hFQ0tfSU5cIjpcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIGNoZWNrSW46IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiU0VUX1NQUkVBRElOR19KRU5JU19DSEFOTkVMXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLnN0YXRlLCBqZW5pc0NoYW5uZWw6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiU0VUX1NQUkVBRElOR19PVVRMRVRcIjpcclxuICAgICAgcmV0dXJuIHsgLi4uc3RhdGUsIG91dGxldDogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfREVGQVVMVF9WSVNJVF9TUFJFQURJTkdcIjpcclxuICAgICAgcmV0dXJuIHsgLi4uZGVmYXVsdFZpc2l0U3ByZWFkaW5nIH07XHJcbiAgICBkZWZhdWx0OlxyXG4gICAgICByZXR1cm4gc3RhdGU7XHJcbiAgfVxyXG59O1xyXG5cclxuZXhwb3J0IHsgdmlzaXRTcHJlYWRpbmdSZWR1Y2VyLCBkZWZhdWx0VmlzaXRTcHJlYWRpbmcgfTtcclxuIiwiY29uc3QgZGVmYXVsdFZpc2l0VW5wbGFuID0ge1xyXG4gIHZpc2liaWxpdHk6IFtdLFxyXG4gIGF2YWJpbGl0eTogW10sXHJcbiAgY2F0YXRhbjogXCJcIixcclxuICBjaGVja0luOiBcIlwiLFxyXG4gIGplbmlzQ2hhbm5lbDoge30sXHJcbiAgb3V0bGV0OiB7fSxcclxufTtcclxuXHJcbmNvbnN0IHZpc2l0VW5wbGFuUmVkdWNlciA9IChzdGF0ZSwgYWN0aW9uKSA9PiB7XHJcbiAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xyXG4gICAgY2FzZSBcIlNFVF9VTlBMQU5fVklTSUJJTElUWVwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgdmlzaWJpbGl0eTogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfVU5QTEFOX0FWQUJJTElUWVwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgYXZhYmlsaXR5OiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9VTlBMQU5fQ0FUQVRBTlwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgY2F0YXRhbjogYWN0aW9uLnBheWxvYWQgfTtcclxuICAgIGNhc2UgXCJTRVRfVU5QTEFOX0NIRUNLX0lOXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLnN0YXRlLCBjaGVja0luOiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9VTlBMQU5fSkVOSVNfQ0hBTk5FTFwiOlxyXG4gICAgICByZXR1cm4geyAuLi5zdGF0ZSwgamVuaXNDaGFubmVsOiBhY3Rpb24ucGF5bG9hZCB9O1xyXG4gICAgY2FzZSBcIlNFVF9VTlBMQU5fT1VUTEVUXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLnN0YXRlLCBvdXRsZXQ6IGFjdGlvbi5wYXlsb2FkIH07XHJcbiAgICBjYXNlIFwiU0VUX0RFRkFVTFRfVklTSVRfVU5QTEFOXCI6XHJcbiAgICAgIHJldHVybiB7IC4uLmRlZmF1bHRWaXNpdFVucGxhbiB9O1xyXG4gICAgZGVmYXVsdDpcclxuICAgICAgcmV0dXJuIHN0YXRlO1xyXG4gIH1cclxufTtcclxuXHJcbmV4cG9ydCB7IHZpc2l0VW5wbGFuUmVkdWNlciwgZGVmYXVsdFZpc2l0VW5wbGFuIH07XHJcbiIsIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcIm5leHQvcm91dGVyXCIpOyIsIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcInJlYWN0XCIpOyIsIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcInJlYWN0L2pzeC1kZXYtcnVudGltZVwiKTsiXSwic291cmNlUm9vdCI6IiJ9
