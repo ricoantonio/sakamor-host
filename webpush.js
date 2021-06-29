@@ -1,4 +1,4 @@
-// import { getMessaging } from "firebase/messaging";
+import "firebase/messaging";
 import firebase from "firebase/app";
 
 const firebaseCloudMessaging = {
@@ -54,4 +54,4 @@ const firebaseCloudMessaging = {
     }
   },
 };
-export { firebaseCloudMessaging };
+export default { firebaseCloudMessaging };
