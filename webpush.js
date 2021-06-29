@@ -1,5 +1,5 @@
-import "firebase/messaging";
-import firebase from "firebase";
+import { getMessaging } from "firebase/messaging";
+import firebase from "firebase/app";
 
 const firebaseCloudMessaging = {
   //checking whether token is available in indexed DB
@@ -24,7 +24,7 @@ const firebaseCloudMessaging = {
       });
 
       try {
-        const messaging = firebase.messaging();
+        const messaging = getMessaging();
         const tokenInLocalForage = await this.tokenInlocalforage();
         const userInlocalforage = await this.userInlocalforage();
 
