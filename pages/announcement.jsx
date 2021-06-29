@@ -6,7 +6,7 @@ import BotNav from "../components/BotNav";
 import { getAllAnnouncement, updateReadAnnouncement } from "../helper";
 import moment from "moment";
 import Spinner from "../components/Spinner";
-import { firebaseCloudMessaging } from "../webPush";
+// import { firebaseCloudMessaging } from "../webPush";
 
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
