@@ -66,7 +66,7 @@ export default function Calender() {
         .then((data) => {
           setProgramList(data);
           setLoadingProgram(false);
-          // console.log("program", data);
+          console.log("program", data);
         })
         .catch((err) => {
           console.log(err);
@@ -75,7 +75,7 @@ export default function Calender() {
         .then((data) => {
           setPromoList(data);
           setLoadingPromo(false);
-          // console.log("promo", data);
+          console.log("promo", data);
         })
         .catch((err) => {
           console.log(err);
@@ -285,7 +285,7 @@ export default function Calender() {
                   />
                 </div>
                 <div>
-                  <div>{val.namaProduk}</div>
+                  <div>{val.judul}</div>
                   <div style={{ fontSize: "12px", fontWeight: "300" }}>
                     {val.deskripsi}
                   </div>
@@ -297,6 +297,7 @@ export default function Calender() {
       }
     }
   };
+
   const renderMenuDay = () => {
     return (
       <>
@@ -319,6 +320,7 @@ export default function Calender() {
       </>
     );
   };
+
   const renderWeekList = (type, data) => {
     return data.map((val) => {
       return (
@@ -355,13 +357,14 @@ export default function Calender() {
               />
             </div>
             <div>
-              <div>{val.namaProduk}</div>
+              <div>{val.judul}</div>
             </div>
           </div>
         </div>
       );
     });
   };
+
   const renderMenuWeek = () => {
     const arrWeek = [];
     const dateStart = moment(now).startOf("isoweek");
@@ -471,6 +474,7 @@ export default function Calender() {
         deskripsi: val.deskripsi,
         id: val.id,
         isDeleted: val.isDeleted,
+        judul: val.judul,
         kodeCabang: val.kodeCabang,
         kodeProduk: val.kodeProduk,
         namaCabang: val.namaCabang,
@@ -490,6 +494,7 @@ export default function Calender() {
         deskripsi: val.deskripsi,
         id: val.id,
         isDeleted: val.isDeleted,
+        judul: val.judul,
         kodeCabang: val.kodeCabang,
         kodeProduk: val.kodeProduk,
         namaCabang: val.namaCabang,
@@ -528,7 +533,7 @@ export default function Calender() {
                         {moment(val.tanggalMulai).format("D")}
                       </div>
                       <div>
-                        <div>{val.namaProduk}</div>
+                        <div>{val.judul}</div>
                         <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
                       </div>
                     </div>
@@ -547,7 +552,7 @@ export default function Calender() {
                       {moment(val.tanggalMulai).format("D")}
                     </div>
                     <div>
-                      <div>{val.namaProduk}</div>
+                      <div>{val.judul}</div>
                       <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
                     </div>
                   </div>

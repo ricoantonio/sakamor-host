@@ -33,7 +33,7 @@ export default function Login() {
           setWrongUser(false);
           console.log(data);
           actions.userLogin(data);
-          Router.push("/");
+          window.location.reload();
         }
       })
       .catch((err) => {

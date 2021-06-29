@@ -1,26 +1,8 @@
 {
-  "..\\components\\HistoryDetail.jsx -> jspdf": {
-    "id": "i680",
+  "..\\node_modules\\next\\dist\\client\\next-dev.js -> ./dev/noop": {
+    "id": "./node_modules/next/dist/client/dev/noop.js",
     "files": [
-      "static/chunks/e78312c5.43a05b455598ea0f650b.js",
-      "static/chunks/59.b220f0d70ccbc0bd4e97.js"
+      "static/chunks/0.js"
     ]
-  },
-  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> canvg": {
-    "id": "DXPr",
-    "files": [
-      "static/chunks/72a30a16.8d41934b9dee841c80cb.js",
-      "static/chunks/58.7349372a02e4ffa0c9f6.js"
-    ]
-  },
-  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> dompurify": {
-    "id": "wMS7",
-    "files": [
-      "static/chunks/60.01e3a880ff1cfbc5fac5.js"
-    ]
-  },
-  "..\\node_modules\\jspdf\\dist\\jspdf.es.min.js -> html2canvas": {
-    "id": "wOnQ",
-    "files": []
   }
 }

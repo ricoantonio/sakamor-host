@@ -3,6 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Store } from "../store";
 import { useEffect } from "react";
 import Router from "next/router";
+import { firebaseCloudMessaging } from "../webPush";
+import firebase from "firebase/app";
+import { getAllAnnouncement } from "../helper";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -11,6 +14,27 @@ function MyApp({ Component, pageProps }) {
       Router.push("/login");
     }
   }, []);
+
+  // useEffect(() => {
+  //   setToken();
+  //   async function setToken() {
+  //     try {
+  //       const token = await firebaseCloudMessaging.init();
+  //       if (token) {
+  //         getMessage();
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   function getMessage() {
+  //     const messaging = firebase.messaging();
+  //     console.log({ messaging });
+  //     messaging.onMessage((message) => {
+  //       // localStorage.setItem("notif", true);
+  //     });
+  //   }
+  // });
   return (
     <Store>
       <Component {...pageProps} />

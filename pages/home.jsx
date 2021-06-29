@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import Head from "next/head";
 import styles from "../styles/pages/Home.module.css";
 import Router from "next/router";
@@ -10,7 +10,10 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
+import { firebaseCloudMessaging } from "../webPush";
+import firebase from "firebase/app";
 import {
+  getAllAnnouncement,
   getAllWorkVisit,
   getAuth,
   getMenu,
@@ -36,6 +39,9 @@ export default function Home() {
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMenu, setLoadingMenu] = useState(true);
+  const [announcemennortList, setAnnouncementList] = useState([]);
+  const [notif, setNotif] = useState(false);
+  const isMounted = useRef(true);
 
   const dataPlan = {
     datasets: [
@@ -73,6 +79,52 @@ export default function Home() {
     responsive: true,
     maintainAspectRatio: true,
   };
+
+  useEffect(() => {
+    if (isMounted.current) {
+      setToken();
+      async function setToken() {
+        try {
+          const token = await firebaseCloudMessaging.init();
+          if (token) {
+            getMessage();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      function getMessage() {
+        const messaging = firebase.messaging();
+        console.log({ messaging });
+        messaging.onMessage((message) => {
+          setNotif(true);
+        });
+      }
+    }
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    getAllAnnouncement(userData)
+      .then((data) => {
+        console.log(data);
+        const newAnnouncement = data.filter((val) => {
+          return val.isRead === false;
+        });
+        console.log(newAnnouncement);
+        if (newAnnouncement.length > 0) {
+          setNotif(true);
+        } else {
+          setNotif(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -706,6 +758,25 @@ export default function Home() {
                 <Link href={"/announcement"}>
                   <a>
                     <img className={styles.notif} src="/notif.svg" />
+                    {notif ? (
+                      <div
+                        style={{
+                          position: " relative",
+                          top: "-26px",
+                          right: "-17px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "7px",
+                            height: "7px",
+                            borderRadius: "20px",
+                            backgroundColor: "#feb800",
+                            position: "relative",
+                          }}
+                        />
+                      </div>
+                    ) : null}
                   </a>
                 </Link>
                 <div className={styles.main}>

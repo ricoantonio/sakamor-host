@@ -6,6 +6,7 @@ import BotNav from "../components/BotNav";
 import { getAllAnnouncement, updateReadAnnouncement } from "../helper";
 import moment from "moment";
 import Spinner from "../components/Spinner";
+import { firebaseCloudMessaging } from "../webPush";
 
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -24,6 +25,40 @@ export default function Announcement() {
         console.log(err);
       });
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   setToken();
+  //   async function setToken() {
+  //     try {
+  //       const token = await firebaseCloudMessaging.init();
+  //       if (token) {
+  //         getMessage();
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   function getMessage() {
+  //     const messaging = firebase.messaging();
+  //     const userData = JSON.parse(localStorage.getItem("user"));
+  //     console.log({ messaging });
+  //     messaging.onMessage((message) => {
+  //       getAllAnnouncement(userData)
+  //         .then((data) => {
+  //           setAnnouncementList(data);
+  //           setLoading(false);
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //       const { title, body } = JSON.parse(message.notification);
+  //       var options = {
+  //         body,
+  //       };
+  //       self.registration.showNotification(title, options);
+  //     });
+  //   }
+  // });
 
   const renderAnnouncement = () => {
     if (loading) {
@@ -79,7 +114,6 @@ export default function Announcement() {
             </>
           );
         }
-        return render;
       });
     }
   };

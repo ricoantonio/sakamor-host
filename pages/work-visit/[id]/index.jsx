@@ -163,7 +163,13 @@ export default function index() {
                 <span className={styles.rayon_container}>{data.kodeRayon}</span>
               </div>
             </div>
-            <div style={{ fontSize: "12px", fontWeight: "400" }}>
+            <div
+              style={{
+                fontSize: "12px",
+                fontWeight: "400",
+                margin: "8px 0 0 0 ",
+              }}
+            >
               Produk Fokus:{" "}
               <span className={styles.produk_fokus_container}>
                 {data.produkFokus}
