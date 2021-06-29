@@ -1,5 +1,5 @@
-import "firebase/messaging";
 import firebase from "firebase/app";
+import "firebase/messaging";
 
 const firebaseCloudMessaging = {
   //checking whether token is available in indexed DB
@@ -54,4 +54,4 @@ const firebaseCloudMessaging = {
     }
   },
 };
-export default { firebaseCloudMessaging };
+export { firebaseCloudMessaging };
