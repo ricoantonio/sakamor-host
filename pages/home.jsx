@@ -10,7 +10,7 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { firebaseCloudMessaging } from "../webpush.js";
+import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
 import {
   getAllAnnouncement,
@@ -80,31 +80,31 @@ export default function Home() {
     maintainAspectRatio: true,
   };
 
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     setToken();
-  //     async function setToken() {
-  //       try {
-  //         const token = await firebaseCloudMessaging.init();
-  //         if (token) {
-  //           getMessage();
-  //         }
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //     function getMessage() {
-  //       const messaging = firebase.messaging();
-  //       console.log({ messaging });
-  //       messaging.onMessage((message) => {
-  //         setNotif(true);
-  //       });
-  //     }
-  //   }
-  //   return () => {
-  //     isMounted.current = false;
-  //   };
-  // }, [isMounted]);
+  useEffect(() => {
+    if (isMounted.current) {
+      setToken();
+      async function setToken() {
+        try {
+          const token = await firebaseCloudMessaging.init();
+          if (token) {
+            getMessage();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      function getMessage() {
+        const messaging = firebase.messaging();
+        console.log({ messaging });
+        messaging.onMessage((message) => {
+          setNotif(true);
+        });
+      }
+    }
+    return () => {
+      isMounted.current = false;
+    };
+  }, [isMounted]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));

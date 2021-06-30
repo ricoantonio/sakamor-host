@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
 import "firebase/messaging";
+import firebase from "firebase/app";
 
 const firebaseCloudMessaging = {
   //checking whether token is available in indexed DB
