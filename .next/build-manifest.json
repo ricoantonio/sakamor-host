@@ -29,20 +29,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/work-visit": [
+    "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/work-visit.js"
-    ],
-    "/work-visit/history": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/work-visit/history.js"
-    ],
-    "/work-visit/history/[id]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/work-visit/history/[id].js"
+      "static/chunks/pages/login.js"
     ]
   },
   "ampFirstPages": []

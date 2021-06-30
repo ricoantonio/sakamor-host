@@ -2,8 +2,6 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/work-visit": "pages/work-visit.js",
-  "/work-visit/history": "pages/work-visit/history.js",
   "/": "pages/index.js",
-  "/work-visit/history/[id]": "pages/work-visit/history/[id].js"
+  "/login": "pages/login.js"
 }

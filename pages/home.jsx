@@ -108,22 +108,24 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    getAllAnnouncement(userData)
-      .then((data) => {
-        console.log(data);
-        const newAnnouncement = data.filter((val) => {
-          return val.isRead === false;
+    if (userData) {
+      getAllAnnouncement(userData)
+        .then((data) => {
+          console.log(data);
+          const newAnnouncement = data.filter((val) => {
+            return val.isRead === false;
+          });
+          console.log(newAnnouncement);
+          if (newAnnouncement.length > 0) {
+            setNotif(true);
+          } else {
+            setNotif(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        console.log(newAnnouncement);
-        if (newAnnouncement.length > 0) {
-          setNotif(true);
-        } else {
-          setNotif(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   }, []);
 
   useEffect(() => {
