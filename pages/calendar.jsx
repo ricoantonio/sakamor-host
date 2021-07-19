@@ -287,7 +287,18 @@ export default function Calender() {
                 <div>
                   <div>{val.judul}</div>
                   <div style={{ fontSize: "12px", fontWeight: "300" }}>
-                    {val.deskripsi}
+                    <div>
+                      {val.tanggalMulai == val.tanggalSelesai ? (
+                        moment(val.tanggalMulai).format("D MMM YYYY")
+                      ) : (
+                        <>
+                          {moment(val.tanggalMulai).format("D MMM YYYY")}
+                          {" - "}
+                          {moment(val.tanggalSelesai).format("D MMM YYYY")}
+                        </>
+                      )}
+                    </div>
+                    <div>{val.deskripsi}</div>
                   </div>
                 </div>
               </div>
@@ -533,8 +544,23 @@ export default function Calender() {
                         {moment(val.tanggalMulai).format("D")}
                       </div>
                       <div>
-                        <div>{val.judul}</div>
-                        <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
+                        <div style={{ fontWeight: "400" }}>{val.judul}</div>
+                        <div style={{ fontSize: "12px", fontWeight: "300" }}>
+                          <div>
+                            {val.tanggalMulai == val.tanggalSelesai ? (
+                              moment(val.tanggalMulai).format("D MMM YYYY")
+                            ) : (
+                              <>
+                                {moment(val.tanggalMulai).format("D MMM YYYY")}
+                                {" - "}
+                                {moment(val.tanggalSelesai).format(
+                                  "D MMM YYYY"
+                                )}
+                              </>
+                            )}
+                          </div>
+                          <div>{val.deskripsi}</div>
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -552,8 +578,21 @@ export default function Calender() {
                       {moment(val.tanggalMulai).format("D")}
                     </div>
                     <div>
-                      <div>{val.judul}</div>
-                      <div style={{ fontSize: "12px" }}>{val.deskripsi}</div>
+                      <div style={{ fontWeight: "400" }}>{val.judul}</div>
+                      <div style={{ fontSize: "12px", fontWeight: "300" }}>
+                        <div>
+                          {val.tanggalMulai == val.tanggalSelesai ? (
+                            moment(val.tanggalMulai).format("D MMM YYYY")
+                          ) : (
+                            <>
+                              {moment(val.tanggalMulai).format("D MMM YYYY")}
+                              {" - "}
+                              {moment(val.tanggalSelesai).format("D MMM YYYY")}
+                            </>
+                          )}
+                        </div>
+                        <div>{val.deskripsi}</div>
+                      </div>
                     </div>
                   </div>
                 ) : (

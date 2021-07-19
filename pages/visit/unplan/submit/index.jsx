@@ -65,7 +65,7 @@ export default function index() {
           {type}
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
-              ? `${doneFormVis.length}/8`
+              ? `${doneFormVis.length}/6`
               : type === "Avability"
               ? `${doneFormAva.length}/25`
               : ""}
@@ -90,7 +90,7 @@ export default function index() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(doneFormVis.length / 8) * 100}%`,
+                          width: `${(doneFormVis.length / 6) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -135,7 +135,7 @@ export default function index() {
     const visDone = state.visitUnplanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
-    if (visDone.length === 8) {
+    if (visDone.length === 6) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -264,7 +264,7 @@ export default function index() {
                   Router.push("/visit/unplan");
                 }
               }}
-              disable={visDone.length === 8 ? false : true}
+              disable={visDone.length === 6 ? false : true}
             />
             <div className={styles.main}>
               {visNotDone ? (

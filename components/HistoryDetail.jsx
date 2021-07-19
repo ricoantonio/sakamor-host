@@ -163,7 +163,7 @@ export default function HistoryDetail({ type }) {
           {subType}
           <div style={{ textAlign: "right" }}>
             {subType === "Visibility"
-              ? `${posmList.length}/8`
+              ? `${posmList.length}/6`
               : subType === "Avability"
               ? `${productList.length}/25`
               : ""}
@@ -184,7 +184,7 @@ export default function HistoryDetail({ type }) {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(posmList.length / 8) * 100}%`,
+                          width: `${(posmList.length / 6) * 100}%`,
                         }}
                       ></div>
                     </div>

@@ -10,6 +10,8 @@ import {
   API_CALENDAR_PROMO,
   API_CALENDAR_PROGRAM,
   API_ANNOUNCEMENT,
+  API_INCENTIVE,
+  API_BENEFIT,
 } from "./constant";
 
 var now = new Date();
@@ -233,6 +235,50 @@ const getBrand = () => {
 const getKontenWorkVisit = () => {
   return fetch(
     API_URL + API_MASTER + `/MasterDataLokal/GetAllKontenWorkVisit`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSalesTargetSMR = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetSalesTargetBy/${year}/${month}?usernameSmr=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSalesTarget75SMR = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetSalesTarget75PersenBy/${year}/${month}?usernameSmr=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1124,6 +1170,108 @@ const updateReadAnnouncement = (id, data) => {
     });
 };
 
+// INCENTIVE =====================================================================================================================================================================================
+
+const getProduktifitas = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/SakamorIncentive/GetProduktifitasByUserPeriode/${month}/${year}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getFrontliner = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/Frontliner/GetByUserPeriode/${month}/${year}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getNoo = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/TargetNOO/GetSelsNOOByUserPeriode/${month}/${year}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getWorkDay = () => {
+  return fetch(API_URL + API_INCENTIVE + `/SakamorIncentive/GetWorkingDay/01`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// BENEFIT ==============================================================================================================================================
+
+const getBenefitCodeCabang = (userData) => {
+  return fetch(API_URL + API_BENEFIT + `/Benefits/GetBenefitsByKodeCabang/04`, {
+    headers: {
+      apiKey: TOKEN,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export {
   getMenu,
   getAuth,
@@ -1168,4 +1316,11 @@ export {
   getMonthPromo,
   getAllAnnouncement,
   updateReadAnnouncement,
+  getSalesTargetSMR,
+  getSalesTarget75SMR,
+  getProduktifitas,
+  getFrontliner,
+  getNoo,
+  getBenefitCodeCabang,
+  getWorkDay,
 };

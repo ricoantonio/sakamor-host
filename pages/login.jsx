@@ -49,9 +49,9 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.middle}>
-        <img className={styles.img_security} src={"/security.svg"} />
         <div className={styles.border_content}>
-          <div className={styles.main_text}>SAKA ARMOR</div>
+          <img className={styles.img_security} src={"/sakamor_logo.png"} />
+          <div className={styles.main_text}></div>
           {wrongUser ? (
             <div style={{ color: "red" }}>Wrong password or username!</div>
           ) : (

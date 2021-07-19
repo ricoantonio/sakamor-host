@@ -51,11 +51,25 @@ const Nav = ({ focus }) => {
               <img
                 src={
                   router.pathname === "/reward"
+                    ? "/award-nav.svg"
+                    : "/award-nav1.svg"
+                }
+              />
+              {router.pathname === "/reward" ? active : ""}
+            </div>
+          </a>
+        </Link>
+        <Link href={"/"}>
+          <a>
+            <div>
+              <img
+                src={
+                  router.pathname === "/announcement"
                     ? "/rewards-nav.svg"
                     : "/rewards-nav1.svg"
                 }
               />
-              {router.pathname === "/reward" ? active : ""}
+              {router.pathname === "/announcement" ? active : ""}
             </div>
           </a>
         </Link>

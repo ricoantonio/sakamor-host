@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Store } from "../store";
 import { useEffect } from "react";
 import Router from "next/router";
-import { firebaseCloudMessaging } from "../webpush";
+import { firebaseCloudMessaging } from "../webPush";
 import firebase from "firebase/app";
 import { getAllAnnouncement } from "../helper";
 

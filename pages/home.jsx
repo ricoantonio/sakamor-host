@@ -10,17 +10,23 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { firebaseCloudMessaging } from "../webpush";
+import { firebaseCloudMessaging } from "../webPush";
 import firebase from "firebase/app";
 import {
   getAllAnnouncement,
   getAllWorkVisit,
   getAuth,
+  getFrontliner,
   getMenu,
+  getNoo,
   getPlanHistory,
   getPlanList,
+  getProduktifitas,
+  getSalesTarget75SMR,
+  getSalesTargetSMR,
   getSpreadingMonthlyHistory,
   getUnplanMonthlyHistory,
+  getWorkDay,
 } from "../helper";
 
 import { Doughnut } from "react-chartjs-2";
@@ -39,8 +45,14 @@ export default function Home() {
   const [topMenu, setTopMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMenu, setLoadingMenu] = useState(true);
-  const [announcemennortList, setAnnouncementList] = useState([]);
+  const [newAnnouncement, setNewAnnouncement] = useState([]);
   const [notif, setNotif] = useState(false);
+  const [salesTarget, setSalesTarget] = useState([]);
+  const [salesTarget75, setSalesTarget75] = useState([]);
+  const [produktifitas, setProduktifitas] = useState([]);
+  const [frontliner, setFrontliner] = useState([]);
+  const [NOO, setNOO] = useState([]);
+  const [workDay, setWorkDay] = useState([]);
   const isMounted = useRef(true);
 
   const dataPlan = {
@@ -111,16 +123,22 @@ export default function Home() {
     if (userData) {
       getAllAnnouncement(userData)
         .then((data) => {
-          console.log(data);
           const newAnnouncement = data.filter((val) => {
             return val.isRead === false;
           });
-          console.log(newAnnouncement);
+          setNewAnnouncement(newAnnouncement);
           if (newAnnouncement.length > 0) {
             setNotif(true);
           } else {
             setNotif(false);
           }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      getWorkDay()
+        .then((data) => {
+          setWorkDay(data);
         })
         .catch((err) => {
           console.log(err);
@@ -148,6 +166,8 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    var month = moment().format("M");
+    var year = moment().format("Y");
     if (userData) {
       getAuth(userData)
         .then((data) => {
@@ -157,6 +177,42 @@ export default function Home() {
           } else if (data[0].roleCode === "SMR") {
             setRole("SMR");
             setFocus("PLAN");
+            getSalesTargetSMR(userData, month, year)
+              .then((data) => {
+                setSalesTarget(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getSalesTarget75SMR(userData, month, year)
+              .then((data) => {
+                setSalesTarget75(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getProduktifitas(userData, month, year)
+              .then((data) => {
+                setProduktifitas(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getFrontliner(userData, month, year)
+              .then((data) => {
+                setFrontliner(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getNoo(userData, month, year)
+              .then((data) => {
+                setNOO(data);
+                console.log(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }
         })
         .catch((err) => {
@@ -736,8 +792,122 @@ export default function Home() {
     }
   };
 
+  const renderWorkDay = () => {
+    if (workDay.length !== 0 && !loading && !loadingMenu) {
+      return (
+        <Card style={{ marginTop: "22px", borderRadius: "6px" }} shadow>
+          <div className={styles.plan_container}>
+            <div className={styles.progress_title}>
+              Working Day {moment().format("MMMM YYYY")}
+              <div style={{ fontWeight: "700" }}>
+                <span style={{ color: "#FEB800" }}>{workDay.hariKerja}</span>
+                <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                  {" / "}
+                  {workDay.totalHariKerja}
+                </span>
+              </div>
+            </div>
+          </div>
+        </Card>
+      );
+    }
+  };
+  const renderProgress = () => {
+    const renderSales = (title, data) => {
+      return (
+        <>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr" }}>
+            <div className={styles.progress_title}>{title}</div>
+            <div className={styles.progress_number}>
+              {data.sales.toLocaleString("id-ID")}
+              <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                {" / "}
+                {data.target.toLocaleString("id-ID")}
+              </span>
+            </div>
+          </div>
+          <div style={{ margin: "13px 0 0 0" }}>
+            <div className={styles.progress_bar}></div>
+            <div
+              className={styles.progress_bar_now}
+              style={{
+                width: `${(data.sales / data.target) * 100}%`,
+              }}
+            ></div>
+          </div>
+        </>
+      );
+    };
+    if (
+      salesTarget.length !== 0 &&
+      salesTarget75.length !== 0 &&
+      produktifitas.length !== 0 &&
+      frontliner.length !== 0 &&
+      !loading &&
+      !loadingMenu
+    ) {
+      return (
+        <Card style={{ marginTop: "22px", borderRadius: "6px" }} shadow>
+          <div className={styles.plan_container}>
+            {renderSales("Sales", salesTarget)}
+            {renderSales("Sales 75%", salesTarget75)}
+            {renderSales("Sales NOO", NOO)}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+              <div className={styles.progress_title}>Frontliner</div>
+              <div className={styles.progress_number}>
+                {frontliner.ach}
+                <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                  {" / "}
+                  {frontliner.target}
+                </span>
+              </div>
+            </div>
+            <div style={{ margin: "13px 0 0 0" }}>
+              <div className={styles.progress_bar}></div>
+              <div
+                className={styles.progress_bar_now}
+                style={{
+                  width: `${(frontliner.ach / frontliner.target) * 100}%`,
+                }}
+              ></div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+              <div className={styles.progress_title}>Produktifitas</div>
+              <div className={styles.progress_number}>
+                {produktifitas.achievement}
+                <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                  {" / "}
+                  {produktifitas.target}
+                </span>
+              </div>
+            </div>
+            <div style={{ margin: "13px 0 0 0" }}>
+              <div className={styles.progress_bar}></div>
+              <div
+                className={styles.progress_bar_now}
+                style={{
+                  width: `${
+                    (produktifitas.achievement / produktifitas.target) * 100
+                  }%`,
+                }}
+              ></div>
+            </div>
+          </div>
+        </Card>
+      );
+    }
+  };
+
   const renderPage = () => {
-    if (loading && loadingMenu) {
+    if (
+      loading &&
+      loadingMenu &&
+      salesTarget.length == 0 &&
+      salesTarget75.length == 0 &&
+      produktifitas.length == 0 &&
+      frontliner.length == 0 &&
+      workDay.length == 0
+    ) {
       return <Spinner />;
     } else {
       return (
@@ -757,30 +927,40 @@ export default function Home() {
                   </div>
                   <div style={{ fontSize: "12px" }}>{role}</div>
                 </div>
-                <Link href={"/announcement"}>
-                  <a>
-                    <img className={styles.notif} src="/notif.svg" />
-                    {notif ? (
-                      <div
-                        style={{
-                          position: " relative",
-                          top: "-26px",
-                          right: "-17px",
-                        }}
-                      >
+                <div>
+                  <Link href={"/announcement"}>
+                    <a style={{ textDecoration: "none" }}>
+                      <img className={styles.notif} src="/notif.svg" />
+                      {notif ? (
                         <div
                           style={{
-                            width: "7px",
-                            height: "7px",
-                            borderRadius: "20px",
-                            backgroundColor: "#feb800",
-                            position: "relative",
+                            position: " relative",
+                            top: "-30px",
+                            right: "-14px",
                           }}
-                        />
-                      </div>
-                    ) : null}
-                  </a>
-                </Link>
+                        >
+                          <div
+                            style={{
+                              width: "21px",
+                              height: "18px",
+                              borderRadius: "20px",
+                              backgroundColor: "#feb800",
+                              position: "relative",
+                              color: "white",
+                              fontSize: "12px",
+                            }}
+                          >
+                            <div style={{ textAlign: "center" }}>
+                              {newAnnouncement.length < 9
+                                ? newAnnouncement.length
+                                : "9+"}
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </a>
+                  </Link>
+                </div>
                 <div className={styles.main}>
                   {renderTopMenu()}
                   {focus === "PLAN"
@@ -792,6 +972,8 @@ export default function Home() {
                     : focus === "WORK-VISIT"
                     ? renderWorkVisit()
                     : ""}
+                  {renderWorkDay()}
+                  {renderProgress()}
                   <div style={{ marginBottom: "120px" }} />
                 </div>
               </div>
