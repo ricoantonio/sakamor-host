@@ -841,6 +841,7 @@ export default function Home() {
     if (
       salesTarget.length !== 0 &&
       salesTarget75.length !== 0 &&
+      NOO.length !== 0 &&
       produktifitas.length !== 0 &&
       frontliner.length !== 0 &&
       !loading &&
@@ -904,6 +905,7 @@ export default function Home() {
       loadingMenu &&
       salesTarget.length == 0 &&
       salesTarget75.length == 0 &&
+      NOO.length == 0 &&
       produktifitas.length == 0 &&
       frontliner.length == 0 &&
       workDay.length == 0
