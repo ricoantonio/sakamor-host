@@ -10,7 +10,7 @@ import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
 
-import { firebaseCloudMessaging } from "../webPush";
+import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
 import {
   getAllAnnouncement,
