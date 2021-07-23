@@ -508,7 +508,7 @@ export default function Home() {
                     /{plan.length + planHistory.length}
                   </span>
                 </div>
-                <Link href="/master-work-visit">
+                <Link href="/master-plan-visit">
                   <a>
                     <button
                       style={{

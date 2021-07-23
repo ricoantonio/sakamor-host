@@ -144,7 +144,7 @@ export default function index() {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
     // console.log(state.visitPlanReducer.visibility);
-    if (visDone.length === 6) {
+    if (visDone.length >= 6) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -258,7 +258,7 @@ export default function index() {
                 onClick={() => {
                   onSubmit();
                 }}
-                disable={visDone.length === 6 ? false : true}
+                disable={visDone.length >= 6 ? false : true}
                 backAction={() => {
                   if (
                     confirm(

@@ -3,25 +3,6 @@ import Link from "next/link";
 import styles from "../styles/components/TableLastDataIncentive.module.css";
 
 const TabelLastDataIncentive = ({ data }) => {
-  const renderDataTableAchive = (index) => {
-    return (
-      <td>
-        {/* {incentive[index].achive !== null
-          ? `${incentive[index].achive}%`
-          : null} */}
-      </td>
-    );
-  };
-
-  const renderDataTableGradasi = (index) => {
-    return (
-      <td>
-        {/* {incentive[index].gradasi !== null
-          ? `${incentive[index].gradasi}%`
-          : null} */}
-      </td>
-    );
-  };
   const renderData = () => {
     // console.log(data);
     var sort = data.sort((a, b) =>
@@ -42,16 +23,16 @@ const TabelLastDataIncentive = ({ data }) => {
             <td colSpan="7">{val.kpi}</td>
             <td></td>
             <td></td>
-            <td>{val.insentif}</td>
+            <td>{val.insentif.toLocaleString("id-ID")}</td>
           </tr>
         );
       } else {
         return (
           <tr>
             <td colSpan="7">{val.kpi}</td>
-            <td>{Math.round(val.achievement * 10) / 10}</td>
-            <td>{Math.round(val.gradasi * 10) / 10}</td>
-            <td>{val.insentif}</td>
+            <td>{Math.round(val.achievement * 10) / 10}%</td>
+            <td>{Math.round(val.gradasi * 10) / 10}%</td>
+            <td>{val.insentif.toLocaleString("id-ID")}</td>
           </tr>
         );
       }
@@ -97,7 +78,7 @@ const TabelLastDataIncentive = ({ data }) => {
             }}
           >
             <td width="20%" style={{ fontSize: "8px" }}>
-              Achiev
+              Achievment
             </td>
             <td width="20%" style={{ fontSize: "8px" }}>
               Gradasi

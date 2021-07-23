@@ -135,7 +135,7 @@ export default function index() {
     const visDone = state.visitUnplanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
-    if (visDone.length === 6) {
+    if (visDone.length >= 6) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -266,7 +266,7 @@ export default function index() {
                   Router.push("/visit/unplan");
                 }
               }}
-              disable={visDone.length === 6 ? false : true}
+              disable={visDone.length >= 6 ? false : true}
             />
             <div className={styles.main}>
               {visNotDone ? (
