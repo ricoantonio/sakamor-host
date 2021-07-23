@@ -303,22 +303,27 @@ export default function index() {
           // console.log("ini res", res);
           const bodyPosm = state.visitPlanReducer.visibility.map(
             (val, index) => {
-              return {
-                id: plan.id,
-                activityVisitPlanId: res.avp.id,
-                nomorDokumen: plan.nomorDokumen,
-                nomor: index,
-                tipe: val.type.program,
-                namaFile: val.file.name,
-                createdBy: userData.username,
-                updatedBy: userData.username,
-              };
+              console.log(val);
+              if (val.type && val.file && val.brand) {
+                return {
+                  id: plan.id,
+                  activityVisitPlanId: res.avp.id,
+                  nomorDokumen: plan.nomorDokumen,
+                  nomor: index,
+                  tipe: val.type.program,
+                  namaFile: val.file.name,
+                  createdBy: userData.username,
+                  updatedBy: userData.username,
+                  brandId: val.brand.id,
+                  namaBrand: val.brand.namaBrand,
+                };
+              }
             }
           );
           for (let i = 0; i < files.length; i++) {
             submitVisitPlanDposm(bodyPosm[i], files[i])
               .then((res) => {
-                if (i === 7) {
+                if (i === 5) {
                   setLoadingSubmit(false);
                   Router.push("/");
                   actions.setDefaultVisitPlan();

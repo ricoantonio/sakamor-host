@@ -457,7 +457,7 @@ export default function index() {
               for (let i = 0; i < files.length; i++) {
                 submitVisitSpreadingDposm(bodyPosm[i], files[i])
                   .then((res) => {
-                    if (i === 7) {
+                    if (i === 5) {
                       setLoadingSubmit(false);
                       Router.push("/");
                       actions.setDefaultVisitSpreading();
@@ -480,22 +480,24 @@ export default function index() {
             console.log("ini res", res);
             const bodyPosm = state.visitSpreadingReducer.visibility.map(
               (val, index) => {
-                return {
-                  activitySpreadingId: res.spreadingSave.id,
-                  nomor: index,
-                  tipe: val.type.program,
-                  namaFile: val.file.name,
-                  createdBy: userData.username,
-                  updatedBy: userData.username,
-                  brandId: val.brand.id,
-                  namaBrand: val.brand.namaBrand,
-                };
+                if (val.type && val.file && val.brand) {
+                  return {
+                    activitySpreadingId: res.spreadingSave.id,
+                    nomor: index,
+                    tipe: val.type.program,
+                    namaFile: val.file.name,
+                    createdBy: userData.username,
+                    updatedBy: userData.username,
+                    brandId: val.brand.id,
+                    namaBrand: val.brand.namaBrand,
+                  };
+                }
               }
             );
             for (let i = 0; i < files.length; i++) {
               submitVisitSpreadingDposm(bodyPosm[i], files[i])
                 .then((res) => {
-                  if (i === 7) {
+                  if (i === 5) {
                     setLoadingSubmit(false);
                     Router.push("/");
                     actions.setDefaultVisitSpreading();

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../../styles/pages/Reward.module.css";
 import Link from "next/link";
 import { Stores } from "../../store";
-import { getAllAnnouncement } from "../../helper";
+import { getAllAnnouncement, getKpiInventiveMonthlySMR } from "../../helper";
 import moment from "moment";
 import BotNav from "../../components/BotNav";
 import Nav from "../../components/Nav";
@@ -14,8 +14,9 @@ import TabelLastDataIncentive from "../../components/TableLastDataIncentive";
 
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
-  const [announcementList, setAnnouncementList] = useState([]);
+  const [dataKpi, setDataKpi] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [now, setNow] = useState(new Date());
 
   const data = {
     labels: [
@@ -59,10 +60,9 @@ export default function Announcement() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    getAllAnnouncement(userData)
+    getKpiInventiveMonthlySMR(userData)
       .then((data) => {
-        setAnnouncementList(data);
-        console.log(data);
+        setDataKpi(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -70,82 +70,134 @@ export default function Announcement() {
       });
   }, [dispatch]);
 
-  return (
-    <>
-      <div className={styles.wrapper}>
-        <Nav title={"Reward"} color={"white"} noBack />
-        <div className={styles.main}>
-          <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
-            <Link href="/reward/benefits">
-              <a style={{ textDecoration: "none" }}>
-                <div className={styles.reward_grid2}>
-                  <div className={styles.add_reward}>
-                    <div style={{ marginTop: "-11px" }}>
-                      <img src={"/alert-circle.svg"} />
+  if (loading) {
+    return <Spinner />;
+  } else {
+    return (
+      <>
+        <div className={styles.wrapper}>
+          <Nav title={"Reward"} color={"white"} noBack />
+          <div className={styles.main}>
+            <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+              <Link href="/reward/benefits">
+                <a style={{ textDecoration: "none" }}>
+                  <div className={styles.reward_grid2}>
+                    <div className={styles.add_reward}>
+                      <div style={{ marginTop: "-11px" }}>
+                        <img src={"/alert-circle.svg"} />
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "#FEB800",
-                    }}
-                  >
-                    Benefits
                     <div
                       style={{
-                        color: "#B9B9C3",
-                        fontWeight: "300",
-                        fontSize: "13px",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        color: "#FEB800",
                       }}
                     >
-                      See you benefits here
-                    </div>{" "}
+                      Benefits
+                      <div
+                        style={{
+                          color: "#B9B9C3",
+                          fontWeight: "300",
+                          fontSize: "13px",
+                        }}
+                      >
+                        See you benefits here
+                      </div>{" "}
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <img src={"/next.svg"} />
+                    </div>
                   </div>
-                  <div style={{ textAlign: "center" }}>
-                    <img src={"/next.svg"} />
-                  </div>
-                </div>
-              </a>
-            </Link>
-          </Card>
-          <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
-            <Line data={data} options={options} />
-          </Card>
-          <Card
-            style={{
-              borderRadius: "6px",
-              marginTop: "20px",
-              padding: "15px",
-              color: "#5E5873",
-            }}
-          >
-            <div>{moment().format("MMMM YYYY")}</div>
-            <div
+                </a>
+              </Link>
+            </Card>
+            <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+              <Line data={data} options={options} />
+            </Card>
+            <Card
               style={{
-                fontSize: "24px",
-                fontWeight: "700",
-                color: "#41867a",
+                borderRadius: "6px",
+                marginTop: "20px",
+                padding: "15px",
+                color: "#5E5873",
               }}
             >
-              800.000 IDR
-            </div>
-          </Card>
-          <Card
-            style={{
-              borderRadius: "6px",
-              marginTop: "20px",
-              padding: "15px",
-              color: "#5E5873",
-            }}
-          >
-            <div style={{ fontWeight: "700" }}>KPI Incentive Monthly</div>
-            <TabelLastDataIncentive />
-          </Card>
-          <div style={{ marginBottom: "120px" }} />
+              <div>
+                <div>
+                  <span
+                    style={{ marginRight: "5px" }}
+                    onClick={() => {
+                      if (
+                        moment(now).format("MMMM YYYY") !==
+                        moment().subtract(1, "years").format("MMMM YYYY")
+                      ) {
+                        setNow(moment(now).subtract(1, "months"));
+                      }
+                    }}
+                  >
+                    {moment(now).format("MMMM YYYY") !==
+                    moment().subtract(1, "years").format("MMMM YYYY") ? (
+                      <img src={"/cev_left.svg"} />
+                    ) : (
+                      <img
+                        style={{ height: "20px" }}
+                        src={"/chev_left_gray.svg"}
+                      />
+                    )}
+                  </span>
+                  <span>{moment(now).format("MMMM YYYY")}</span>
+                  <span
+                    style={{ marginLeft: "5px" }}
+                    onClick={() => {
+                      if (
+                        moment().format("MMMM YYYY") !==
+                        moment(now).format("MMMM YYYY")
+                      ) {
+                        setNow(moment(now).add(1, "months"));
+                      }
+                    }}
+                  >
+                    {moment().format("MMMM YYYY") !==
+                    moment(now).format("MMMM YYYY") ? (
+                      <img src={"/next.svg"} />
+                    ) : (
+                      <img
+                        style={{ height: "20px" }}
+                        src={"/chev_right_gray.svg"}
+                      />
+                    )}
+                  </span>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "700",
+                  color: "#41867a",
+                }}
+              >
+                800.000 IDR
+              </div>
+            </Card>
+            <Card
+              style={{
+                borderRadius: "6px",
+                marginTop: "20px",
+                padding: "15px",
+                color: "#5E5873",
+              }}
+            >
+              <div style={{ fontWeight: "700" }}>
+                KPI Incentive Monthly ( {moment(now).format("MMMM YYYY")} )
+              </div>
+              <TabelLastDataIncentive data={dataKpi} />
+            </Card>
+            <div style={{ marginBottom: "120px" }} />
+          </div>
         </div>
-      </div>
-      <BotNav />
-    </>
-  );
+        <BotNav />
+      </>
+    );
+  }
 }

@@ -1253,6 +1253,28 @@ const getWorkDay = () => {
     });
 };
 
+const getKpiInventiveMonthlySMR = (userData, date) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/KpiIncentiveMonthly/GetIncentiveCalculator/2021-07-01/SMR?usernameSMR=bakri%40gmail.com`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
@@ -1323,4 +1345,5 @@ export {
   getNoo,
   getBenefitCodeCabang,
   getWorkDay,
+  getKpiInventiveMonthlySMR,
 };

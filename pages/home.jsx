@@ -508,20 +508,24 @@ export default function Home() {
                     /{plan.length + planHistory.length}
                   </span>
                 </div>
-                <button
-                  style={{
-                    marginTop: "7px",
-                    backgroundColor: "#FEB800",
-                    padding: "10px 22px",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Add New Plan +
-                </button>
+                <Link href="/master-work-visit">
+                  <a>
+                    <button
+                      style={{
+                        marginTop: "7px",
+                        backgroundColor: "#FEB800",
+                        padding: "10px 22px",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      Add New Plan +
+                    </button>
+                  </a>
+                </Link>
               </div>
               <div>
                 <div className={styles.pie_percentage}>

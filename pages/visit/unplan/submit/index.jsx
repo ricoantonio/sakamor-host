@@ -198,22 +198,24 @@ export default function index() {
           console.log("ini res", res);
           const bodyPosm = state.visitUnplanReducer.visibility.map(
             (val, index) => {
-              return {
-                activityVisitUnPlanId: res.avp.id,
-                nomor: index,
-                tipe: val.type.program,
-                namaFile: val.file.name,
-                createdBy: userData.username,
-                updatedBy: userData.username,
-                brandId: val.brand.id,
-                namaBrand: val.brand.namaBrand,
-              };
+              if (val.type && val.file && val.brand) {
+                return {
+                  activityVisitUnPlanId: res.avp.id,
+                  nomor: index,
+                  tipe: val.type.program,
+                  namaFile: val.file.name,
+                  createdBy: userData.username,
+                  updatedBy: userData.username,
+                  brandId: val.brand.id,
+                  namaBrand: val.brand.namaBrand,
+                };
+              }
             }
           );
           for (let i = 0; i < files.length; i++) {
             submitVisitUnplanDposm(bodyPosm[i], files[i])
               .then((res) => {
-                if (i === 7) {
+                if (i === 5) {
                   setLoadingSubmit(false);
                   Router.push("/");
                   actions.setDefaultVisitUnplan();
