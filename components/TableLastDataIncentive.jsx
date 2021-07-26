@@ -3,6 +3,16 @@ import Link from "next/link";
 import styles from "../styles/components/TableLastDataIncentive.module.css";
 
 const TabelLastDataIncentive = ({ data }) => {
+  const total = () => {
+    var totalIncentive = 0;
+    data.map((val) => {
+      var splitGroup = val.grup.split(".");
+      if (splitGroup[1] == 0) {
+        totalIncentive += val.insentif;
+      }
+    });
+    return totalIncentive;
+  };
   const renderData = () => {
     // console.log(data);
     var sort = data.sort((a, b) =>
@@ -11,7 +21,6 @@ const TabelLastDataIncentive = ({ data }) => {
 
     return sort.map((val) => {
       var splitGroup = val.grup.split(".");
-      console.log(splitGroup);
       if (splitGroup[1] == 0) {
         return (
           <tr
@@ -99,7 +108,7 @@ const TabelLastDataIncentive = ({ data }) => {
             <td colSpan="7">Total Perhitungan</td>
             <td></td>
             <td></td>
-            <td></td>
+            <td>{total().toLocaleString("id-ID")}</td>
           </tr>
         </tbody>
       </table>

@@ -179,36 +179,50 @@ export default function Home() {
             setFocus("PLAN");
             getSalesTargetSMR(userData, month, year)
               .then((data) => {
-                setSalesTarget(data);
+                if (data) {
+                  setSalesTarget(data);
+                  console.log(data);
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
             getSalesTarget75SMR(userData, month, year)
               .then((data) => {
-                setSalesTarget75(data);
+                if (data) {
+                  setSalesTarget75(data);
+                  console.log(data);
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
             getProduktifitas(userData, month, year)
               .then((data) => {
-                setProduktifitas(data);
+                if (data) {
+                  setProduktifitas(data);
+                  console.log(data);
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
             getFrontliner(userData, month, year)
               .then((data) => {
-                setFrontliner(data);
+                if (data) {
+                  setFrontliner(data);
+                  console.log(data);
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
             getNoo(userData, month, year)
               .then((data) => {
-                setNOO(data);
-                console.log(data);
+                if (data) {
+                  setNOO(data);
+                  console.log(data);
+                }
               })
               .catch((err) => {
                 console.log(err);

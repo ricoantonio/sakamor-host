@@ -2,7 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../../styles/pages/Reward.module.css";
 import Link from "next/link";
 import { Stores } from "../../store";
-import { getAllAnnouncement, getKpiInventiveMonthlySMR } from "../../helper";
+import {
+  getAllAnnouncement,
+  getIncentiveYearly,
+  getKpiInventiveMonthlySMR,
+} from "../../helper";
 import moment from "moment";
 import BotNav from "../../components/BotNav";
 import Nav from "../../components/Nav";
@@ -16,6 +20,7 @@ export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
   const [dataKpi, setDataKpi] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [dataGraph, setDataGraph] = useState([]);
   const [now, setNow] = useState(new Date());
 
   const data = {
@@ -36,7 +41,7 @@ export default function Announcement() {
     datasets: [
       {
         label: "Last Data Insentive",
-        data: [12, 19, 3, 5, 2, 3],
+        data: dataGraph,
         fill: false,
         backgroundColor: "rgb(65, 134, 122)",
         borderColor: "rgba(65, 134, 122, 0.2)",
@@ -49,7 +54,10 @@ export default function Announcement() {
       yAxes: [
         {
           ticks: {
-            beginAtZero: true,
+            // beginAtZero: true,
+            callback: function (label, index, labels) {
+              return Math.round((label / 100000) * 10) / 100 + " k";
+            },
           },
         },
       ],
@@ -61,14 +69,38 @@ export default function Announcement() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     getKpiInventiveMonthlySMR(userData)
-      .then((data) => {
-        setDataKpi(data);
-        setLoading(false);
+      .then((dataKpi) => {
+        setDataKpi(dataKpi);
+        getIncentiveYearly(userData)
+          .then((data) => {
+            data.sort(function (a, b) {
+              return a.bulan - b.bulan;
+            });
+            var yearlyIncentive = data.map((val) => {
+              return val.totalInsentif;
+            });
+            setDataGraph(yearlyIncentive);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   }, [dispatch]);
+
+  const total = () => {
+    var totalIncentive = 0;
+    dataKpi.map((val) => {
+      var splitGroup = val.grup.split(".");
+      if (splitGroup[1] == 0) {
+        totalIncentive += val.insentif;
+      }
+    });
+    return totalIncentive;
+  };
 
   if (loading) {
     return <Spinner />;
@@ -177,7 +209,7 @@ export default function Announcement() {
                   color: "#41867a",
                 }}
               >
-                800.000 IDR
+                {total().toLocaleString("id-ID")} IDR
               </div>
             </Card>
             <Card

@@ -1,3 +1,4 @@
+import moment from "moment";
 import {
   TOKEN,
   API_URL,
@@ -1274,6 +1275,29 @@ const getKpiInventiveMonthlySMR = (userData, date) => {
       console.log(err);
     });
 };
+const getIncentiveYearly = (userData) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/KpiIncentiveMonthly/GetRekapInsentifBulanan/${moment(now).format(
+        "YYYY"
+      )}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 // BENEFIT ==============================================================================================================================================
 
@@ -1346,4 +1370,5 @@ export {
   getBenefitCodeCabang,
   getWorkDay,
   getKpiInventiveMonthlySMR,
+  getIncentiveYearly,
 };
