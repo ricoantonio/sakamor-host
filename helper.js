@@ -1256,9 +1256,14 @@ const getWorkDay = () => {
 
 const getKpiInventiveMonthlySMR = (userData, date) => {
   return fetch(
+    // API_URL +
+    //   API_INCENTIVE +
+    //   `/KpiIncentiveMonthly/GetIncentiveCalculator/2021-07-01/SMR?usernameSMR=${userData.username}`,
     API_URL +
       API_INCENTIVE +
-      `/KpiIncentiveMonthly/GetIncentiveCalculator/2021-07-01/SMR?usernameSMR=bakri%40gmail.com`,
+      `/KpiIncentiveMonthly/GetIncentiveCalculator/${moment(date).format(
+        "YYYY-MM"
+      )}-01/SMR?usernameSMR=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,

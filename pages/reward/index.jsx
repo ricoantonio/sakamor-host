@@ -68,7 +68,7 @@ export default function Announcement() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    getKpiInventiveMonthlySMR(userData)
+    getKpiInventiveMonthlySMR(userData, now)
       .then((dataKpi) => {
         setDataKpi(dataKpi);
         getIncentiveYearly(userData)
@@ -89,7 +89,7 @@ export default function Announcement() {
       .catch((err) => {
         console.log(err);
       });
-  }, [dispatch]);
+  }, [dispatch, now]);
 
   const total = () => {
     var totalIncentive = 0;
@@ -209,7 +209,11 @@ export default function Announcement() {
                   color: "#41867a",
                 }}
               >
-                {total().toLocaleString("id-ID")} IDR
+                {dataKpi ? (
+                  `${total().toLocaleString("id-ID")} IDR`
+                ) : (
+                  <div>No data</div>
+                )}
               </div>
             </Card>
             <Card
@@ -223,7 +227,11 @@ export default function Announcement() {
               <div style={{ fontWeight: "700" }}>
                 KPI Incentive Monthly ( {moment(now).format("MMMM YYYY")} )
               </div>
-              <TabelLastDataIncentive data={dataKpi} />
+              {dataKpi ? (
+                <TabelLastDataIncentive data={dataKpi} />
+              ) : (
+                <div>No Data</div>
+              )}
             </Card>
             <div style={{ marginBottom: "120px" }} />
           </div>

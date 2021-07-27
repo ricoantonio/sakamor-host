@@ -856,61 +856,71 @@ export default function Home() {
         </>
       );
     };
-    if (
-      salesTarget.length !== 0 &&
-      salesTarget75.length !== 0 &&
-      NOO.length !== 0 &&
-      produktifitas.length !== 0 &&
-      frontliner.length !== 0 &&
-      !loading &&
-      !loadingMenu
-    ) {
+    if (!loading && !loadingMenu) {
       return (
         <Card style={{ marginTop: "22px", borderRadius: "6px" }} shadow>
           <div className={styles.plan_container}>
-            {renderSales("Sales", salesTarget)}
-            {renderSales("Sales 75%", salesTarget75)}
-            {renderSales("Sales NOO", NOO)}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-              <div className={styles.progress_title}>Frontliner</div>
-              <div className={styles.progress_number}>
-                {frontliner.ach}
-                <span style={{ fontSize: "12px", fontWeight: "400" }}>
-                  {" / "}
-                  {frontliner.target}
-                </span>
-              </div>
-            </div>
-            <div style={{ margin: "13px 0 0 0" }}>
-              <div className={styles.progress_bar}></div>
-              <div
-                className={styles.progress_bar_now}
-                style={{
-                  width: `${(frontliner.ach / frontliner.target) * 100}%`,
-                }}
-              ></div>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-              <div className={styles.progress_title}>Produktifitas</div>
-              <div className={styles.progress_number}>
-                {produktifitas.achievement}
-                <span style={{ fontSize: "12px", fontWeight: "400" }}>
-                  {" / "}
-                  {produktifitas.target}
-                </span>
-              </div>
-            </div>
-            <div style={{ margin: "13px 0 0 0" }}>
-              <div className={styles.progress_bar}></div>
-              <div
-                className={styles.progress_bar_now}
-                style={{
-                  width: `${
-                    (produktifitas.achievement / produktifitas.target) * 100
-                  }%`,
-                }}
-              ></div>
-            </div>
+            {salesTarget.length !== 0 ? renderSales("Sales", salesTarget) : ""}
+            {salesTarget75.length !== 0
+              ? renderSales("Sales 75%", salesTarget75)
+              : ""}
+            {NOO.length !== 0 ? renderSales("Sales NOO", NOO) : ""}
+            {frontliner.length !== 0 ? (
+              <>
+                <div
+                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+                >
+                  <div className={styles.progress_title}>Frontliner</div>
+                  <div className={styles.progress_number}>
+                    {frontliner.ach}
+                    <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                      {" / "}
+                      {frontliner.target}
+                    </span>
+                  </div>
+                </div>
+                <div style={{ margin: "13px 0 0 0" }}>
+                  <div className={styles.progress_bar}></div>
+                  <div
+                    className={styles.progress_bar_now}
+                    style={{
+                      width: `${(frontliner.ach / frontliner.target) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+            {produktifitas.length !== 0 ? (
+              <>
+                <div
+                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+                >
+                  <div className={styles.progress_title}>Produktifitas</div>
+                  <div className={styles.progress_number}>
+                    {produktifitas.achievement}
+                    <span style={{ fontSize: "12px", fontWeight: "400" }}>
+                      {" / "}
+                      {produktifitas.target}
+                    </span>
+                  </div>
+                </div>
+                <div style={{ margin: "13px 0 0 0" }}>
+                  <div className={styles.progress_bar}></div>
+                  <div
+                    className={styles.progress_bar_now}
+                    style={{
+                      width: `${
+                        (produktifitas.achievement / produktifitas.target) * 100
+                      }%`,
+                    }}
+                  ></div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </Card>
       );
@@ -918,16 +928,7 @@ export default function Home() {
   };
 
   const renderPage = () => {
-    if (
-      loading &&
-      loadingMenu &&
-      salesTarget.length == 0 &&
-      salesTarget75.length == 0 &&
-      NOO.length == 0 &&
-      produktifitas.length == 0 &&
-      frontliner.length == 0 &&
-      workDay.length == 0
-    ) {
+    if (loading && loadingMenu) {
       return <Spinner />;
     } else {
       return (
