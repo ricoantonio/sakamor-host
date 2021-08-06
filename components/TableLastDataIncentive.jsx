@@ -93,7 +93,7 @@ const TabelLastDataIncentive = ({ data }) => {
               Gradasi
             </td>
             <td width="20%" style={{ fontSize: "8px" }}>
-              Intensif
+              Incentive
             </td>
           </tr>
         </thead>

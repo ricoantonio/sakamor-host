@@ -46,31 +46,11 @@ export default function Unplan() {
   //   return () => geo.clearWatch(watcher);
   // }, []);
 
-  const onSearchJenisChannel = (search) => {
-    setRenderListJenisChannel(true);
-    setSearchJenisChannel(search);
-    if (search) {
-      getSearchJenisChannel(search)
-        .then((data) => {
-          setListJenisChannel(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setListJenisChannel([]);
-    }
-  };
-  const onSearchOutlet = (search) => {
-    setRenderListOutlet(true);
-    setSearchOutlet(search);
-  };
-
   useEffect(() => {
     // fetch on stop typing
     const timeoutId = setTimeout(() => {
-      if (searchOutlet) {
-        getSearchOutlet(searchOutlet)
+      if (focusJenisChannel.jenisChannelID) {
+        getSearchOutlet(focusJenisChannel.jenisChannelID, searchOutlet)
           .then((data) => {
             setListOutlet(data);
           })
@@ -84,6 +64,20 @@ export default function Unplan() {
     return () => clearTimeout(timeoutId);
   }, [searchOutlet]);
 
+  useEffect(() => {
+    // fetch on stop typing
+    const timeoutId = setTimeout(() => {
+      getSearchJenisChannel(searchJenisChannel)
+        .then((data) => {
+          setListJenisChannel(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [searchJenisChannel]);
+
   const renderSearchJenisChannel = () => {
     const render = listJenisChannel.map((val, index) => {
       return (
@@ -92,6 +86,8 @@ export default function Unplan() {
             setFocusJenisChannel(val);
             setSearchJenisChannel(val.namaJenisChannel);
             setListJenisChannel([]);
+            setSearchOutlet("");
+            setFocusOutlet({});
           }}
           key={index}
           style={{
@@ -105,6 +101,7 @@ export default function Unplan() {
     });
     return render;
   };
+
   const renderSearchOutlet = () => {
     const render = listOutlet.map((val, index) => {
       return (
@@ -125,6 +122,16 @@ export default function Unplan() {
       );
     });
     return render;
+  };
+
+  const onSearchJenisChannel = (search) => {
+    setRenderListJenisChannel(true);
+    setSearchJenisChannel(search);
+  };
+
+  const onSearchOutlet = (search) => {
+    setRenderListOutlet(true);
+    setSearchOutlet(search);
   };
 
   const onSubmitUnplan = () => {
@@ -152,6 +159,9 @@ export default function Unplan() {
               <input
                 onChange={(e) => {
                   onSearchJenisChannel(e.target.value);
+                  setFocusJenisChannel({});
+                  setSearchOutlet("");
+                  setFocusOutlet({});
                 }}
                 value={searchJenisChannel}
                 placeholder="Search"
@@ -180,6 +190,7 @@ export default function Unplan() {
               ) : null}
               <div className={styles.subtitle}>Outlet</div>
               <input
+                disabled={focusJenisChannel.namaJenisChannel ? false : true}
                 onChange={(e) => {
                   onSearchOutlet(e.target.value);
                 }}

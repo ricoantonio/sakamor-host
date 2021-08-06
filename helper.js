@@ -33,6 +33,11 @@ function compare(a, b) {
 // USER =============================================================================================================================
 
 const getMenu = (userData) => {
+  if (process.env.NODE_ENV === "development") {
+    console.log("dev");
+  } else {
+    console.log("production");
+  }
   return fetch(
     API_URL + API_USER + `/User/GetMenu?username=${userData.email}`,
     {
@@ -196,9 +201,11 @@ const getSearchJenisChannel = (search) => {
     });
 };
 
-const getSearchOutlet = (search) => {
+const getSearchOutlet = (jenisChannelId, search) => {
   return fetch(
-    API_URL + API_MASTER + `/MasterDataLokal/GetOutletBy?teks=${search}`,
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetOutletBy/${jenisChannelId}?teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -545,6 +552,33 @@ const getPlanMonthlyHistory = (userData) => {
     API_URL +
       API_VISIT_PLAN +
       `/ActivityVisitPlan/GetHistoryActivityVisitPlanBy?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getMasterVisitPlan = (userData) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/MasterVisitPlan/GetMasterVisitPlanByUsername?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1376,4 +1410,5 @@ export {
   getWorkDay,
   getKpiInventiveMonthlySMR,
   getIncentiveYearly,
+  getMasterVisitPlan,
 };

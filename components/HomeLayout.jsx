@@ -2,6 +2,7 @@ import React from "react";
 
 import Home from "../pages/home";
 import Calendar from "../pages/calendar";
+import Reward from "../pages/reward";
 import BotNav from "./BotNav";
 import { useRouter } from "next/router";
 
@@ -13,6 +14,8 @@ const HomeLayout = () => {
         <Home />
       ) : router.pathname === "/calendar" ? (
         <Calendar />
+      ) : router.pathname === "/reward" ? (
+        <Reward />
       ) : null}
       <BotNav />
     </>

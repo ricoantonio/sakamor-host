@@ -15,12 +15,14 @@ import { Line } from "react-chartjs-2";
 
 import Spinner from "../../components/Spinner";
 import TabelLastDataIncentive from "../../components/TableLastDataIncentive";
+import Modal from "../../components/Modal";
 
-export default function Announcement() {
+export default function Reward() {
   const { state, dispatch, actions } = useContext(Stores);
   const [dataKpi, setDataKpi] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dataGraph, setDataGraph] = useState([]);
+  const [loadingModal, setLoadingModal] = useState(false);
   const [now, setNow] = useState(new Date());
 
   const data = {
@@ -40,7 +42,7 @@ export default function Announcement() {
     ],
     datasets: [
       {
-        label: "Last Data Insentive",
+        label: "Last Data Incentive",
         data: dataGraph,
         fill: false,
         backgroundColor: "rgb(65, 134, 122)",
@@ -68,6 +70,7 @@ export default function Announcement() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    setLoadingModal(true);
     getKpiInventiveMonthlySMR(userData, now)
       .then((dataKpi) => {
         setDataKpi(dataKpi);
@@ -81,6 +84,7 @@ export default function Announcement() {
             });
             setDataGraph(yearlyIncentive);
             setLoading(false);
+            setLoadingModal(false);
           })
           .catch((err) => {
             console.log(err);
@@ -107,6 +111,11 @@ export default function Announcement() {
   } else {
     return (
       <>
+        {loadingModal ? (
+          <Modal>
+            <Spinner />
+          </Modal>
+        ) : null}
         <div className={styles.wrapper}>
           <Nav title={"Reward"} color={"white"} noBack />
           <div className={styles.main}>

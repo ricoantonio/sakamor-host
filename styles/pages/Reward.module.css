@@ -6,7 +6,6 @@
   width: 400px;
   margin: 80px auto;
 }
-
 .reward_grid {
   display: grid;
   grid-template-columns: 12% 60% 28%;

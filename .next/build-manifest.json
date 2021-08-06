@@ -29,10 +29,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/reward": [
+    "/master-plan-visit": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/reward.js"
+      "static/chunks/pages/master-plan-visit.js"
     ]
   },
   "ampFirstPages": []

@@ -92,31 +92,31 @@ export default function Home() {
     maintainAspectRatio: true,
   };
 
-  useEffect(() => {
-    if (isMounted.current) {
-      setToken();
-      async function setToken() {
-        try {
-          const token = await firebaseCloudMessaging.init();
-          if (token) {
-            getMessage();
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      function getMessage() {
-        const messaging = firebase.messaging();
-        console.log({ messaging });
-        messaging.onMessage((message) => {
-          setNotif(true);
-        });
-      }
-    }
-    return () => {
-      isMounted.current = false;
-    };
-  }, [isMounted]);
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     setToken();
+  //     async function setToken() {
+  //       try {
+  //         const token = await firebaseCloudMessaging.init();
+  //         if (token) {
+  //           getMessage();
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //     function getMessage() {
+  //       const messaging = firebase.messaging();
+  //       console.log({ messaging });
+  //       messaging.onMessage((message) => {
+  //         setNotif(true);
+  //       });
+  //     }
+  //   }
+  //   return () => {
+  //     isMounted.current = false;
+  //   };
+  // }, [isMounted]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -144,7 +144,7 @@ export default function Home() {
           console.log(err);
         });
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -181,7 +181,7 @@ export default function Home() {
               .then((data) => {
                 if (data) {
                   setSalesTarget(data);
-                  console.log(data);
+                  // console.log(data);
                 }
               })
               .catch((err) => {
@@ -191,7 +191,7 @@ export default function Home() {
               .then((data) => {
                 if (data) {
                   setSalesTarget75(data);
-                  console.log(data);
+                  // console.log(data);
                 }
               })
               .catch((err) => {
@@ -201,7 +201,7 @@ export default function Home() {
               .then((data) => {
                 if (data) {
                   setProduktifitas(data);
-                  console.log(data);
+                  // console.log(data);
                 }
               })
               .catch((err) => {
@@ -211,7 +211,7 @@ export default function Home() {
               .then((data) => {
                 if (data) {
                   setFrontliner(data);
-                  console.log(data);
+                  // console.log(data);
                 }
               })
               .catch((err) => {
@@ -221,7 +221,7 @@ export default function Home() {
               .then((data) => {
                 if (data) {
                   setNOO(data);
-                  console.log(data);
+                  // console.log(data);
                 }
               })
               .catch((err) => {
