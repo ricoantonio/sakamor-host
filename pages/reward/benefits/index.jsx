@@ -13,29 +13,14 @@ import Spinner from "../../../components/Spinner";
 
 export default function Announcement() {
   const { state, dispatch, actions } = useContext(Stores);
-  const [benefit, setBenefit] = useState([
-    {
-      createdBy: "manual",
-      createdDate: "2021-07-30T00:00:00",
-      deskripsi:
-        "Program Insentif tambahan untuk SMR \nlink : $$ https://drive.google.com/drive/folders/1XVxZxfO9QQKV_43eQ-TNUWAhBIOJDcyj?usp=sharing $$",
-      id: "1cbfacff-e9e4-49f0-8ff6-bf3a9e004f08",
-      isDeleted: false,
-      judul: "Insentif Reseller Promuno",
-      nomorDokumen: "0001/BNS/07/2021",
-      tanggalMulai: "2021-07-01T00:00:00",
-      tanggalSelesai: "2021-08-20T00:00:00",
-      updatedBy: "manual",
-      updatedDate: "2021-07-30T00:00:00",
-    },
-  ]);
+  const [benefit, setBenefit] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     getBenefitCodeCabang(userData)
       .then((data) => {
-        // setBenefit(data);
+        setBenefit(data);
         console.log(data);
         setLoading(false);
       })

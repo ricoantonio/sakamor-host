@@ -15,26 +15,26 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   setToken();
-  //   async function setToken() {
-  //     try {
-  //       const token = await firebaseCloudMessaging.init();
-  //       if (token) {
-  //         getMessage();
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   function getMessage() {
-  //     const messaging = firebase.messaging();
-  //     console.log({ messaging });
-  //     messaging.onMessage((message) => {
-  //       // localStorage.setItem("notif", true);
-  //     });
-  //   }
-  // });
+  useEffect(() => {
+    setToken();
+    async function setToken() {
+      try {
+        const token = await firebaseCloudMessaging.init();
+        if (token) {
+          getMessage();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    function getMessage() {
+      const messaging = firebase.messaging();
+      console.log({ messaging });
+      messaging.onMessage((message) => {
+        // localStorage.setItem("notif", true);
+      });
+    }
+  });
   return (
     <Store>
       <Component {...pageProps} />

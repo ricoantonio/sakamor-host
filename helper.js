@@ -180,6 +180,27 @@ const getProductAvgSales = (productCode, outletCode) => {
       console.log(err);
     });
 };
+const getHnaAvg = (productCode, outletCode) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetHnaAndAvgSalesBy/${productCode}/${outletCode}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const getSearchJenisChannel = (search) => {
   return fetch(
@@ -594,6 +615,50 @@ const getMasterVisitPlan = (userData) => {
           dateB = new Date(b.tanggal);
         return dateB - dateA;
       });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const deleteMasterPlanSMR = (id) => {
+  return fetch(
+    API_URL + API_VISIT_PLAN + `/MasterVisitPlan/DeleteMasterVisitPlan/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const saveMasterPlanVisit = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL + API_VISIT_PLAN + "/MasterVisitPlan/SaveActivityVisitPlan",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("baikan saveall", data);
       return data;
     })
     .catch((err) => {
@@ -1290,9 +1355,6 @@ const getWorkDay = () => {
 
 const getKpiInventiveMonthlySMR = (userData, date) => {
   return fetch(
-    // API_URL +
-    //   API_INCENTIVE +
-    //   `/KpiIncentiveMonthly/GetIncentiveCalculator/2021-07-01/SMR?usernameSMR=${userData.username}`,
     API_URL +
       API_INCENTIVE +
       `/KpiIncentiveMonthly/GetIncentiveCalculator/${moment(date).format(
@@ -1314,6 +1376,7 @@ const getKpiInventiveMonthlySMR = (userData, date) => {
       console.log(err);
     });
 };
+
 const getIncentiveYearly = (userData) => {
   return fetch(
     API_URL +
@@ -1358,9 +1421,11 @@ const getBenefitCodeCabang = (userData) => {
 };
 
 export {
+  // USER
   getMenu,
   getAuth,
   onLogin,
+  // MASTER
   getProductSearch,
   getSearchJenisChannel,
   getProductAvgSales,
@@ -1368,6 +1433,8 @@ export {
   getBrand,
   getProductByJenisChannel,
   getKontenWorkVisit,
+  getHnaAvg,
+  // VISIT PLAN
   getPlanList,
   getPlanId,
   getPosm,
@@ -1378,6 +1445,10 @@ export {
   getInvoiceData,
   getPlanMonthlyHistory,
   viewFile,
+  getMasterVisitPlan,
+  deleteMasterPlanSMR,
+  saveMasterPlanVisit,
+  // VISIT UNPLAN
   submitVisitUnplan,
   submitVisitUnplanDposm,
   getInvoiceDataUnplan,
@@ -1385,30 +1456,35 @@ export {
   getUnplanMonthlyHistory,
   viewFileUnplan,
   getUnplanNearMe,
+  // SPREADING
   submitVisitSpreading,
   submitVisitSpreadingDposm,
   getInvoiceDataSpreading,
   getInvoiceDataPosmSpreading,
   viewFileSpreading,
   getSpreadingMonthlyHistory,
+  // WORK VISIT
   getAllWorkVisit,
   getWorkVisitMonthlyHistory,
   getWorkVisitRating,
   submitWorkVisit,
+  // Calendar
   getDayProgram,
   getDayPromo,
   getMonthProgram,
   getMonthPromo,
+  // Announcement
   getAllAnnouncement,
   updateReadAnnouncement,
+  // INCENTIVE
   getSalesTargetSMR,
   getSalesTarget75SMR,
   getProduktifitas,
   getFrontliner,
   getNoo,
-  getBenefitCodeCabang,
   getWorkDay,
   getKpiInventiveMonthlySMR,
   getIncentiveYearly,
-  getMasterVisitPlan,
+  // BENEFIT
+  getBenefitCodeCabang,
 };

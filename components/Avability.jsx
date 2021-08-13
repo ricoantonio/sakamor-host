@@ -18,6 +18,7 @@ import {
   getProductByJenisChannel,
   getProductAvgSales,
   getInvoiceDataSpreading,
+  getHnaAvg,
 } from "../helper";
 
 export default function Avability({ type }) {
@@ -98,28 +99,57 @@ export default function Avability({ type }) {
   useEffect(() => {
     if (productFocus.produkID) {
       if (type === "PLAN") {
-        setAvgSales(10);
-        setHarga(5000);
+        console.log(plan);
+        getHnaAvg(productFocus.produkID, plan.idOutlet)
+          .then((data) => {
+            console.log(data);
+            if (data.status === 404) {
+              setAvgSales(0);
+              setHarga(0);
+            } else {
+              setAvgSales(data.averageSales);
+              setHarga(data.hna);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (type === "UNPLAN") {
-        setAvgSales(10);
-        setHarga(5000);
-        console.log(
+        getHnaAvg(
           productFocus.produkID,
           state.visitUnplanReducer.outlet.outletID
-        );
-        // getProductAvgSales(
-        //   productFocus.produkID,
-        //   state.visitUnplanReducer.outlet.outletID
-        // )
-        //   .then((data) => {
-        //     console.log(data);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        )
+          .then((data) => {
+            console.log(data);
+            if (data.status === 404) {
+              setAvgSales(0);
+              setHarga(0);
+            } else {
+              setAvgSales(data.averageSales);
+              setHarga(data.hna);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (type === "SPREADING") {
-        setAvgSales(10);
-        setHarga(5000);
+        getHnaAvg(
+          productFocus.produkID,
+          state.visitSpreadingReducer.outlet.outletID
+        )
+          .then((data) => {
+            console.log(data);
+            if (data.status === 404) {
+              setAvgSales(0);
+              setHarga(0);
+            } else {
+              setAvgSales(data.averageSales);
+              setHarga(data.hna);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }, [productFocus]);
@@ -700,10 +730,12 @@ export default function Avability({ type }) {
         Router.push(`/visit/unplan/submit`);
       } else if (type === "SPREADING") {
         actions.setSpreadingAvability(avabilityList);
+        console.log(avabilityList);
         Router.push(`/visit/spreading/submit`);
       }
     }
   };
+
   const render = () => {
     if (loading) {
       return <Spinner />;

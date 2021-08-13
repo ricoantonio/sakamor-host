@@ -71,20 +71,39 @@ export default function Reward() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setLoadingModal(true);
+    console.log(userData, now);
     getKpiInventiveMonthlySMR(userData, now)
       .then((dataKpi) => {
         setDataKpi(dataKpi);
+        console.log(dataKpi);
         getIncentiveYearly(userData)
           .then((data) => {
-            data.sort(function (a, b) {
-              return a.bulan - b.bulan;
-            });
-            var yearlyIncentive = data.map((val) => {
-              return val.totalInsentif;
-            });
-            setDataGraph(yearlyIncentive);
-            setLoading(false);
-            setLoadingModal(false);
+            if (data.length) {
+              data.sort(function (a, b) {
+                return a.periode - b.periode;
+              });
+              var latestMonth = parseInt(
+                moment(data[data.length - 1].periode).format("M")
+              );
+
+              var arrIncentive = [];
+              for (let i = 0; i < latestMonth; i++) {
+                arrIncentive.push(0);
+              }
+              var yearlyIncentive = data.map((val) => {
+                return arrIncentive.splice(
+                  parseInt(moment(val.periode).format("M")) - 1,
+                  1,
+                  val.totalInsentif
+                );
+              });
+              setDataGraph(arrIncentive);
+              setLoading(false);
+              setLoadingModal(false);
+            } else {
+              setLoading(false);
+              setLoadingModal(false);
+            }
           })
           .catch((err) => {
             console.log(err);
