@@ -73,15 +73,17 @@ const Nav = ({ focus }) => {
             </div>
           </a>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/profile"}>
           <a>
             <div>
               <img
                 src={
-                  focus === "profile" ? "/profile-nav.svg" : "/profile-nav1.svg"
+                  router.pathname === "/profile"
+                    ? "/profile-nav.svg"
+                    : "/profile-nav1.svg"
                 }
               />
-              {focus === "profile" ? active : ""}
+              {router.pathname === "/profile" ? active : ""}
             </div>
           </a>
         </Link>

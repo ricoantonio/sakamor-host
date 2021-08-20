@@ -101,6 +101,28 @@ const onLogin = (values) => {
     });
 };
 
+const postChangePass = (data) => {
+  // console.log(data);
+  return fetch(API_URL + API_USER + "/User/ChangePassword", {
+    method: "PUT",
+    headers: {
+      apiKey: TOKEN,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // MASTER ============================================================================================================================
 
 const getPosm = () => {
@@ -1336,6 +1358,7 @@ const getNoo = (userData, month, year) => {
       console.log(err);
     });
 };
+
 const getWorkDay = () => {
   return fetch(API_URL + API_INCENTIVE + `/SakamorIncentive/GetWorkingDay/01`, {
     headers: {
@@ -1377,6 +1400,30 @@ const getKpiInventiveMonthlySMR = (userData, date) => {
     });
 };
 
+const getKpiInventiveMonthlyPimca = (userData, date) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/KpiIncentiveMonthly/IncentiveCalculatorPimca/14/${moment(date).format(
+        "YYYY-MM"
+      )}-01/ABM`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const getIncentiveYearly = (userData) => {
   return fetch(
     API_URL +
@@ -1384,6 +1431,72 @@ const getIncentiveYearly = (userData) => {
       `/KpiIncentiveMonthly/GetRekapInsentifBulanan/${moment(now).format(
         "YYYY"
       )}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSalesTargetPimca = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetSalesTargetPimcaByCabang/14/${year}/${month}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSalesTarget75Pimca = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetSalesTargetPimca75ByCabang/14/${year}/${month}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getFrontlinerPimca = (userData, month, year) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/Frontliner/GetFrontlinerPimca/14/${month}/${year}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1425,6 +1538,7 @@ export {
   getMenu,
   getAuth,
   onLogin,
+  postChangePass,
   // MASTER
   getProductSearch,
   getSearchJenisChannel,
@@ -1484,7 +1598,11 @@ export {
   getNoo,
   getWorkDay,
   getKpiInventiveMonthlySMR,
+  getKpiInventiveMonthlyPimca,
   getIncentiveYearly,
+  getSalesTargetPimca,
+  getSalesTarget75Pimca,
+  getFrontlinerPimca,
   // BENEFIT
   getBenefitCodeCabang,
 };

@@ -1,0 +1,151 @@
+.container {
+  background-color: #f0f0f0;
+}
+.wrapper {
+  margin: 0 auto;
+  width: 400px;
+}
+.main {
+  padding: 80px 22px 0 22px;
+}
+
+.title_container {
+  z-index: 1;
+  position: fixed;
+  width: 400px;
+  padding-top: 80px;
+  background: #f0f0f0;
+}
+.title {
+  color: #41867a;
+  font-size: 49px;
+  font-weight: 500;
+  text-align: center;
+  margin: 25px;
+}
+.input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #e9ecf2;
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 0 10px;
+}
+.view_history {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 11px;
+  color: #41867a;
+  font-weight: 500;
+}
+.bottom_container {
+  padding: 10px 0 20px 0;
+  background-color: #f0f0f0;
+  position: fixed;
+  bottom: 0;
+  width: 356px;
+}
+.input_container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  margin-top: 16px;
+}
+
+.avability_modal_main {
+  margin: auto;
+}
+.modal_avability {
+  width: 100%;
+  height: 100%;
+  background-color: #0003;
+  position: absolute;
+  z-index: 999;
+  min-width: 400px;
+  position: fixed;
+}
+
+.avability_modal_subtitle {
+  color: #5e5873;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.add_title {
+  font-size: 28px;
+  color: #41867a;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.input_order_search {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #d8d6de;
+  padding: 0 10px 0 10px;
+  margin: 10px 0 0 0;
+  border-radius: 5px;
+}
+.avability_bot_container {
+  position: fixed;
+  bottom: 0;
+  width: 400px;
+  height: 75px;
+  margin: auto;
+  padding: 20px 22px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: #fff;
+  justify-items: center;
+}
+.avability_modal_container {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  width: 400px;
+  height: 440px;
+  margin: auto;
+  padding: 38px 22px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: #fff;
+  justify-items: center;
+}
+.filterdate_container {
+  display: grid;
+  grid-template-columns: 48% 4% 48%;
+  text-align: center;
+}
+
+.work_header_container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: 10px;
+  font-size: 14px;
+  color: white;
+  background-color: #479789;
+}
+.work_header_container :last-child {
+  text-align: right;
+}
+.work_main_container {
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #5e5873;
+  background-color: white;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    margin: 0 auto;
+    width: 540px;
+  }
+  .title_container {
+    width: 540px;
+  }
+  .bottom_container {
+    width: 496px;
+  }
+  .avability_modal_container {
+    width: 540px;
+  }
+}

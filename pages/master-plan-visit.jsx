@@ -10,7 +10,6 @@ import Button from "../components/Button";
 
 import {
   getAuth,
-  getPlanList,
   getSearchOutlet,
   getSearchJenisChannel,
   getMasterVisitPlan,
@@ -342,15 +341,18 @@ export default function Plan() {
               {moment(val.tanggal).format("DD MMMM YYYY")}
             </div>
           </div>
-          <div
-            style={{ textAlign: "end", margin: "auto 0" }}
-            onClick={() => {
-              console.log(val);
-              onDeleteVisit(val.id);
-            }}
-          >
-            <img src="/trash-2.svg" />
-          </div>
+          {moment(val.tanggal).format("DD MMMM YYYY") >=
+          moment(new Date()).format("DD MMMM YYYY") ? (
+            <div
+              style={{ textAlign: "end", margin: "auto 0" }}
+              onClick={() => {
+                console.log(val);
+                onDeleteVisit(val.id);
+              }}
+            >
+              <img src="/trash-2.svg" />
+            </div>
+          ) : null}
         </div>
       );
     });

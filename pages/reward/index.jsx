@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../../styles/pages/Reward.module.css";
 import Link from "next/link";
+import Router from "next/router";
 import { Stores } from "../../store";
 import {
   getAllAnnouncement,
+  getAuth,
   getIncentiveYearly,
+  getKpiInventiveMonthlyPimca,
   getKpiInventiveMonthlySMR,
 } from "../../helper";
 import moment from "moment";
@@ -72,46 +75,99 @@ export default function Reward() {
     const userData = JSON.parse(localStorage.getItem("user"));
     setLoadingModal(true);
     console.log(userData, now);
-    getKpiInventiveMonthlySMR(userData, now)
-      .then((dataKpi) => {
-        setDataKpi(dataKpi);
-        console.log(dataKpi);
-        getIncentiveYearly(userData)
-          .then((data) => {
-            if (data.length) {
-              data.sort(function (a, b) {
-                return a.periode - b.periode;
-              });
-              var latestMonth = parseInt(
-                moment(data[data.length - 1].periode).format("M")
-              );
+    if (userData) {
+      getAuth(userData)
+        .then((data) => {
+          if (data[0].roleCode === "PIMCAB") {
+            getKpiInventiveMonthlyPimca(userData, now)
+              .then((dataKpi) => {
+                setDataKpi(dataKpi);
+                console.log(dataKpi);
+                getIncentiveYearly(userData)
+                  .then((data) => {
+                    if (data.length) {
+                      data.sort(function (a, b) {
+                        return a.periode - b.periode;
+                      });
+                      var latestMonth = parseInt(
+                        moment(data[data.length - 1].periode).format("M")
+                      );
 
-              var arrIncentive = [];
-              for (let i = 0; i < latestMonth; i++) {
-                arrIncentive.push(0);
-              }
-              var yearlyIncentive = data.map((val) => {
-                return arrIncentive.splice(
-                  parseInt(moment(val.periode).format("M")) - 1,
-                  1,
-                  val.totalInsentif
-                );
+                      var arrIncentive = [];
+                      for (let i = 0; i < latestMonth; i++) {
+                        arrIncentive.push(0);
+                      }
+                      var yearlyIncentive = data.map((val) => {
+                        return arrIncentive.splice(
+                          parseInt(moment(val.periode).format("M")) - 1,
+                          1,
+                          val.totalInsentif
+                        );
+                      });
+                      setDataGraph(arrIncentive);
+                      setLoading(false);
+                      setLoadingModal(false);
+                    } else {
+                      setLoading(false);
+                      setLoadingModal(false);
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
               });
-              setDataGraph(arrIncentive);
-              setLoading(false);
-              setLoadingModal(false);
-            } else {
-              setLoading(false);
-              setLoadingModal(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+          } else if (data[0].roleCode === "SMR") {
+            getKpiInventiveMonthlySMR(userData, now)
+              .then((dataKpi) => {
+                setDataKpi(dataKpi);
+                console.log(dataKpi);
+                getIncentiveYearly(userData)
+                  .then((data) => {
+                    if (data.length) {
+                      data.sort(function (a, b) {
+                        return a.periode - b.periode;
+                      });
+                      var latestMonth = parseInt(
+                        moment(data[data.length - 1].periode).format("M")
+                      );
+
+                      var arrIncentive = [];
+                      for (let i = 0; i < latestMonth; i++) {
+                        arrIncentive.push(0);
+                      }
+                      var yearlyIncentive = data.map((val) => {
+                        return arrIncentive.splice(
+                          parseInt(moment(val.periode).format("M")) - 1,
+                          1,
+                          val.totalInsentif
+                        );
+                      });
+                      setDataGraph(arrIncentive);
+                      setLoading(false);
+                      setLoadingModal(false);
+                    } else {
+                      setLoading(false);
+                      setLoadingModal(false);
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/login");
+    }
   }, [dispatch, now]);
 
   const total = () => {
@@ -126,7 +182,12 @@ export default function Reward() {
   };
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <>
+        <Spinner />;
+        <BotNav />
+      </>
+    );
   } else {
     return (
       <>

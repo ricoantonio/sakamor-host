@@ -19,3 +19,23 @@
   font-weight: 500;
   border: #41867a 2px solid;
 }
+.container_orange {
+  width: 100%;
+  height: 38px;
+  background-color: #feb800;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.container_red {
+  width: 100%;
+  height: 38px;
+  background-color: #ff2a00;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
