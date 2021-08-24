@@ -1,0 +1,175 @@
+variables:
+  APP_NAME: 'sakamor-web'
+  IMAGE_NAME : $APP_NAME-$CI_COMMIT_BRANCH
+  namespaceDev : 'sakamor-dev'
+  namespaceStaging : 'sakamor-staging'
+  namespaceProd : 'sakamor-prod'
+  APP_NAME_STAGING: 'sakamor-web-staging'
+  APP_NAME_PROD: 'sakamor-web-prod'
+
+stages:
+  - passMerge
+  - createImages
+  - deployToOCP
+  - upload
+
+Dev-Build:
+  stage: createImages
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - sed -i -e "s/{ARTIFACTORY_URL}/${ARTIFACTORY_URL}/g" Dockerfile
+    - docker build -t localhost/$APP_NAME:$appVersion .
+    - docker login -u $ARTIFACTORY_LOGIN -p $ARTIFACTORY_PASSWORD $ARTIFACTORY_URL
+    - echo $ARTIFACTORY_URL
+    - echo $IMAGE_NAME
+    - docker tag localhost/$APP_NAME:$appVersion $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker push $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi  localhost/$APP_NAME:$appVersion
+    - docker rmi -f $(docker images -f "dangling=true" -q) --force
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /deployaplikasidev/
+  except:
+    variables:
+      - $CI_COMMIT_BRANCH =~ /staging/
+      - $CI_COMMIT_BRANCH =~ /master/
+
+Dev-passMerge:
+  stage: passMerge
+  tags:
+    - kf-dc1gitrun
+  script:
+    - echo $CI_COMMIT_REF_NAME
+    - export branchName=$(echo $CI_COMMIT_REF_NAME | sed '{s/[!@#\$%/^&*()]/-/g}')
+    - echo $branchName
+    - export branchName=$(echo "$branchName" | awk '{print tolower($0)}')
+    - export deployName=$(oc get deploy  -o custom-columns=deploy:.metadata.name -n $namespaceDev | grep  $branchName)
+    - echo $deployName
+    - if [ -z "$deployName" ]; then echo "Null" ; else oc delete deployment $deployName -n $namespaceDev && oc delete service $deployName -n $namespaceDev && oc delete route $deployName -n $namespaceDev; fi
+  only:
+    - /[F|f]eature/
+    - /^CR\/[F|f]eature\/.*$/
+    - /[I|i]ncident/
+    - /^CR\/[I|i]ncident\/.*$/
+
+
+Staging-Build:
+  stage: createImages
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - sed -i -e "s/{ARTIFACTORY_URL}/${ARTIFACTORY_URL}/g" Dockerfile
+    - docker build -t localhost/$APP_NAME:$appVersion .
+    - docker login -u $ARTIFACTORY_LOGIN  -p $ARTIFACTORY_PASSWORD  $ARTIFACTORY_URL
+    - echo $ARTIFACTORY_URL
+    - docker tag localhost/$APP_NAME:$appVersion $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker push $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi  localhost/$APP_NAME:$appVersion
+    - docker rmi $(docker images -f "dangling=true" -q) --force
+  only:
+    - /[S|s]taging/
+    - /^CR\/[S|s]taging\/.*$/
+
+Production-Build:
+  stage: createImages
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - sed -i -e "s/{ARTIFACTORY_URL}/${ARTIFACTORY_URL}/g" Dockerfile
+    - docker build -t localhost/$APP_NAME:$appVersion .
+    - docker login -u $ARTIFACTORY_LOGIN  -p $ARTIFACTORY_PASSWORD  $ARTIFACTORY_URL
+    - echo $ARTIFACTORY_URL
+    - echo $IMAGE_NAME
+    - docker tag localhost/$APP_NAME:$appVersion $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker push $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi $ARTIFACTORY_URL/$APP_NAME:$appVersion
+    - docker rmi  localhost/$APP_NAME:$appVersion
+    - docker rmi  $(docker images -f  "dangling=true" -q) --force
+  only:
+    - master
+
+Dev-deploy:
+  stage: deployToOCP
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - export deploymentName=$(echo "$IMAGE_NAME" | awk '{print tolower($0)}')
+    - echo $deploymentName
+    - export deploymentName=$(echo $deploymentName | sed '{s/[!@#\$%/^&*()]/-/g}')
+    - echo $deploymentName
+    - oc login $OPENSHIFT_URL -u $OCP_LOGIN -p $OCP_PASSWORD --insecure-skip-tls-verify=true
+    - echo $IMAGE_NAME
+    - echo $APP_NAME
+    - echo $ARTIFACTORY_URL
+    - cat ocp-deployment-template.yaml | sed "s/{APP_NAME}/${deploymentName}/g" | sed "s/{ARTIFACTORY_REPO}/${ARTIFACTORY_URL}/g"  | sed "s/{IMG_NAME}/${APP_NAME}/g"| sed "s/{IMG_TAG}/${appVersion}/g"  | sed "s/{NAMESPACE}/${namespaceDev}/g" | oc apply -n "$namespaceDev" -f -
+    - oc rollout status deployment/$deploymentName -n $namespaceDev
+    - echo $CONSOLE_OPENSHIFT_URL$namespaceDev/deployments/$deploymentName
+    - oc get route $deploymentName -o custom-columns=ROUTE:.spec.host --no-headers -n $namespaceDev
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /deployaplikasidev/
+  except:
+    variables:
+      - $CI_COMMIT_BRANCH =~ /staging/
+      - $CI_COMMIT_BRANCH =~ /master/
+      
+Staging-deploy:
+  stage: deployToOCP
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - export deploymentName=$(echo "$APP_NAME_STAGING" | awk '{print tolower($0)}')
+    - echo $deploymentName
+    - oc login $OPENSHIFT_URL -u $OCP_LOGIN -p $OCP_PASSWORD --insecure-skip-tls-verify=true
+    - echo $IMAGE_NAME
+    - echo $APP_NAME
+    - echo $ARTIFACTORY_URL
+    - cat ocp-deployment-template.yaml | sed "s/{APP_NAME}/${deploymentName}/g" | sed "s/{ARTIFACTORY_REPO}/${ARTIFACTORY_URL}/g"  | sed "s/{IMG_NAME}/${APP_NAME}/g"| sed "s/{IMG_TAG}/${appVersion}/g"  | sed "s/{NAMESPACE}/${namespaceStaging}/g" | oc apply -n "$namespaceStaging" -f -
+    - oc rollout status deployment/$deploymentName -n $namespaceStaging
+    - export deployName= $(oc get deploy | grep  $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME)
+    - echo $deployName
+    - export deployName=$(echo $deployName | sed '{s/[!@#\$%/^&*()]/-/g}')
+    - echo $deployName
+    - if [ -z "$deployName" ]; then echo "Null" ; else oc delete deployment $deployName -n $namespaceDev && oc delete service $deployName -n $namespaceDev && oc delete route $deployName -n $namespaceDev; fi
+    - echo $CONSOLE_OPENSHIFT_URL$namespaceStaging/deployments/$deploymentName
+    - oc get route $deploymentName -o custom-columns=ROUTE:.spec.host --no-headers -n $namespaceStaging
+  only:
+    - /[S|s]taging/
+    - /^CR\/[S|s]taging\/.*$/
+
+Production-deploy:
+  stage: deployToOCP
+  tags:
+    - kf-dc1gitrun
+  script:
+    - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
+    - echo $appVersion
+    - export deploymentName=$(echo "$APP_NAME_PROD" | awk '{print tolower($0)}')
+    - echo $deploymentName
+    - oc login $OPENSHIFT_URL -u $OCP_LOGIN -p $OCP_PASSWORD --insecure-skip-tls-verify=true
+    - echo $IMAGE_NAME
+    - echo $APP_NAME
+    - echo $ARTIFACTORY_URL
+    - cat ocp-deployment-template.yaml | sed "s/{APP_NAME}/${deploymentName}/g" | sed "s/{ARTIFACTORY_REPO}/${ARTIFACTORY_URL}/g"  | sed "s/{IMG_NAME}/${APP_NAME}/g"| sed "s/{IMG_TAG}/${appVersion}/g"  | sed "s/{NAMESPACE}/${namespaceProd}/g" | oc apply -n "$namespaceProd" -f -
+    - oc rollout status deployment/$deploymentName -n $namespaceProd
+    - echo $CONSOLE_OPENSHIFT_URL$namespaceProd/deployments/$deploymentName
+    - oc get route $deploymentName -o custom-columns=ROUTE:.spec.host --no-headers -n $namespaceProd
+  only:
+    - master

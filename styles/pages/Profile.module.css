@@ -42,6 +42,8 @@
 
 .pp {
   width: 150px;
+  height: 150px;
+  object-fit: cover;
   padding: 8px;
   background-color: white;
   border-radius: 50%;
@@ -53,7 +55,30 @@
   margin: 20px;
 }
 
+.new_button {
+  padding: 9px;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 38px;
+  width: 38px;
+  background-color: #feb800;
+  text-align: center;
+  margin: 0;
+}
+.input_file {
+  display: none;
+}
+
+.edit_pp {
+  position: absolute;
+  padding-left: 227px;
+}
+
 @media screen and (min-width: 600px) {
+  .edit_pp {
+    position: absolute;
+    padding-left: 298px;
+  }
   .wrapper {
     margin: 0 auto;
     width: 540px;

@@ -2,6 +2,9 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
+<<<<<<< HEAD
+=======
   "/": "pages/index.js",
-  "/visit/unplan": "pages/visit/unplan.js"
+>>>>>>> f59c2d86a2125ce4c915314306a978917aee8b59
+  "/master-work-visit": "pages/master-work-visit.js"
 }

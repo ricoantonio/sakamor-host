@@ -15,6 +15,8 @@ import {
   getMasterVisitPlan,
   deleteMasterPlanSMR,
   saveMasterPlanVisit,
+  getMasterWorkVisit,
+  viewProfilePic,
 } from "../helper";
 import moment from "moment";
 import Card from "../components/Card";
@@ -22,8 +24,9 @@ import Card from "../components/Card";
 export default function Plan() {
   const { state, dispatch, actions } = useContext(Stores);
   const [search, setSearch] = useState("");
+  const [dateView, setDateView] = useState(new Date());
   const [dateInput, setDateInput] = useState(new Date());
-  const [masterPlanList, setMasterPlanList] = useState([]);
+  const [masterWorkVisitList, setMasterWorkVisitList] = useState([]);
   const [modal, setModal] = useState(false);
   const [searchJenisChannel, setSearchJenisChannel] = useState("");
   const [listJenisChannel, setListJenisChannel] = useState([]);
@@ -32,15 +35,112 @@ export default function Plan() {
   const [searchOutlet, setSearchOutlet] = useState("");
   const [listOutlet, setListOutlet] = useState([]);
   const [renderListOutlet, setRenderListOutlet] = useState(false);
-  const [focusOutlet, setFocusOutlet] = useState({});
   const [loading, setLoading] = useState(true);
 
   const getMasterWorkVisitList = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      getMasterVisitPlan(userData)
+      var date = moment(dateView).format("YYYY-MM-DD");
+      console.log(date);
+      getMasterWorkVisit(userData, date)
         .then((data) => {
-          setMasterPlanList(data);
+          var dummy = [
+            {
+              createdBy: "API",
+              createdDate: "2021-08-23T00:00:00",
+              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
+              isDeleted: false,
+              kodeCabang: "01",
+              kodeProduk: "TCROD",
+              kodeRayon: "01",
+              namaCabang: "JAKARTA",
+              namaPimcab: "Pimca",
+              namaSMR: "YANTI",
+              nomorDokumen: "0005/MPV/08/2021",
+              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
+              rayon: "MEDAN 1",
+              tanggal: "2021-08-23T00:00:00",
+              updatedBy: "API",
+              updatedDate: "2021-08-23T00:00:00",
+              usernamePimcab: "pimcab@kalbe.co.id",
+              usernameSMR: "yanti@gmail.com",
+            },
+            {
+              createdBy: "API",
+              createdDate: "2021-08-23T00:00:00",
+              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
+              isDeleted: false,
+              kodeCabang: "01",
+              kodeProduk: "TCROD",
+              kodeRayon: "01",
+              namaCabang: "JAKARTA",
+              namaPimcab: "Pimca",
+              namaSMR: "YANTI",
+              nomorDokumen: "0005/MPV/08/2021",
+              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
+              rayon: "MEDAN 1",
+              tanggal: "2021-08-24T00:00:00",
+              updatedBy: "API",
+              updatedDate: "2021-08-23T00:00:00",
+              usernamePimcab: "pimcab@kalbe.co.id",
+              usernameSMR: "yanti@gmail.com",
+            },
+            {
+              createdBy: "API",
+              createdDate: "2021-08-23T00:00:00",
+              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
+              isDeleted: false,
+              kodeCabang: "01",
+              kodeProduk: "TCROD",
+              kodeRayon: "01",
+              namaCabang: "JAKARTA",
+              namaPimcab: "Pimca",
+              namaSMR: "YANTI",
+              nomorDokumen: "0005/MPV/08/2021",
+              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
+              rayon: "MEDAN 1",
+              tanggal: "2021-08-24T00:00:00",
+              updatedBy: "API",
+              updatedDate: "2021-08-23T00:00:00",
+              usernamePimcab: "pimcab@kalbe.co.id",
+              usernameSMR: "yanti@gmail.com",
+            },
+            {
+              createdBy: "API",
+              createdDate: "2021-08-23T00:00:00",
+              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
+              isDeleted: false,
+              kodeCabang: "01",
+              kodeProduk: "TCROD",
+              kodeRayon: "01",
+              namaCabang: "JAKARTA",
+              namaPimcab: "Pimca",
+              namaSMR: "YANTI",
+              nomorDokumen: "0005/MPV/08/2021",
+              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
+              rayon: "MEDAN 1",
+              tanggal: "2021-08-24T00:00:00",
+              updatedBy: "API",
+              updatedDate: "2021-08-23T00:00:00",
+              usernamePimcab: "pimcab@kalbe.co.id",
+              usernameSMR: "yanti@gmail.com",
+            },
+          ];
+          const groups = dummy.reduce((groups, game) => {
+            const date = game.tanggal.split("T")[0];
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(game);
+            return groups;
+          }, {});
+          const groupArrays = Object.keys(groups).map((date) => {
+            return {
+              date,
+              item: groups[date],
+            };
+          });
+          setMasterWorkVisitList(groupArrays);
           console.log(data);
           setLoading(false);
         })
@@ -76,7 +176,7 @@ export default function Plan() {
 
   useEffect(() => {
     getMasterWorkVisitList();
-  }, [dispatch]);
+  }, [dispatch, dateView]);
 
   useEffect(() => {
     // fetch on stop typing
@@ -230,40 +330,7 @@ export default function Plan() {
                   {renderSearchJenisChannel()}
                 </div>
               ) : null}
-              <div className={styles.avability_modal_subtitle}>Rayon</div>
-              <input
-                onChange={(e) => {
-                  onSearchJenisChannel(e.target.value);
-                  setFocusJenisChannel({});
-                  setSearchOutlet("");
-                  setFocusOutlet({});
-                }}
-                value={searchJenisChannel}
-                placeholder="Search"
-                className={styles.input}
-                onBlur={() => {
-                  setTimeout(() => {
-                    setRenderListJenisChannel(false);
-                  }, 200);
-                }}
-                onFocus={(e) => onSearchJenisChannel(e.target.value)}
-              />
-              {renderListOutlet ? (
-                <div
-                  style={{
-                    position: "absolute",
-                    maxHeight: "180px",
-                    backgroundColor: "white",
-                    overflowY: "scroll",
-                    maxWidth: "400px",
-                    padding: "0 4px",
-                    zIndex: 999999,
-                  }}
-                >
-                  {renderSearchOutlet()}
-                </div>
-              ) : null}
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ marginTop: "80px" }}>
                 <Button
                   text={"Add"}
                   onClick={() => {
@@ -322,15 +389,28 @@ export default function Plan() {
   };
 
   const renderWorkVisitList = () => {
-    return (
-      <div>
-        <div className={styles.work_header_container}>
-          <div>{moment(dateInput).format("MMMM D, YYYY")}</div>
-          <div>{moment(dateInput).format("dddd")}</div>
+    const render = masterWorkVisitList.map((val) => {
+      return (
+        <div>
+          <div className={styles.work_header_container}>
+            <div>{moment(val.date).format("MMMM D, YYYY")}</div>
+            <div>{moment(val.date).format("dddd")}</div>
+          </div>
+          <div className={styles.work_main_container}>
+            {val.item.map((val2) => {
+              return (
+                <div>
+                  <div>{val2.namaCabang}</div>
+                  <div>{val2.namaSMR}</div>
+                  <div>{val2.produkFokus}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className={styles.work_main_container}></div>
-      </div>
-    );
+      );
+    });
+    return render;
   };
 
   const render = () => {
@@ -356,9 +436,9 @@ export default function Plan() {
                     <input
                       className={styles.input}
                       type="date"
-                      value={moment(dateInput).format("YYYY-MM-DD")}
+                      value={moment(dateView).format("YYYY-MM-DD")}
                       onChange={(e) => {
-                        setDateInput(moment(e.target.value));
+                        setDateView(moment(e.target.value));
                       }}
                       min={moment().format("YYYY-MM-DD")}
                     />
@@ -366,12 +446,9 @@ export default function Plan() {
                     <input
                       className={styles.input}
                       type="date"
-                      value={moment(dateInput)
+                      value={moment(dateView)
                         .add(7, "days")
                         .format("YYYY-MM-DD")}
-                      onChange={(e) => {
-                        setDateInput(moment(e.target.value));
-                      }}
                       disabled={true}
                     />
                   </div>
