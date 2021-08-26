@@ -374,11 +374,11 @@ const postProfilePic = (userData, file) => {
     });
 };
 
-const viewProfilePic = (userData) => {
+const viewProfilePic = (username) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/ViewProfilePicture?username=${userData.username}`,
+      `/MasterDataLokal/ViewProfilePicture?username=${username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1233,6 +1233,51 @@ const getMasterWorkVisit = (userData, date) => {
     });
 };
 
+const saveMasterWorkVisit = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL + API_WORK_VISIT + "/MasterPlanWorkVisit/SaveMasterPlanWorkVisit",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("baikan saveall", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const deleteMasterWorkVisit = (id) => {
+  return fetch(
+    API_URL +
+      API_WORK_VISIT +
+      `/MasterPlanWorkVisit/DeleteMasterPlanWorkVisit/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 // Calendar ================================================================================================================================
 
 const getDayPromo = (date) => {
@@ -1594,7 +1639,8 @@ const getSmrByCabang = (cabang, teks) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+      // `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+      `/MasterDataLokal/GetSmrOutletByCabang/14?teks=${teks}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1605,6 +1651,7 @@ const getSmrByCabang = (cabang, teks) => {
       return response.json();
     })
     .then((data) => {
+      console.log(data);
       return data;
     })
     .catch((err) => {
@@ -1684,6 +1731,8 @@ export {
   getWorkVisitRating,
   submitWorkVisit,
   getMasterWorkVisit,
+  saveMasterWorkVisit,
+  deleteMasterWorkVisit,
   // Calendar
   getDayProgram,
   getDayPromo,

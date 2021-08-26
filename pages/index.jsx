@@ -126,7 +126,7 @@ export default function Home() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      viewProfilePic(userData)
+      viewProfilePic(userData.username)
         .then((data) => {
           setPP(data);
         })

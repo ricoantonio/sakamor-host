@@ -134,6 +134,13 @@
   background-color: white;
 }
 
+.img_smr {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  object-fit: cover;
+}
 @media screen and (min-width: 600px) {
   .wrapper {
     margin: 0 auto;

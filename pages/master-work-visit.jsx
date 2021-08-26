@@ -17,6 +17,9 @@ import {
   saveMasterPlanVisit,
   getMasterWorkVisit,
   viewProfilePic,
+  getSmrByCabang,
+  saveMasterWorkVisit,
+  deleteMasterWorkVisit,
 } from "../helper";
 import moment from "moment";
 import Card from "../components/Card";
@@ -28,23 +31,21 @@ export default function Plan() {
   const [dateInput, setDateInput] = useState(new Date());
   const [masterWorkVisitList, setMasterWorkVisitList] = useState([]);
   const [modal, setModal] = useState(false);
-  const [searchJenisChannel, setSearchJenisChannel] = useState("");
-  const [listJenisChannel, setListJenisChannel] = useState([]);
-  const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
-  const [focusJenisChannel, setFocusJenisChannel] = useState({});
-  const [searchOutlet, setSearchOutlet] = useState("");
-  const [listOutlet, setListOutlet] = useState([]);
-  const [renderListOutlet, setRenderListOutlet] = useState(false);
+  const [renderListNamaSmr, setRenderListNamaSmr] = useState(false);
+  const [serachNamaSmr, setSearchNamaSmr] = useState("");
+  const [listNamaSmr, setListNamaSmr] = useState([]);
+  const [focusNamaSmr, setFocusNamaSmr] = useState({});
   const [loading, setLoading] = useState(true);
+  const [dummy, setDummy] = useState(0);
 
   const getMasterWorkVisitList = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       var date = moment(dateView).format("YYYY-MM-DD");
-      console.log(date);
+      // console.log(date);
       getMasterWorkVisit(userData, date)
         .then((data) => {
-          var dummy = [
+          var dataDummy = [
             {
               createdBy: "API",
               createdDate: "2021-08-23T00:00:00",
@@ -95,7 +96,7 @@ export default function Plan() {
               kodeRayon: "01",
               namaCabang: "JAKARTA",
               namaPimcab: "Pimca",
-              namaSMR: "YANTI",
+              namaSMR: "Pimca",
               nomorDokumen: "0005/MPV/08/2021",
               produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
               rayon: "MEDAN 1",
@@ -103,7 +104,7 @@ export default function Plan() {
               updatedBy: "API",
               updatedDate: "2021-08-23T00:00:00",
               usernamePimcab: "pimcab@kalbe.co.id",
-              usernameSMR: "yanti@gmail.com",
+              usernameSMR: "pimcab@kalbe.co.id",
             },
             {
               createdBy: "API",
@@ -126,22 +127,57 @@ export default function Plan() {
               usernameSMR: "yanti@gmail.com",
             },
           ];
-          const groups = dummy.reduce((groups, game) => {
-            const date = game.tanggal.split("T")[0];
-            if (!groups[date]) {
-              groups[date] = [];
-            }
-            groups[date].push(game);
-            return groups;
-          }, {});
-          const groupArrays = Object.keys(groups).map((date) => {
+          const getPP = (usernameSMR) => {
+            return viewProfilePic(usernameSMR)
+              .then((data) => {
+                // console.log(data);
+                return data;
+                // console.log(data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          };
+
+          const smrData = data.map((val) => {
             return {
-              date,
-              item: groups[date],
+              ...val,
+              dataPP: getPP(val.usernameSMR),
             };
           });
-          setMasterWorkVisitList(groupArrays);
-          console.log(data);
+
+          // const smrData = dataDummy.map((val) => {
+          //   return {
+          //     ...val,
+          //     dataPP: "",
+          //   };
+          // });
+
+          // for (let i = 0; i < smrData.length; i++) {
+          //   getPP(smrData[i].usernameSMR)
+          //     .then((data) => {
+          //       console.log(data);
+          //       if (data) {
+          //         smrData.splice(i, 1, {
+          //           ...smrData[i],
+          //           dataPP: data,
+          //         });
+          //         setDummy(i);
+          //       } else if (data === undefined) {
+          //         smrData.splice(i, 1, {
+          //           ...smrData[i],
+          //           dataPP: "/profile-nav1.svg",
+          //         });
+          //         setDummy(i);
+          //       }
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // }
+
+          // console.log(smrData);
+          setMasterWorkVisitList(smrData);
           setLoading(false);
         })
         .catch((err) => {
@@ -153,6 +189,7 @@ export default function Plan() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userMenu = JSON.parse(localStorage.getItem("menu"));
+    // console.log(userData);
     if (userData) {
       getAuth(userData)
         .then((data) => {
@@ -180,95 +217,83 @@ export default function Plan() {
 
   useEffect(() => {
     // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      if (focusJenisChannel.jenisChannelID) {
-        getSearchOutlet(focusJenisChannel.jenisChannelID, searchOutlet)
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData.kodeCabang) {
+      const timeoutId = setTimeout(() => {
+        getSmrByCabang(userData.kodeCabang, serachNamaSmr)
           .then((data) => {
-            setListOutlet(data);
+            setListNamaSmr(data);
+            console.log(data);
           })
           .catch((err) => {
             console.log(err);
           });
-      } else {
-        setListOutlet([]);
-      }
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchOutlet]);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [serachNamaSmr]);
 
-  useEffect(() => {
-    // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      getSearchJenisChannel(searchJenisChannel)
+  const renderSearchNamaSmr = () => {
+    const render = listNamaSmr.map((val, index) => {
+      return (
+        <div
+          onClick={() => {
+            setFocusNamaSmr(val);
+            setSearchNamaSmr(val.namaSMR);
+            setListNamaSmr([]);
+            console.log(val);
+          }}
+          key={index}
+          style={{
+            borderBottom: ".5px solid #f0f0f0",
+            width: "350px",
+          }}
+        >
+          {val.namaSMR}
+        </div>
+      );
+    });
+    return render;
+  };
+
+  const onSearchNamaSmr = (search) => {
+    setRenderListNamaSmr(true);
+    setSearchNamaSmr(search);
+  };
+
+  const postMasterWorkVisit = () => {
+    console.log(focusNamaSmr);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setLoading(true);
+    if (userData) {
+      var dataWorkVisit = {
+        nomorDokumen: "",
+        tanggal: dateInput.format("YYYY-MM-DDT00:00:00.000Z"),
+        kodeCabang: userData.kodeCabang,
+        namaCabang: focusNamaSmr.namaCabang,
+        usernamePimcab: userData.username,
+        namaPimcab: userData.name,
+        usernameSMR: focusNamaSmr.usernameSMR,
+        namaSMR: focusNamaSmr.namaSMR,
+        kodeRayon: "",
+        rayon: "",
+        kodeProduk: "string",
+        produkFokus: "string",
+        createdBy: userData.username,
+        updatedBy: userData.username,
+      };
+      console.log(dataWorkVisit);
+      saveMasterWorkVisit(dataWorkVisit)
         .then((data) => {
-          setListJenisChannel(data);
+          // console.log(data);
+          setLoading(false);
+          getMasterWorkVisitList();
+          setDateInput(new Date());
+          setModal(false);
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchJenisChannel]);
-
-  const renderSearchJenisChannel = () => {
-    const render = listJenisChannel.map((val, index) => {
-      return (
-        <div
-          onClick={() => {
-            setFocusJenisChannel(val);
-            setSearchJenisChannel(val.namaJenisChannel);
-            setListJenisChannel([]);
-            setSearchOutlet("");
-            setFocusOutlet({});
-            console.log(val);
-          }}
-          key={index}
-          style={{
-            borderBottom: ".5px solid #f0f0f0",
-            width: "350px",
-          }}
-        >
-          {val.namaJenisChannel}
-        </div>
-      );
-    });
-    return render;
+        .catch((err) => console.log(err));
+    }
   };
-
-  const renderSearchOutlet = () => {
-    const render = listOutlet.map((val, index) => {
-      return (
-        <div
-          onClick={() => {
-            setFocusOutlet(val);
-            setSearchOutlet(val.namaOutlet);
-            setListOutlet([]);
-            console.log(val);
-          }}
-          key={index}
-          style={{
-            borderBottom: ".5px solid #f0f0f0",
-            width: "350px",
-          }}
-        >
-          {val.namaOutlet}
-        </div>
-      );
-    });
-    return render;
-  };
-
-  const onSearchJenisChannel = (search) => {
-    setRenderListJenisChannel(true);
-    setSearchJenisChannel(search);
-  };
-
-  const onSearchOutlet = (search) => {
-    setRenderListOutlet(true);
-    setSearchOutlet(search);
-  };
-
-  const postMasterWorkVisit = () => {};
 
   const renderModalAdd = () => {
     if (modal) {
@@ -278,10 +303,9 @@ export default function Plan() {
             className={styles.modal_avability}
             onClick={() => {
               setModal(false);
-              setFocusJenisChannel({});
-              setFocusOutlet({});
-              setSearchJenisChannel("");
-              setSearchOutlet("");
+              setFocusNamaSmr({});
+              setSearchNamaSmr("");
+              setDateInput(new Date());
             }}
           ></div>
           <div className={styles.wrapper}>
@@ -294,28 +318,27 @@ export default function Plan() {
                 value={moment(dateInput).format("YYYY-MM-DD")}
                 onChange={(e) => {
                   setDateInput(moment(e.target.value));
+                  console.log(e.target.value);
                 }}
                 min={moment().format("YYYY-MM-DD")}
               />
               <div className={styles.avability_modal_subtitle}>Nama SMR</div>
               <input
                 onChange={(e) => {
-                  onSearchJenisChannel(e.target.value);
-                  setFocusJenisChannel({});
-                  setSearchOutlet("");
-                  setFocusOutlet({});
+                  onSearchNamaSmr(e.target.value);
+                  setFocusNamaSmr({});
                 }}
-                value={searchJenisChannel}
+                value={serachNamaSmr}
                 placeholder="Search"
                 className={styles.input}
                 onBlur={() => {
                   setTimeout(() => {
-                    setRenderListJenisChannel(false);
+                    setRenderListNamaSmr(false);
                   }, 200);
                 }}
-                onFocus={(e) => onSearchJenisChannel(e.target.value)}
+                onFocus={(e) => onSearchNamaSmr(e.target.value)}
               />
-              {renderListJenisChannel ? (
+              {renderListNamaSmr ? (
                 <div
                   style={{
                     position: "absolute",
@@ -327,7 +350,7 @@ export default function Plan() {
                     zIndex: 999999,
                   }}
                 >
-                  {renderSearchJenisChannel()}
+                  {renderSearchNamaSmr()}
                 </div>
               ) : null}
               <div style={{ marginTop: "80px" }}>
@@ -347,7 +370,7 @@ export default function Plan() {
 
   const onDeleteWrokVisit = (id) => {
     if (confirm("Visit will be deleted, are you sure?")) {
-      deleteMasterPlanSMR(id)
+      deleteMasterWorkVisit(id)
         .then(() => {
           getMasterWorkVisitList();
         })
@@ -357,39 +380,52 @@ export default function Plan() {
     }
   };
 
-  const renderMasterPlanList = () => {
-    return masterPlanList.map((val) => {
+  const renderSmrPofilePic = (usernameSMR) => {
+    if (usernameSMR) {
+      var profilePic = "";
+      viewProfilePic(usernameSMR)
+        .then((data) => {
+          profilePic = data;
+          // console.log(data);
+        })
+        .catch((err) => console.log(err));
       return (
-        <div
-          style={{
-            padding: "10px 20px",
-            fontSize: "14px",
-            display: "grid",
-            gridTemplateColumns: "80% 20%",
-          }}
-        >
-          <div>
-            <div style={{ fontWeight: "500" }}>{val.namaOutlet}</div>
-            <div style={{ fontWeight: "400", color: "#B9B9C3" }}>
-              {moment(val.tanggal).format("DD MMMM YYYY")}
-            </div>
-          </div>
-          <div
-            style={{ textAlign: "end", margin: "auto 0" }}
-            onClick={() => {
-              console.log(val);
-              onDeleteWrokVisit(val.id);
-            }}
-          >
-            <img src="/trash-2.svg" />
-          </div>
-        </div>
+        <img
+          className={styles.img_smr}
+          src={profilePic ? profilePic : "/profile-nav1.svg"}
+        />
       );
-    });
+    }
   };
 
   const renderWorkVisitList = () => {
-    const render = masterWorkVisitList.map((val) => {
+    const groups = masterWorkVisitList.reduce((groups, game) => {
+      const date = game.tanggal.split("T")[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(game);
+      return groups;
+    }, {});
+
+    const groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        item: groups[date],
+      };
+    });
+    console.log(groupArrays);
+    function compare(a, b) {
+      if (a.date < b.date) {
+        return -1;
+      }
+      if (a.date > b.date) {
+        return 1;
+      }
+      return 0;
+    }
+    groupArrays.sort(compare);
+    const render = groupArrays.map((val) => {
       return (
         <div>
           <div className={styles.work_header_container}>
@@ -398,11 +434,49 @@ export default function Plan() {
           </div>
           <div className={styles.work_main_container}>
             {val.item.map((val2) => {
+              // console.log(val2.dataPP);
               return (
-                <div>
-                  <div>{val2.namaCabang}</div>
-                  <div>{val2.namaSMR}</div>
-                  <div>{val2.produkFokus}</div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 5fr 1fr",
+                    margin: "5px 0 5px 0",
+                  }}
+                >
+                  {/* {renderSmrPofilePic(val2.usernameSMR)} */}
+                  <div style={{ textAlign: "left", margin: "auto 0" }}>
+                    <img
+                      className={styles.img_smr}
+                      // src={val2.dataPP ? val2.dataPP : "/profile-nav1.svg"}
+                      src={"/profile-nav1.svg"}
+                    />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: "600", fontSize: "14px" }}>
+                      {val2.namaSMR}
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: "300",
+                        fontSize: "12px",
+                        fontStyle: "italic",
+                      }}
+                    >
+                      {val2.produkFokus}
+                    </div>
+                  </div>
+                  {moment(val2.tanggal).format("DD MMMM YYYY") >=
+                  moment(new Date()).format("DD MMMM YYYY") ? (
+                    <div
+                      style={{ textAlign: "end", margin: "auto 0" }}
+                      onClick={() => {
+                        console.log(val2.id);
+                        onDeleteWrokVisit(val2.id);
+                      }}
+                    >
+                      <img src="/trash-2.svg" />
+                    </div>
+                  ) : null}
                 </div>
               );
             })}

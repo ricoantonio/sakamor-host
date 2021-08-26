@@ -50,7 +50,7 @@ export default function Plan() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      viewProfilePic(userData)
+      viewProfilePic(userData.username)
         .then((data) => {
           setPP(data);
         })
@@ -111,7 +111,7 @@ export default function Plan() {
       postProfilePic(userData, dataFilePP)
         .then((data) => {
           console.log(data);
-          viewProfilePic(userData)
+          viewProfilePic(userData.username)
             .then((data) => {
               setPP(data);
               setLoadingModal(false);
