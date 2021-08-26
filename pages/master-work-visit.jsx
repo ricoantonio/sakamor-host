@@ -268,7 +268,7 @@ export default function Plan() {
     if (userData) {
       var dataWorkVisit = {
         nomorDokumen: "",
-        tanggal: dateInput.format("YYYY-MM-DDT00:00:00.000Z"),
+        tanggal: moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"),
         kodeCabang: userData.kodeCabang,
         namaCabang: focusNamaSmr.namaCabang,
         usernamePimcab: userData.username,
