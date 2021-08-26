@@ -231,7 +231,7 @@ export default function Plan() {
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, [serachNamaSmr]);
+  }, [dispatch,serachNamaSmr]);
 
   const renderSearchNamaSmr = () => {
     const render = listNamaSmr.map((val, index) => {
