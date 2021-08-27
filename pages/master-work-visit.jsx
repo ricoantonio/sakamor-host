@@ -10,11 +10,11 @@ import Button from "../components/Button";
 
 import {
   getAuth,
-  getSearchOutlet,
-  getSearchJenisChannel,
-  getMasterVisitPlan,
-  deleteMasterPlanSMR,
-  saveMasterPlanVisit,
+  getMasterWorkVisit,
+  viewProfilePic,
+  getSmrByCabang,
+  saveMasterWorkVisit,
+  deleteMasterWorkVisit,
 } from "../helper";
 import moment from "moment";
 import Card from "../components/Card";
@@ -22,37 +22,23 @@ import Card from "../components/Card";
 export default function Plan() {
   const { state, dispatch, actions } = useContext(Stores);
   const [search, setSearch] = useState("");
+  const [dateView, setDateView] = useState(new Date());
   const [dateInput, setDateInput] = useState(new Date());
-  const [masterPlanList, setMasterPlanList] = useState([]);
+  const [masterWorkVisitList, setMasterWorkVisitList] = useState([]);
   const [modal, setModal] = useState(false);
-  const [searchJenisChannel, setSearchJenisChannel] = useState("");
-  const [listJenisChannel, setListJenisChannel] = useState([]);
-  const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
-  const [focusJenisChannel, setFocusJenisChannel] = useState({});
-  const [searchOutlet, setSearchOutlet] = useState("");
-  const [listOutlet, setListOutlet] = useState([]);
-  const [renderListOutlet, setRenderListOutlet] = useState(false);
-  const [focusOutlet, setFocusOutlet] = useState({});
+  const [renderListNamaSmr, setRenderListNamaSmr] = useState(false);
+  const [serachNamaSmr, setSearchNamaSmr] = useState("");
+  const [searchListSmr, setSearchListSmr] = useState("");
+  const [dataUsernameSMR, setDataUserNameSMR] = useState([]);
+  const [listNamaSmr, setListNamaSmr] = useState([]);
+  const [focusNamaSmr, setFocusNamaSmr] = useState({});
   const [loading, setLoading] = useState(true);
-
-  const getMasterWorkVisitList = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      getMasterVisitPlan(userData)
-        .then((data) => {
-          setMasterPlanList(data);
-          console.log(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+  const [dummy, setDummy] = useState(0);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userMenu = JSON.parse(localStorage.getItem("menu"));
+    // console.log(userData);
     if (userData) {
       getAuth(userData)
         .then((data) => {
@@ -76,51 +62,89 @@ export default function Plan() {
 
   useEffect(() => {
     getMasterWorkVisitList();
-  }, [dispatch]);
+  }, [dispatch, dateView]);
 
-  useEffect(() => {
-    // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      if (focusJenisChannel.jenisChannelID) {
-        getSearchOutlet(focusJenisChannel.jenisChannelID, searchOutlet)
-          .then((data) => {
-            setListOutlet(data);
-          })
-          .catch((err) => {
-            console.log(err);
+  const getMasterWorkVisitList = () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      var date = moment(dateView).format("YYYY-MM-DD");
+      // console.log(date);
+      getMasterWorkVisit(userData, date)
+        .then((data1) => {
+          const allsmrname = data1.reduce((groups, game) => {
+            const date = game.usernameSMR;
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(game);
+            return groups;
+          }, {});
+
+          const groupArraysName = Object.keys(allsmrname).map((username) => {
+            return {
+              username,
+              stringpp: "",
+            };
           });
-      } else {
-        setListOutlet([]);
-      }
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchOutlet]);
 
-  useEffect(() => {
-    // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      getSearchJenisChannel(searchJenisChannel)
-        .then((data) => {
-          setListJenisChannel(data);
+          // setDataUserNameSMR(groupArraysName);
+          console.log(data1.length);
+          if (data1.length !== 0) {
+            for (let i = 0; i < groupArraysName.length; i++) {
+              viewProfilePic(groupArraysName[i].username)
+                .then((data) => {
+                  // console.log(data);
+                  groupArraysName[i].stringpp = data;
+                  if (i == groupArraysName.length - 1) {
+                    // console.log();
+                    // console.log(groupArraysName);
+                    setMasterWorkVisitList(data1);
+                    setDataUserNameSMR(groupArraysName);
+                    setLoading(false);
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          } else {
+            setLoading(false);
+            setMasterWorkVisitList(data1);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchJenisChannel]);
+    }
+  };
 
-  const renderSearchJenisChannel = () => {
-    const render = listJenisChannel.map((val, index) => {
+  useEffect(() => {
+    // fetch on stop typing
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData.kodeCabang) {
+      const timeoutId = setTimeout(() => {
+        getSmrByCabang(userData.kodeCabang, serachNamaSmr)
+          .then((data) => {
+            setListNamaSmr(data);
+            // console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [dispatch, serachNamaSmr]);
+
+  const renderSearchNamaSmr = () => {
+    const render = listNamaSmr.map((val, index) => {
       return (
         <div
           onClick={() => {
-            setFocusJenisChannel(val);
-            setSearchJenisChannel(val.namaJenisChannel);
-            setListJenisChannel([]);
-            setSearchOutlet("");
-            setFocusOutlet({});
-            console.log(val);
+            setFocusNamaSmr(val);
+            setSearchNamaSmr(val.namaSMR);
+            setListNamaSmr([]);
+            // console.log(val);
           }}
           key={index}
           style={{
@@ -128,47 +152,54 @@ export default function Plan() {
             width: "350px",
           }}
         >
-          {val.namaJenisChannel}
+          {val.namaSMR}
         </div>
       );
     });
     return render;
   };
 
-  const renderSearchOutlet = () => {
-    const render = listOutlet.map((val, index) => {
-      return (
-        <div
-          onClick={() => {
-            setFocusOutlet(val);
-            setSearchOutlet(val.namaOutlet);
-            setListOutlet([]);
-            console.log(val);
-          }}
-          key={index}
-          style={{
-            borderBottom: ".5px solid #f0f0f0",
-            width: "350px",
-          }}
-        >
-          {val.namaOutlet}
-        </div>
-      );
-    });
-    return render;
+  const onSearchNamaSmr = (search) => {
+    setRenderListNamaSmr(true);
+    setSearchNamaSmr(search);
   };
 
-  const onSearchJenisChannel = (search) => {
-    setRenderListJenisChannel(true);
-    setSearchJenisChannel(search);
+  const postMasterWorkVisit = () => {
+    // console.log(focusNamaSmr);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setLoading(true);
+    // console.log(moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"));
+    if (userData && focusNamaSmr.namaSMR && dateInput) {
+      var dataWorkVisit = {
+        nomorDokumen: "",
+        tanggal: moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"),
+        kodeCabang: userData.kodeCabang,
+        namaCabang: focusNamaSmr.namaCabang,
+        usernamePimcab: userData.username,
+        namaPimcab: userData.name,
+        usernameSMR: focusNamaSmr.usernameSMR,
+        namaSMR: focusNamaSmr.namaSMR,
+        kodeRayon: "",
+        rayon: "",
+        kodeProduk: "string",
+        produkFokus: "string",
+        createdBy: userData.username,
+        updatedBy: userData.username,
+      };
+      console.log(dataWorkVisit);
+      saveMasterWorkVisit(dataWorkVisit)
+        .then((data) => {
+          // console.log(data);
+          setLoading(false);
+          getMasterWorkVisitList();
+          setDateInput(new Date());
+          setModal(false);
+          setSearchNamaSmr("");
+          setFocusNamaSmr([]);
+        })
+        .catch((err) => console.log(err));
+    }
   };
-
-  const onSearchOutlet = (search) => {
-    setRenderListOutlet(true);
-    setSearchOutlet(search);
-  };
-
-  const postMasterWorkVisit = () => {};
 
   const renderModalAdd = () => {
     if (modal) {
@@ -178,10 +209,9 @@ export default function Plan() {
             className={styles.modal_avability}
             onClick={() => {
               setModal(false);
-              setFocusJenisChannel({});
-              setFocusOutlet({});
-              setSearchJenisChannel("");
-              setSearchOutlet("");
+              setFocusNamaSmr({});
+              setSearchNamaSmr("");
+              setDateInput(new Date());
             }}
           ></div>
           <div className={styles.wrapper}>
@@ -194,28 +224,27 @@ export default function Plan() {
                 value={moment(dateInput).format("YYYY-MM-DD")}
                 onChange={(e) => {
                   setDateInput(moment(e.target.value));
+                  // console.log(e.target.value);
                 }}
                 min={moment().format("YYYY-MM-DD")}
               />
               <div className={styles.avability_modal_subtitle}>Nama SMR</div>
               <input
                 onChange={(e) => {
-                  onSearchJenisChannel(e.target.value);
-                  setFocusJenisChannel({});
-                  setSearchOutlet("");
-                  setFocusOutlet({});
+                  onSearchNamaSmr(e.target.value);
+                  setFocusNamaSmr({});
                 }}
-                value={searchJenisChannel}
+                value={serachNamaSmr}
                 placeholder="Search"
                 className={styles.input}
                 onBlur={() => {
                   setTimeout(() => {
-                    setRenderListJenisChannel(false);
+                    setRenderListNamaSmr(false);
                   }, 200);
                 }}
-                onFocus={(e) => onSearchJenisChannel(e.target.value)}
+                onFocus={(e) => onSearchNamaSmr(e.target.value)}
               />
-              {renderListJenisChannel ? (
+              {renderListNamaSmr ? (
                 <div
                   style={{
                     position: "absolute",
@@ -227,43 +256,10 @@ export default function Plan() {
                     zIndex: 999999,
                   }}
                 >
-                  {renderSearchJenisChannel()}
+                  {renderSearchNamaSmr()}
                 </div>
               ) : null}
-              <div className={styles.avability_modal_subtitle}>Rayon</div>
-              <input
-                onChange={(e) => {
-                  onSearchJenisChannel(e.target.value);
-                  setFocusJenisChannel({});
-                  setSearchOutlet("");
-                  setFocusOutlet({});
-                }}
-                value={searchJenisChannel}
-                placeholder="Search"
-                className={styles.input}
-                onBlur={() => {
-                  setTimeout(() => {
-                    setRenderListJenisChannel(false);
-                  }, 200);
-                }}
-                onFocus={(e) => onSearchJenisChannel(e.target.value)}
-              />
-              {renderListOutlet ? (
-                <div
-                  style={{
-                    position: "absolute",
-                    maxHeight: "180px",
-                    backgroundColor: "white",
-                    overflowY: "scroll",
-                    maxWidth: "400px",
-                    padding: "0 4px",
-                    zIndex: 999999,
-                  }}
-                >
-                  {renderSearchOutlet()}
-                </div>
-              ) : null}
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ marginTop: "80px" }}>
                 <Button
                   text={"Add"}
                   onClick={() => {
@@ -280,7 +276,7 @@ export default function Plan() {
 
   const onDeleteWrokVisit = (id) => {
     if (confirm("Visit will be deleted, are you sure?")) {
-      deleteMasterPlanSMR(id)
+      deleteMasterWorkVisit(id)
         .then(() => {
           getMasterWorkVisitList();
         })
@@ -290,47 +286,119 @@ export default function Plan() {
     }
   };
 
-  const renderMasterPlanList = () => {
-    return masterPlanList.map((val) => {
-      return (
-        <div
-          style={{
-            padding: "10px 20px",
-            fontSize: "14px",
-            display: "grid",
-            gridTemplateColumns: "80% 20%",
-          }}
-        >
-          <div>
-            <div style={{ fontWeight: "500" }}>{val.namaOutlet}</div>
-            <div style={{ fontWeight: "400", color: "#B9B9C3" }}>
-              {moment(val.tanggal).format("DD MMMM YYYY")}
-            </div>
+  const viewSmrProfile = (usernameSMR) => {
+    if (masterWorkVisitList.length) {
+      const profilepic = dataUsernameSMR.filter((val) => {
+        return val.username === usernameSMR;
+      });
+      if (profilepic[0] && profilepic[0].stringpp != undefined) {
+        return (
+          <div style={{ textAlign: "left", margin: "auto 0" }}>
+            <img
+              className={styles.img_smr}
+              src={
+                profilepic[0].stringpp
+                  ? profilepic[0].stringpp
+                  : "/profile-nav1.svg"
+              }
+            />
           </div>
-          <div
-            style={{ textAlign: "end", margin: "auto 0" }}
-            onClick={() => {
-              console.log(val);
-              onDeleteWrokVisit(val.id);
-            }}
-          >
-            <img src="/trash-2.svg" />
+        );
+      } else {
+        return (
+          <div style={{ textAlign: "left", margin: "auto 0" }}>
+            <img className={styles.img_smr} src={"/profile-nav1.svg"} />
+          </div>
+        );
+      }
+    }
+  };
+
+  const renderWorkVisitList = () => {
+    const groups = masterWorkVisitList.reduce((groups, game) => {
+      const date = game.tanggal.split("T")[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(game);
+      return groups;
+    }, {});
+
+    const groupArrays = Object.keys(groups).map((date) => {
+      return {
+        date,
+        item: groups[date],
+      };
+    });
+
+    // console.log(groupArrays);
+    function compare(a, b) {
+      if (a.date < b.date) {
+        return -1;
+      }
+      if (a.date > b.date) {
+        return 1;
+      }
+      return 0;
+    }
+    groupArrays.sort(compare);
+    const render = groupArrays.map((val) => {
+      return (
+        <div>
+          <div className={styles.work_header_container}>
+            <div>{moment(val.date).format("MMMM D, YYYY")}</div>
+            <div>{moment(val.date).format("dddd")}</div>
+          </div>
+          <div className={styles.work_main_container}>
+            {val.item.map((val2) => {
+              // console.log(val2.dataPP);
+              if (
+                val2.namaSMR.toLowerCase().includes(searchListSmr.toLowerCase())
+              ) {
+                return (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 5fr 1fr",
+                      margin: "5px 0 5px 0",
+                    }}
+                  >
+                    {viewSmrProfile(val2.usernameSMR)}
+                    <div>
+                      <div style={{ fontWeight: "600", fontSize: "14px" }}>
+                        {val2.namaSMR}
+                      </div>
+                      <div
+                        style={{
+                          fontWeight: "300",
+                          fontSize: "12px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {val2.produkFokus}
+                      </div>
+                    </div>
+                    {moment(val2.tanggal).format("DD MMMM YYYY") >=
+                    moment(new Date()).format("DD MMMM YYYY") ? (
+                      <div
+                        style={{ textAlign: "end", margin: "auto 0" }}
+                        onClick={() => {
+                          // console.log(val2.id);
+                          onDeleteWrokVisit(val2.id);
+                        }}
+                      >
+                        <img src="/trash-2.svg" />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+            })}
           </div>
         </div>
       );
     });
-  };
-
-  const renderWorkVisitList = () => {
-    return (
-      <div>
-        <div className={styles.work_header_container}>
-          <div>{moment(dateInput).format("MMMM D, YYYY")}</div>
-          <div>{moment(dateInput).format("dddd")}</div>
-        </div>
-        <div className={styles.work_main_container}></div>
-      </div>
-    );
+    return render;
   };
 
   const render = () => {
@@ -356,9 +424,9 @@ export default function Plan() {
                     <input
                       className={styles.input}
                       type="date"
-                      value={moment(dateInput).format("YYYY-MM-DD")}
+                      value={moment(dateView).format("YYYY-MM-DD")}
                       onChange={(e) => {
-                        setDateInput(moment(e.target.value));
+                        setDateView(moment(e.target.value));
                       }}
                       min={moment().format("YYYY-MM-DD")}
                     />
@@ -366,12 +434,9 @@ export default function Plan() {
                     <input
                       className={styles.input}
                       type="date"
-                      value={moment(dateInput)
+                      value={moment(dateView)
                         .add(7, "days")
                         .format("YYYY-MM-DD")}
-                      onChange={(e) => {
-                        setDateInput(moment(e.target.value));
-                      }}
                       disabled={true}
                     />
                   </div>
@@ -380,7 +445,10 @@ export default function Plan() {
                   <div style={{ marginRight: "5px" }}>
                     <input
                       className={styles.input}
-                      onChange={(e) => {}}
+                      onChange={(e) => {
+                        setSearchListSmr(e.target.value);
+                      }}
+                      value={searchListSmr}
                       placeholder={"Search"}
                     />
                   </div>

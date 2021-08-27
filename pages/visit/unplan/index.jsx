@@ -8,7 +8,11 @@ import Nav from "../../../components/Nav";
 import Spinner from "../../../components/Spinner";
 import Button from "../../../components/Button";
 
-import { getSearchJenisChannel, getSearchOutlet } from "../../../helper";
+import {
+  getSearchJenisChannel,
+  getSearchOutlet,
+  viewOutletClass,
+} from "../../../helper";
 
 export default function Unplan() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -22,6 +26,7 @@ export default function Unplan() {
   const [renderListOutlet, setRenderListOutlet] = useState(false);
   const [focusOutlet, setFocusOutlet] = useState({});
   const [loading, setLoading] = useState(false);
+  const [outletClass, setOutletClass] = useState("");
   const [error, setError] = useState(null);
 
   // const [position, setPosition] = useState({});
@@ -78,6 +83,15 @@ export default function Unplan() {
     return () => clearTimeout(timeoutId);
   }, [searchJenisChannel]);
 
+  const onViewOutletClass = (id) => {
+    viewOutletClass(id)
+      .then((data) => {
+        console.log(data);
+        setOutletClass(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const renderSearchJenisChannel = () => {
     const render = listJenisChannel.map((val, index) => {
       return (
@@ -110,6 +124,7 @@ export default function Unplan() {
             setFocusOutlet(val);
             setSearchOutlet(val.namaOutlet);
             setListOutlet([]);
+            onViewOutletClass(val.outletID);
           }}
           key={index}
           style={{
@@ -155,6 +170,14 @@ export default function Unplan() {
               </div>
             </div>
             <div className={styles.main}>
+              {outletClass ? (
+                <div style={{ textAlign: "center", margin: "auto 0" }}>
+                  <img
+                    style={{ width: "50px", height: "50px" }}
+                    src={outletClass}
+                  />
+                </div>
+              ) : null}
               <div className={styles.subtitle}>Jenis Channel</div>
               <input
                 onChange={(e) => {

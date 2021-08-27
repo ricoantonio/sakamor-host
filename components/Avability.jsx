@@ -161,6 +161,9 @@ export default function Avability({ type }) {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
+          } else if (parseInt(avgSales) == parseInt(stock)) {
+            setSaranOrder(0);
+            setKet("Equal stock");
           } else {
             setSaranOrder(0);
             setKet("Overstock");
@@ -169,6 +172,9 @@ export default function Avability({ type }) {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
+          } else if (parseInt(avgSales) == parseInt(stock)) {
+            setSaranOrder(0);
+            setKet("Equal stock");
           } else {
             setSaranOrder(0);
             setKet("Overstock");
@@ -177,6 +183,9 @@ export default function Avability({ type }) {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
+          } else if (parseInt(avgSales) == parseInt(stock)) {
+            setSaranOrder(0);
+            setKet("Equal stock");
           } else {
             setSaranOrder(0);
             setKet("Overstock");

@@ -347,6 +347,108 @@ const getSalesTarget75SMR = (userData, month, year) => {
     });
 };
 
+const postProfilePic = (userData, file) => {
+  const formdata = new FormData();
+  formdata.append("file", file);
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/ChangeProfilePicture?username=${userData.username}&createdBy=API&updatedBy=API`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+      },
+      body: formdata,
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("balikan inserfile", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const viewProfilePic = (username) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/ViewProfilePicture?username=${username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      if (response.status !== 404) {
+        return response.blob();
+      } else {
+        return response;
+      }
+    })
+    .then(function (data) {
+      var outside = URL.createObjectURL(data);
+      return outside;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const viewOutletClass = (outletID) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      // `/MasterDataLokal/GetOutletClassification/3328085`,
+      `/MasterDataLokal/GetOutletClassification/${outletID}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      if (data.status == 404) {
+      } else {
+        return fetch(
+          API_URL + API_MASTER + `/MasterDataLokal/ViewImage/${data.id}`,
+          {
+            headers: {
+              apiKey: TOKEN,
+            },
+          }
+        )
+          .then((response) => {
+            if (response.status !== 404) {
+              return response.blob();
+            } else {
+              return response;
+            }
+          })
+          .then(function (data) {
+            var outside = URL.createObjectURL(data);
+            return outside;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // VISIT PLAN ======================================================================================================================
 
 const getPlanList = (userData) => {
@@ -1157,6 +1259,73 @@ const submitWorkVisit = (data) => {
     });
 };
 
+const getMasterWorkVisit = (userData, date) => {
+  return fetch(
+    API_URL +
+      API_WORK_VISIT +
+      `/MasterPlanWorkVisit/GetMasterPlanWorkVisitBy/${date}?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const saveMasterWorkVisit = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL + API_WORK_VISIT + "/MasterPlanWorkVisit/SaveMasterPlanWorkVisit",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("baikan saveall", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const deleteMasterWorkVisit = (id) => {
+  return fetch(
+    API_URL +
+      API_WORK_VISIT +
+      `/MasterPlanWorkVisit/DeleteMasterPlanWorkVisit/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 // Calendar ================================================================================================================================
 
 const getDayPromo = (date) => {
@@ -1514,6 +1683,30 @@ const getFrontlinerPimca = (userData, month, year) => {
     });
 };
 
+const getSmrByCabang = (cabang, teks) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+    // `/MasterDataLokal/GetSmrOutletByCabang/14?teks=${teks}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
@@ -1548,6 +1741,10 @@ export {
   getProductByJenisChannel,
   getKontenWorkVisit,
   getHnaAvg,
+  postProfilePic,
+  viewProfilePic,
+  getSmrByCabang,
+  viewOutletClass,
   // VISIT PLAN
   getPlanList,
   getPlanId,
@@ -1582,6 +1779,9 @@ export {
   getWorkVisitMonthlyHistory,
   getWorkVisitRating,
   submitWorkVisit,
+  getMasterWorkVisit,
+  saveMasterWorkVisit,
+  deleteMasterWorkVisit,
   // Calendar
   getDayProgram,
   getDayPromo,

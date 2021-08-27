@@ -30,6 +30,7 @@ import {
   getSpreadingMonthlyHistory,
   getUnplanMonthlyHistory,
   getWorkDay,
+  viewProfilePic,
 } from "../helper";
 
 import { Doughnut } from "react-chartjs-2";
@@ -57,6 +58,7 @@ export default function Home() {
   const [NOO, setNOO] = useState([]);
   const [workDay, setWorkDay] = useState([]);
   const isMounted = useRef(true);
+  const [PP, setPP] = useState("");
 
   const dataPlan = {
     datasets: [
@@ -120,6 +122,21 @@ export default function Home() {
   //     isMounted.current = false;
   //   };
   // }, [isMounted]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      viewProfilePic(userData.username)
+        .then((data) => {
+          setPP(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/");
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -974,7 +991,10 @@ export default function Home() {
             <div className={styles.wrapper}>
               <div className={styles.bg_top} />
               <div className={styles.user_info_grid}>
-                <img className={styles.pp} src="/pp.png" />
+                <img
+                  className={styles.pp}
+                  src={PP ? PP : "/profile-nav1.svg"}
+                />
                 <div style={{ marginLeft: "15px" }}>
                   <div style={{ fontSize: "14px" }}>
                     {state.userReducer.user.name}

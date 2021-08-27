@@ -29,6 +29,10 @@
 }
 .pp {
   width: 57px;
+  height: 57px;
+  background-color: #fff;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .notif {
   width: 20px;

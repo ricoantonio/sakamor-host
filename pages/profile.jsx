@@ -18,6 +18,8 @@ import {
   saveMasterPlanVisit,
   getAllAnnouncement,
   postChangePass,
+  viewProfilePic,
+  postProfilePic,
 } from "../helper";
 import moment from "moment";
 import Card from "../components/Card";
@@ -25,19 +27,8 @@ import Modal from "../components/Modal";
 
 export default function Plan() {
   const { state, dispatch, actions } = useContext(Stores);
-  const [search, setSearch] = useState("");
-  const [dateInput, setDateInput] = useState(new Date());
-  const [masterPlanList, setMasterPlanList] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [searchJenisChannel, setSearchJenisChannel] = useState("");
-  const [listJenisChannel, setListJenisChannel] = useState([]);
-  const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
-  const [focusJenisChannel, setFocusJenisChannel] = useState({});
-  const [searchOutlet, setSearchOutlet] = useState("");
-  const [listOutlet, setListOutlet] = useState([]);
-  const [renderListOutlet, setRenderListOutlet] = useState(false);
-  const [focusOutlet, setFocusOutlet] = useState({});
   const [loadingModal, setLoadingModal] = useState(false);
+  const [modalChangePP, setModalChangePP] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errPass, setErrPass] = useState(false);
   const [userData, setUserData] = useState({});
@@ -45,7 +36,9 @@ export default function Plan() {
   const [newAnnouncement, setNewAnnouncement] = useState([]);
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmNewPass] = useState("");
-  const [role, setRole] = useState("");
+  const [dataPP, setDataPP] = useState("");
+  const [dataFilePP, setDataFilePP] = useState({});
+  const [PP, setPP] = useState("");
 
   const onLogOut = () => {
     if (confirm("You will be returned to login screen.")) {
@@ -53,16 +46,13 @@ export default function Plan() {
       Router.push("/login");
     }
   };
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      getAuth(userData)
+      viewProfilePic(userData.username)
         .then((data) => {
-          if (data[0].roleCode === "PIMCAB") {
-            setRole("PIMCAB");
-          } else if (data[0].roleCode === "SMR") {
-            setRole("SMR");
-          }
+          setPP(data);
         })
         .catch((err) => {
           console.log(err);
@@ -71,6 +61,25 @@ export default function Plan() {
       Router.push("/");
     }
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   const userData = JSON.parse(localStorage.getItem("user"));
+  //   if (userData) {
+  //     getAuth(userData)
+  //       .then((data) => {
+  //         if (data[0].roleCode === "PIMCAB") {
+  //           setRole("PIMCAB");
+  //         } else if (data[0].roleCode === "SMR") {
+  //           setRole("SMR");
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } else {
+  //     Router.push("/");
+  //   }
+  // }, [dispatch]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -93,6 +102,29 @@ export default function Plan() {
         });
     }
   }, [dispatch]);
+
+  const onChangePP = () => {
+    setModalChangePP(false);
+    setLoadingModal(true);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      postProfilePic(userData, dataFilePP)
+        .then((data) => {
+          console.log(data);
+          viewProfilePic(userData.username)
+            .then((data) => {
+              setPP(data);
+              setLoadingModal(false);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const onChangePass = () => {
     setLoadingModal(true);
@@ -130,6 +162,57 @@ export default function Plan() {
           {loadingModal ? (
             <Modal>
               <Spinner />
+            </Modal>
+          ) : null}
+          {modalChangePP ? (
+            <Modal>
+              <div
+                style={{
+                  maxHeight: "100%",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                  overflowY: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: "300px",
+                    maxHeight: "100%",
+                    margin: "100px auto",
+                    textAlign: "center",
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    padding: "20px",
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                      maxHeight: "100%",
+                      objectFit: "cover",
+                      margin: "50px auto",
+                      borderRadius: "50%",
+                    }}
+                    src={dataPP ? dataPP : "/pp.png"}
+                  />
+                  <Button
+                    onClick={() => {
+                      onChangePP();
+                    }}
+                    text={"Change Profile Picture"}
+                  />
+                  <div style={{ marginTop: "10px" }}>
+                    <Button
+                      onClick={() => {
+                        setModalChangePP(false);
+                      }}
+                      color={"red"}
+                      text={"Cancel"}
+                    />
+                  </div>
+                </div>
+              </div>
             </Modal>
           ) : null}
           <div className={styles.container}>
@@ -172,8 +255,37 @@ export default function Plan() {
                 </div>
                 <div className={styles.main}>
                   <div style={{ textAlign: "center" }}>
+                    <div className={styles.edit_pp}>
+                      <label className={styles.new_button} htmlFor={`postPP`}>
+                        <img
+                          src={"/edit-3.svg"}
+                          style={{ width: "18px", verticalAlign: "baseline" }}
+                        />
+                        <input
+                          className={styles.input_file}
+                          onChange={(e) => {
+                            setModalChangePP(true);
+                            let reader = new FileReader();
+                            var file = e.target.files[0];
+                            if (file && file.type.match("image.*")) {
+                              reader.readAsDataURL(file);
+                            }
+                            reader.onload = () => {
+                              setDataPP(reader.result);
+                              setDataFilePP(file);
+                            };
+                          }}
+                          id={`postPP`}
+                          type="file"
+                          accept="image/*"
+                        />
+                      </label>
+                    </div>
                     <div>
-                      <img className={styles.pp} src="/pp.png" />
+                      <img
+                        className={styles.pp}
+                        src={PP ? PP : "/profile-nav1.svg"}
+                      />
                     </div>
                   </div>
                   <div
