@@ -71,92 +71,6 @@ export default function Plan() {
       // console.log(date);
       getMasterWorkVisit(userData, date)
         .then((data1) => {
-<<<<<<< HEAD
-=======
-          var dataDummy = [
-            {
-              createdBy: "API",
-              createdDate: "2021-08-23T00:00:00",
-              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
-              isDeleted: false,
-              kodeCabang: "01",
-              kodeProduk: "TCROD",
-              kodeRayon: "01",
-              namaCabang: "JAKARTA",
-              namaPimcab: "Pimca",
-              namaSMR: "YANTI",
-              nomorDokumen: "0005/MPV/08/2021",
-              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
-              rayon: "MEDAN 1",
-              tanggal: "2021-08-23T00:00:00",
-              updatedBy: "API",
-              updatedDate: "2021-08-23T00:00:00",
-              usernamePimcab: "pimcab@kalbe.co.id",
-              usernameSMR: "yanti@gmail.com",
-            },
-            {
-              createdBy: "API",
-              createdDate: "2021-08-23T00:00:00",
-              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
-              isDeleted: false,
-              kodeCabang: "01",
-              kodeProduk: "TCROD",
-              kodeRayon: "01",
-              namaCabang: "JAKARTA",
-              namaPimcab: "Pimca",
-              namaSMR: "YANTI",
-              nomorDokumen: "0005/MPV/08/2021",
-              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
-              rayon: "MEDAN 1",
-              tanggal: "2021-08-24T00:00:00",
-              updatedBy: "API",
-              updatedDate: "2021-08-23T00:00:00",
-              usernamePimcab: "pimcab@kalbe.co.id",
-              usernameSMR: "yanti@gmail.com",
-            },
-            {
-              createdBy: "API",
-              createdDate: "2021-08-23T00:00:00",
-              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
-              isDeleted: false,
-              kodeCabang: "01",
-              kodeProduk: "TCROD",
-              kodeRayon: "01",
-              namaCabang: "JAKARTA",
-              namaPimcab: "Pimca",
-              namaSMR: "Pimca",
-              nomorDokumen: "0005/MPV/08/2021",
-              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
-              rayon: "MEDAN 1",
-              tanggal: "2021-08-24T00:00:00",
-              updatedBy: "API",
-              updatedDate: "2021-08-23T00:00:00",
-              usernamePimcab: "pimcab@kalbe.co.id",
-              usernameSMR: "pimcab@kalbe.co.id",
-            },
-            {
-              createdBy: "API",
-              createdDate: "2021-08-23T00:00:00",
-              id: "0320b2a8-715c-4cd4-b176-2df3ee07aa87",
-              isDeleted: false,
-              kodeCabang: "01",
-              kodeProduk: "TCROD",
-              kodeRayon: "01",
-              namaCabang: "JAKARTA",
-              namaPimcab: "Pimca",
-              namaSMR: "YANTI",
-              nomorDokumen: "0005/MPV/08/2021",
-              produkFokus: "CEREBROFORT MARINE STRAW. GUMMY SCH/1X10_D",
-              rayon: "MEDAN 1",
-              tanggal: "2021-08-24T00:00:00",
-              updatedBy: "API",
-              updatedDate: "2021-08-23T00:00:00",
-              usernamePimcab: "pimcab@kalbe.co.id",
-              usernameSMR: "yanti@gmail.com",
-            },
-          ];
-
->>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
           const allsmrname = data1.reduce((groups, game) => {
             const date = game.usernameSMR;
             if (!groups[date]) {
@@ -174,10 +88,7 @@ export default function Plan() {
           });
 
           // setDataUserNameSMR(groupArraysName);
-<<<<<<< HEAD
           console.log(data1.length);
-=======
->>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
           if (data1.length !== 0) {
             for (let i = 0; i < groupArraysName.length; i++) {
               viewProfilePic(groupArraysName[i].username)
@@ -198,10 +109,7 @@ export default function Plan() {
             }
           } else {
             setLoading(false);
-<<<<<<< HEAD
             setMasterWorkVisitList(data1);
-=======
->>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
           }
         })
         .catch((err) => {
@@ -286,11 +194,8 @@ export default function Plan() {
           getMasterWorkVisitList();
           setDateInput(new Date());
           setModal(false);
-<<<<<<< HEAD
           setSearchNamaSmr("");
           setFocusNamaSmr([]);
-=======
->>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
         })
         .catch((err) => console.log(err));
     }
@@ -382,7 +287,6 @@ export default function Plan() {
   };
 
   const viewSmrProfile = (usernameSMR) => {
-<<<<<<< HEAD
     if (masterWorkVisitList.length) {
       const profilepic = dataUsernameSMR.filter((val) => {
         return val.username === usernameSMR;
@@ -491,106 +395,6 @@ export default function Plan() {
               }
             })}
           </div>
-=======
-    const profilepic = dataUsernameSMR.filter((val) => {
-      return val.username === usernameSMR;
-    });
-    return (
-      <div style={{ textAlign: "left", margin: "auto 0" }}>
-        <img
-          className={styles.img_smr}
-          src={
-            profilepic[0].stringpp
-              ? profilepic[0].stringpp
-              : "/profile-nav1.svg"
-          }
-        />
-      </div>
-    );
-  };
-
-  const renderWorkVisitList = () => {
-    const groups = masterWorkVisitList.reduce((groups, game) => {
-      const date = game.tanggal.split("T")[0];
-      if (!groups[date]) {
-        groups[date] = [];
-      }
-      groups[date].push(game);
-      return groups;
-    }, {});
-
-    const groupArrays = Object.keys(groups).map((date) => {
-      return {
-        date,
-        item: groups[date],
-      };
-    });
-
-    // console.log(groupArrays);
-    function compare(a, b) {
-      if (a.date < b.date) {
-        return -1;
-      }
-      if (a.date > b.date) {
-        return 1;
-      }
-      return 0;
-    }
-    groupArrays.sort(compare);
-    const render = groupArrays.map((val) => {
-      return (
-        <div>
-          <div className={styles.work_header_container}>
-            <div>{moment(val.date).format("MMMM D, YYYY")}</div>
-            <div>{moment(val.date).format("dddd")}</div>
-          </div>
-          <div className={styles.work_main_container}>
-            {val.item.map((val2) => {
-              // console.log(val2.dataPP);
-              if (
-                val2.namaSMR.toLowerCase().includes(searchListSmr.toLowerCase())
-              ) {
-                return (
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 5fr 1fr",
-                      margin: "5px 0 5px 0",
-                    }}
-                  >
-                    {viewSmrProfile(val2.usernameSMR)}
-                    <div>
-                      <div style={{ fontWeight: "600", fontSize: "14px" }}>
-                        {val2.namaSMR}
-                      </div>
-                      <div
-                        style={{
-                          fontWeight: "300",
-                          fontSize: "12px",
-                          fontStyle: "italic",
-                        }}
-                      >
-                        {val2.produkFokus}
-                      </div>
-                    </div>
-                    {moment(val2.tanggal).format("DD MMMM YYYY") >=
-                    moment(new Date()).format("DD MMMM YYYY") ? (
-                      <div
-                        style={{ textAlign: "end", margin: "auto 0" }}
-                        onClick={() => {
-                          // console.log(val2.id);
-                          onDeleteWrokVisit(val2.id);
-                        }}
-                      >
-                        <img src="/trash-2.svg" />
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              }
-            })}
-          </div>
->>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
         </div>
       );
     });
