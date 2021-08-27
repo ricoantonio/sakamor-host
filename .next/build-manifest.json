@@ -27,7 +27,16 @@
     "/master-work-visit": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
+<<<<<<< HEAD
       "static/chunks/pages/master-work-visit.js"
+=======
+      "static/chunks/pages/visit/unplan.js"
+    ],
+    "/visit/unplan/submit/avability": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/visit/unplan/submit/avability.js"
+>>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
     ]
   },
   "ampFirstPages": []

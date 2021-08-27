@@ -2,5 +2,11 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
+<<<<<<< HEAD
   "/master-work-visit": "pages/master-work-visit.js"
+=======
+  "/visit/unplan": "pages/visit/unplan.js",
+  "/": "pages/index.js",
+  "/visit/unplan/submit/avability": "pages/visit/unplan/submit/avability.js"
+>>>>>>> ca781197db418a5ed1c25933cf4b21fbb51a4c6b
 }
