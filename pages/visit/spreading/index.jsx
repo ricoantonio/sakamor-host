@@ -9,7 +9,11 @@ import Spinner from "../../../components/Spinner";
 import Button from "../../../components/Button";
 
 import Card from "../../../components/Card";
-import { getSearchJenisChannel, getSearchOutlet } from "../../../helper";
+import {
+  getSearchJenisChannel,
+  getSearchOutlet,
+  viewOutletClass,
+} from "../../../helper";
 
 export default function Spreading() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -24,6 +28,7 @@ export default function Spreading() {
   const [focusOutlet, setFocusOutlet] = useState({});
   const [position, setPosition] = useState({});
   const [loading, setLoading] = useState(false);
+  const [outletClass, setOutletClass] = useState("");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -82,6 +87,15 @@ export default function Spreading() {
     return render;
   };
 
+  const onViewOutletClass = (id) => {
+    viewOutletClass(id)
+      .then((data) => {
+        console.log(data);
+        setOutletClass(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const renderSearchOutlet = () => {
     const render = listOutlet.map((val, index) => {
       return (
@@ -90,6 +104,7 @@ export default function Spreading() {
             setFocusOutlet(val);
             setSearchOutlet(val.namaOutlet);
             setListOutlet([]);
+            onViewOutletClass(val.outletID);
           }}
           key={index}
           style={{
@@ -134,6 +149,14 @@ export default function Spreading() {
               <div className={styles.title}>Spreading</div>
             </div>
             <div className={styles.main}>
+              {outletClass ? (
+                <div style={{ textAlign: "center", margin: "auto 0" }}>
+                  <img
+                    style={{ width: "50px", height: "50px" }}
+                    src={outletClass}
+                  />
+                </div>
+              ) : null}
               <div className={styles.subtitle}>Jenis Channel</div>
               <input
                 onChange={(e) => {

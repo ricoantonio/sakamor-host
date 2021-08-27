@@ -10,11 +10,6 @@ import Button from "../components/Button";
 
 import {
   getAuth,
-  getSearchOutlet,
-  getSearchJenisChannel,
-  getMasterVisitPlan,
-  deleteMasterPlanSMR,
-  saveMasterPlanVisit,
   getMasterWorkVisit,
   viewProfilePic,
   getSmrByCabang,
@@ -33,10 +28,41 @@ export default function Plan() {
   const [modal, setModal] = useState(false);
   const [renderListNamaSmr, setRenderListNamaSmr] = useState(false);
   const [serachNamaSmr, setSearchNamaSmr] = useState("");
+  const [searchListSmr, setSearchListSmr] = useState("");
+  const [dataUsernameSMR, setDataUserNameSMR] = useState([]);
   const [listNamaSmr, setListNamaSmr] = useState([]);
   const [focusNamaSmr, setFocusNamaSmr] = useState({});
   const [loading, setLoading] = useState(true);
   const [dummy, setDummy] = useState(0);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const userMenu = JSON.parse(localStorage.getItem("menu"));
+    // console.log(userData);
+    if (userData) {
+      getAuth(userData)
+        .then((data) => {
+          var auth = data.filter((val) => {
+            return val.moduleCode === "PLAN";
+          });
+          var menu = userMenu.filter((val) => {
+            return val.moduleCode === "PLAN";
+          });
+          if (!(auth && menu)) {
+            Router.push("/");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/");
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getMasterWorkVisitList();
+  }, [dispatch, dateView]);
 
   const getMasterWorkVisitList = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -44,7 +70,7 @@ export default function Plan() {
       var date = moment(dateView).format("YYYY-MM-DD");
       // console.log(date);
       getMasterWorkVisit(userData, date)
-        .then((data) => {
+        .then((data1) => {
           var dataDummy = [
             {
               createdBy: "API",
@@ -127,93 +153,51 @@ export default function Plan() {
               usernameSMR: "yanti@gmail.com",
             },
           ];
-          const getPP = (usernameSMR) => {
-            return viewProfilePic(usernameSMR)
-              .then((data) => {
-                // console.log(data);
-                return data;
-                // console.log(data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          };
 
-          const smrData = data.map((val) => {
+          const allsmrname = data1.reduce((groups, game) => {
+            const date = game.usernameSMR;
+            if (!groups[date]) {
+              groups[date] = [];
+            }
+            groups[date].push(game);
+            return groups;
+          }, {});
+
+          const groupArraysName = Object.keys(allsmrname).map((username) => {
             return {
-              ...val,
-              dataPP: getPP(val.usernameSMR),
+              username,
+              stringpp: "",
             };
           });
 
-          // const smrData = dataDummy.map((val) => {
-          //   return {
-          //     ...val,
-          //     dataPP: "",
-          //   };
-          // });
-
-          // for (let i = 0; i < smrData.length; i++) {
-          //   getPP(smrData[i].usernameSMR)
-          //     .then((data) => {
-          //       console.log(data);
-          //       if (data) {
-          //         smrData.splice(i, 1, {
-          //           ...smrData[i],
-          //           dataPP: data,
-          //         });
-          //         setDummy(i);
-          //       } else if (data === undefined) {
-          //         smrData.splice(i, 1, {
-          //           ...smrData[i],
-          //           dataPP: "/profile-nav1.svg",
-          //         });
-          //         setDummy(i);
-          //       }
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          // }
-
-          // console.log(smrData);
-          setMasterWorkVisitList(smrData);
-          setLoading(false);
+          // setDataUserNameSMR(groupArraysName);
+          if (data1.length !== 0) {
+            for (let i = 0; i < groupArraysName.length; i++) {
+              viewProfilePic(groupArraysName[i].username)
+                .then((data) => {
+                  // console.log(data);
+                  groupArraysName[i].stringpp = data;
+                  if (i == groupArraysName.length - 1) {
+                    // console.log();
+                    // console.log(groupArraysName);
+                    setMasterWorkVisitList(data1);
+                    setDataUserNameSMR(groupArraysName);
+                    setLoading(false);
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          } else {
+            setLoading(false);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     }
   };
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const userMenu = JSON.parse(localStorage.getItem("menu"));
-    // console.log(userData);
-    if (userData) {
-      getAuth(userData)
-        .then((data) => {
-          var auth = data.filter((val) => {
-            return val.moduleCode === "PLAN";
-          });
-          var menu = userMenu.filter((val) => {
-            return val.moduleCode === "PLAN";
-          });
-          if (!(auth && menu)) {
-            Router.push("/");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      Router.push("/");
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    getMasterWorkVisitList();
-  }, [dispatch, dateView]);
 
   useEffect(() => {
     // fetch on stop typing
@@ -223,7 +207,7 @@ export default function Plan() {
         getSmrByCabang(userData.kodeCabang, serachNamaSmr)
           .then((data) => {
             setListNamaSmr(data);
-            console.log(data);
+            // console.log(data);
           })
           .catch((err) => {
             console.log(err);
@@ -231,7 +215,7 @@ export default function Plan() {
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, [dispatch,serachNamaSmr]);
+  }, [dispatch, serachNamaSmr]);
 
   const renderSearchNamaSmr = () => {
     const render = listNamaSmr.map((val, index) => {
@@ -241,7 +225,7 @@ export default function Plan() {
             setFocusNamaSmr(val);
             setSearchNamaSmr(val.namaSMR);
             setListNamaSmr([]);
-            console.log(val);
+            // console.log(val);
           }}
           key={index}
           style={{
@@ -262,10 +246,11 @@ export default function Plan() {
   };
 
   const postMasterWorkVisit = () => {
-    console.log(focusNamaSmr);
+    // console.log(focusNamaSmr);
     const userData = JSON.parse(localStorage.getItem("user"));
     setLoading(true);
-    if (userData) {
+    // console.log(moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"));
+    if (userData && focusNamaSmr.namaSMR && dateInput) {
       var dataWorkVisit = {
         nomorDokumen: "",
         tanggal: moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"),
@@ -318,7 +303,7 @@ export default function Plan() {
                 value={moment(dateInput).format("YYYY-MM-DD")}
                 onChange={(e) => {
                   setDateInput(moment(e.target.value));
-                  console.log(e.target.value);
+                  // console.log(e.target.value);
                 }}
                 min={moment().format("YYYY-MM-DD")}
               />
@@ -380,22 +365,22 @@ export default function Plan() {
     }
   };
 
-  const renderSmrPofilePic = (usernameSMR) => {
-    if (usernameSMR) {
-      var profilePic = "";
-      viewProfilePic(usernameSMR)
-        .then((data) => {
-          profilePic = data;
-          // console.log(data);
-        })
-        .catch((err) => console.log(err));
-      return (
+  const viewSmrProfile = (usernameSMR) => {
+    const profilepic = dataUsernameSMR.filter((val) => {
+      return val.username === usernameSMR;
+    });
+    return (
+      <div style={{ textAlign: "left", margin: "auto 0" }}>
         <img
           className={styles.img_smr}
-          src={profilePic ? profilePic : "/profile-nav1.svg"}
+          src={
+            profilepic[0].stringpp
+              ? profilepic[0].stringpp
+              : "/profile-nav1.svg"
+          }
         />
-      );
-    }
+      </div>
+    );
   };
 
   const renderWorkVisitList = () => {
@@ -414,7 +399,8 @@ export default function Plan() {
         item: groups[date],
       };
     });
-    console.log(groupArrays);
+
+    // console.log(groupArrays);
     function compare(a, b) {
       if (a.date < b.date) {
         return -1;
@@ -435,50 +421,47 @@ export default function Plan() {
           <div className={styles.work_main_container}>
             {val.item.map((val2) => {
               // console.log(val2.dataPP);
-              return (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 5fr 1fr",
-                    margin: "5px 0 5px 0",
-                  }}
-                >
-                  {/* {renderSmrPofilePic(val2.usernameSMR)} */}
-                  <div style={{ textAlign: "left", margin: "auto 0" }}>
-                    <img
-                      className={styles.img_smr}
-                      // src={val2.dataPP ? val2.dataPP : "/profile-nav1.svg"}
-                      src={"/profile-nav1.svg"}
-                    />
+              if (
+                val2.namaSMR.toLowerCase().includes(searchListSmr.toLowerCase())
+              ) {
+                return (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 5fr 1fr",
+                      margin: "5px 0 5px 0",
+                    }}
+                  >
+                    {viewSmrProfile(val2.usernameSMR)}
+                    <div>
+                      <div style={{ fontWeight: "600", fontSize: "14px" }}>
+                        {val2.namaSMR}
+                      </div>
+                      <div
+                        style={{
+                          fontWeight: "300",
+                          fontSize: "12px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        {val2.produkFokus}
+                      </div>
+                    </div>
+                    {moment(val2.tanggal).format("DD MMMM YYYY") >=
+                    moment(new Date()).format("DD MMMM YYYY") ? (
+                      <div
+                        style={{ textAlign: "end", margin: "auto 0" }}
+                        onClick={() => {
+                          // console.log(val2.id);
+                          onDeleteWrokVisit(val2.id);
+                        }}
+                      >
+                        <img src="/trash-2.svg" />
+                      </div>
+                    ) : null}
                   </div>
-                  <div>
-                    <div style={{ fontWeight: "600", fontSize: "14px" }}>
-                      {val2.namaSMR}
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: "300",
-                        fontSize: "12px",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      {val2.produkFokus}
-                    </div>
-                  </div>
-                  {moment(val2.tanggal).format("DD MMMM YYYY") >=
-                  moment(new Date()).format("DD MMMM YYYY") ? (
-                    <div
-                      style={{ textAlign: "end", margin: "auto 0" }}
-                      onClick={() => {
-                        console.log(val2.id);
-                        onDeleteWrokVisit(val2.id);
-                      }}
-                    >
-                      <img src="/trash-2.svg" />
-                    </div>
-                  ) : null}
-                </div>
-              );
+                );
+              }
             })}
           </div>
         </div>
@@ -531,7 +514,10 @@ export default function Plan() {
                   <div style={{ marginRight: "5px" }}>
                     <input
                       className={styles.input}
-                      onChange={(e) => {}}
+                      onChange={(e) => {
+                        setSearchListSmr(e.target.value);
+                      }}
+                      value={searchListSmr}
                       placeholder={"Search"}
                     />
                   </div>

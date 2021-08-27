@@ -401,6 +401,54 @@ const viewProfilePic = (username) => {
     });
 };
 
+const viewOutletClass = (outletID) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      // `/MasterDataLokal/GetOutletClassification/3328085`,
+      `/MasterDataLokal/GetOutletClassification/${outletID}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      if (data.status == 404) {
+      } else {
+        return fetch(
+          API_URL + API_MASTER + `/MasterDataLokal/ViewImage/${data.id}`,
+          {
+            headers: {
+              apiKey: TOKEN,
+            },
+          }
+        )
+          .then((response) => {
+            if (response.status !== 404) {
+              return response.blob();
+            } else {
+              return response;
+            }
+          })
+          .then(function (data) {
+            var outside = URL.createObjectURL(data);
+            return outside;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // VISIT PLAN ======================================================================================================================
 
 const getPlanList = (userData) => {
@@ -1639,8 +1687,8 @@ const getSmrByCabang = (cabang, teks) => {
   return fetch(
     API_URL +
       API_MASTER +
-      // `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
-      `/MasterDataLokal/GetSmrOutletByCabang/14?teks=${teks}`,
+      `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+    // `/MasterDataLokal/GetSmrOutletByCabang/14?teks=${teks}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1696,6 +1744,7 @@ export {
   postProfilePic,
   viewProfilePic,
   getSmrByCabang,
+  viewOutletClass,
   // VISIT PLAN
   getPlanList,
   getPlanId,

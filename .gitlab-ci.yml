@@ -1,9 +1,9 @@
 variables:
   APP_NAME: 'sakamor-web'
   IMAGE_NAME : $APP_NAME-$CI_COMMIT_BRANCH
-  namespaceDev : 'sakamor-dev'
-  namespaceStaging : 'sakamor-staging'
-  namespaceProd : 'sakamor-prod'
+  namespaceDev : 'kf-asd-sakamor-dev'
+  namespaceStaging : 'kf-asd-sakamor-staging'
+  namespaceProd : 'kf-asd-sakamor-prod'
   APP_NAME_STAGING: 'sakamor-web-staging'
   APP_NAME_PROD: 'sakamor-web-prod'
 
