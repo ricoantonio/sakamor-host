@@ -167,9 +167,9 @@ export default function Plan() {
   const postMasterWorkVisit = () => {
     // console.log(focusNamaSmr);
     const userData = JSON.parse(localStorage.getItem("user"));
-    setLoading(true);
     // console.log(moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"));
-    if (userData && focusNamaSmr.namaSMR && dateInput) {
+    if (userData && focusNamaSmr.usernameSMR && dateInput) {
+      setLoading(true);
       var dataWorkVisit = {
         nomorDokumen: "",
         tanggal: moment(dateInput).format("YYYY-MM-DDT00:00:00.000Z"),
