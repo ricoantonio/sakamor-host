@@ -1687,7 +1687,8 @@ const getSmrByCabang = (cabang, teks) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+      // `/MasterDataLokal/GetSmrOutletByCabang/${cabang}?teks=${teks}`,
+      `/MasterDataLokal/GetSmrByCabang/${cabang}`,
     // `/MasterDataLokal/GetSmrOutletByCabang/14?teks=${teks}`,
     {
       headers: {
