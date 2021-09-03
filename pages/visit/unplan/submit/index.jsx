@@ -49,7 +49,7 @@ export default function index() {
         )}
         {renderDataDetail("Catatan", state.visitUnplanReducer.catatan)}
         {renderDataDetail("Visibility")}
-        {renderDataDetail("Avability")}
+        {renderDataDetail("Availability")}
       </div>
     );
   };
@@ -66,7 +66,7 @@ export default function index() {
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
               ? `${doneFormVis.length}/6`
-              : type === "Avability"
+              : type === "Availability"
               ? `${doneFormAva.length}/25`
               : ""}
           </div>
@@ -81,7 +81,7 @@ export default function index() {
                 }}
                 value={state.visitUnplanReducer.catatan}
               ></textarea>
-            ) : type === "Visibility" || type === "Avability" ? (
+            ) : type === "Visibility" || type === "Availability" ? (
               <>
                 <div>
                   {type === "Visibility" ? (
@@ -94,7 +94,7 @@ export default function index() {
                         }}
                       ></div>
                     </div>
-                  ) : type === "Avability" ? (
+                  ) : type === "Availability" ? (
                     <div>
                       <div className={styles.progress_bar}></div>
                       <div
@@ -112,8 +112,8 @@ export default function index() {
                   href={
                     type === "Visibility"
                       ? `/visit/unplan/submit/visibility`
-                      : type === "Avability"
-                      ? `/visit/unplan/submit/avability`
+                      : type === "Availability"
+                      ? `/visit/unplan/submit/availability`
                       : ""
                   }
                 >

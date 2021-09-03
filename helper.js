@@ -403,10 +403,8 @@ const viewProfilePic = (username) => {
 
 const viewOutletClass = (outletID) => {
   return fetch(
-    API_URL +
-      API_MASTER +
-      // `/MasterDataLokal/GetOutletClassification/3328085`,
-      `/MasterDataLokal/GetOutletClassification/${outletID}`,
+    API_URL + API_MASTER + `/MasterDataLokal/GetOutletClassification/3328085`,
+    // `/MasterDataLokal/GetOutletClassification/${outletID}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1708,6 +1706,29 @@ const getSmrByCabang = (cabang, teks) => {
     });
 };
 
+const getNotificationbyUsername = (username) => {
+  return fetch(
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetNotifikasiByUser?username=dian%40gmail.com`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
@@ -1746,6 +1767,7 @@ export {
   viewProfilePic,
   getSmrByCabang,
   viewOutletClass,
+  getNotificationbyUsername,
   // VISIT PLAN
   getPlanList,
   getPlanId,

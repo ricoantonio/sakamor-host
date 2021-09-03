@@ -83,7 +83,7 @@ export default function index() {
         )}
         {renderDataDetail("Catatan", state.visitSpreadingReducer.catatan)}
         {renderDataDetail("Visibility")}
-        {renderDataDetail("Avability")}
+        {renderDataDetail("Availability")}
       </div>
     );
   };
@@ -140,7 +140,7 @@ export default function index() {
             <div style={{ textAlign: "right" }}>
               {type === "Visibility"
                 ? `${doneFormVis.length}/6`
-                : type === "Avability"
+                : type === "Availability"
                 ? `${doneFormAva.length}/25`
                 : ""}
             </div>
@@ -215,7 +215,7 @@ export default function index() {
                 ></textarea>
               </div>
             </Card>
-          ) : type === "Visibility" || type === "Avability" ? (
+          ) : type === "Visibility" || type === "Availability" ? (
             <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
               <div className={styles.render_value}>
                 <div>
@@ -229,7 +229,7 @@ export default function index() {
                         }}
                       ></div>
                     </div>
-                  ) : type === "Avability" ? (
+                  ) : type === "Availability" ? (
                     <div>
                       <div className={styles.progress_bar}></div>
                       <div
@@ -243,9 +243,11 @@ export default function index() {
                     ""
                   )}
                 </div>
-                {type === "Avability" ? (
+                {type === "Availability" ? (
                   state.visitSpreadingReducer.jenisChannel.namaJenisChannel ? (
-                    <Link href={`/visit/spreading/submit/avability?new=true`}>
+                    <Link
+                      href={`/visit/spreading/submit/availability?new=true`}
+                    >
                       <a>
                         <Button text="Add" />
                       </a>
@@ -279,7 +281,7 @@ export default function index() {
             <div style={{ textAlign: "right" }}>
               {type === "Visibility"
                 ? `${doneFormVis.length}/6`
-                : type === "Avability"
+                : type === "Availability"
                 ? `${doneFormAva.length}/25`
                 : ""}
             </div>
@@ -294,7 +296,7 @@ export default function index() {
                   }}
                   value={state.visitSpreadingReducer.catatan}
                 ></textarea>
-              ) : type === "Visibility" || type === "Avability" ? (
+              ) : type === "Visibility" || type === "Availability" ? (
                 <>
                   <div>
                     {type === "Visibility" ? (
@@ -307,7 +309,7 @@ export default function index() {
                           }}
                         ></div>
                       </div>
-                    ) : type === "Avability" ? (
+                    ) : type === "Availability" ? (
                       <div>
                         <div className={styles.progress_bar}></div>
                         <div
@@ -325,8 +327,8 @@ export default function index() {
                     href={
                       type === "Visibility"
                         ? `/visit/spreading/submit/visibility`
-                        : type === "Avability"
-                        ? `/visit/spreading/submit/avability`
+                        : type === "Availability"
+                        ? `/visit/spreading/submit/availability`
                         : ""
                     }
                   >

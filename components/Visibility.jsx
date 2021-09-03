@@ -22,6 +22,7 @@ import {
 } from "../helper";
 
 import Card from "./Card";
+import Checkbox from "./Checkbox";
 
 export default function Visibility({ type }) {
   const { state, dispatch, actions } = useContext(Stores);
@@ -37,25 +38,25 @@ export default function Visibility({ type }) {
   const [dummy, setDummy] = useState(0);
   const [newNOO, setNewNOO] = useState(false);
   const [vis, setVis] = useState([
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
   ]);
   const router = useRouter();
   const initialVis = [
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
-    { file: null, type: null, brand: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: null },
   ];
 
   useEffect(() => {
@@ -219,15 +220,61 @@ export default function Visibility({ type }) {
     }
   };
   const renderInputUpload = () => {
+    const doneFormVis = vis.filter((val) => {
+      return val.file !== null && val.type !== null && val.brand !== null;
+    });
+    var donePopular = 0;
+    for (let i = 0; i < vis.length; i++) {
+      if (vis[i].popular) {
+        donePopular = donePopular + 1;
+      }
+    }
+    const renderFlagMinData = (val) => {
+      if (doneFormVis.length < 6) {
+        return (
+          <span style={{ color: "red" }}>
+            {val.type == null
+              ? "Select Type"
+              : val.brand == null
+              ? "Select Brand"
+              : val.file == null
+              ? "Insert File"
+              : null}
+          </span>
+        );
+      } else {
+        return null;
+      }
+    };
     var render = vis.map((val, index) => {
       return (
         <>
           <div style={{ fontSize: "12px", color: "#b9b9c3" }}>
-            POSM {index + 1}
+            POSM {index + 1} {renderFlagMinData(val)}
           </div>
           <div key={index} className={styles.visibility_grid}>
             <div className={styles.visibility_dropdown}>
               <div className={styles.grid_50}>
+                <div style={{ marginTop: "6px" }}>
+                  {val.file !== null &&
+                  val.type !== null &&
+                  val.brand !== null ? (
+                    <Checkbox
+                      checked={val.popular}
+                      color={"green"}
+                      onClick={() => {
+                        vis.splice(index, 1, {
+                          ...vis[index],
+                          popular: !val.popular,
+                        });
+                        setDummy(dummy + 1);
+                      }}
+                      disabled={
+                        val.popular ? false : donePopular < 3 ? false : true
+                      }
+                    />
+                  ) : null}
+                </div>
                 <Dropdown
                   options={posm}
                   type={"POSM"}
@@ -411,6 +458,15 @@ export default function Visibility({ type }) {
   // };
 
   const render = () => {
+    const doneFormVis = vis.filter((val) => {
+      return val.file !== null && val.type !== null && val.brand !== null;
+    });
+    var donePopular = 0;
+    for (let i = 0; i < vis.length; i++) {
+      if (vis[i].popular) {
+        donePopular = donePopular + 1;
+      }
+    }
     if (loading || loadingBrand) {
       return <Spinner />;
     } else {
@@ -493,6 +549,17 @@ export default function Visibility({ type }) {
               />
             )}
             <div className={styles.main}>
+              {doneFormVis.length >= 6 && donePopular < 3 ? (
+                <div
+                  style={{
+                    fontSize: "14px",
+                    color: "red",
+                    textAlign: "center",
+                  }}
+                >
+                  Please select 3 best photos
+                </div>
+              ) : null}
               {type.includes("HISTORY")
                 ? renderHistoryPosm()
                 : renderInputUpload()}

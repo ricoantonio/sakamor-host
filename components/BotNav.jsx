@@ -59,7 +59,7 @@ const Nav = ({ focus }) => {
             </div>
           </a>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/announcement"}>
           <a>
             <div>
               <img

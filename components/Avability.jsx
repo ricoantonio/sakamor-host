@@ -13,10 +13,7 @@ import {
   getInvoiceData,
   getInvoiceDataUnplan,
   getPlanId,
-  getPlanMonthlyHistory,
-  getProductSearch,
   getProductByJenisChannel,
-  getProductAvgSales,
   getInvoiceDataSpreading,
   getHnaAvg,
 } from "../helper";
@@ -756,7 +753,7 @@ export default function Avability({ type }) {
             <div className={styles.wrapper}>
               {type.includes("HISTORY") ? (
                 <Nav
-                  title={"Avability"}
+                  title={"Availability"}
                   color={"white"}
                   backAction={() => {
                     Router.back();
@@ -764,7 +761,7 @@ export default function Avability({ type }) {
                 />
               ) : (
                 <Nav
-                  title={"Avability"}
+                  title={"Availability"}
                   color={"white"}
                   action={"Save"}
                   onClick={() => {
@@ -778,14 +775,31 @@ export default function Avability({ type }) {
               )}
               <div className={styles.main}>
                 <div className={styles.search_fixed}>
-                  <div style={{ margin: "10px 0 0 0" }}>
-                    <div className={styles.progress_bar}></div>
+                  <div
+                    style={{
+                      margin: "10px 0 0 0",
+                      display: "grid",
+                      gridTemplateColumns: "88% 12%",
+                    }}
+                  >
+                    <div>
+                      <div className={styles.progress_bar}></div>
+                      <div
+                        className={styles.progress_bar_now}
+                        style={{
+                          width: `${(avabilityList.length / 25) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
                     <div
-                      className={styles.progress_bar_now}
                       style={{
-                        width: `${(avabilityList.length / 25) * 100}%`,
+                        fontSize: "12px",
+                        textAlign: "center",
+                        marginTop: "-6px",
                       }}
-                    ></div>
+                    >
+                      {avabilityList.length} / {25}
+                    </div>
                   </div>
                   <input
                     onChange={(e) => {

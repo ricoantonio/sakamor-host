@@ -972,6 +972,28 @@ export default function Home() {
     }
   };
 
+  const getGreetingTime = (m) => {
+    var g = null; //return g
+
+    if (!m || !m.isValid()) {
+      return;
+    } //if we can't find a valid or filled moment, we return.
+
+    var split_afternoon = 12; //24hr time to split the afternoon
+    var split_evening = 17; //24hr time to split the evening
+    var currentHour = parseFloat(m.format("HH"));
+
+    if (currentHour >= split_afternoon && currentHour <= split_evening) {
+      g = "Afternoon,";
+    } else if (currentHour >= split_evening) {
+      g = "Evening,";
+    } else {
+      g = "Morning,";
+    }
+
+    return g;
+  };
+
   const renderPage = () => {
     if (loading && loadingMenu) {
       return (
@@ -997,12 +1019,12 @@ export default function Home() {
                 />
                 <div style={{ marginLeft: "15px" }}>
                   <div style={{ fontSize: "14px" }}>
-                    {state.userReducer.user.name}
+                    {getGreetingTime(moment())} {state.userReducer.user.name}
                   </div>
                   <div style={{ fontSize: "12px" }}>{role}</div>
                 </div>
                 <div>
-                  <Link href={"/announcement"}>
+                  <Link href={"/notification"}>
                     <a style={{ textDecoration: "none" }}>
                       <img className={styles.notif} src="/notif.svg" />
                       {notif ? (

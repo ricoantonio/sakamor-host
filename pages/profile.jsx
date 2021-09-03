@@ -312,51 +312,53 @@ export default function Plan() {
                       <div>{userData.username}</div>
                       <div>{userData.role}</div>
                     </Card>
-                    <Card
-                      style={{
-                        marginTop: "22px",
-                        marginBottom: "22px",
-                        borderRadius: "6px",
-                        padding: "10px",
-                      }}
-                    >
-                      <div style={{ fontSize: "12px", color: "red" }}>
-                        {errPass
-                          ? "Please make sure your passwords match"
-                          : null}
-                      </div>
+                    {userData.jabatan === "SMR" ? (
+                      <Card
+                        style={{
+                          marginTop: "22px",
+                          marginBottom: "22px",
+                          borderRadius: "6px",
+                          padding: "10px",
+                        }}
+                      >
+                        <div style={{ fontSize: "12px", color: "red" }}>
+                          {errPass
+                            ? "Please make sure your passwords match"
+                            : null}
+                        </div>
 
-                      {/* Change Password */}
-                      {/* <input
-                        placeholder="Current password"
-                        className={styles.input}
-                      /> */}
-                      <input
-                        type="password"
-                        placeholder="New password"
-                        className={styles.input}
-                        onChange={(e) => {
-                          setNewPass(e.target.value);
-                        }}
-                        value={newPass}
-                      />
-                      <input
-                        type="password"
-                        placeholder="Confirm new password"
-                        className={styles.input}
-                        onChange={(e) => {
-                          setConfirmNewPass(e.target.value);
-                        }}
-                        value={confirmNewPass}
-                        disabled={newPass.length == 0 ? true : false}
-                      />
-                      <Button
-                        onClick={() => {
-                          onChangePass();
-                        }}
-                        text={"Change Password"}
-                      />
-                    </Card>
+                        {/* Change Password */}
+                        {/* <input
+                          placeholder="Current password"
+                          className={styles.input}
+                        /> */}
+                        <input
+                          type="password"
+                          placeholder="New password"
+                          className={styles.input}
+                          onChange={(e) => {
+                            setNewPass(e.target.value);
+                          }}
+                          value={newPass}
+                        />
+                        <input
+                          type="password"
+                          placeholder="Confirm new password"
+                          className={styles.input}
+                          onChange={(e) => {
+                            setConfirmNewPass(e.target.value);
+                          }}
+                          value={confirmNewPass}
+                          disabled={newPass.length == 0 ? true : false}
+                        />
+                        <Button
+                          onClick={() => {
+                            onChangePass();
+                          }}
+                          text={"Change Password"}
+                        />
+                      </Card>
+                    ) : null}
                     <Button
                       onClick={() => {
                         onLogOut();

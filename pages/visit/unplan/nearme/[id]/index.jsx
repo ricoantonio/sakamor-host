@@ -62,7 +62,7 @@ export default function index() {
         {renderDataDetail("Alamat", plan[0].alamatOutlet)}
         {renderDataDetail("Catatan", state.visitUnplanReducer.catatan)}
         {renderDataDetail("Visibility")}
-        {renderDataDetail("Avability")}
+        {renderDataDetail("Availability")}
       </div>
     );
   };
@@ -118,7 +118,7 @@ export default function index() {
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
               ? `${doneFormVis.length}/6`
-              : type === "Avability"
+              : type === "Availability"
               ? `${doneFormAva.length}/25`
               : ""}
           </div>
@@ -180,7 +180,7 @@ export default function index() {
               ></textarea>
             </div>
           </Card>
-        ) : type === "Visibility" || type === "Avability" ? (
+        ) : type === "Visibility" || type === "Availability" ? (
           <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
             <div className={styles.render_value}>
               <div>
@@ -194,7 +194,7 @@ export default function index() {
                       }}
                     ></div>
                   </div>
-                ) : type === "Avability" ? (
+                ) : type === "Availability" ? (
                   <div>
                     <div className={styles.progress_bar}></div>
                     <div
@@ -208,10 +208,10 @@ export default function index() {
                   ""
                 )}
               </div>
-              {type === "Avability" ? (
+              {type === "Availability" ? (
                 state.visitUnplanReducer.jenisChannel.namaJenisChannel ? (
                   <Link
-                    href={`/visit/unplan/nearme/${plan[0].outletID}/avability`}
+                    href={`/visit/unplan/nearme/${plan[0].outletID}/availability`}
                   >
                     <a>
                       <Button text="Add" />

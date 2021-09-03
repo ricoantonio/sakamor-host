@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "../styles/components/Checkbox.module.css";
 
-const Checkbox = ({ text, checked, color, onClick }) => {
+const Checkbox = ({ text, checked, color, onClick, disabled }) => {
   return (
     <label className={styles.container} onChange={onClick}>
-      <input type="checkbox" checked={checked} />
+      <input type="checkbox" checked={checked} disabled={disabled} />
       {text}
       <span
         className={

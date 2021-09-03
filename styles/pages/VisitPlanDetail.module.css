@@ -65,7 +65,7 @@
 }
 .grid_50 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3% 46% 46%;
   grid-column-gap: 10px;
 }
 .visibility_grid_history {

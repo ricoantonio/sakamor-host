@@ -77,57 +77,60 @@ export default function Announcement() {
         }
         var c = b.join("");
 
-        if (val.isRead) {
-          return (
-            <>
-              <div className={styles.announcement_container}>
-                <div>{val.judul}</div>
-                <div
-                  style={{ fontSize: "12px" }}
-                  dangerouslySetInnerHTML={{ __html: c }}
-                />
-                <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
-                  {moment(val.createdDate).fromNow()}
-                </div>
-              </div>
-            </>
-          );
-        } else {
-          return (
-            <>
+        // if (val.isRead) {
+        //   return (
+        //     <>
+        //       <div className={styles.announcement_container}>
+        //         <div>{val.judul}</div>
+        //         <div
+        //           style={{ fontSize: "12px" }}
+        //           dangerouslySetInnerHTML={{ __html: c }}
+        //         />
+        //         <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
+        //           {moment(val.createdDate).fromNow()}
+        //         </div>
+        //       </div>
+        //     </>
+        //   );
+        // } else {
+        return (
+          <>
+            <div
+              onClick={() => {
+                const userData = JSON.parse(localStorage.getItem("user"));
+                var data = {
+                  id: val.announcementStatusId,
+                  username: userData.username,
+                  isRead: true,
+                };
+                updateReadAnnouncement(val.announcementStatusId, data)
+                  .then((data) => {
+                    getAllAnnouncement(userData)
+                      .then((data) => {
+                        setAnnouncementList(data);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }}
+              className={styles.announcement_container_unread}
+            >
+              <div>{val.judul}</div>
               <div
-                onClick={() => {
-                  const userData = JSON.parse(localStorage.getItem("user"));
-                  var data = {
-                    id: val.announcementStatusId,
-                    username: userData.username,
-                    isRead: true,
-                  };
-                  updateReadAnnouncement(val.announcementStatusId, data)
-                    .then((data) => {
-                      getAllAnnouncement(userData)
-                        .then((data) => {
-                          setAnnouncementList(data);
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }}
-                className={styles.announcement_container_unread}
-              >
-                <div>{val.judul}</div>
-                <div style={{ fontSize: "12px" }}>{c}</div>
-                <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
-                  {moment(val.createdDate).fromNow()}
-                </div>
+                style={{ fontSize: "12px" }}
+                dangerouslySetInnerHTML={{ __html: c }}
+              />
+              <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
+                {moment(val.createdDate).fromNow()}
               </div>
-            </>
-          );
-        }
+            </div>
+          </>
+        );
+        // }
       });
     }
   };
@@ -140,7 +143,7 @@ export default function Announcement() {
       <div className={styles.wrapper}>
         <Nav title={"Announcement"} color={"white"} backHref={"/"} />
         <div className={styles.main}>
-          <div
+          {/* <div
             style={{ textAlign: "right" }}
             className={styles.announcement_container_unread}
           >
@@ -157,7 +160,7 @@ export default function Announcement() {
                 {newAnnouncement.length} New
               </span>
             </div>
-          </div>
+          </div> */}
           {renderAnnouncement()}
           <div style={{ marginBottom: "120px" }} />
         </div>

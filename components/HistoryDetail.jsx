@@ -147,7 +147,7 @@ export default function HistoryDetail({ type }) {
         {renderDataDetail("Alamat", plan[0].alamatOutlet)}
         {renderDataDetail("Catatan", plan[0].catatan)}
         {renderDataDetail("Visibility")}
-        {renderDataDetail("Avability")}
+        {renderDataDetail("Availability")}
       </div>
     );
   };
@@ -164,7 +164,7 @@ export default function HistoryDetail({ type }) {
           <div style={{ textAlign: "right" }}>
             {subType === "Visibility"
               ? `${posmList.length}/6`
-              : subType === "Avability"
+              : subType === "Availability"
               ? `${productList.length}/25`
               : ""}
           </div>
@@ -175,7 +175,7 @@ export default function HistoryDetail({ type }) {
               <div style={{ width: "100%", border: "none", height: "70px" }}>
                 {data}
               </div>
-            ) : subType === "Visibility" || subType === "Avability" ? (
+            ) : subType === "Visibility" || subType === "Availability" ? (
               <>
                 <div>
                   {subType === "Visibility" ? (
@@ -188,7 +188,7 @@ export default function HistoryDetail({ type }) {
                         }}
                       ></div>
                     </div>
-                  ) : subType === "Avability" ? (
+                  ) : subType === "Availability" ? (
                     <div>
                       <div className={styles.progress_bar}></div>
                       <div
@@ -207,7 +207,7 @@ export default function HistoryDetail({ type }) {
                     href={
                       subType === "Visibility"
                         ? `/visit/plan/history/${plan[0].idVisitPlan}/visibility`
-                        : subType === "Avability"
+                        : subType === "Availability"
                         ? `/visit/plan/history/${plan[0].idVisitPlan}/avability`
                         : ""
                     }
@@ -221,7 +221,7 @@ export default function HistoryDetail({ type }) {
                     href={
                       subType === "Visibility"
                         ? `/visit/unplan/history/${plan[0].id}/visibility`
-                        : subType === "Avability"
+                        : subType === "Availability"
                         ? `/visit/unplan/history/${plan[0].id}/avability`
                         : ""
                     }
@@ -235,7 +235,7 @@ export default function HistoryDetail({ type }) {
                     href={
                       subType === "Visibility"
                         ? `/visit/spreading/history/${plan[0].id}/visibility`
-                        : subType === "Avability"
+                        : subType === "Availability"
                         ? `/visit/spreading/history/${plan[0].id}/avability`
                         : ""
                     }
