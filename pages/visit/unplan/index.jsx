@@ -132,7 +132,8 @@ export default function Unplan() {
             width: "350px",
           }}
         >
-          {val.namaOutlet}
+          <div>{val.namaOutlet}</div>
+          <div style={{ fontSize: "12px" }}>{val.alamatOutlet}</div>
         </div>
       );
     });
@@ -241,6 +242,12 @@ export default function Unplan() {
                 >
                   {renderSearchOutlet()}
                 </div>
+              ) : null}
+              {focusOutlet.alamatOutlet ? (
+                <>
+                  <div className={styles.subtitle}>Alamat</div>
+                  <div>{focusOutlet.alamatOutlet}</div>
+                </>
               ) : null}
               <div className={styles.bottom_container}>
                 <Button

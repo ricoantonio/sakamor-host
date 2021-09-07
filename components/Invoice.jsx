@@ -7,48 +7,50 @@ const Invoice = ({ data, plan }) => {
   const renderProduct = () => {
     return data.map((val, index) => {
       total += val.totalHarga;
-      return (
-        <tr style={{ borderBottom: "1px solid black" }}>
-          <td style={{ borderRight: "1px solid black" }}>{index + 1}</td>
-          <td
-            style={{
-              borderRight: "1px solid black",
-              textAlign: "left",
-              paddingLeft: "2px",
-            }}
-          >
-            {val.namaProduk}
-          </td>
-          <td
-            style={{
-              borderRight: "1px solid black",
-              textAlign: "right",
-              padding: "0 4px 0 0",
-            }}
-          >
-            {val.jumlah}
-          </td>
-          <td
-            style={{
-              borderRight: "1px solid black",
-              textAlign: "right",
-              padding: "0 4px 0 0",
-            }}
-          >
-            {val.harga.toLocaleString("id-ID")}
-          </td>
-          <td
-            style={{
-              borderRight: "1px solid black",
-              textAlign: "right",
-              padding: "0 4px 0 0",
-            }}
-          >
-            {val.totalHarga.toLocaleString("id-ID")}
-          </td>
-          <td style={{ borderRight: "1px solid black" }}>{val.keterangan}</td>
-        </tr>
-      );
+      if (val.jumlah > 0) {
+        return (
+          <tr style={{ borderBottom: "1px solid black" }}>
+            <td style={{ borderRight: "1px solid black" }}>{index + 1}</td>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "left",
+                paddingLeft: "2px",
+              }}
+            >
+              {val.namaProduk}
+            </td>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 0",
+              }}
+            >
+              {val.jumlah}
+            </td>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 0",
+              }}
+            >
+              {val.harga.toLocaleString("id-ID")}
+            </td>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 0",
+              }}
+            >
+              {val.totalHarga.toLocaleString("id-ID")}
+            </td>
+            <td style={{ borderRight: "1px solid black" }}>{val.keterangan}</td>
+          </tr>
+        );
+      }
     });
   };
 

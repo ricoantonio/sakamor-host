@@ -612,7 +612,7 @@ const submitVisitPlanDposm = (dposm, file) => {
           return response.json();
         })
         .then((data) => {
-          console.log("balikan inserfile", data);
+          // console.log("balikan inserfile", data);
           return data;
         })
         .catch((err) => {
@@ -1416,11 +1416,13 @@ const getMonthProgram = (date) => {
 
 // Announcement ======================================================================================================================================
 
-const getAllAnnouncement = (userData) => {
+const getAllAnnouncement = (kodeCabang) => {
   return fetch(
     API_URL +
       API_ANNOUNCEMENT +
-      `/SakamorAnnouncement/GetAnnouncementByUser?username=${userData.username}`,
+      // `/SakamorAnnouncement/GetAnnouncementByUser?username=${userData.username}`,
+      `/SakamorAnnouncement/GetAnnouncementByCabang/${kodeCabang}`,
+    // `/SakamorAnnouncement/GetAnnouncementByCabang/14`,
     {
       headers: {
         apiKey: TOKEN,

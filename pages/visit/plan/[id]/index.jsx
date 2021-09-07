@@ -35,7 +35,7 @@ export default function index() {
           if (samePlan.length == 0) {
             Router.push("/visit/plan");
           } else {
-            console.log(data);
+            // console.log(data);
             setPlan(data);
             setLoading(false);
             if (!state.visitPlanReducer.checkIn) {
@@ -196,6 +196,7 @@ export default function index() {
           // console.log("ini res", res);
           const bodyPosm = state.visitPlanReducer.visibility.map(
             (val, index) => {
+              // console.log(val);
               if (val.type && val.file && val.brand) {
                 return {
                   id: plan.id,
@@ -208,10 +209,12 @@ export default function index() {
                   updatedBy: userData.username,
                   brandId: val.brand.id,
                   namaBrand: val.brand.namaBrand,
+                  isPopular: val.popular,
                 };
               }
             }
           );
+          console.log(bodyPosm);
           for (let i = 0; i < files.length; i++) {
             submitVisitPlanDposm(bodyPosm[i], files[i])
               .then((res) => {

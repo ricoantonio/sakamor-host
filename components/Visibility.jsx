@@ -38,25 +38,25 @@ export default function Visibility({ type }) {
   const [dummy, setDummy] = useState(0);
   const [newNOO, setNewNOO] = useState(false);
   const [vis, setVis] = useState([
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
   ]);
   const router = useRouter();
   const initialVis = [
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
-    { file: null, type: null, brand: null, popular: null },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
+    { file: null, type: null, brand: null, popular: false },
   ];
 
   useEffect(() => {
@@ -360,12 +360,20 @@ export default function Visibility({ type }) {
           <div key={index} className={styles.visibility_grid_history}>
             <div>
               <div className={styles.grid_50}>
+                <div style={{ marginTop: "6px" }}>
+                  <Checkbox
+                    checked={val.isPopular}
+                    color={"green"}
+                    disabled={true}
+                  />
+                </div>
                 <Card
                   style={{
                     height: "32px",
                     border: "1px solid #e9ecf2",
                     padding: "6px 10px",
                     borderRadius: "5px",
+                    overflow: "auto",
                   }}
                 >
                   {val.tipe}
@@ -376,6 +384,7 @@ export default function Visibility({ type }) {
                     border: "1px solid #e9ecf2",
                     padding: "6px 10px",
                     borderRadius: "5px",
+                    overflow: "auto",
                   }}
                 >
                   {val.namaBrand}
@@ -549,7 +558,7 @@ export default function Visibility({ type }) {
               />
             )}
             <div className={styles.main}>
-              {doneFormVis.length >= 6 && donePopular < 3 ? (
+              {/* {doneFormVis.length >= 6 && donePopular < 3 ? (
                 <div
                   style={{
                     fontSize: "14px",
@@ -559,7 +568,7 @@ export default function Visibility({ type }) {
                 >
                   Please select 3 best photos
                 </div>
-              ) : null}
+              ) : null} */}
               {type.includes("HISTORY")
                 ? renderHistoryPosm()
                 : renderInputUpload()}

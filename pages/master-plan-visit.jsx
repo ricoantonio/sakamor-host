@@ -151,7 +151,8 @@ export default function Plan() {
             width: "350px",
           }}
         >
-          {val.namaOutlet}
+          <div>{val.namaOutlet}</div>
+          <div style={{ fontSize: "12px" }}>{val.alamatOutlet}</div>
         </div>
       );
     });
@@ -337,6 +338,9 @@ export default function Plan() {
         >
           <div>
             <div style={{ fontWeight: "500" }}>{val.namaOutlet}</div>
+            <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
+              {val.alamatOutlet}
+            </div>
             <div style={{ fontWeight: "400", color: "#B9B9C3" }}>
               {moment(val.tanggal).format("DD MMMM YYYY")}
             </div>

@@ -208,6 +208,7 @@ export default function index() {
                   updatedBy: userData.username,
                   brandId: val.brand.id,
                   namaBrand: val.brand.namaBrand,
+                  isPopular: val.popular,
                 };
               }
             }

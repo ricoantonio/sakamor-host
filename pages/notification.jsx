@@ -59,7 +59,7 @@ export default function Announcement() {
     const userData = JSON.parse(localStorage.getItem("user"));
     getNotificationbyUsername(userData.username)
       .then((data) => {
-        // setAnnouncementList(data);
+        setAnnouncementList(data);
         console.log(data);
         setLoading(false);
       })
@@ -73,26 +73,26 @@ export default function Announcement() {
       return <Spinner />;
     } else {
       return announcementList.map((val) => {
-        var b = val.deskripsi.split("$$");
-        for (let i = 1; i < b.length; i += 2) {
-          var newlink =
-            `<a href=` + `"${b[i]}" target="_blank">` + `${b[i]}` + `</a>`;
-          b.splice(i, 1, newlink);
-        }
-        var c = b.join("");
+        // var b = val.deskripsi.split("$$");
+        // for (let i = 1; i < b.length; i += 2) {
+        //   var newlink =
+        //     `<a href=` + `"${b[i]}" target="_blank">` + `${b[i]}` + `</a>`;
+        //   b.splice(i, 1, newlink);
+        // }
+        // var c = b.join("");
 
         if (val.isRead) {
           return (
             <>
               <div className={styles.announcement_container}>
-                <div>{val.judul}</div>
-                <div
+                <div>{val.modul}</div>
+                {/* <div
                   style={{ fontSize: "12px" }}
                   dangerouslySetInnerHTML={{ __html: c }}
                 />
                 <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
                   {moment(val.createdDate).fromNow()}
-                </div>
+                </div> */}
               </div>
             </>
           );
@@ -123,14 +123,14 @@ export default function Announcement() {
                 }}
                 className={styles.announcement_container_unread}
               >
-                <div>{val.judul}</div>
-                <div
+                <div>{val.modul}</div>
+                {/* <div
                   style={{ fontSize: "12px" }}
                   dangerouslySetInnerHTML={{ __html: c }}
                 />
                 <div style={{ fontSize: "12px", color: "#B9B9C3" }}>
                   {moment(val.createdDate).fromNow()}
-                </div>
+                </div> */}
               </div>
             </>
           );
@@ -139,9 +139,9 @@ export default function Announcement() {
     }
   };
 
-  const newAnnouncement = announcementList.filter((val) => {
-    return val.isRead === false;
-  });
+  // const newAnnouncement = announcementList.filter((val) => {
+  //   return val.isRead === false;
+  // });
   return (
     <>
       <div className={styles.wrapper}>
@@ -161,7 +161,7 @@ export default function Announcement() {
                   fontSize: "12px",
                 }}
               >
-                {newAnnouncement.length} New
+                {announcementList.length} New
               </span>
             </div>
           </div>

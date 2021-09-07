@@ -37,6 +37,7 @@ export default function Plan() {
   const [newPass, setNewPass] = useState("");
   const [confirmNewPass, setConfirmNewPass] = useState("");
   const [dataPP, setDataPP] = useState("");
+  const [role, setRole] = useState("");
   const [dataFilePP, setDataFilePP] = useState({});
   const [PP, setPP] = useState("");
 
@@ -53,6 +54,25 @@ export default function Plan() {
       viewProfilePic(userData.username)
         .then((data) => {
           setPP(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Router.push("/");
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      getAuth(userData)
+        .then((data) => {
+          if (data[0].roleCode === "PIMCAB") {
+            setRole("PIMCAB");
+          } else if (data[0].roleCode === "SMR") {
+            setRole("SMR");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -312,7 +332,7 @@ export default function Plan() {
                       <div>{userData.username}</div>
                       <div>{userData.role}</div>
                     </Card>
-                    {userData.jabatan === "SMR" ? (
+                    {role === "SMR" ? (
                       <Card
                         style={{
                           marginTop: "22px",

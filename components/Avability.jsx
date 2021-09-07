@@ -488,9 +488,9 @@ export default function Avability({ type }) {
                   onClick={() => {
                     var reg = new RegExp(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g);
                     if (
-                      productFocus.namaProduk &&
-                      order.match(reg) &&
-                      order != 0
+                      productFocus.namaProduk
+                      // order.match(reg)
+                      // order != 0
                     ) {
                       if (avabilityList.length > 0) {
                         var sameDataIndex = avabilityList.findIndex(
@@ -502,9 +502,9 @@ export default function Avability({ type }) {
                           avabilityList.splice(sameDataIndex, 1);
                           avabilityList.push({
                             productFocus,
-                            stock,
-                            saranOrder,
-                            order,
+                            stock: stock ? stock : 0,
+                            saranOrder: saranOrder ? saranOrder : 0,
+                            order: order ? order : 0,
                             ket,
                             pengiriman,
                             minor,
@@ -519,9 +519,9 @@ export default function Avability({ type }) {
                         } else {
                           avabilityList.push({
                             productFocus,
-                            stock,
-                            saranOrder,
-                            order,
+                            stock: stock ? stock : 0,
+                            saranOrder: saranOrder ? saranOrder : 0,
+                            order: order ? order : 0,
                             ket,
                             pengiriman,
                             minor,
@@ -537,9 +537,9 @@ export default function Avability({ type }) {
                       } else {
                         avabilityList.push({
                           productFocus,
-                          stock,
-                          saranOrder,
-                          order,
+                          stock: stock ? stock : 0,
+                          saranOrder: saranOrder ? saranOrder : 0,
+                          order: order ? order : 0,
                           ket,
                           pengiriman,
                           minor,

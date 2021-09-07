@@ -2,6 +2,13 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/visit/plan/[id]/availability": "pages/visit/plan/[id]/availability.js",
-  "/notification": "pages/notification.js"
+  "/visit/unplan/submit": "pages/visit/unplan/submit.js",
+  "/visit/unplan/submit/availability": "pages/visit/unplan/submit/availability.js",
+  "/visit/unplan": "pages/visit/unplan.js",
+  "/visit/unplan/submit/visibility": "pages/visit/unplan/submit/visibility.js",
+  "/": "pages/index.js",
+  "/visit/unplan/history": "pages/visit/unplan/history.js",
+  "/visit/unplan/history/[id]": "pages/visit/unplan/history/[id].js",
+  "/visit/unplan/history/[id]/avability": "pages/visit/unplan/history/[id]/avability.js",
+  "/visit/unplan/history/[id]/visibility": "pages/visit/unplan/history/[id]/visibility.js"
 }

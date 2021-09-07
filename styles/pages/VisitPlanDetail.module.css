@@ -70,7 +70,6 @@
 }
 .visibility_grid_history {
   display: grid;
-  /* grid-template-columns: 90% 10%; */
   margin: 10px 0;
   color: #b9b9c3;
   font-size: 12px;
