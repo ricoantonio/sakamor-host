@@ -14,11 +14,6 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -29,40 +24,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/visit/unplan": [
+    "/reward": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan.js"
-    ],
-    "/visit/unplan/history": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/history.js"
-    ],
-    "/visit/unplan/history/[id]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/history/[id].js"
-    ],
-    "/visit/unplan/history/[id]/avability": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/history/[id]/avability.js"
-    ],
-    "/visit/unplan/history/[id]/visibility": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/history/[id]/visibility.js"
-    ],
-    "/visit/unplan/submit": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/submit.js"
-    ],
-    "/visit/unplan/submit/availability": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visit/unplan/submit/availability.js"
+      "static/chunks/pages/reward.js"
     ],
     "/visit/unplan/submit/visibility": [
       "static/chunks/webpack.js",

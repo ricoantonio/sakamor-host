@@ -330,7 +330,7 @@ export default function Plan() {
                     >
                       <div>{userData.name}</div>
                       <div>{userData.username}</div>
-                      <div>{userData.role}</div>
+                      <div>{role}</div>
                     </Card>
                     {role === "SMR" ? (
                       <Card

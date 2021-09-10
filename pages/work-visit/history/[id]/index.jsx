@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import styles from "../../../../styles/pages/WorkVisitDetail.module.css";
 
@@ -8,16 +7,10 @@ import { Stores } from "../../../../store";
 import Nav from "../../../../components/Nav";
 import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
-import Button from "../../../../components/Button";
-import Modal from "../../../../components/Modal";
-import Dropdown from "../../../../components/Dropdown";
 
 import {
-  getAllWorkVisit,
-  getKontenWorkVisit,
   getWorkVisitMonthlyHistory,
   getWorkVisitRating,
-  submitWorkVisit,
 } from "../../../../helper";
 
 export default function index() {

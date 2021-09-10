@@ -3,11 +3,7 @@ import styles from "../../../styles/pages/Announcement.module.css";
 import Nav from "../../../components/Nav";
 import { Stores } from "../../../store";
 import BotNav from "../../../components/BotNav";
-import {
-  getAllAnnouncement,
-  getBenefitCodeCabang,
-  updateReadAnnouncement,
-} from "../../../helper";
+import { getBenefitCodeCabang } from "../../../helper";
 import moment from "moment";
 import Spinner from "../../../components/Spinner";
 

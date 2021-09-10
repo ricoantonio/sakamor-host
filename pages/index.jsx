@@ -20,6 +20,7 @@ import {
   getFrontlinerPimca,
   getMenu,
   getNoo,
+  getNotificationbyUsername,
   getPlanHistory,
   getPlanList,
   getProduktifitas,
@@ -140,14 +141,26 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      getAllAnnouncement(userData)
+    if (userData.username) {
+      // getAllAnnouncement(userData)
+      //   .then((data) => {
+      //     const newAnnouncement = data.filter((val) => {
+      //       return val.isRead === false;
+      //     });
+      //     setNewAnnouncement(newAnnouncement);
+      //     if (newAnnouncement.length > 0) {
+      //       setNotif(true);
+      //     } else {
+      //       setNotif(false);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+      getNotificationbyUsername(userData.username)
         .then((data) => {
-          const newAnnouncement = data.filter((val) => {
-            return val.isRead === false;
-          });
-          setNewAnnouncement(newAnnouncement);
-          if (newAnnouncement.length > 0) {
+          setNewAnnouncement(data);
+          if (data.length > 0) {
             setNotif(true);
           } else {
             setNotif(false);
@@ -156,6 +169,7 @@ export default function Home() {
         .catch((err) => {
           console.log(err);
         });
+
       getWorkDay()
         .then((data) => {
           setWorkDay(data);

@@ -6,11 +6,9 @@ import styles from "../../../../styles/components/History.module.css";
 import Nav from "../../../../components/Nav";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
-import DetailPlan from "../../../../components/DetailPlan";
 import Link from "next/link";
 import Card from "../../../../components/Card";
 import { getAuth, getUnplanNearMe } from "../../../../helper";
-import setUnplanOutlet from "../../../../store/actions/setUnplanOutlet";
 
 export default function History({ type }) {
   const { state, dispatch, actions } = useContext(Stores);

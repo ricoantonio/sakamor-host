@@ -1712,7 +1712,8 @@ const getNotificationbyUsername = (username) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetNotifikasiByUser?username=dian%40gmail.com`,
+      // `/MasterDataLokal/GetNotifikasiByUser?username=dian%40gmail.com`,
+      `/MasterDataLokal/GetNotifikasiByUser?username=${username}`,
     {
       headers: {
         apiKey: TOKEN,

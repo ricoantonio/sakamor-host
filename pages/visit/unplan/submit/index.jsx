@@ -263,7 +263,7 @@ export default function index() {
                     "Data will be lost if you leave the page, are you sure?"
                   )
                 ) {
-                  actions.setDefaultVisitPlan();
+                  actions.setDefaultVisitUnplan();
                   Router.push("/visit/unplan");
                 }
               }}

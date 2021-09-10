@@ -230,20 +230,38 @@ export default function Visibility({ type }) {
       }
     }
     const renderFlagMinData = (val) => {
-      if (doneFormVis.length < 6) {
-        return (
-          <span style={{ color: "red" }}>
-            {val.type == null
-              ? "Select Type"
-              : val.brand == null
-              ? "Select Brand"
-              : val.file == null
-              ? "Insert File"
-              : null}
-          </span>
-        );
+      if (type === "SPREADING") {
+        if (doneFormVis.length < 2) {
+          return (
+            <span style={{ color: "red" }}>
+              {val.type == null
+                ? "Select Type"
+                : val.brand == null
+                ? "Select Brand"
+                : val.file == null
+                ? "Insert File"
+                : null}
+            </span>
+          );
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        if (doneFormVis.length < 6) {
+          return (
+            <span style={{ color: "red" }}>
+              {val.type == null
+                ? "Select Type"
+                : val.brand == null
+                ? "Select Brand"
+                : val.file == null
+                ? "Insert File"
+                : null}
+            </span>
+          );
+        } else {
+          return null;
+        }
       }
     };
     var render = vis.map((val, index) => {

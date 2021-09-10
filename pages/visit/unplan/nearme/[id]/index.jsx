@@ -11,7 +11,6 @@ import Spinner from "../../../../../components/Spinner";
 import Button from "../../../../../components/Button";
 
 import {
-  getPlanId,
   getUnplanNearMe,
   submitVisitPlan,
   submitVisitPlanDposm,

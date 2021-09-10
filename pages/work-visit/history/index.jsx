@@ -8,13 +8,7 @@ import Nav from "../../../components/Nav";
 import Spinner from "../../../components/Spinner";
 import Card from "../../../components/Card";
 
-import {
-  getAuth,
-  getPlanMonthlyHistory,
-  getUnplanMonthlyHistory,
-  getSpreadingMonthlyHistory,
-  getWorkVisitMonthlyHistory,
-} from "../../../helper";
+import { getAuth, getWorkVisitMonthlyHistory } from "../../../helper";
 import moment from "moment";
 
 export default function History({ type }) {

@@ -6,7 +6,6 @@ import styles from "../../styles/components/History.module.css";
 import Nav from "../../components/Nav";
 import Spinner from "../../components/Spinner";
 import Button from "../../components/Button";
-import DetailPlan from "../../components/DetailPlan";
 import Link from "next/link";
 import Card from "../../components/Card";
 import { getAllWorkVisit, getAuth, getUnplanNearMe } from "../../helper";

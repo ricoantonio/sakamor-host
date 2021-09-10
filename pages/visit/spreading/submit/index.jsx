@@ -139,7 +139,7 @@ export default function index() {
             {type}
             <div style={{ textAlign: "right" }}>
               {type === "Visibility"
-                ? `${doneFormVis.length}/6`
+                ? `${doneFormVis.length}/2`
                 : type === "Availability"
                 ? `${doneFormAva.length}/25`
                 : ""}
@@ -225,7 +225,7 @@ export default function index() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(doneFormVis.length / 6) * 100}%`,
+                          width: `${(doneFormVis.length / 2) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -280,7 +280,7 @@ export default function index() {
             {type}
             <div style={{ textAlign: "right" }}>
               {type === "Visibility"
-                ? `${doneFormVis.length}/6`
+                ? `${doneFormVis.length}/2`
                 : type === "Availability"
                 ? `${doneFormAva.length}/25`
                 : ""}
@@ -305,7 +305,7 @@ export default function index() {
                         <div
                           className={styles.progress_bar_now}
                           style={{
-                            width: `${(doneFormVis.length / 6) * 100}%`,
+                            width: `${(doneFormVis.length / 2) * 100}%`,
                           }}
                         ></div>
                       </div>
@@ -351,7 +351,7 @@ export default function index() {
     const visDone = state.visitSpreadingReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
-    if (visDone.length >= 6) {
+    if (visDone.length >= 2) {
       setLoadingSubmit(true);
       setVisNotDone(false);
       const userData = JSON.parse(localStorage.getItem("user"));
@@ -554,7 +554,7 @@ export default function index() {
                   Router.push("/visit/spreading");
                 }
               }}
-              disable={visDone.length >= 6 ? false : true}
+              disable={visDone.length >= 2 ? false : true}
             />
             <div className={styles.main}>
               {visNotDone ? (

@@ -4,7 +4,6 @@ import Link from "next/link";
 import Router from "next/router";
 import { Stores } from "../../store";
 import {
-  getAllAnnouncement,
   getAuth,
   getIncentiveYearly,
   getKpiInventiveMonthlyPimca,

@@ -157,13 +157,20 @@ export default function HistoryDetail({ type }) {
     //   return val.file !== null && val.type !== null;
     // });
     // const doneFormAva = state.visitPlanReducer.avability;
+    const renderProgressVis = (length) => {
+      if (type === "SPREADING") {
+        return `${length}/2`;
+      } else {
+        return `${length}/6`;
+      }
+    };
     return (
       <div>
         <div className={styles.render_data}>
           {subType}
           <div style={{ textAlign: "right" }}>
             {subType === "Visibility"
-              ? `${posmList.length}/6`
+              ? renderProgressVis(posmList.length)
               : subType === "Availability"
               ? `${productList.length}/25`
               : ""}
@@ -183,9 +190,11 @@ export default function HistoryDetail({ type }) {
                       <div className={styles.progress_bar}></div>
                       <div
                         className={styles.progress_bar_now}
-                        style={{
-                          width: `${(posmList.length / 6) * 100}%`,
-                        }}
+                        style={
+                          type === "SPREADING"
+                            ? { width: `${(posmList.length / 2) * 100}%` }
+                            : { width: `${(posmList.length / 6) * 100}%` }
+                        }
                       ></div>
                     </div>
                   ) : subType === "Availability" ? (
