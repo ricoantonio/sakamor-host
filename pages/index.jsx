@@ -9,6 +9,7 @@ import Spinner from "../components/Spinner";
 import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import CheckBox from "../components/Checkbox";
 
 import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
@@ -58,6 +59,7 @@ export default function Home() {
   const [frontliner, setFrontliner] = useState([]);
   const [NOO, setNOO] = useState([]);
   const [workDay, setWorkDay] = useState([]);
+  const [pendingApprove, setPendingApprove] = useState([]);
   const isMounted = useRef(true);
   const [PP, setPP] = useState("");
 
@@ -141,7 +143,7 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData.username) {
+    if (userData) {
       // getAllAnnouncement(userData)
       //   .then((data) => {
       //     const newAnnouncement = data.filter((val) => {
@@ -207,7 +209,7 @@ export default function Home() {
         .then((data) => {
           if (data[0].roleCode === "PIMCAB") {
             setRole("PIMCAB");
-            setFocus("WORK-VISIT");
+            setFocus("SALES-TRACKING");
             getSalesTarget75Pimca(userData, month, year)
               .then((data) => {
                 if (data) {
@@ -324,45 +326,76 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
+      } else if (focus === "SALES-TRACKING") {
+        setPendingApprove([
+          {
+            id: "00951c2b-c47f-4d27-8c2b-86ef8b4830bb",
+            nomorDokumen: "0007/VP/09/2021",
+            usernameSMR: "aprilia",
+            namaOutlet: "AP. BUDI FARMA",
+            alamatOutlet:
+              "JL. UTARA PASAR PANGKAH RT.08 RW.06 KEC. PANGKAH, KAB. TEGAL",
+            status: "Submit",
+            catatan: null,
+            modul: "Plan",
+          },
+          {
+            id: "b1084e7c-f4fc-4863-806e-bbfc6372f56d",
+            nomorDokumen: "0006/VP/09/2021",
+            usernameSMR: "aprilia",
+            namaOutlet: "AP. KALIKANGKUNG",
+            alamatOutlet:
+              "JL. RAYA BANJARAN-BALAMOA RT 01/02 KALIKANGKUNG,PANGKAH, KAB. TEGAL",
+            status: "Submit",
+            catatan: null,
+            modul: "UnPlan",
+          },
+          {
+            id: "3e42cff5-c3f0-4fdf-9b70-f1900c93249c",
+            nomorDokumen: "0018/VP/09/2021",
+            usernameSMR: "aprilia",
+            namaOutlet: "AP. AHZA FARMA",
+            alamatOutlet:
+              "JL RONGGOWARSITO NO. 20 RT 005 RW 001 DESA PEBATAN KECAMATAN WANASARI KABUPATEN BREBES",
+            status: "Submit",
+            catatan: null,
+            modul: "Spreading",
+          },
+        ]);
+        setLoading(false);
+      } else if (focus === "PLAN") {
+        getPlanHistory(userData)
+          .then((data) => {
+            setPlanHistory(data);
+            setLoading(false);
+            // console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (focus === "UNPLAN") {
+        getUnplanMonthlyHistory(userData)
+          .then((data) => {
+            // console.log(data);
+            setUnplanHistory(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (focus === "SPREADING") {
+        getSpreadingMonthlyHistory(userData)
+          .then((data) => {
+            // console.log(data);
+            setSpreadingHistory(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } else {
       Router.push("/");
-    }
-  }, [focus]);
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    if (focus === "PLAN") {
-      getPlanHistory(userData)
-        .then((data) => {
-          setPlanHistory(data);
-          setLoading(false);
-          // console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (focus === "UNPLAN") {
-      getUnplanMonthlyHistory(userData)
-        .then((data) => {
-          // console.log(data);
-          setUnplanHistory(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (focus === "SPREADING") {
-      getSpreadingMonthlyHistory(userData)
-        .then((data) => {
-          // console.log(data);
-          setSpreadingHistory(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     }
   }, [focus]);
 
@@ -375,7 +408,9 @@ export default function Home() {
           val.moduleCode === "SPREADING"
         );
       } else if (role === "PIMCAB") {
-        return val.moduleCode === "WORK-VISIT";
+        return (
+          val.moduleCode === "WORK-VISIT" || val.moduleCode === "SALES-TRACKING"
+        );
       }
     });
 
@@ -399,6 +434,8 @@ export default function Home() {
               ? "Spreading"
               : val.moduleCode === "WORK-VISIT"
               ? "Work Visit"
+              : val.moduleCode === "SALES-TRACKING"
+              ? "Approval"
               : ""}
           </div>
         );
@@ -410,7 +447,7 @@ export default function Home() {
           className={
             auth.length === 3
               ? styles.menu_grid3
-              : auth.length === 1
+              : auth.length === 2
               ? styles.menu_grid1
               : ""
           }
@@ -869,6 +906,104 @@ export default function Home() {
     }
   };
 
+  const renderApproval = () => {
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return (
+        <>
+          <Card style={{ marginTop: "22px", borderRadius: "30px" }} shadow>
+            <div className={styles.plan_container}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  color: "#5E5873",
+                  textAlign: "left",
+                }}
+              >
+                Pending Approval
+                <div style={{ margin: "22px 0" }}>
+                  <div
+                    style={{ display: "grid", gridTemplateColumns: "10% 90%" }}
+                  >
+                    <div style={{ paddingTop: "5px" }}>
+                      <CheckBox />
+                    </div>
+                    <button
+                      style={{
+                        height: "30px",
+                        fontSize: "12px",
+                        width: "100%",
+                        backgroundColor: "#41867a",
+                        border: "none",
+                        borderRadius: "5px",
+                        color: "white",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Approve
+                    </button>
+                  </div>
+                  {pendingApprove.map((val) => {
+                    return (
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "10% 90%",
+                          fontSize: "14px",
+                          margin: "8px 0",
+                        }}
+                      >
+                        <>
+                          <div>
+                            <CheckBox />
+                          </div>
+                          <div>
+                            <div
+                              style={{
+                                fontWeight: "700",
+                                display: "grid",
+                                gridTemplateColumns: "2fr 1fr",
+                              }}
+                            >
+                              <div>{val.usernameSMR}</div>
+                              <div
+                                style={{
+                                  backgroundColor: "#feb800",
+                                  color: "white",
+                                  textAlign: "center",
+                                  borderRadius: "20px",
+                                  fontWeight: "500",
+                                  fontSize: "12px",
+                                  paddingTop: "1px",
+                                }}
+                              >
+                                {val.modul}
+                              </div>
+                            </div>
+                            <div
+                              style={{ fontWeight: "700", fontSize: "12px" }}
+                            >
+                              {val.namaOutlet}
+                            </div>
+                            <div style={{ fontSize: "12px" }}>
+                              {val.alamatOutlet}
+                            </div>
+                          </div>
+                        </>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </>
+      );
+    }
+  };
+
   const renderWorkDay = () => {
     if (workDay.length !== 0 && !loading && !loadingMenu) {
       return (
@@ -1081,6 +1216,8 @@ export default function Home() {
                     ? renderSpreading()
                     : focus === "WORK-VISIT"
                     ? renderWorkVisit()
+                    : focus === "SALES-TRACKING"
+                    ? renderApproval()
                     : ""}
                   {renderWorkDay()}
                   {renderProgress()}

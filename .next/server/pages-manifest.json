@@ -2,6 +2,8 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/visit/unplan/submit/visibility": "pages/visit/unplan/submit/visibility.js",
-  "/reward": "pages/reward.js"
+  "/forgot": "pages/forgot.js",
+  "/next/dist/pages/_error": "pages/next/dist/pages/_error.js",
+  "/login": "pages/login.js",
+  "/": "pages/index.js"
 }

@@ -8,6 +8,7 @@ import Spinner from "../components/Spinner";
 import { Stores } from "../store";
 import Router from "next/router";
 import { onLogin } from "../helper";
+import Link from "next/link";
 
 export default function Login() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -103,7 +104,11 @@ export default function Login() {
                 <div className={styles.button_container}>
                   <Button submit text={"Log In"} />
                 </div>
-                <div className={styles.forgot_pass}>Forgot Password?</div>
+                <Link href={"/forgot"}>
+                  <a>
+                    <div className={styles.forgot_pass}>Forgot Password?</div>
+                  </a>
+                </Link>
               </Form>
             </Formik>
           </div>
