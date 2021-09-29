@@ -11,13 +11,20 @@ import Card from "../../../../components/Card";
 import Spinner from "../../../../components/Spinner";
 import Button from "../../../../components/Button";
 
-import { submitVisitUnplanDposm, submitVisitUnplan } from "../../../../helper";
+import {
+  submitVisitUnplanDposm,
+  submitVisitUnplan,
+  getUnplanById,
+  approvalSubmit,
+  getPimcaByCabang,
+} from "../../../../helper";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [visNotDone, setVisNotDone] = useState(false);
+  const [pimca, setPimca] = useState([]);
 
   var now = new Date();
 
@@ -32,6 +39,20 @@ export default function index() {
       }
     } else {
       Router.push("/visit/unplan");
+    }
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      getPimcaByCabang(userData.kodeCabang)
+        .then((data) => {
+          setPimca(data);
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -131,6 +152,59 @@ export default function index() {
     );
   };
 
+  const onSubmitApproval = (plan) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      const data = {
+        approvalTransactionDataModel: [
+          {
+            systemCode: "SAKAMOR",
+            moduleCode: "VISITUNPLAN",
+            approvalLevel: 1,
+            id: plan.id,
+            approvalID: 358,
+            docNo: plan.nomorDokumen,
+            pic: pimca.username,
+            approvalLine: 0,
+            notes: "string",
+            needApprove: true,
+            approveDate: now.toISOString(),
+            status: "string",
+          },
+        ],
+        systemCode: "SAKAMOR",
+        moduleCode: "VISITUNPLAN",
+        docNo: plan.nomorDokumen,
+        approverFrom: "string",
+        approverTo: "string",
+        status: "string",
+        description: "string",
+        notes: "string",
+        createdBy: userData.username,
+        createdDate: now.toISOString(),
+        emailData: {
+          systemCode: "SAKAMOR",
+          moduleCode: "VISITUNPLAN",
+          documentNumber: plan.nomorDokumen,
+          emailTo: "string",
+          emailCC: "string",
+          emailBCC: "string",
+          emailSubject: "string",
+          emailBody: "string",
+        },
+      };
+
+      console.log(data);
+      approvalSubmit(data, plan.id, userData)
+        .then((data) => {
+          console.log(data);
+          actions.setDefaultVisitUnplan();
+          Router.push("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const onSubmit = () => {
     const visDone = state.visitUnplanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
@@ -161,6 +235,7 @@ export default function index() {
         checkOutDate: now.toISOString(),
         createdBy: userData.username,
         updatedBy: userData.username,
+        status: "Submit",
       };
 
       const files = state.visitUnplanReducer.visibility.map((val, index) => {
@@ -196,6 +271,7 @@ export default function index() {
       submitVisitUnplan(data)
         .then((res) => {
           console.log("ini res", res);
+          console.log(res);
           const bodyPosm = state.visitUnplanReducer.visibility.map(
             (val, index) => {
               if (val.type && val.file && val.brand) {
@@ -215,11 +291,16 @@ export default function index() {
           );
           for (let i = 0; i < files.length; i++) {
             submitVisitUnplanDposm(bodyPosm[i], files[i])
-              .then((res) => {
+              .then((res2) => {
                 if (i === 5) {
-                  setLoadingSubmit(false);
-                  Router.push("/");
-                  actions.setDefaultVisitUnplan();
+                  getUnplanById(res.avp.id)
+                    .then((unplan) => {
+                      console.log("ini dataunplan", unplan);
+                      onSubmitApproval(unplan);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 }
               })
               .catch((err) => {

@@ -9,6 +9,8 @@ import {
   defaultVisitSpreading,
 } from "./reducers/visitSpreading";
 
+import { approvalReducer, defaultApproval } from "./reducers/approval";
+
 import userLogin from "./actions/userLogin";
 import setMenu from "./actions/setMenu";
 import keepState from "./actions/keepState";
@@ -38,6 +40,8 @@ import setDefaultVisitPlan from "./actions/setDefaultVisitPlan";
 import setDefaultVisitUnplan from "./actions/setDefaultVisitUnplan";
 import setDefaultVisitSpreading from "./actions/setDefaultVisitSpreading";
 
+import setFocusApproval from "./actions/setFocusApproval";
+
 const Stores = createContext();
 
 const Store = ({ children }) => {
@@ -55,6 +59,7 @@ const Store = ({ children }) => {
           prevState.visitSpreadingReducer,
           action
         ),
+        approvalReducer: approvalReducer(prevState.approvalReducer, action),
       };
     },
     {
@@ -63,6 +68,7 @@ const Store = ({ children }) => {
       visitPlanReducer: defaultVisitPlan,
       visitUnplanReducer: defaultVisitUnplan,
       visitSpreadingReducer: defaultVisitSpreading,
+      approvalReducer: defaultApproval,
     }
   );
 
@@ -95,6 +101,8 @@ const Store = ({ children }) => {
       ...setSpreadingJenisChannel(dispatch),
       ...setSpreadingOutlet(dispatch),
       ...setDefaultVisitSpreading(dispatch),
+
+      ...setFocusApproval(dispatch),
     }),
     []
   );

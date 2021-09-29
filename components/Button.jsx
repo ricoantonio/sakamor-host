@@ -13,6 +13,8 @@ const Button = ({ onClick, text, submit, color }) => {
           ? styles.container_orange
           : color === "red"
           ? styles.container_red
+          : color === "disable"
+          ? styles.container_disable
           : styles.container
       }
       onClick={onClick}

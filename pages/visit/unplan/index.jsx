@@ -53,34 +53,44 @@ export default function Unplan() {
 
   useEffect(() => {
     // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      if (focusJenisChannel.jenisChannelID) {
-        getSearchOutlet(focusJenisChannel.jenisChannelID, searchOutlet)
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      const timeoutId = setTimeout(() => {
+        if (focusJenisChannel.jenisChannelID) {
+          getSearchOutlet(
+            focusJenisChannel.jenisChannelID,
+            userData,
+            searchOutlet
+          )
+            .then((data) => {
+              setListOutlet(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          setListOutlet([]);
+        }
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [searchOutlet]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      // fetch on stop typing
+      const timeoutId = setTimeout(() => {
+        getSearchJenisChannel(userData, searchJenisChannel, "UNPLAN")
           .then((data) => {
-            setListOutlet(data);
+            setListJenisChannel(data);
           })
           .catch((err) => {
             console.log(err);
           });
-      } else {
-        setListOutlet([]);
-      }
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchOutlet]);
-
-  useEffect(() => {
-    // fetch on stop typing
-    const timeoutId = setTimeout(() => {
-      getSearchJenisChannel(searchJenisChannel)
-        .then((data) => {
-          setListJenisChannel(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 1000);
-    return () => clearTimeout(timeoutId);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
   }, [searchJenisChannel]);
 
   const onViewOutletClass = (id) => {

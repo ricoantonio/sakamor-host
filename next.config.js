@@ -17,9 +17,6 @@ const settings = {
 };
 
 const settingsProd = {
-  devIndicators: {
-    autoPrerender: false,
-  },
   pwa: {
     dest: "public",
   },
@@ -35,5 +32,6 @@ const settingsProd = {
   },
 };
 
-module.exports =
-  process.env.NODE_ENV === "development" ? settings : withPWA(settingsProd);
+// module.exports =
+//   process.env.NODE_ENV === "development" ? settings : withPWA(settingsProd);
+module.exports = withPWA(settingsProd);

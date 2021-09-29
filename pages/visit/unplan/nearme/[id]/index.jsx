@@ -90,18 +90,21 @@ export default function index() {
   };
 
   const onSearchJenisChannel = (search) => {
-    setRenderListJenisChannel(true);
-    setSearchJenisChannel(search);
-    if (search) {
-      getSearchJenisChannel(search)
-        .then((data) => {
-          setListJenisChannel(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      setListJenisChannel([]);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setRenderListJenisChannel(true);
+      setSearchJenisChannel(search);
+      if (search) {
+        getSearchJenisChannel(userData, search, "UNPLAN")
+          .then((data) => {
+            setListJenisChannel(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        setListJenisChannel([]);
+      }
     }
   };
 

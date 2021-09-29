@@ -32,7 +32,7 @@
   width: 18px;
   border-radius: 4px;
   background-color: white;
-  border: solid 0.5px black;
+  border: solid 0.5px #5e5873;
 }
 .checkmark_yellow {
   position: absolute;
@@ -42,6 +42,7 @@
   width: 18px;
   border-radius: 4px;
   background-color: white;
+  border: solid 0.5px #5e5873;
 }
 
 /* On mouse-over, add a grey background color */

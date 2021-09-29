@@ -67,11 +67,10 @@ export default function Login() {
             )}
             <Formik
               initialValues={{
-                username: "",
-                password: "",
+                email: "",
               }}
               onSubmit={async (values) => {
-                if (values.username !== "" && values.password !== "") {
+                if (values.email !== "") {
                   onLoginClick(values);
                 } else {
                   setWrongUser(true);
@@ -79,19 +78,19 @@ export default function Login() {
               }}
             >
               <Form>
-                <div className={styles.input_text}>Username</div>
+                <div className={styles.input_text}>Email</div>
                 <Field
                   className={styles.input}
-                  id="username"
-                  name="username"
-                  placeholder="Employee ID"
+                  id="email"
+                  name="email"
+                  placeholder="Employee@mail.com"
                 />
                 <div className={styles.button_container}>
                   <Button submit text={"Submit"} />
                 </div>
                 <Link href={"/login"}>
                   <a>
-                    <div className={styles.forgot_pass}>Log In</div>
+                    <div className={styles.forgot_pass}>Log In?</div>
                   </a>
                 </Link>
               </Form>

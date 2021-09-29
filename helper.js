@@ -13,6 +13,7 @@ import {
   API_ANNOUNCEMENT,
   API_INCENTIVE,
   API_BENEFIT,
+  API_APPROVAL,
 } from "./constant";
 
 var now = new Date();
@@ -111,6 +112,23 @@ const postChangePass = (data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const forgotPassword = (email) => {
+  return fetch(API_URL + API_USER + `/User/ForgotPassword?email=${email}`, {
+    headers: {
+      apiKey: TOKEN,
+    },
   })
     .then((response) => {
       return response.json();
@@ -224,9 +242,12 @@ const getHnaAvg = (productCode, outletCode) => {
     });
 };
 
-const getSearchJenisChannel = (search) => {
+const getSearchJenisChannel = (userData, search, modul) => {
   return fetch(
-    API_URL + API_MASTER + `/MasterDataLokal/GetJenisChannelBy?teks=${search}`,
+    API_URL +
+      API_MASTER +
+      // `/MasterDataLokal/GetJenisChannelBy?username=${userData.username}&teks=${search}&modul=${modul}`,
+      `/MasterDataLokal/GetJenisChannelBy?username=abubakar&teks=${search}&modul=${modul}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -237,6 +258,7 @@ const getSearchJenisChannel = (search) => {
       return response.json();
     })
     .then((data) => {
+      console.log(data);
       return data;
     })
     .catch((err) => {
@@ -244,11 +266,12 @@ const getSearchJenisChannel = (search) => {
     });
 };
 
-const getSearchOutlet = (jenisChannelId, search) => {
+const getSearchOutlet = (jenisChannelId, userData, search) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetOutletBy/${jenisChannelId}?teks=${search}`,
+      // `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=${userData.username}&teks=${search}`,
+      `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=abubakar&teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -744,6 +767,59 @@ const getMasterVisitPlan = (userData) => {
     });
 };
 
+const getApproval = (userData) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      // `/ActivityVisitPlan/GetDocumentVisitForApproval/${userData.kodeCabang}`,
+      `/ActivityVisitPlan/GetDocumentVisitForApproval/32`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getRevisePlanListSmr = (userData) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitPlan/v1/api/ActivityVisitPlan/GetActivityVisitPlanByStatus/revise?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const deleteMasterPlanSMR = (id) => {
   return fetch(
     API_URL + API_VISIT_PLAN + `/MasterVisitPlan/DeleteMasterVisitPlan/${id}`,
@@ -781,6 +857,26 @@ const saveMasterPlanVisit = (data) => {
     })
     .then((data) => {
       console.log("baikan saveall", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getPlanById = (id) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitPlan/v1/api/ActivityVisitPlan/GetActivityVisitPlanById/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
       return data;
     })
     .catch((err) => {
@@ -891,6 +987,26 @@ const getInvoiceDataUnplan = (visitPlanId) => {
     });
 };
 
+const getUnplanById = (id) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/GetActivityVisitUnPlanById/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const getInvoiceDataPosmUnplan = (visitUnplanId) => {
   return fetch(
     API_URL +
@@ -978,6 +1094,31 @@ const getUnplanNearMe = () => {
       return response.json();
     })
     .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getReviseUnPlanListSmr = (userData) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/GetActivityVisitUnPlanByStatus/submit?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
       return data;
     })
     .catch((err) => {
@@ -1137,6 +1278,53 @@ const getSpreadingMonthlyHistory = (userData) => {
     API_URL +
       API_VISIT_SPREADING +
       `/ActivitySpreading/GetHistoryActivitySpreadingBy?username=${userData.username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      data.sort(function (a, b) {
+        var dateA = new Date(a.tanggal),
+          dateB = new Date(b.tanggal);
+        return dateB - dateA;
+      });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSpreadingById = (id) => {
+  return fetch(
+    API_URL +
+      API_VISIT_SPREADING +
+      `/ActivitySpreading/GetActivitySpreadingById/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getReviseSpreadingListSmr = (userData) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/GetActivitySpreadingByStatus/submit?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1573,9 +1761,9 @@ const getKpiInventiveMonthlyPimca = (userData, date) => {
   return fetch(
     API_URL +
       API_INCENTIVE +
-      `/KpiIncentiveMonthly/IncentiveCalculatorPimca/14/${moment(date).format(
-        "YYYY-MM"
-      )}-01/ABM`,
+      `/KpiIncentiveMonthly/IncentiveCalculatorPimca/${
+        userData.kodeCabang
+      }/${moment(date).format("YYYY-MM")}-01/ABM`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1621,7 +1809,7 @@ const getSalesTargetPimca = (userData, month, year) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetSalesTargetPimcaByCabang/14/${year}/${month}`,
+      `/MasterDataLokal/GetSalesTargetPimcaByCabang/${userData.kodeCabang}/${year}/${month}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1643,7 +1831,7 @@ const getSalesTarget75Pimca = (userData, month, year) => {
   return fetch(
     API_URL +
       API_MASTER +
-      `/MasterDataLokal/GetSalesTargetPimca75ByCabang/14/${year}/${month}`,
+      `/MasterDataLokal/GetSalesTargetPimca75ByCabang/${userData.kodeCabang}/${year}/${month}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1665,7 +1853,7 @@ const getFrontlinerPimca = (userData, month, year) => {
   return fetch(
     API_URL +
       API_INCENTIVE +
-      `/Frontliner/GetFrontlinerPimca/14/${month}/${year}`,
+      `/Frontliner/GetFrontlinerPimca/${userData.kodeCabang}/${month}/${year}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1732,14 +1920,40 @@ const getNotificationbyUsername = (username) => {
     });
 };
 
+const getPimcaByCabang = (userData) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetPimcaBy/${userData.kodeCabang}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
-  return fetch(API_URL + API_BENEFIT + `/Benefits/GetBenefitsByKodeCabang/04`, {
-    headers: {
-      apiKey: TOKEN,
-    },
-  })
+  return fetch(
+    API_URL +
+      API_BENEFIT +
+      `/Benefits/GetBenefitsByKodeCabang/${userData.kodeCabang}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
     .then((response) => {
       return response.json();
     })
@@ -1751,12 +1965,290 @@ const getBenefitCodeCabang = (userData) => {
     });
 };
 
+// APPROVAL ==============================================================================================================================================
+
+const approvalReject = (data, modul, id, userData) => {
+  // console.log(data);
+  return fetch(API_URL + API_APPROVAL + "/approval/transaction/Reject", {
+    method: "PUT",
+    headers: {
+      apiKey: TOKEN,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (modul === "Plan") {
+        return fetch(
+          API_URL +
+            API_VISIT_PLAN +
+            `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Rejected&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "UnPlan") {
+        return fetch(
+          // API_URL +
+          //   API_VISIT_PLAN +
+          //   `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Rejected&updatedBy=${userData.username}`,
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/UpdateStatusVisitUnPlan/${id}?status=Rejected&updatedBy=${userData.username}`,
+
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "Spreading") {
+        return fetch(
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/UpdateStatusSpreading/${id}?status=Rejected&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const approvalRevise = (data, modul, id, userData) => {
+  // console.log(data);
+  return fetch(API_URL + API_APPROVAL + "/approval/transaction/Reject", {
+    method: "PUT",
+    headers: {
+      apiKey: TOKEN,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (modul === "Plan") {
+        return fetch(
+          API_URL +
+            API_VISIT_PLAN +
+            `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Revise&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "UnPlan") {
+        return fetch(
+          // API_URL +
+          //   API_VISIT_PLAN +
+          //   `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Revise&updatedBy=${userData.username}`,
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/UpdateStatusVisitUnPlan/${id}?status=Revise&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "Spreading") {
+        return fetch(
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/UpdateStatusSpreading/${id}?status=Revise&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const approvalApprove = (data, modul, id, userData) => {
+  // console.log(data);
+  return fetch(API_URL + API_APPROVAL + "/approval/transaction/Approve", {
+    method: "PUT",
+    headers: {
+      apiKey: TOKEN,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (modul === "Plan") {
+        return fetch(
+          API_URL +
+            API_VISIT_PLAN +
+            `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Approved&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "UnPlan") {
+        return fetch(
+          // API_URL +
+          //   API_VISIT_PLAN +
+          //   `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Approved&updatedBy=${userData.username}`,
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/UpdateStatusVisitUnPlan/${id}?status=Approved&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (modul === "Spreading") {
+        return fetch(
+          // API_URL +
+          //   API_VISIT_PLAN +
+          //   `/ActivityVisitPlan/UpdateStatusVisitPlan/${id}?status=Approved&updatedBy=${userData.username}`,
+          `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/UpdateStatusSpreading/${id}?status=Approved&updatedBy=${userData.username}`,
+          {
+            method: "PUT",
+            headers: {
+              apiKey: TOKEN,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            // body: JSON.stringify(data),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const approvalSubmit = (data, id, userData) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/ApprovalAPI/v1/api/approval/transaction/Submit`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      setWrongUser(true);
+    });
+};
+
 export {
   // USER
   getMenu,
   getAuth,
   onLogin,
   postChangePass,
+  forgotPassword,
   // MASTER
   getProductSearch,
   getSearchJenisChannel,
@@ -1771,6 +2263,7 @@ export {
   getSmrByCabang,
   viewOutletClass,
   getNotificationbyUsername,
+  getPimcaByCabang,
   // VISIT PLAN
   getPlanList,
   getPlanId,
@@ -1785,6 +2278,9 @@ export {
   getMasterVisitPlan,
   deleteMasterPlanSMR,
   saveMasterPlanVisit,
+  getApproval,
+  getPlanById,
+  getRevisePlanListSmr,
   // VISIT UNPLAN
   submitVisitUnplan,
   submitVisitUnplanDposm,
@@ -1793,6 +2289,8 @@ export {
   getUnplanMonthlyHistory,
   viewFileUnplan,
   getUnplanNearMe,
+  getUnplanById,
+  getReviseUnPlanListSmr,
   // SPREADING
   submitVisitSpreading,
   submitVisitSpreadingDposm,
@@ -1800,6 +2298,8 @@ export {
   getInvoiceDataPosmSpreading,
   viewFileSpreading,
   getSpreadingMonthlyHistory,
+  getSpreadingById,
+  getReviseSpreadingListSmr,
   // WORK VISIT
   getAllWorkVisit,
   getWorkVisitMonthlyHistory,
@@ -1831,4 +2331,9 @@ export {
   getFrontlinerPimca,
   // BENEFIT
   getBenefitCodeCabang,
+  // APPROVAL
+  approvalReject,
+  approvalRevise,
+  approvalApprove,
+  approvalSubmit,
 };

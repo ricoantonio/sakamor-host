@@ -13,9 +13,12 @@ import CheckBox from "../components/Checkbox";
 
 import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
+
 import {
+  approvalApprove,
   getAllAnnouncement,
   getAllWorkVisit,
+  getApproval,
   getAuth,
   getFrontliner,
   getFrontlinerPimca,
@@ -25,6 +28,9 @@ import {
   getPlanHistory,
   getPlanList,
   getProduktifitas,
+  getRevisePlanListSmr,
+  getReviseSpreadingListSmr,
+  getReviseUnPlanListSmr,
   getSalesTarget75Pimca,
   getSalesTarget75SMR,
   getSalesTargetPimca,
@@ -37,6 +43,7 @@ import {
 
 import { Doughnut } from "react-chartjs-2";
 import moment from "moment";
+import router from "next/router";
 
 export default function Home() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -60,8 +67,16 @@ export default function Home() {
   const [NOO, setNOO] = useState([]);
   const [workDay, setWorkDay] = useState([]);
   const [pendingApprove, setPendingApprove] = useState([]);
-  const isMounted = useRef(true);
+  const [dummy, setDummy] = useState(0);
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const [revisePlan, setRevisePlan] = useState([]);
+  const [reviseUnPlan, setReviseUnPlan] = useState([]);
+  const [reviseSpreading, setReviseSpreading] = useState([]);
+
   const [PP, setPP] = useState("");
+  const isMounted = useRef(true);
+
+  var now = new Date();
 
   const dataPlan = {
     datasets: [
@@ -92,6 +107,7 @@ export default function Home() {
       },
     ],
   };
+
   const donutOptions = {
     cutoutPercentage: 75,
     tooltips: { enabled: false },
@@ -209,7 +225,7 @@ export default function Home() {
         .then((data) => {
           if (data[0].roleCode === "PIMCAB") {
             setRole("PIMCAB");
-            setFocus("SALES-TRACKING");
+            setFocus("WORK-VISIT");
             getSalesTarget75Pimca(userData, month, year)
               .then((data) => {
                 if (data) {
@@ -234,6 +250,32 @@ export default function Home() {
           } else if (data[0].roleCode === "SMR") {
             setRole("SMR");
             setFocus("PLAN");
+
+            getRevisePlanListSmr(userData.username)
+              .then((data) => {
+                setRevisePlan(data);
+                console.log("revise plan", data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getReviseUnPlanListSmr(userData.username)
+              .then((data) => {
+                setReviseUnPlan(data);
+                console.log("revise unplan", data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            getReviseSpreadingListSmr(userData.username)
+              .then((data) => {
+                setReviseSpreading(data);
+                console.log("revise spreading", data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+
             getSalesTargetSMR(userData, month, year)
               .then((data) => {
                 if (data) {
@@ -327,42 +369,18 @@ export default function Home() {
             console.log(err);
           });
       } else if (focus === "SALES-TRACKING") {
-        setPendingApprove([
-          {
-            id: "00951c2b-c47f-4d27-8c2b-86ef8b4830bb",
-            nomorDokumen: "0007/VP/09/2021",
-            usernameSMR: "aprilia",
-            namaOutlet: "AP. BUDI FARMA",
-            alamatOutlet:
-              "JL. UTARA PASAR PANGKAH RT.08 RW.06 KEC. PANGKAH, KAB. TEGAL",
-            status: "Submit",
-            catatan: null,
-            modul: "Plan",
-          },
-          {
-            id: "b1084e7c-f4fc-4863-806e-bbfc6372f56d",
-            nomorDokumen: "0006/VP/09/2021",
-            usernameSMR: "aprilia",
-            namaOutlet: "AP. KALIKANGKUNG",
-            alamatOutlet:
-              "JL. RAYA BANJARAN-BALAMOA RT 01/02 KALIKANGKUNG,PANGKAH, KAB. TEGAL",
-            status: "Submit",
-            catatan: null,
-            modul: "UnPlan",
-          },
-          {
-            id: "3e42cff5-c3f0-4fdf-9b70-f1900c93249c",
-            nomorDokumen: "0018/VP/09/2021",
-            usernameSMR: "aprilia",
-            namaOutlet: "AP. AHZA FARMA",
-            alamatOutlet:
-              "JL RONGGOWARSITO NO. 20 RT 005 RW 001 DESA PEBATAN KECAMATAN WANASARI KABUPATEN BREBES",
-            status: "Submit",
-            catatan: null,
-            modul: "Spreading",
-          },
-        ]);
-        setLoading(false);
+        getApproval(userData)
+          .then((data) => {
+            var dataCheckBox = data.map((val) => {
+              return { ...val, checkBox: false };
+            });
+            setPendingApprove(dataCheckBox);
+            console.log(data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (focus === "PLAN") {
         getPlanHistory(userData)
           .then((data) => {
@@ -906,7 +924,101 @@ export default function Home() {
     }
   };
 
+  const onApprove = () => {
+    var checkPending = pendingApprove.filter((val) => {
+      return val.checkBox;
+    });
+    if (checkPending.length) {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (userData) {
+        setLoadingApprove(true);
+        for (let i = 0; i < checkPending.length; i++) {
+          const module =
+            checkPending[i].modul === "Plan"
+              ? "VISITPLAN"
+              : checkPending[i].modul === "UnPlan"
+              ? "VISITUNPLAN"
+              : checkPending[i].modul === "Spreading"
+              ? "SPREADING"
+              : "";
+
+          const data = {
+            approvalTransactionDataModel: [
+              {
+                systemCode: "SAKAMOR",
+                moduleCode: module,
+                approvalLevel: 1,
+                id: checkPending[i].id,
+                approvalID:
+                  checkPending[i].modul === "Plan"
+                    ? 352
+                    : checkPending[i].modul === "UnPlan"
+                    ? 358
+                    : checkPending[i].modul === "Spreading"
+                    ? 359
+                    : "",
+                docNo: checkPending[i].nomorDokumen,
+                pic: "string",
+                approvalLine: 0,
+                notes: "string",
+                needApprove: true,
+                approveDate: now.toISOString(),
+                status: "string",
+              },
+            ],
+            systemCode: "SAKAMOR",
+            moduleCode: module,
+            docNo: checkPending[i].nomorDokumen,
+            approverFrom: "string",
+            approverTo: "string",
+            status: "string",
+            description: "string",
+            notes: "string",
+            createdBy: userData.username,
+            createdDate: now.toISOString(),
+            emailData: {
+              systemCode: "SAKAMOR",
+              moduleCode: module,
+              documentNumber: checkPending[i].nomorDokumen,
+              emailTo: "string",
+              emailCC: "string",
+              emailBCC: "string",
+              emailSubject: "string",
+              emailBody: "string",
+            },
+          };
+          approvalApprove(
+            data,
+            checkPending[i].modul,
+            checkPending[i].id,
+            userData
+          )
+            .then((data) => {
+              if (i === checkPending.length - 1) {
+                setLoadingApprove(false);
+                getApproval(userData)
+                  .then((data) => {
+                    var dataCheckBox = data.map((val) => {
+                      return { ...val, checkBox: false };
+                    });
+                    setPendingApprove(dataCheckBox);
+                    setLoading(false);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+            })
+            .catch((err) => console.log(err));
+        }
+      }
+    }
+  };
+
   const renderApproval = () => {
+    var checkPending = pendingApprove.filter((val) => {
+      return val.checkBox;
+    });
     if (loading) {
       return <Spinner />;
     } else {
@@ -925,27 +1037,43 @@ export default function Home() {
                 Pending Approval
                 <div style={{ margin: "22px 0" }}>
                   <div
-                    style={{ display: "grid", gridTemplateColumns: "10% 90%" }}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "10% 90%",
+                      paddingBottom: "10px",
+                    }}
                   >
-                    <div style={{ paddingTop: "5px" }}>
-                      <CheckBox />
+                    <div style={{ paddingTop: "10px" }}>
+                      <CheckBox
+                        onClick={() => {
+                          if (checkPending.length === pendingApprove.length) {
+                            var all = pendingApprove.map((val) => {
+                              return { ...val, checkBox: false };
+                            });
+                            setPendingApprove(all);
+                          } else {
+                            var all = pendingApprove.map((val) => {
+                              return { ...val, checkBox: true };
+                            });
+                            setPendingApprove(all);
+                          }
+                        }}
+                        checked={
+                          checkPending.length === pendingApprove.length
+                            ? true
+                            : false
+                        }
+                      />
                     </div>
-                    <button
-                      style={{
-                        height: "30px",
-                        fontSize: "12px",
-                        width: "100%",
-                        backgroundColor: "#41867a",
-                        border: "none",
-                        borderRadius: "5px",
-                        color: "white",
-                        fontWeight: "500",
+                    <Button
+                      onClick={() => {
+                        onApprove();
                       }}
-                    >
-                      Approve
-                    </button>
+                      color={checkPending.length ? "green" : "disable"}
+                      text={"Approve"}
+                    />
                   </div>
-                  {pendingApprove.map((val) => {
+                  {pendingApprove.map((val, index) => {
                     return (
                       <div
                         style={{
@@ -957,9 +1085,24 @@ export default function Home() {
                       >
                         <>
                           <div>
-                            <CheckBox />
+                            <CheckBox
+                              checked={val.checkBox}
+                              onClick={() => {
+                                pendingApprove.splice(index, 1, {
+                                  ...pendingApprove[index],
+                                  checkBox: !val.checkBox,
+                                });
+                                setDummy(dummy + 1);
+                              }}
+                            />
                           </div>
-                          <div>
+                          <div
+                            onClick={() => {
+                              console.log(val);
+                              actions.setFocusApproval(val);
+                              router.push(`/approval/${val.modul}/${val.id}`);
+                            }}
+                          >
                             <div
                               style={{
                                 fontWeight: "700",
@@ -983,7 +1126,10 @@ export default function Home() {
                               </div>
                             </div>
                             <div
-                              style={{ fontWeight: "700", fontSize: "12px" }}
+                              style={{
+                                fontWeight: "700",
+                                fontSize: "12px",
+                              }}
                             >
                               {val.namaOutlet}
                             </div>
@@ -1121,6 +1267,8 @@ export default function Home() {
     }
   };
 
+  const renderReviseList = () => {};
+
   const getGreetingTime = (m) => {
     var g = null; //return g
 
@@ -1219,6 +1367,7 @@ export default function Home() {
                     : focus === "SALES-TRACKING"
                     ? renderApproval()
                     : ""}
+                  {renderReviseList()}
                   {renderWorkDay()}
                   {renderProgress()}
                   <div style={{ marginBottom: "120px" }} />
