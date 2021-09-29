@@ -246,8 +246,8 @@ const getSearchJenisChannel = (userData, search, modul) => {
   return fetch(
     API_URL +
       API_MASTER +
-      // `/MasterDataLokal/GetJenisChannelBy?username=${userData.username}&teks=${search}&modul=${modul}`,
-      `/MasterDataLokal/GetJenisChannelBy?username=abubakar&teks=${search}&modul=${modul}`,
+      `/MasterDataLokal/GetJenisChannelBy?username=${userData.username}&teks=${search}&modul=${modul}`,
+    // `/MasterDataLokal/GetJenisChannelBy?username=abubakar&teks=${search}&modul=${modul}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -270,8 +270,8 @@ const getSearchOutlet = (jenisChannelId, userData, search) => {
   return fetch(
     API_URL +
       API_MASTER +
-      // `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=${userData.username}&teks=${search}`,
-      `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=abubakar&teks=${search}`,
+      `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=${userData.username}&teks=${search}`,
+    // `/MasterDataLokal/GetOutletBy/${jenisChannelId}?username=abubakar&teks=${search}`,
     {
       headers: {
         apiKey: TOKEN,
