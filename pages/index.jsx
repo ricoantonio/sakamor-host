@@ -22,6 +22,10 @@ import {
   getAuth,
   getFrontliner,
   getFrontlinerPimca,
+  getInvoiceDataPosmSpreading,
+  getInvoiceDataPosmUnplan,
+  getInvoiceDataSpreading,
+  getInvoiceDataUnplan,
   getMenu,
   getNoo,
   getNotificationbyUsername,
@@ -251,7 +255,7 @@ export default function Home() {
             setRole("SMR");
             setFocus("PLAN");
 
-            getRevisePlanListSmr(userData.username)
+            getRevisePlanListSmr(userData)
               .then((data) => {
                 setRevisePlan(data);
                 console.log("revise plan", data);
@@ -259,7 +263,7 @@ export default function Home() {
               .catch((err) => {
                 console.log(err);
               });
-            getReviseUnPlanListSmr(userData.username)
+            getReviseUnPlanListSmr(userData)
               .then((data) => {
                 setReviseUnPlan(data);
                 console.log("revise unplan", data);
@@ -267,7 +271,7 @@ export default function Home() {
               .catch((err) => {
                 console.log(err);
               });
-            getReviseSpreadingListSmr(userData.username)
+            getReviseSpreadingListSmr(userData)
               .then((data) => {
                 setReviseSpreading(data);
                 console.log("revise spreading", data);
@@ -349,6 +353,15 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
+        getPlanHistory(userData)
+          .then((data) => {
+            setPlanHistory(data);
+            setLoading(false);
+            console.log("hai");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else if (focus === "WORK-VISIT") {
         getAllWorkVisit(userData)
           .then((data) => {
@@ -377,16 +390,6 @@ export default function Home() {
             setPendingApprove(dataCheckBox);
             console.log(data);
             setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else if (focus === "PLAN") {
-        getPlanHistory(userData)
-          .then((data) => {
-            setPlanHistory(data);
-            setLoading(false);
-            // console.log(data);
           })
           .catch((err) => {
             console.log(err);
@@ -1267,7 +1270,138 @@ export default function Home() {
     }
   };
 
-  const renderReviseList = () => {};
+  const renderReviseList = () => {
+    const renderList = (data, modul) => {
+      var render = data.map((val) => {
+        return (
+          <div
+            style={{
+              fontSize: "14px",
+              margin: "8px 0",
+            }}
+            onClick={() => {
+              console.log(val);
+              actions.setFocusApproval(val);
+              if (modul === "Plan") {
+                getInvoiceData(router.query.id)
+                  .then((data) => {
+                    setProductList(data);
+                    // console.log(data);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+
+                getInvoiceDataPosm(router.query.id)
+                  .then((data) => {
+                    setPosmList(data);
+                    // console.log(data);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else if (modul === "UnPlan") {
+                getInvoiceDataUnplan(val.id)
+                  .then((dataInvoice) => {
+                    console.log(dataInvoice);
+                    actions.setReviseAvability(dataInvoice);
+                    getInvoiceDataPosmUnplan(val.id)
+                      .then((dataPosm) => {
+                        actions.setReviseVisibility(dataPosm);
+                        console.log(dataPosm);
+                        router.push(`/revise/${modul}/${val.id}`);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else if (modul === "Spreading") {
+                getInvoiceDataSpreading(val.id)
+                  .then((dataInvoice) => {
+                    console.log(dataInvoice);
+                    getInvoiceDataPosmSpreading(val.id)
+                      .then((dataPosm) => {
+                        console.log(dataPosm);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              // router.push(`/revise/${modul}/${val.id}`);
+            }}
+          >
+            <>
+              <div>
+                <div
+                  style={{
+                    fontWeight: "700",
+                    display: "grid",
+                    gridTemplateColumns: "2fr 1fr",
+                  }}
+                >
+                  <div>{val.usernameSMR}</div>
+                  <div
+                    style={{
+                      backgroundColor: "#feb800",
+                      color: "white",
+                      textAlign: "center",
+                      borderRadius: "20px",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      paddingTop: "1px",
+                    }}
+                  >
+                    {modul}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    fontWeight: "700",
+                    fontSize: "12px",
+                  }}
+                >
+                  {val.namaOutlet}
+                </div>
+                <div style={{ fontSize: "12px" }}>{val.alamatOutlet}</div>
+              </div>
+            </>
+          </div>
+        );
+      });
+      return render;
+    };
+    if (revisePlan.length || reviseUnPlan.length || reviseSpreading.length) {
+      return (
+        <Card
+          style={{ borderRadius: "5px", marginTop: "22px", color: "#5E5873" }}
+          shadow
+        >
+          <div className={styles.plan_container}>
+            <div
+              style={{
+                fontSize: "18px",
+                fontWeight: "500",
+                color: "#5E5873",
+                textAlign: "left",
+              }}
+            >
+              <div>Revise Visit </div>
+              {renderList(revisePlan, "Plan")}
+              {renderList(reviseUnPlan, "UnPlan")}
+              {renderList(reviseSpreading, "Spreading")}
+            </div>
+          </div>
+        </Card>
+      );
+    }
+  };
 
   const getGreetingTime = (m) => {
     var g = null; //return g

@@ -209,7 +209,10 @@ export default function index() {
     const visDone = state.visitUnplanReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
-    if (visDone.length >= 6) {
+    if (
+      visDone.length >= 6 &&
+      state.visitUnplanReducer.avability.length >= 25
+    ) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -348,7 +351,12 @@ export default function index() {
                   Router.push("/visit/unplan");
                 }
               }}
-              disable={visDone.length >= 6 ? false : true}
+              disable={
+                visDone.length >= 6 &&
+                state.visitUnplanReducer.avability.length >= 25
+                  ? false
+                  : true
+              }
             />
             <div className={styles.main}>
               {visNotDone ? (
@@ -359,7 +367,7 @@ export default function index() {
                     textAlign: "center",
                   }}
                 >
-                  Please complete visibility data
+                  Please complete visibility and availability data
                 </div>
               ) : (
                 ""

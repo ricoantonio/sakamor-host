@@ -112,6 +112,7 @@ export default function Avability({ type }) {
             console.log(err);
           });
       } else if (type === "UNPLAN") {
+        console.log(state.visitUnplanReducer.outlet);
         getHnaAvg(
           productFocus.produkID,
           state.visitUnplanReducer.outlet.outletID
@@ -130,6 +131,7 @@ export default function Avability({ type }) {
             console.log(err);
           });
       } else if (type === "SPREADING") {
+        console.log(state.visitSpreadingReducer.outlet);
         getHnaAvg(
           productFocus.produkID,
           state.visitSpreadingReducer.outlet.outletID

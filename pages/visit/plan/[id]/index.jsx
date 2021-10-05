@@ -214,7 +214,7 @@ export default function index() {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
     // console.log(state.visitPlanReducer.visibility);
-    if (visDone.length >= 6) {
+    if (visDone.length >= 6 && state.visitPlanReducer.avability.length >= 25) {
       setLoadingSubmit(true);
       setVisNotDone(false);
 
@@ -334,7 +334,12 @@ export default function index() {
                 onClick={() => {
                   onSubmit();
                 }}
-                disable={visDone.length >= 6 ? false : true}
+                disable={
+                  visDone.length >= 6 &&
+                  state.visitPlanReducer.avability.length >= 25
+                    ? false
+                    : true
+                }
                 backAction={() => {
                   if (
                     confirm(
@@ -355,7 +360,7 @@ export default function index() {
                       textAlign: "center",
                     }}
                   >
-                    Please complete visibility data
+                    Please complete visibility and availability data
                   </div>
                 ) : (
                   ""

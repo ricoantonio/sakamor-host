@@ -84,6 +84,55 @@ export default function Visibility({ type }) {
       if (state.visitSpreadingReducer.visibility.length > 0) {
         setVis([...state.visitSpreadingReducer.visibility]);
       }
+    } else if (type === "REVISE") {
+      console.log(state.reviseReducer.visibility);
+      if (state.reviseReducer.visibility[0].id) {
+        var data = state.reviseReducer.visibility.map((val) => {
+          return {
+            prev: {
+              activityVisitUnPlanId: val.activityVisitUnPlanId,
+              brandId: val.brandId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              isPopular: val.isPopular,
+              lokasiFile: val.lokasiFile,
+              namaBrand: val.namaBrand,
+              namaFile: val.namaFile,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              tipe: val.tipe,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            type: {
+              id: null,
+              program: val.tipe,
+            },
+            brand: {
+              id: val.brandId,
+              namaBrand: val.namaBrand,
+            },
+            popular: val.isPopular,
+            file: {
+              name: val.namaFile,
+              id: val.id,
+            },
+          };
+        });
+        if (data.length < 9) {
+          for (let i = data.length; i < 8; i++) {
+            data.push({ file: null, type: null, brand: null, popular: false });
+          }
+        }
+        console.log(data);
+        setVis(data);
+      } else {
+        if (state.reviseReducer.visibility.length > 0) {
+          setVis([...state.reviseReducer.visibility]);
+        }
+      }
     }
   }, [dispatch]);
 
@@ -217,12 +266,43 @@ export default function Visibility({ type }) {
         .catch((err) => {
           console.log(err);
         });
+    } else if (type === "REVISE") {
+      if (router.query.type === "Plan") {
+        viewFile(val.file.id)
+          .then((data) => {
+            setFileFocus(data);
+            setLoadingView(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (router.query.type === "UnPlan") {
+        viewFileUnplan(val.file.id)
+          .then((data) => {
+            setFileFocus(data);
+            setLoadingView(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (router.query.type === "Spreading") {
+        viewFileSpreading(val.file.id)
+          .then((data) => {
+            setFileFocus(data);
+            setLoadingView(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
+
   const renderInputUpload = () => {
     const doneFormVis = vis.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
+    console.log("hai");
     var donePopular = 0;
     for (let i = 0; i < vis.length; i++) {
       if (vis[i].popular) {
@@ -264,6 +344,7 @@ export default function Visibility({ type }) {
         }
       }
     };
+
     var render = vis.map((val, index) => {
       return (
         <>
@@ -329,6 +410,159 @@ export default function Visibility({ type }) {
                   fontSize: "10px",
                   color: "#41867A",
                   fontWeight: "500",
+                }}
+              >
+                {val.file != null ? val.file.name : null}
+              </span>
+            </div>
+            <div>
+              <label className={styles.new_button} htmlFor={`upload${index}`}>
+                <img
+                  src={"/camera.svg"}
+                  style={{ width: "18px", verticalAlign: "baseline" }}
+                />
+                <input
+                  className={styles.input_file}
+                  onChange={(e) => {
+                    // let reader = new FileReader();
+                    // reader.readAsDataURL(e.target.files[0]);
+                    // reader.onload = () => {
+                    //   console.log(reader.result);
+                    // };
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      file: e.target.files[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  id={`upload${index}`}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                />
+              </label>
+            </div>
+          </div>
+        </>
+      );
+    });
+    return render;
+  };
+
+  const renderInputUploadRevise = () => {
+    const doneFormVis = vis.filter((val) => {
+      return val.file !== null && val.type !== null && val.brand !== null;
+    });
+    var donePopular = 0;
+    for (let i = 0; i < vis.length; i++) {
+      if (vis[i].popular) {
+        donePopular = donePopular + 1;
+      }
+    }
+    const renderFlagMinData = (val) => {
+      if (type === "SPREADING") {
+        if (doneFormVis.length < 2) {
+          return (
+            <span style={{ color: "red" }}>
+              {val.type == null
+                ? "Select Type"
+                : val.brand == null
+                ? "Select Brand"
+                : val.file == null
+                ? "Insert File"
+                : null}
+            </span>
+          );
+        } else {
+          return null;
+        }
+      } else {
+        if (doneFormVis.length < 6) {
+          return (
+            <span style={{ color: "red" }}>
+              {val.type == null
+                ? "Select Type"
+                : val.brand == null
+                ? "Select Brand"
+                : val.file == null
+                ? "Insert File"
+                : null}
+            </span>
+          );
+        } else {
+          return null;
+        }
+      }
+    };
+
+    var render = vis.map((val, index) => {
+      return (
+        <>
+          <div style={{ fontSize: "12px", color: "#b9b9c3" }}>
+            POSM {index + 1} {renderFlagMinData(val)}
+          </div>
+          <div key={index} className={styles.visibility_grid}>
+            <div className={styles.visibility_dropdown}>
+              <div className={styles.grid_50}>
+                <div style={{ marginTop: "6px" }}>
+                  {val.file !== null &&
+                  val.type !== null &&
+                  val.brand !== null ? (
+                    <Checkbox
+                      checked={val.popular}
+                      color={"green"}
+                      onClick={() => {
+                        vis.splice(index, 1, {
+                          ...vis[index],
+                          popular: !val.popular,
+                        });
+                        setDummy(dummy + 1);
+                      }}
+                      disabled={
+                        val.popular ? false : donePopular < 3 ? false : true
+                      }
+                    />
+                  ) : null}
+                </div>
+                <Dropdown
+                  options={posm}
+                  type={"POSM"}
+                  onChange={(e) => {
+                    var data = posm.filter((val) => {
+                      return val.program == e.target.value;
+                    });
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      type: data[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  value={val.type != null ? val.type.program : ""}
+                />
+                <Dropdown
+                  options={brand}
+                  type={"BRAND"}
+                  onChange={(e) => {
+                    var data = brand.filter((val) => {
+                      return val.namaBrand == e.target.value;
+                    });
+                    vis.splice(index, 1, {
+                      ...vis[index],
+                      brand: data[0],
+                    });
+                    setDummy(dummy + 1);
+                  }}
+                  value={val.brand != null ? val.brand.namaBrand : ""}
+                />
+              </div>
+              <span
+                style={{
+                  fontSize: "10px",
+                  color: "#41867A",
+                  fontWeight: "500",
+                }}
+                onClick={() => {
+                  onFileFocus(val);
                 }}
               >
                 {val.file != null ? val.file.name : null}
@@ -458,6 +692,7 @@ export default function Visibility({ type }) {
       return render;
     }
   };
+
   const onSave = () => {
     console.log(vis);
     if (newNOO) {
@@ -473,6 +708,9 @@ export default function Visibility({ type }) {
       } else if (type === "SPREADING") {
         actions.setSpreadingVisibility(vis);
         Router.push(`/visit/spreading/submit`);
+      } else if (type === "REVISE") {
+        actions.setReviseVisibility(vis);
+        Router.push(`/revise/${router.query.type}/${router.query.id}`);
       }
     }
   };
@@ -555,17 +793,21 @@ export default function Visibility({ type }) {
                     } else {
                       setVis([...initialVis]);
                     }
-                  }
-                  if (type === "UNPLAN") {
+                  } else if (type === "UNPLAN") {
                     if (state.visitUnplanReducer.visibility.length > 0) {
                       setVis([...state.visitUnplanReducer.visibility]);
                     } else {
                       setVis([...initialVis]);
                     }
-                  }
-                  if (type === "SPREADING") {
+                  } else if (type === "SPREADING") {
                     if (state.visitSpreadingReducer.visibility.length > 0) {
                       setVis([...state.visitSpreadingReducer.visibility]);
+                    } else {
+                      setVis([...initialVis]);
+                    }
+                  } else if (type === "REVISE") {
+                    if (state.reviseReducer.visibility.length > 0) {
+                      setVis([...state.reviseReducer.visibility]);
                     } else {
                       setVis([...initialVis]);
                     }
@@ -589,6 +831,8 @@ export default function Visibility({ type }) {
               ) : null} */}
               {type.includes("HISTORY")
                 ? renderHistoryPosm()
+                : type === "REVISE"
+                ? renderInputUploadRevise()
                 : renderInputUpload()}
             </div>
           </div>

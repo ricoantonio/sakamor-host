@@ -8,6 +8,14 @@ const securityHeaders = [
     key: "Cache-Control",
     value: "public,  must-revalidate",
   },
+  // {
+  //   key: "X-Content-Type-Options",
+  //   value: "nosniff",
+  // },
+  // {
+  //   key: "X-Frame-Options",
+  //   value: "DENY",
+  // },
 ];
 
 const settings = {

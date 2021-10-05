@@ -233,6 +233,40 @@ export default function Reward() {
               </Link>
             </Card>
             <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+              <Link href="/recap">
+                <a style={{ textDecoration: "none" }}>
+                  <div className={styles.reward_grid2}>
+                    <div className={styles.add_reward}>
+                      <div style={{ marginTop: "-11px" }}>
+                        <img src={"/alert-circle.svg"} />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        color: "#FEB800",
+                      }}
+                    >
+                      Recap
+                      <div
+                        style={{
+                          color: "#B9B9C3",
+                          fontWeight: "300",
+                          fontSize: "13px",
+                        }}
+                      >
+                        See you recap here
+                      </div>{" "}
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <img src={"/next.svg"} />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+            </Card>
+            <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
               <Line data={data} options={options} />
             </Card>
             <Card

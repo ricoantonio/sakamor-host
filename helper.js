@@ -487,6 +487,7 @@ const getPlanList = (userData) => {
       return response.json();
     })
     .then((data) => {
+      console.log("false", data);
       var res = data.filter((val) => {
         return val.isCheckOut === false;
       });
@@ -560,6 +561,7 @@ const getPlanHistory = (userData) => {
       return response.json();
     })
     .then((data) => {
+      console.log("true", data);
       var res = data.filter((val) => {
         return val.isCheckOut === true;
       });
@@ -797,7 +799,7 @@ const getApproval = (userData) => {
 
 const getRevisePlanListSmr = (userData) => {
   return fetch(
-    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitPlan/v1/api/ActivityVisitPlan/GetActivityVisitPlanByStatus/revise?username=${userData.username}`,
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitPlan/v1/api/ActivityVisitPlan/GetActivityVisitPlanByStatus/Revise?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1030,6 +1032,35 @@ const getInvoiceDataPosmUnplan = (visitUnplanId) => {
     });
 };
 
+const updateInvoiceDataPosmUnplan = (visitUnplanId) => {
+  const formdata = new FormData();
+
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanDPOSM/ActivityVisitUnPlanDPOSM/${visitUnplanId}`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dposm),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      var sortData = data.sort(compare);
+      return sortData;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const viewFileUnplan = (id) => {
   console.log(id);
   return fetch(
@@ -1103,7 +1134,7 @@ const getUnplanNearMe = () => {
 
 const getReviseUnPlanListSmr = (userData) => {
   return fetch(
-    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/GetActivityVisitUnPlanByStatus/submit?username=${userData.username}`,
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitUnPlan/v1/api/SakamorActivityVisitUnPlan/GetActivityVisitUnPlanByStatus/revise?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1324,7 +1355,7 @@ const getSpreadingById = (id) => {
 
 const getReviseSpreadingListSmr = (userData) => {
   return fetch(
-    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/GetActivitySpreadingByStatus/submit?username=${userData.username}`,
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivitySpreading/v1/api/ActivitySpreading/GetActivitySpreadingByStatus/Revise?username=${userData.username}`,
     {
       headers: {
         apiKey: TOKEN,

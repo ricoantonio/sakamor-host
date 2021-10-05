@@ -11,6 +11,8 @@ import {
 
 import { approvalReducer, defaultApproval } from "./reducers/approval";
 
+import { reviseReducer, defaultRevise } from "./reducers/revise";
+
 import userLogin from "./actions/userLogin";
 import setMenu from "./actions/setMenu";
 import keepState from "./actions/keepState";
@@ -40,6 +42,9 @@ import setDefaultVisitPlan from "./actions/setDefaultVisitPlan";
 import setDefaultVisitUnplan from "./actions/setDefaultVisitUnplan";
 import setDefaultVisitSpreading from "./actions/setDefaultVisitSpreading";
 
+import setReviseAvability from "./actions/setReviseAvability";
+import setReviseVisibility from "./actions/setReviseVisibility";
+
 import setFocusApproval from "./actions/setFocusApproval";
 
 const Stores = createContext();
@@ -60,6 +65,7 @@ const Store = ({ children }) => {
           action
         ),
         approvalReducer: approvalReducer(prevState.approvalReducer, action),
+        reviseReducer: reviseReducer(prevState.reviseReducer, action),
       };
     },
     {
@@ -69,6 +75,7 @@ const Store = ({ children }) => {
       visitUnplanReducer: defaultVisitUnplan,
       visitSpreadingReducer: defaultVisitSpreading,
       approvalReducer: defaultApproval,
+      reviseReducer: defaultRevise,
     }
   );
 
@@ -103,6 +110,9 @@ const Store = ({ children }) => {
       ...setDefaultVisitSpreading(dispatch),
 
       ...setFocusApproval(dispatch),
+
+      ...setReviseAvability(dispatch),
+      ...setReviseVisibility(dispatch),
     }),
     []
   );
