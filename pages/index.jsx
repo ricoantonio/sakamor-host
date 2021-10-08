@@ -22,6 +22,8 @@ import {
   getAuth,
   getFrontliner,
   getFrontlinerPimca,
+  getInvoiceData,
+  getInvoiceDataPosm,
   getInvoiceDataPosmSpreading,
   getInvoiceDataPosmUnplan,
   getInvoiceDataSpreading,
@@ -40,7 +42,10 @@ import {
   getSalesTargetPimca,
   getSalesTargetSMR,
   getSpreadingMonthlyHistory,
+  getSpreadingProduct,
   getUnplanMonthlyHistory,
+  getUnPlanProducts,
+  getVisitPlanProduct,
   getWorkDay,
   viewProfilePic,
 } from "../helper";
@@ -357,7 +362,6 @@ export default function Home() {
           .then((data) => {
             setPlanHistory(data);
             setLoading(false);
-            console.log("hai");
           })
           .catch((err) => {
             console.log(err);
@@ -365,7 +369,7 @@ export default function Home() {
       } else if (focus === "WORK-VISIT") {
         getAllWorkVisit(userData)
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             setWorkVisit(
               data.filter((val) => {
                 return val.isPenilaian === false;
@@ -388,7 +392,7 @@ export default function Home() {
               return { ...val, checkBox: false };
             });
             setPendingApprove(dataCheckBox);
-            console.log(data);
+            // console.log(data);
             setLoading(false);
           })
           .catch((err) => {
@@ -1283,25 +1287,24 @@ export default function Home() {
               console.log(val);
               actions.setFocusApproval(val);
               if (modul === "Plan") {
-                getInvoiceData(router.query.id)
-                  .then((data) => {
-                    setProductList(data);
-                    // console.log(data);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-
-                getInvoiceDataPosm(router.query.id)
-                  .then((data) => {
-                    setPosmList(data);
-                    // console.log(data);
+                getVisitPlanProduct(val.idVisitPlan)
+                  .then((dataInvoice) => {
+                    actions.setReviseAvability(dataInvoice);
+                    // console.log(dataInvoice);
+                    getInvoiceDataPosm(val.idVisitPlan)
+                      .then((dataPosm) => {
+                        actions.setReviseVisibility(dataPosm);
+                        router.push(`/revise/${modul}/${val.idVisitPlan}`);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
                   })
                   .catch((err) => {
                     console.log(err);
                   });
               } else if (modul === "UnPlan") {
-                getInvoiceDataUnplan(val.id)
+                getUnPlanProducts(val.id)
                   .then((dataInvoice) => {
                     console.log(dataInvoice);
                     actions.setReviseAvability(dataInvoice);
@@ -1319,12 +1322,14 @@ export default function Home() {
                     console.log(err);
                   });
               } else if (modul === "Spreading") {
-                getInvoiceDataSpreading(val.id)
+                getSpreadingProduct(val.id)
                   .then((dataInvoice) => {
                     console.log(dataInvoice);
                     getInvoiceDataPosmSpreading(val.id)
                       .then((dataPosm) => {
+                        actions.setReviseVisibility(dataPosm);
                         console.log(dataPosm);
+                        router.push(`/revise/${modul}/${val.id}`);
                       })
                       .catch((err) => {
                         console.log(err);

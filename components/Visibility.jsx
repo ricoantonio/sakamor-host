@@ -85,53 +85,8 @@ export default function Visibility({ type }) {
         setVis([...state.visitSpreadingReducer.visibility]);
       }
     } else if (type === "REVISE") {
-      console.log(state.reviseReducer.visibility);
-      if (state.reviseReducer.visibility[0].id) {
-        var data = state.reviseReducer.visibility.map((val) => {
-          return {
-            prev: {
-              activityVisitUnPlanId: val.activityVisitUnPlanId,
-              brandId: val.brandId,
-              createdBy: val.createdBy,
-              createdDate: val.createdDate,
-              id: val.id,
-              isDeleted: val.isDeleted,
-              isPopular: val.isPopular,
-              lokasiFile: val.lokasiFile,
-              namaBrand: val.namaBrand,
-              namaFile: val.namaFile,
-              nomor: val.nomor,
-              nomorDokumen: val.nomorDokumen,
-              tipe: val.tipe,
-              updatedBy: val.updatedBy,
-              updatedDate: val.updatedDate,
-            },
-            type: {
-              id: null,
-              program: val.tipe,
-            },
-            brand: {
-              id: val.brandId,
-              namaBrand: val.namaBrand,
-            },
-            popular: val.isPopular,
-            file: {
-              name: val.namaFile,
-              id: val.id,
-            },
-          };
-        });
-        if (data.length < 9) {
-          for (let i = data.length; i < 8; i++) {
-            data.push({ file: null, type: null, brand: null, popular: false });
-          }
-        }
-        console.log(data);
-        setVis(data);
-      } else {
-        if (state.reviseReducer.visibility.length > 0) {
-          setVis([...state.reviseReducer.visibility]);
-        }
+      if (state.reviseReducer.visibility.length > 0) {
+        setVis([...state.reviseReducer.visibility]);
       }
     }
   }, [dispatch]);
@@ -302,7 +257,6 @@ export default function Visibility({ type }) {
     const doneFormVis = vis.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
     });
-    console.log("hai");
     var donePopular = 0;
     for (let i = 0; i < vis.length; i++) {
       if (vis[i].popular) {
@@ -319,7 +273,7 @@ export default function Visibility({ type }) {
                 : val.brand == null
                 ? "Select Brand"
                 : val.file == null
-                ? "Insert File"
+                ? "Upload Photo"
                 : null}
             </span>
           );
@@ -335,7 +289,7 @@ export default function Visibility({ type }) {
                 : val.brand == null
                 ? "Select Brand"
                 : val.file == null
-                ? "Insert File"
+                ? "Upload Photo"
                 : null}
             </span>
           );
@@ -469,7 +423,7 @@ export default function Visibility({ type }) {
                 : val.brand == null
                 ? "Select Brand"
                 : val.file == null
-                ? "Insert File"
+                ? "Upload Photo"
                 : null}
             </span>
           );
@@ -485,7 +439,7 @@ export default function Visibility({ type }) {
                 : val.brand == null
                 ? "Select Brand"
                 : val.file == null
-                ? "Insert File"
+                ? "Upload Photo"
                 : null}
             </span>
           );

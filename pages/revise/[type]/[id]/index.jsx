@@ -22,7 +22,18 @@ import {
   getInvoiceDataSpreading,
   getInvoiceDataUnplan,
   getUnplanById,
+  insertFilePlan,
+  insertFileSpreading,
+  insertFileUnplan,
+  submitVisitPlanDposm,
+  submitVisitSpreadingDposm,
   submitVisitUnplanDposm,
+  updateDataPosmPlan,
+  updateDataPosmSpreading,
+  updateDataPosmUnplan,
+  updateDataProdukPlan,
+  updateDataProdukUnplan,
+  updateDataProdukSpreading,
 } from "../../../../helper";
 
 export default function index() {
@@ -53,47 +64,256 @@ export default function index() {
   }, []);
 
   useEffect(() => {
-    if (state.reviseReducer.visibility[0].id) {
-      var data = state.reviseReducer.visibility.map((val) => {
-        return {
-          prev: {
-            activityVisitUnPlanId: val.activityVisitUnPlanId,
-            brandId: val.brandId,
-            createdBy: val.createdBy,
-            createdDate: val.createdDate,
-            id: val.id,
-            isDeleted: val.isDeleted,
-            isPopular: val.isPopular,
-            lokasiFile: val.lokasiFile,
-            namaBrand: val.namaBrand,
-            namaFile: val.namaFile,
-            nomor: val.nomor,
-            nomorDokumen: val.nomorDokumen,
-            tipe: val.tipe,
-            updatedBy: val.updatedBy,
-            updatedDate: val.updatedDate,
-          },
-          type: {
-            id: null,
-            program: val.tipe,
-          },
-          brand: {
-            id: val.brandId,
-            namaBrand: val.namaBrand,
-          },
-          popular: val.isPopular,
-          file: {
-            name: val.namaFile,
-            id: val.id,
-          },
-        };
-      });
-      if (data.length < 9) {
-        for (let i = data.length; i < 8; i++) {
-          data.push({ file: null, type: null, brand: null, popular: false });
+    if (router.query.type === "Plan") {
+      if (state.reviseReducer.visibility[0].id) {
+        console.log("vis", state.reviseReducer.visibility);
+        var data = state.reviseReducer.visibility.map((val) => {
+          return {
+            prev: {
+              activityVisitPlanId: val.activityVisitPlanId,
+              brandId: val.brandId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              isPopular: val.isPopular,
+              lokasiFile: val.lokasiFile,
+              namaBrand: val.namaBrand,
+              namaFile: val.namaFile,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              tipe: val.tipe,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            type: {
+              id: null,
+              program: val.tipe,
+            },
+            brand: {
+              id: val.brandId,
+              namaBrand: val.namaBrand,
+            },
+            popular: val.isPopular,
+            file: {
+              name: val.namaFile,
+              id: val.id,
+            },
+          };
+        });
+        if (data.length < 9) {
+          for (let i = data.length; i < 8; i++) {
+            data.push({ file: null, type: null, brand: null, popular: false });
+          }
         }
+        actions.setReviseVisibility(data);
       }
-      actions.setReviseVisibility(data);
+      if (
+        state.reviseReducer.avability.length &&
+        state.reviseReducer.avability[0].id
+      ) {
+        console.log(state.reviseReducer.avability);
+        var dataProduk = state.reviseReducer.avability.map((val) => {
+          return {
+            prev: {
+              activityVisitPlanId: val.activityVisitPlanId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              harga: val.harga,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              jumlahOrder: val.jumlahOrder,
+              keterangan: val.keterangan,
+              kodeProduk: val.kodeProduk,
+              namaProduk: val.namaProduk,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              saranOrder: val.saranOrder,
+              stok: val.stok,
+              total: val.total,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            harga: val.harga,
+            ket: val.keterangan,
+            minor: "",
+            order: val.jumlahOrder,
+            pengiriman: "",
+            productFocus: {
+              id: "",
+              jenisChannelID:
+                state.approvalReducer.focusApproval.idJenisChannel,
+              namaJenisChannel:
+                state.approvalReducer.focusApproval.jenisChannel,
+              namaProduk: val.namaProduk,
+              produkID: val.kodeProduk,
+            },
+            saranOrder: val.saranOrder,
+            stock: val.stok,
+          };
+        });
+        console.log(dataProduk);
+        actions.setReviseAvability(dataProduk);
+      }
+    } else if (router.query.type === "UnPlan") {
+      if (state.reviseReducer.visibility[0].id) {
+        var data = state.reviseReducer.visibility.map((val) => {
+          return {
+            prev: {
+              activityVisitUnPlanId: val.activityVisitUnPlanId,
+              brandId: val.brandId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              isPopular: val.isPopular,
+              lokasiFile: val.lokasiFile,
+              namaBrand: val.namaBrand,
+              namaFile: val.namaFile,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              tipe: val.tipe,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            type: {
+              id: null,
+              program: val.tipe,
+            },
+            brand: {
+              id: val.brandId,
+              namaBrand: val.namaBrand,
+            },
+            popular: val.isPopular,
+            file: {
+              name: val.namaFile,
+              id: val.id,
+            },
+          };
+        });
+        if (data.length < 9) {
+          for (let i = data.length; i < 8; i++) {
+            data.push({ file: null, type: null, brand: null, popular: false });
+          }
+        }
+        actions.setReviseVisibility(data);
+      }
+      if (
+        state.reviseReducer.avability.length &&
+        state.reviseReducer.avability[0].id
+      ) {
+        var dataProduk = state.reviseReducer.avability.map((val) => {
+          return {
+            prev: {
+              activityVisitUnPlanId: val.activityVisitUnPlanId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              harga: val.harga,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              jumlahOrder: val.jumlahOrder,
+              keterangan: val.keterangan,
+              kodeProduk: val.kodeProduk,
+              namaProduk: val.namaProduk,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              saranOrder: val.saranOrder,
+              stok: val.stok,
+              total: val.total,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            harga: val.harga,
+            ket: val.keterangan,
+            minor: "",
+            order: val.jumlahOrder,
+            pengiriman: "",
+            productFocus: {
+              id: "",
+              jenisChannelID:
+                state.approvalReducer.focusApproval.idJenisChannel,
+              namaJenisChannel:
+                state.approvalReducer.focusApproval.jenisChannel,
+              namaProduk: val.namaProduk,
+              produkID: val.kodeProduk,
+            },
+            saranOrder: val.saranOrder,
+            stock: val.stok,
+          };
+        });
+        console.log(dataProduk);
+        actions.setReviseAvability(dataProduk);
+      }
+    } else if (router.query.type === "Spreading") {
+      if (state.reviseReducer.visibility[0].id) {
+        var data = state.reviseReducer.visibility.map((val) => {
+          return {
+            prev: {
+              activitySpreadingId: val.activitySpreadingId,
+              brandId: val.brandId,
+              createdBy: val.createdBy,
+              createdDate: val.createdDate,
+              id: val.id,
+              isDeleted: val.isDeleted,
+              isPopular: val.isPopular,
+              lokasiFile: val.lokasiFile,
+              namaBrand: val.namaBrand,
+              namaFile: val.namaFile,
+              nomor: val.nomor,
+              nomorDokumen: val.nomorDokumen,
+              tipe: val.tipe,
+              updatedBy: val.updatedBy,
+              updatedDate: val.updatedDate,
+            },
+            type: {
+              id: null,
+              program: val.tipe,
+            },
+            brand: {
+              id: val.brandId,
+              namaBrand: val.namaBrand,
+            },
+            popular: val.isPopular,
+            file: {
+              name: val.namaFile,
+              id: val.id,
+            },
+          };
+        });
+        if (data.length < 9) {
+          for (let i = data.length; i < 8; i++) {
+            data.push({ file: null, type: null, brand: null, popular: false });
+          }
+        }
+        actions.setReviseVisibility(data);
+      }
+      if (
+        state.reviseReducer.avability.length &&
+        state.reviseReducer.avability[0].id
+      ) {
+        var dataProduk = state.reviseReducer.avability.map((val) => {
+          return {
+            harga: val.harga,
+            ket: val.keterangan,
+            minor: "",
+            order: val.jumlahOrder,
+            pengiriman: "",
+            productFocus: {
+              id: "",
+              jenisChannelID:
+                state.approvalReducer.focusApproval.idJenisChannel,
+              namaJenisChannel:
+                state.approvalReducer.focusApproval.jenisChannel,
+              namaProduk: val.namaProduk,
+              produkID: val.kodeProduk,
+            },
+            saranOrder: val.saranOrder,
+            stock: val.stok,
+          };
+        });
+        console.log(dataProduk);
+        actions.setReviseAvability(dataProduk);
+      }
     }
   }, []);
 
@@ -171,9 +391,9 @@ export default function index() {
                   href={
                     router.query.type === "Plan"
                       ? type === "Visibility"
-                        ? `/visit/plan/${plan.id}/visibility`
+                        ? `/revise/Plan/${plan.idVisitPlan}/visibility`
                         : type === "Availability"
-                        ? `/visit/plan/${plan.id}/availability`
+                        ? `/revise/Plan/${plan.idVisitPlan}/availability`
                         : ""
                       : router.query.type === "UnPlan"
                       ? type === "Visibility"
@@ -183,9 +403,9 @@ export default function index() {
                         : ""
                       : router.query.type === "Spreading"
                       ? type === "Visibility"
-                        ? `/visit/spreading/submit/visibility`
+                        ? `/revise/Spreading/${plan.id}/visibility`
                         : type === "Availability"
-                        ? `/visit/spreading/submit/availability`
+                        ? `/revise/Spreading/${plan.id}/availability`
                         : ""
                       : null
                   }
@@ -205,72 +425,418 @@ export default function index() {
   };
 
   const onSubmit = () => {
-    const visDone = state.reviseReducer.visibility.filter((val) => {
-      return val.file !== null && val.type !== null && val.brand !== null;
-    });
-    if (visDone.length >= 6) {
-      // setLoadingSubmit(true);
-      setVisNotDone(false);
+    if (router.query.type === "Plan") {
+      const visDone = state.reviseReducer.visibility.filter((val) => {
+        return val.file !== null && val.type !== null && val.brand !== null;
+      });
+      if (visDone.length >= 6) {
+        // setLoadingSubmit(true);
+        setVisNotDone(false);
 
-      const userData = JSON.parse(localStorage.getItem("user"));
+        const userData = JSON.parse(localStorage.getItem("user"));
 
-      // const bodyProduct = state.reviseReducer.avability.map((val, index) => {
-      //   return {
-      //     nomorDokumen: "",
-      //     nomor: index,
-      //     kodeProduk: val.productFocus.produkID,
-      //     namaProduk: val.productFocus.namaProduk,
-      //     stok: parseInt(val.stock),
-      //     saranOrder: parseInt(val.saranOrder),
-      //     jumlahOrder: parseInt(val.order),
-      //     harga: parseInt(val.harga),
-      //     totalHarga: parseInt(val.harga) * parseInt(val.order),
-      //     keterangan: val.ket,
-      //     createdBy: userData.username,
-      //     updatedBy: userData.username,
-      //   };
-      // });
+        const bodyProduct = state.reviseReducer.avability.map((val, index) => {
+          if (val.prev != undefined) {
+            return {
+              id: val.prev.id ? val.prev.id : "",
+              activityVisitPlanId: router.query.id,
+              nomorDokumen: "",
+              nomor: index,
+              kodeProduk: val.productFocus.produkID,
+              namaProduk: val.productFocus.namaProduk,
+              stok: parseInt(val.stock),
+              saranOrder: parseInt(val.saranOrder),
+              jumlahOrder: parseInt(val.order),
+              harga: parseInt(val.harga),
+              total: parseInt(val.harga) * parseInt(val.order),
+              keterangan: val.ket,
+              updatedBy: userData.username,
+            };
+          } else {
+            return {
+              id: "",
+              activityVisitPlanId: router.query.id,
+              nomorDokumen: state.approvalReducer.focusApproval.noDokVisitPlan,
+              nomor: index,
+              kodeProduk: val.productFocus.produkID,
+              namaProduk: val.productFocus.namaProduk,
+              stok: parseInt(val.stock),
+              saranOrder: parseInt(val.saranOrder),
+              jumlahOrder: parseInt(val.order),
+              createdBy: userData.username,
+              updatedBy: userData.username,
+              harga: parseInt(val.harga),
+              total: parseInt(val.harga) * parseInt(val.order),
+              keterangan: val.ket,
+            };
+          }
+        });
 
-      const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
-        if (val.type && val.file && val.brand) {
+        const bodyProductPrev = bodyProduct.filter((val) => {
+          return val.id;
+        });
+        const bodyProductNew = bodyProduct.filter((val) => {
+          return !val.id;
+        });
+
+        console.log(bodyProductNew);
+        console.log(bodyProductPrev);
+
+        const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
+          if (val.type && val.file && val.brand) {
+            if (val.prev != undefined) {
+              return {
+                id: val.prev.id ? val.prev.id : "",
+                activityVisitPlanId: val.prev.activityVisitPlanId,
+                nomorDokumen: val.prev.nomorDokumen,
+                nomor: val.prev.nomor,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                lokasiFile: val.prev.lokasiFile,
+                isPopular: val.popular,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                updatedBy: userData.username,
+              };
+            } else {
+              return {
+                id: "",
+                activityVisitPlanId: router.query.id,
+                nomorDokumen: "",
+                nomor: index,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                createdBy: userData.username,
+                updatedBy: userData.username,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                isPopular: val.popular,
+              };
+            }
+          }
+        });
+
+        const files = state.reviseReducer.visibility.map((val, index) => {
+          console.log(val);
+          if (val.file && !val.file.id) {
+            return val.file;
+          }
+        });
+
+        // console.log(bodyPosm, files);
+        console.log(bodyProduct);
+
+        for (let i = 0; i < files.length; i++) {
+          if (bodyPosm[i] && bodyPosm[i].id) {
+            updateDataPosmPlan(bodyPosm[i].id, bodyPosm[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            if (files[i] != undefined) {
+              insertFilePlan(bodyPosm[i].id, files[i])
+                .then((res3) => {
+                  console.log(res3);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          } else {
+            submitVisitPlanDposm(bodyPosm[i], files[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          if (i === 5) {
+            updateDataProdukPlan(bodyProductPrev)
+              .then((res) => {
+                router.push("/");
+
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+
+            // getUnplanById(res.avp.id)
+            //   .then((unplan) => {
+            //     console.log("ini dataunplan", unplan);
+            //     onSubmitApproval(unplan);
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //   });
+          }
+        }
+      } else {
+        setVisNotDone(true);
+      }
+    } else if (router.query.type === "UnPlan") {
+      const visDone = state.reviseReducer.visibility.filter((val) => {
+        return val.file !== null && val.type !== null && val.brand !== null;
+      });
+      if (visDone.length >= 6) {
+        // setLoadingSubmit(true);
+        setVisNotDone(false);
+
+        const userData = JSON.parse(localStorage.getItem("user"));
+
+        const bodyProduct = state.reviseReducer.avability.map((val, index) => {
+          if (val.prev != undefined) {
+            return {
+              id: val.prev.id ? val.prev.id : "",
+              activityVisitUnPlanId: router.query.id,
+              nomorDokumen: "",
+              nomor: index,
+              kodeProduk: val.productFocus.produkID,
+              namaProduk: val.productFocus.namaProduk,
+              stok: parseInt(val.stock),
+              saranOrder: parseInt(val.saranOrder),
+              jumlahOrder: parseInt(val.order),
+              harga: parseInt(val.harga),
+              total: parseInt(val.harga) * parseInt(val.order),
+              keterangan: val.ket,
+              updatedBy: userData.username,
+            };
+          } else {
+            return {
+              id: "",
+              activityVisitUnPlanId: router.query.id,
+              nomorDokumen: "",
+              nomor: index,
+              kodeProduk: val.productFocus.produkID,
+              namaProduk: val.productFocus.namaProduk,
+              stok: parseInt(val.stock),
+              saranOrder: parseInt(val.saranOrder),
+              jumlahOrder: parseInt(val.order),
+              harga: parseInt(val.harga),
+              totalHarga: parseInt(val.harga) * parseInt(val.order),
+              keterangan: val.ket,
+              updatedBy: userData.username,
+              createdBy: userData.username,
+            };
+          }
+        });
+
+        const bodyProductPrev = bodyProduct.filter((val) => {
+          return val.id;
+        });
+        const bodyProductNew = bodyProduct.filter((val) => {
+          return !val.id;
+        });
+
+        console.log(bodyProductPrev);
+
+        const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
+          if (val.type && val.file && val.brand) {
+            if (val.prev != undefined) {
+              return {
+                id: val.prev.id ? val.prev.id : "",
+                activityVisitUnPlanId: val.prev.activityVisitUnPlanId,
+                nomorDokumen: val.prev.nomorDokumen,
+                nomor: val.prev.nomor,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                lokasiFile: val.prev.lokasiFile,
+                isPopular: val.popular,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                updatedBy: userData.username,
+              };
+            } else {
+              return {
+                activityVisitUnPlanId: router.query.id,
+                nomor: index,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                createdBy: userData.username,
+                updatedBy: userData.username,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                isPopular: val.popular,
+              };
+            }
+          }
+        });
+
+        const files = state.reviseReducer.visibility.map((val, index) => {
+          console.log(val);
+          if (val.file && !val.file.id) {
+            return val.file;
+          }
+        });
+
+        console.log(bodyPosm, files);
+
+        for (let i = 0; i < files.length; i++) {
+          if (bodyPosm[i] && bodyPosm[i].id) {
+            updateDataPosmUnplan(bodyPosm[i].id, bodyPosm[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            if (files[i] != undefined) {
+              insertFileUnplan(bodyPosm[i].id, files[i])
+                .then((res3) => {
+                  console.log(res3);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          } else {
+            submitVisitUnplanDposm(bodyPosm[i], files[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          if (i === 5) {
+            console.log("hai2");
+            updateDataProdukUnplan(bodyProductPrev)
+              .then((res) => {
+                router.push("/");
+
+                console.log(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            // getUnplanById(res.avp.id)
+            //   .then((unplan) => {
+            //     console.log("ini dataunplan", unplan);
+            //     onSubmitApproval(unplan);
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //   });
+          }
+        }
+      } else {
+        setVisNotDone(true);
+      }
+    } else if (router.query.type === "Spreading") {
+      const visDone = state.reviseReducer.visibility.filter((val) => {
+        return val.file !== null && val.type !== null && val.brand !== null;
+      });
+      if (visDone.length >= 2) {
+        // setLoadingSubmit(true);
+        setVisNotDone(false);
+
+        const userData = JSON.parse(localStorage.getItem("user"));
+
+        const bodyProduct = state.reviseReducer.avability.map((val, index) => {
           return {
-            id: val.prev.id,
-            activityVisitUnPlanId: val.prev.activityVisitUnPlanId,
-            nomorDokumen: val.prev.nomorDokumen,
-            nomor: val.prev.nomor,
-            tipe: val.type.program,
-            namaFile: val.file.name,
-            lokasiFile: val.prev.lokasiFile,
-            isPopular: val.popular,
-            brandId: val.brand.id,
-            namaBrand: val.brand.namaBrand,
+            id: "",
+            activitySpreadingId: router.query.id,
+            nomorDokumen: "",
+            nomor: 0,
+            kodeProduk: "",
+            namaProduk: val.namaProduk,
+            stok: 0,
+            saranOrder: 0,
+            jumlahOrder: val.jumlah,
+            harga: val.harga,
+            totalHarga: val.totalHarga,
+            keterangan: val.keterangan,
             updatedBy: userData.username,
           };
+        });
+
+        const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
+          if (val.type && val.file && val.brand) {
+            if (val.prev != undefined) {
+              return {
+                id: val.prev.id ? val.prev.id : "",
+                activitySpreadingId: val.prev.activitySpreadingId,
+                nomorDokumen: val.prev.nomorDokumen,
+                nomor: val.prev.nomor,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                lokasiFile: val.prev.lokasiFile,
+                isPopular: val.popular,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                updatedBy: userData.username,
+              };
+            } else {
+              return {
+                activitySpreadingId: router.query.id,
+                nomor: index,
+                tipe: val.type.program,
+                namaFile: val.file.name,
+                createdBy: userData.username,
+                updatedBy: userData.username,
+                brandId: val.brand.id,
+                namaBrand: val.brand.namaBrand,
+                isPopular: val.popular,
+              };
+            }
+          }
+        });
+
+        const files = state.reviseReducer.visibility.map((val, index) => {
+          console.log(val);
+          if (val.file && !val.file.id) {
+            return val.file;
+          }
+        });
+
+        console.log(bodyPosm, files);
+
+        for (let i = 0; i < files.length; i++) {
+          if (bodyPosm[i] && bodyPosm[i].id) {
+            updateDataPosmSpreading(bodyPosm[i].id, bodyPosm[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            if (files[i] != undefined) {
+              console.log(bodyPosm[i].id, files[i]);
+              insertFileSpreading(bodyPosm[i].id, files[i])
+                .then((res3) => {
+                  console.log(res3);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          } else {
+            submitVisitSpreadingDposm(bodyPosm[i], files[i])
+              .then((res2) => {
+                console.log(res2);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          if (i === 5) {
+            // getUnplanById(res.avp.id)
+            //   .then((unplan) => {
+            //     console.log("ini dataunplan", unplan);
+            //     onSubmitApproval(unplan);
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //   });
+            router.push("/");
+          }
         }
-      });
-
-      console.log(bodyPosm);
-
-      // for (let i = 0; i < files.length; i++) {
-      //   submitVisitUnplanDposmnDposm(bodyPosm[i], files[i])
-      //     .then((res2) => {
-      //       if (i === 5) {
-      //         getUnplanById(res.avp.id)
-      //           .then((unplan) => {
-      //             console.log("ini dataunplan", unplan);
-      //             onSubmitApproval(unplan);
-      //           })
-      //           .catch((err) => {
-      //             console.log(err);
-      //           });
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
-      // }
-    } else {
-      setVisNotDone(true);
+      } else {
+        setVisNotDone(true);
+      }
     }
   };
 

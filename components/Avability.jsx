@@ -38,6 +38,7 @@ export default function Avability({ type }) {
   const [ket, setKet] = useState("");
   const [plan, setPlan] = useState([]);
   const [newNOO, setNewNOO] = useState(false);
+  const [dummy, setDummy] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -63,6 +64,10 @@ export default function Avability({ type }) {
     } else if (type === "SPREADING") {
       if (state.visitSpreadingReducer.avability.length > 0) {
         setAvabilityList([...state.visitSpreadingReducer.avability]);
+      }
+    } else if (type === "REVISE") {
+      if (state.reviseReducer.avability.length > 0) {
+        setAvabilityList([...state.reviseReducer.avability]);
       }
     }
   }, [dispatch]);
@@ -95,9 +100,12 @@ export default function Avability({ type }) {
 
   useEffect(() => {
     if (productFocus.produkID) {
-      if (type === "PLAN") {
+      if (type === "PLAN" || router.query.type === "Plan") {
         console.log(plan);
-        getHnaAvg(productFocus.produkID, plan.idOutlet)
+        getHnaAvg(
+          productFocus.produkID,
+          state.approvalReducer.focusApproval.idOutlet
+        )
           .then((data) => {
             console.log(data);
             if (data.status === 404) {
@@ -111,11 +119,11 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
-      } else if (type === "UNPLAN") {
+      } else if (type === "UNPLAN" || router.query.type === "UnPlan") {
         console.log(state.visitUnplanReducer.outlet);
         getHnaAvg(
           productFocus.produkID,
-          state.visitUnplanReducer.outlet.outletID
+          state.approvalReducer.focusApproval.idOutlet
         )
           .then((data) => {
             console.log(data);
@@ -130,11 +138,11 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
-      } else if (type === "SPREADING") {
+      } else if (type === "SPREADING" || router.query.type === "Spreading") {
         console.log(state.visitSpreadingReducer.outlet);
         getHnaAvg(
           productFocus.produkID,
-          state.visitSpreadingReducer.outlet.outletID
+          state.approvalReducer.focusApproval.idOutlet
         )
           .then((data) => {
             console.log(data);
@@ -149,6 +157,61 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "REVISE") {
+        if (router.query.type === "Plan") {
+          getHnaAvg(productFocus.produkID, plan.idOutlet)
+            .then((data) => {
+              console.log(data);
+              if (data.status === 404) {
+                setAvgSales(0);
+                setHarga(0);
+              } else {
+                setAvgSales(data.averageSales);
+                setHarga(data.hna);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (router.query.type === "UnPlan") {
+          console.log(state.visitUnplanReducer.outlet);
+          getHnaAvg(
+            productFocus.produkID,
+            state.visitUnplanReducer.outlet.outletID
+          )
+            .then((data) => {
+              console.log(data);
+              if (data.status === 404) {
+                setAvgSales(0);
+                setHarga(0);
+              } else {
+                setAvgSales(data.averageSales);
+                setHarga(data.hna);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (router.query.type === "Spreading") {
+          console.log(state.visitSpreadingReducer.outlet);
+          getHnaAvg(
+            productFocus.produkID,
+            state.visitSpreadingReducer.outlet.outletID
+          )
+            .then((data) => {
+              console.log(data);
+              if (data.status === 404) {
+                setAvgSales(0);
+                setHarga(0);
+              } else {
+                setAvgSales(data.averageSales);
+                setHarga(data.hna);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       }
     }
   }, [productFocus]);
@@ -156,7 +219,7 @@ export default function Avability({ type }) {
   useEffect(() => {
     if (productFocus.produkID) {
       if (stock) {
-        if (type === "PLAN") {
+        if (type === "PLAN" || router.query.type === "Plan") {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
@@ -167,7 +230,7 @@ export default function Avability({ type }) {
             setSaranOrder(0);
             setKet("Overstock");
           }
-        } else if (type === "UNPLAN") {
+        } else if (type === "UNPLAN" || router.query.type === "UnPlan") {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
@@ -178,7 +241,7 @@ export default function Avability({ type }) {
             setSaranOrder(0);
             setKet("Overstock");
           }
-        } else if (type === "SPREADING") {
+        } else if (type === "SPREADING" || router.query.type === "Spreading") {
           if (parseInt(avgSales) > parseInt(stock)) {
             setSaranOrder(parseInt(avgSales) - parseInt(stock));
             setKet("Understock");
@@ -242,6 +305,8 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
+      } else if (type === "REVISE") {
+        setLoading(false);
       }
     }
   }, [router.query.id]);
@@ -272,6 +337,18 @@ export default function Avability({ type }) {
     } else if (type === "SPREADING") {
       getProductByJenisChannel(
         state.visitSpreadingReducer.jenisChannel.jenisChannelID
+      )
+        .then((data) => {
+          setProduct(data);
+          // console.log(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "REVISE") {
+      getProductByJenisChannel(
+        state.approvalReducer.focusApproval.idJenisChannel
       )
         .then((data) => {
           setProduct(data);
@@ -420,13 +497,14 @@ export default function Avability({ type }) {
               <div className={styles.avability_modal_subtitle}>Stock (pcs)</div>
               <input
                 onChange={(e) => {
-                  setStock(e.target.value);
+                  var value = e.target.value.split(".").join("");
+                  setStock(value);
                 }}
                 placeholder="0"
                 type="number"
                 min={0}
                 className={styles.input_order}
-                value={stock}
+                value={parseInt(stock).toLocaleString("id-ID")}
               />
               <div className={styles.avg_sales_container}>
                 <div style={{ paddingRight: "5px" }}>
@@ -435,13 +513,14 @@ export default function Avability({ type }) {
                   </div>
                   <input
                     onChange={(e) => {
-                      setAvgSales(e.target.value);
+                      var value = e.target.value.split(".").join("");
+                      setAvgSales(value);
                     }}
                     placeholder="0"
                     type="number"
                     min={0}
                     className={styles.input_order}
-                    value={avgSales}
+                    value={parseInt(avgSales).toLocaleString("id-ID")}
                     disabled={true}
                   />
                 </div>
@@ -451,13 +530,14 @@ export default function Avability({ type }) {
                   </div>
                   <input
                     onChange={(e) => {
-                      setSaranOrder(e.target.value);
+                      var value = e.target.value.split(".").join("");
+                      setSaranOrder(value);
                     }}
-                    placeholder="0"
+                    // placeholder="0"
                     type="number"
                     min={0}
                     className={styles.input_order}
-                    value={saranOrder}
+                    value={parseInt(saranOrder).toLocaleString("id-ID")}
                     disabled={true}
                   />
                 </div>
@@ -465,13 +545,14 @@ export default function Avability({ type }) {
               <div className={styles.avability_modal_subtitle}>Order (pcs)</div>
               <input
                 onChange={(e) => {
-                  setOrder(e.target.value);
+                  var value = e.target.value.split(".").join("");
+                  setOrder(value);
                 }}
                 placeholder="0"
                 type="number"
                 min={0}
                 className={styles.input_order}
-                value={order}
+                value={parseInt(order).toLocaleString("id-ID")}
               />
               <div className={styles.avability_modal_subtitle}>Keterangan</div>
               {/* <input
@@ -501,17 +582,26 @@ export default function Avability({ type }) {
                             productFocus.namaProduk
                         );
                         if (sameDataIndex + 1) {
-                          avabilityList.splice(sameDataIndex, 1);
-                          avabilityList.push({
-                            productFocus,
-                            stock: stock ? stock : 0,
-                            saranOrder: saranOrder ? saranOrder : 0,
-                            order: order ? order : 0,
-                            ket,
-                            pengiriman,
-                            minor,
-                            harga,
-                          });
+                          // avabilityList.splice(sameDataIndex, 1);
+                          // avabilityList.push({
+                          //   productFocus,
+                          //   stock: stock ? stock : 0,
+                          //   saranOrder: saranOrder ? saranOrder : 0,
+                          //   order: order ? order : 0,
+                          //   ket,
+                          //   pengiriman,
+                          //   minor,
+                          //   harga,
+                          // });
+                          avabilityList[sameDataIndex].stock = stock
+                            ? stock
+                            : 0;
+                          avabilityList[sameDataIndex].saranOrder = saranOrder
+                            ? saranOrder
+                            : 0;
+                          avabilityList[sameDataIndex].order = order
+                            ? order
+                            : 0;
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
@@ -564,6 +654,7 @@ export default function Avability({ type }) {
       );
     }
   };
+
   const renderAvabilityList = () => {
     if (type.includes("HISTORY")) {
       // console.log(avabilityList);
@@ -604,7 +695,7 @@ export default function Avability({ type }) {
               <div className={styles.avabilitylist_container}>
                 <div className={styles.avabilitylist_subtitle}>Order</div>
                 <div className={styles.avabilitylist_value}>
-                  {val.jumlah} pcs
+                  {parseInt(val.jumlah).toLocaleString("id-ID")} pcs
                 </div>
               </div>
               {val.keterangan ? (
@@ -653,14 +744,14 @@ export default function Avability({ type }) {
           >
             <div
               onClick={() => {
+                console.log(val);
+                setModal(true);
                 setProductFocus(val.productFocus);
                 setStock(val.stock);
                 setSaranOrder(val.saranOrder);
+                setSearchListProduct(val.productFocus.namaProduk);
                 setOrder(val.order);
                 setKet(val.ket);
-                setModal(true);
-                setPengiriman(val.pengiriman);
-                setMinor(val.minor);
                 setHarga(val.harga);
               }}
             >
@@ -674,7 +765,7 @@ export default function Avability({ type }) {
                 >
                   <div className={styles.avabilitylist_subtitle}>Stock</div>
                   <div div className={styles.avabilitylist_value}>
-                    {val.stock} pcs
+                    {parseInt(val.stock).toLocaleString("id-ID")} pcs
                   </div>
                 </div>
                 <div
@@ -685,14 +776,14 @@ export default function Avability({ type }) {
                     Saran Order
                   </div>
                   <div div className={styles.avabilitylist_value}>
-                    {val.saranOrder} pcs
+                    {parseInt(val.saranOrder).toLocaleString("id-ID")} pcs
                   </div>
                 </div>
               </div>
               <div className={styles.avabilitylist_container}>
                 <div className={styles.avabilitylist_subtitle}>Order</div>
                 <div className={styles.avabilitylist_value}>
-                  {val.order} pcs
+                  {parseInt(val.order).toLocaleString("id-ID")} pcs
                 </div>
               </div>
               {val.ket ? (
@@ -724,22 +815,25 @@ export default function Avability({ type }) {
       }
     }
   };
+
   const onSave = () => {
+    console.log(avabilityList);
     if (newNOO) {
       actions.setSpreadingAvability(avabilityList);
       Router.push(`/visit/spreading/submit?new=true`);
     } else {
       if (type === "PLAN") {
         actions.setPlanAvability(avabilityList);
-        // console.log(avabilityList);
         Router.push(`/visit/plan/${router.query.id}`);
       } else if (type === "UNPLAN") {
         actions.setUnplanAvability(avabilityList);
         Router.push(`/visit/unplan/submit`);
       } else if (type === "SPREADING") {
         actions.setSpreadingAvability(avabilityList);
-        console.log(avabilityList);
         Router.push(`/visit/spreading/submit`);
+      } else if (type === "REVISE") {
+        actions.setReviseAvability(avabilityList);
+        Router.push(`/revise/${router.query.type}/${router.query.id}`);
       }
     }
   };

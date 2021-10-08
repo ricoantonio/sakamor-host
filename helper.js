@@ -487,7 +487,6 @@ const getPlanList = (userData) => {
       return response.json();
     })
     .then((data) => {
-      console.log("false", data);
       var res = data.filter((val) => {
         return val.isCheckOut === false;
       });
@@ -561,7 +560,6 @@ const getPlanHistory = (userData) => {
       return response.json();
     })
     .then((data) => {
-      console.log("true", data);
       var res = data.filter((val) => {
         return val.isCheckOut === true;
       });
@@ -886,6 +884,105 @@ const getPlanById = (id) => {
     });
 };
 
+const updateDataPosmPlan = (id, dposm) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlanDPOSM/ActivityVisitPlanDPOSM/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dposm),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const updateDataProdukPlan = (data) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorActivityVisitPlan/v1/api/ActivityVisitPlanDProduct/UpdateAllVisitPlanProduct`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const insertFilePlan = (id, file) => {
+  const formdata = new FormData();
+  formdata.append("file", file);
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlanDPOSM/InsertFileBy?id=${id}&namaFile=${file.name}`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+      },
+      body: formdata,
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log("balikan inserfile", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getVisitPlanProduct = (id) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlanDProduct/GetVisitPlanProductBy?visitPlanId=${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // VISIT UNPLAN =================================================================================================================
 
 const submitVisitUnplan = (data) => {
@@ -1032,13 +1129,11 @@ const getInvoiceDataPosmUnplan = (visitUnplanId) => {
     });
 };
 
-const updateInvoiceDataPosmUnplan = (visitUnplanId) => {
-  const formdata = new FormData();
-
+const updateDataPosmUnplan = (id, dposm) => {
   return fetch(
     API_URL +
       API_VISIT_UNPLAN +
-      `/SakamorActivityVisitUnPlanDPOSM/ActivityVisitUnPlanDPOSM/${visitUnplanId}`,
+      `/SakamorActivityVisitUnPlanDPOSM/ActivityVisitUnPlanDPOSM/${id}`,
     {
       method: "PUT",
       headers: {
@@ -1053,8 +1148,61 @@ const updateInvoiceDataPosmUnplan = (visitUnplanId) => {
       return response.json();
     })
     .then((data) => {
-      var sortData = data.sort(compare);
-      return sortData;
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const updateDataProdukUnplan = (data) => {
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanProduct/UpdateAllUnPlanProduct`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const insertFileUnplan = (id, file) => {
+  const formdata = new FormData();
+
+  formdata.append("file", file);
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanDPOSM/InsertFileBy?id=${id}&namaFile=${file.name}`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+      },
+      body: formdata,
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("balikan inserfile", data);
+      return data;
     })
     .catch((err) => {
       console.log(err);
@@ -1150,6 +1298,28 @@ const getReviseUnPlanListSmr = (userData) => {
           dateB = new Date(b.tanggal);
         return dateB - dateA;
       });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getUnPlanProducts = (id) => {
+  return fetch(
+    API_URL +
+      API_VISIT_UNPLAN +
+      `/SakamorActivityVisitUnPlanProduct/GetUnPlanProductsBy?unPlanId=${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
       return data;
     })
     .catch((err) => {
@@ -1371,6 +1541,108 @@ const getReviseSpreadingListSmr = (userData) => {
           dateB = new Date(b.tanggal);
         return dateB - dateA;
       });
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const updateDataPosmSpreading = (id, dposm) => {
+  return fetch(
+    API_URL +
+      API_VISIT_SPREADING +
+      `/ActivitySpreadingDPOSM/ActivitySpreadingDposm/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dposm),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const updateDataProdukSpreading = (data) => {
+  return fetch(
+    API_URL +
+      API_VISIT_SPREADING +
+      `/ActivitySpreadingDProduct/UpdateAllSpreadingProduct`,
+    {
+      method: "PUT",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const insertFileSpreading = (id, file) => {
+  const formdata = new FormData();
+
+  formdata.append("file", file);
+  return fetch(
+    API_URL +
+      API_VISIT_SPREADING +
+      `/ActivitySpreadingDPOSM/InsertFileBy?id=${id}&namaFile=${file.name}`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+      },
+      body: formdata,
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("balikan inserfile", data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSpreadingProduct = (id) => {
+  return fetch(
+    API_URL +
+      API_VISIT_SPREADING +
+      `/ActivitySpreadingDProduct/GetSpreadingProductBy?spreadingId=${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
       return data;
     })
     .catch((err) => {
@@ -2312,6 +2584,10 @@ export {
   getApproval,
   getPlanById,
   getRevisePlanListSmr,
+  updateDataPosmPlan,
+  updateDataProdukPlan,
+  insertFilePlan,
+  getVisitPlanProduct,
   // VISIT UNPLAN
   submitVisitUnplan,
   submitVisitUnplanDposm,
@@ -2322,6 +2598,10 @@ export {
   getUnplanNearMe,
   getUnplanById,
   getReviseUnPlanListSmr,
+  updateDataPosmUnplan,
+  updateDataProdukUnplan,
+  insertFileUnplan,
+  getUnPlanProducts,
   // SPREADING
   submitVisitSpreading,
   submitVisitSpreadingDposm,
@@ -2331,6 +2611,10 @@ export {
   getSpreadingMonthlyHistory,
   getSpreadingById,
   getReviseSpreadingListSmr,
+  updateDataPosmSpreading,
+  updateDataProdukSpreading,
+  insertFileSpreading,
+  getSpreadingProduct,
   // WORK VISIT
   getAllWorkVisit,
   getWorkVisitMonthlyHistory,

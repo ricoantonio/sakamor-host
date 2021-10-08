@@ -270,7 +270,7 @@ export default function index() {
       };
 
       console.log(data, state.visitUnplanReducer.avability);
-
+      console.log(data);
       submitVisitUnplan(data)
         .then((res) => {
           console.log("ini res", res);

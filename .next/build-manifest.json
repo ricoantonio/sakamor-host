@@ -29,15 +29,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/recap": [
+    "/revise/[type]/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/recap.js"
+      "static/chunks/pages/revise/[type]/[id].js"
     ],
-    "/reward": [
+    "/revise/[type]/[id]/availability": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/reward.js"
+      "static/chunks/pages/revise/[type]/[id]/availability.js"
     ]
   },
   "ampFirstPages": []

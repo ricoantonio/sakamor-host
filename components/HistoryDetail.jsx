@@ -332,6 +332,11 @@ export default function HistoryDetail({ type }) {
     var dataProdukSort = productList.sort((a, b) =>
       a.namaProduk.localeCompare(b.namaProduk)
     );
+    var dataProduk = dataProdukSort.filter((val) => {
+      return val.jumlah > 0;
+    });
+    console.log(dataProduk);
+
     if (loading) {
       return <Spinner />;
     } else {
@@ -359,7 +364,7 @@ export default function HistoryDetail({ type }) {
                       margin: "100px auto",
                     }}
                   >
-                    <Invoice data={dataProdukSort} plan={plan} />
+                    <Invoice data={dataProduk} plan={plan} />
                     <div
                       style={{
                         padding: "10px",
