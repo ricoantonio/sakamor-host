@@ -454,7 +454,7 @@ export default function index() {
             };
           } else {
             return {
-              id: "",
+              id: router.query.id,
               activityVisitPlanId: router.query.id,
               nomorDokumen: state.approvalReducer.focusApproval.noDokVisitPlan,
               nomor: index,
@@ -471,16 +471,6 @@ export default function index() {
             };
           }
         });
-
-        const bodyProductPrev = bodyProduct.filter((val) => {
-          return val.id;
-        });
-        const bodyProductNew = bodyProduct.filter((val) => {
-          return !val.id;
-        });
-
-        console.log(bodyProductNew);
-        console.log(bodyProductPrev);
 
         const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
           if (val.type && val.file && val.brand) {
@@ -500,7 +490,7 @@ export default function index() {
               };
             } else {
               return {
-                id: "",
+                id: router.query.id,
                 activityVisitPlanId: router.query.id,
                 nomorDokumen: "",
                 nomor: index,
@@ -523,11 +513,11 @@ export default function index() {
           }
         });
 
-        // console.log(bodyPosm, files);
-        console.log(bodyProduct);
+        console.log(bodyPosm, files);
+        // console.log(bodyProduct);
 
         for (let i = 0; i < files.length; i++) {
-          if (bodyPosm[i] && bodyPosm[i].id) {
+          if (bodyPosm[i] && bodyPosm[i].id && bodyPosm[i].lokasiFile) {
             updateDataPosmPlan(bodyPosm[i].id, bodyPosm[i])
               .then((res2) => {
                 console.log(res2);
@@ -535,7 +525,7 @@ export default function index() {
               .catch((err) => {
                 console.log(err);
               });
-            if (files[i] != undefined) {
+            if (files[i] !== undefined) {
               insertFilePlan(bodyPosm[i].id, files[i])
                 .then((res3) => {
                   console.log(res3);
@@ -545,16 +535,20 @@ export default function index() {
                 });
             }
           } else {
-            submitVisitPlanDposm(bodyPosm[i], files[i])
-              .then((res2) => {
-                console.log(res2);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+            console.log("new", bodyPosm[i]);
+            if (bodyPosm[i] !== undefined) {
+              submitVisitPlanDposm(bodyPosm[i], files[i])
+                .then((res2) => {
+                  console.log(res2);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
           }
-          if (i === 5) {
-            updateDataProdukPlan(bodyProductPrev)
+
+          if (i === files.length - 1) {
+            updateDataProdukPlan(bodyProduct)
               .then((res) => {
                 router.push("/");
 
@@ -606,7 +600,7 @@ export default function index() {
             };
           } else {
             return {
-              id: "",
+              id: router.query.id,
               activityVisitUnPlanId: router.query.id,
               nomorDokumen: "",
               nomor: index,
@@ -623,15 +617,6 @@ export default function index() {
             };
           }
         });
-
-        const bodyProductPrev = bodyProduct.filter((val) => {
-          return val.id;
-        });
-        const bodyProductNew = bodyProduct.filter((val) => {
-          return !val.id;
-        });
-
-        console.log(bodyProductPrev);
 
         const bodyPosm = state.reviseReducer.visibility.map((val, index) => {
           if (val.type && val.file && val.brand) {
@@ -702,8 +687,7 @@ export default function index() {
               });
           }
           if (i === 5) {
-            console.log("hai2");
-            updateDataProdukUnplan(bodyProductPrev)
+            updateDataProdukUnplan(bodyProduct)
               .then((res) => {
                 router.push("/");
 

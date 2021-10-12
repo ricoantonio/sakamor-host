@@ -29,11 +29,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/revise/[type]/[id]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/revise/[type]/[id].js"
-    ],
     "/revise/[type]/[id]/availability": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

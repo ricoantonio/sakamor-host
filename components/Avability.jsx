@@ -397,6 +397,18 @@ export default function Avability({ type }) {
     return render;
   };
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function isNumberKey(evt) {
+    console.log(evt);
+    var charCode = evt.which ? evt.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+
+    return true;
+  }
+
   const renderModalAdd = () => {
     if (modal) {
       return (
