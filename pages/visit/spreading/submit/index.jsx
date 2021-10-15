@@ -73,7 +73,7 @@ export default function index() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      getPimcaByCabang(userData.kodeCabang)
+      getPimcaByCabang(userData)
         .then((data) => {
           setPimca(data);
         })

@@ -130,7 +130,9 @@ export default function index() {
           {type}
           <div style={{ textAlign: "right" }}>
             {type === "Visibility"
-              ? `${doneFormVis.length}/6`
+              ? plan.modul === "Spreading"
+                ? `${doneFormVis.length}/2`
+                : `${doneFormVis.length}/6`
               : type === "Availability"
               ? `${doneFormAva.length}/25`
               : ""}
@@ -159,7 +161,10 @@ export default function index() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(doneFormVis.length / 6) * 100}%`,
+                          width:
+                            plan.modul === "Spreading"
+                              ? `${(doneFormVis.length / 2) * 100}%`
+                              : `${(doneFormVis.length / 6) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -476,9 +481,9 @@ export default function index() {
                 }}
               />
               <div className={styles.main}>
-                <div>
+                {/* <div>
                   {plan.usernameSMR} - {plan.modul}
-                </div>
+                </div> */}
                 {renderDetail()}
                 <div
                   style={{

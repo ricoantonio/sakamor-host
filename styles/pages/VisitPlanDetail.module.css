@@ -132,6 +132,19 @@
   background-color: #fff;
   justify-items: center;
 }
+.avability_modal_container_spreading {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  width: 400px;
+  height: 650px;
+  margin: auto;
+  padding: 38px 22px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background-color: #fff;
+  justify-items: center;
+}
 .avability_modal_main {
   margin: auto;
 }
@@ -211,6 +224,9 @@
     width: 540px;
   }
   .avability_modal_container {
+    width: 540px;
+  }
+  .avability_modal_container_spreading {
     width: 540px;
   }
   .search_fixed {

@@ -184,7 +184,7 @@ export default function Unplan() {
               {outletClass ? (
                 <div style={{ textAlign: "center", margin: "auto 0" }}>
                   <img
-                    style={{ width: "50px", height: "50px" }}
+                    style={{ width: "200px", height: "200px" }}
                     src={outletClass}
                   />
                 </div>
@@ -279,6 +279,7 @@ export default function Unplan() {
                 {/* <div>{`latitude: ${position.latitude}`}</div> */}
                 {/* <div>{`longitude: ${position.longitude}`}</div> */}
               </div>
+              <div style={{ marginBottom: "100px" }} />
             </div>
           </div>
         </div>

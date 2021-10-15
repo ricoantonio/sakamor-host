@@ -16,6 +16,7 @@ import {
   getProductByJenisChannel,
   getInvoiceDataSpreading,
   getHnaAvg,
+  getHargaEceran,
 } from "../helper";
 
 export default function Avability({ type }) {
@@ -37,6 +38,7 @@ export default function Avability({ type }) {
   const [minor, setMinor] = useState("");
   const [ket, setKet] = useState("");
   const [plan, setPlan] = useState([]);
+  const [hargaEceran, setHargeEceran] = useState({});
   const [newNOO, setNewNOO] = useState(false);
   const [dummy, setDummy] = useState(0);
   const router = useRouter();
@@ -100,12 +102,10 @@ export default function Avability({ type }) {
 
   useEffect(() => {
     if (productFocus.produkID) {
-      if (type === "PLAN" || router.query.type === "Plan") {
+      if (type === "PLAN") {
         console.log(plan);
-        getHnaAvg(
-          productFocus.produkID,
-          state.approvalReducer.focusApproval.idOutlet
-        )
+
+        getHnaAvg(productFocus.produkID, plan.idOutlet)
           .then((data) => {
             console.log(data);
             if (data.status === 404) {
@@ -119,11 +119,12 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
-      } else if (type === "UNPLAN" || router.query.type === "UnPlan") {
+      } else if (type === "UNPLAN") {
         console.log(state.visitUnplanReducer.outlet);
+
         getHnaAvg(
           productFocus.produkID,
-          state.approvalReducer.focusApproval.idOutlet
+          state.visitUnplanReducer.outlet.outletID
         )
           .then((data) => {
             console.log(data);
@@ -138,11 +139,12 @@ export default function Avability({ type }) {
           .catch((err) => {
             console.log(err);
           });
-      } else if (type === "SPREADING" || router.query.type === "Spreading") {
+      } else if (type === "SPREADING") {
         console.log(state.visitSpreadingReducer.outlet);
+
         getHnaAvg(
           productFocus.produkID,
-          state.approvalReducer.focusApproval.idOutlet
+          state.visitSpreadingReducer.outlet.outletID
         )
           .then((data) => {
             console.log(data);
@@ -153,13 +155,24 @@ export default function Avability({ type }) {
               setAvgSales(data.averageSales);
               setHarga(data.hna);
             }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getHargaEceran(productFocus.produkID)
+          .then((data) => {
+            setHargeEceran(data);
+            console.log(data);
           })
           .catch((err) => {
             console.log(err);
           });
       } else if (type === "REVISE") {
         if (router.query.type === "Plan") {
-          getHnaAvg(productFocus.produkID, plan.idOutlet)
+          getHnaAvg(
+            productFocus.produkID,
+            state.approvalReducer.focusApproval.idOutlet
+          )
             .then((data) => {
               console.log(data);
               if (data.status === 404) {
@@ -177,7 +190,7 @@ export default function Avability({ type }) {
           console.log(state.visitUnplanReducer.outlet);
           getHnaAvg(
             productFocus.produkID,
-            state.visitUnplanReducer.outlet.outletID
+            state.approvalReducer.focusApproval.idOutlet
           )
             .then((data) => {
               console.log(data);
@@ -196,7 +209,7 @@ export default function Avability({ type }) {
           console.log(state.visitSpreadingReducer.outlet);
           getHnaAvg(
             productFocus.produkID,
-            state.visitSpreadingReducer.outlet.outletID
+            state.approvalReducer.focusApproval.idOutlet
           )
             .then((data) => {
               console.log(data);
@@ -411,215 +424,259 @@ export default function Avability({ type }) {
 
   const renderModalAdd = () => {
     if (modal) {
-      return (
-        <>
-          <div
-            className={styles.modal_avability}
-            onClick={() => {
-              setModal(false);
-            }}
-          ></div>
-          <div className={styles.wrapper}>
-            <div className={styles.avability_modal_container}>
-              <div className={styles.add_title}>Add Product</div>
-              <div className={styles.avability_modal_subtitle}>Product</div>
-              <input
-                onChange={(e) => {
-                  onSearchProduct(e.target.value);
-                }}
-                placeholder="Search"
-                value={searchListProduct}
-                className={styles.input_order_search}
-                // onClick={() => {
-                //   setProduct([]);
-                // }}
-                onFocus={() => setRenderProductList(true)}
-              />
-              {renderProductList ? (
-                <div
-                  style={{
-                    position: "absolute",
-                    maxHeight: "180px",
-                    backgroundColor: "white",
-                    overflowY: "scroll",
-                    maxWidth: "400px",
-                    padding: "0 4px",
-                    zIndex: 999999,
+      if (type === "SPREADING") {
+        return (
+          <>
+            <div
+              className={styles.modal_avability}
+              onClick={() => {
+                setModal(false);
+              }}
+            ></div>
+            <div className={styles.wrapper}>
+              <div className={styles.avability_modal_container_spreading}>
+                <div className={styles.add_title}>Add Product</div>
+                <div className={styles.avability_modal_subtitle}>Product</div>
+                <input
+                  onChange={(e) => {
+                    onSearchProduct(e.target.value);
                   }}
-                >
-                  {renderProductSearch()}
-                </div>
-              ) : null}
-              {/* <div className={styles.stock_order_container}>
-                <div style={{ paddingRight: "10px" }}>
-                  <div className={styles.avability_modal_subtitle}>
-                    Stock (pcs)
+                  placeholder="Search"
+                  value={searchListProduct}
+                  className={styles.input_order_search}
+                  // onClick={() => {
+                  //   setProduct([]);
+                  // }}
+                  onFocus={() => setRenderProductList(true)}
+                />
+                {renderProductList ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      maxHeight: "180px",
+                      backgroundColor: "white",
+                      overflowY: "scroll",
+                      maxWidth: "400px",
+                      padding: "0 4px",
+                      zIndex: 999999,
+                    }}
+                  >
+                    {renderProductSearch()}
                   </div>
-                  <input
-                    onChange={(e) => {
-                      setStock(e.target.value);
-                    }}
-                    placeholder="0"
-                    type="number"
-                    min={0}
-                    className={styles.input_order}
-                    value={stock}
-                  />
+                ) : null}
+
+                {/* <div className={styles.avability_modal_subtitle}>Keterangan</div> */}
+                {/* <input
+                  onChange={(e) => {
+                    setKet(e.target.value);
+                  }}
+                  placeholder="Ket."
+                  type="text"
+                  className={styles.input_order}
+                  value={ket}
+                  
+                /> */}
+                <div className={styles.avability_modal_subtitle}>
+                  Stock (pcs)
                 </div>
-                <div style={{}}>
-                  <div className={styles.avability_modal_subtitle}>
-                    Pengiriman (hari)
+                <input
+                  onChange={(e) => {
+                    var value = e.target.value.split(".").join("");
+                    setStock(value);
+                  }}
+                  placeholder="0"
+                  type="number"
+                  min={0}
+                  className={styles.input_order}
+                  value={parseInt(stock).toLocaleString("id-ID")}
+                />
+                <div className={styles.avg_sales_container}>
+                  <div style={{ paddingRight: "5px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Avg Sales (pcs)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        var value = e.target.value.split(".").join("");
+                        setAvgSales(value);
+                      }}
+                      placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={parseInt(avgSales).toLocaleString("id-ID")}
+                      disabled={true}
+                    />
                   </div>
-                  <input
-                    onChange={(e) => {
-                      setPengiriman(e.target.value);
-                    }}
-                    placeholder="0"
-                    type="number"
-                    min={0}
-                    className={styles.input_order}
-                    value={pengiriman}
-                  />
-                </div>
-                <div style={{ paddingLeft: "10px" }}>
-                  <div className={styles.avability_modal_subtitle}>Minor</div>
-                  <input
-                    onChange={(e) => {
-                      setMinor(e.target.value);
-                    }}
-                    placeholder="0"
-                    type="number"
-                    min={0}
-                    className={styles.input_order}
-                    value={minor}
-                  />
-                </div>
-              </div> */}
-              {/* <div className={styles.avability_modal_subtitle}>Keterangan</div> */}
-              {/* <input
-                onChange={(e) => {
-                  setKet(e.target.value);
-                }}
-                placeholder="Ket."
-                type="text"
-                className={styles.input_order}
-                value={ket}
-                
-              /> */}
-              <div className={styles.avability_modal_subtitle}>Stock (pcs)</div>
-              <input
-                onChange={(e) => {
-                  var value = e.target.value.split(".").join("");
-                  setStock(value);
-                }}
-                placeholder="0"
-                type="number"
-                min={0}
-                className={styles.input_order}
-                value={parseInt(stock).toLocaleString("id-ID")}
-              />
-              <div className={styles.avg_sales_container}>
-                <div style={{ paddingRight: "5px" }}>
-                  <div className={styles.avability_modal_subtitle}>
-                    Avg Sales (pcs)
+                  <div style={{ paddingLeft: "5px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Saran Order (pcs)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        var value = e.target.value.split(".").join("");
+                        setSaranOrder(value);
+                      }}
+                      // placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={parseInt(saranOrder).toLocaleString("id-ID")}
+                      disabled={true}
+                    />
                   </div>
-                  <input
-                    onChange={(e) => {
-                      var value = e.target.value.split(".").join("");
-                      setAvgSales(value);
-                    }}
-                    placeholder="0"
-                    type="number"
-                    min={0}
-                    className={styles.input_order}
-                    value={parseInt(avgSales).toLocaleString("id-ID")}
-                    disabled={true}
-                  />
                 </div>
-                <div style={{ paddingLeft: "5px" }}>
-                  <div className={styles.avability_modal_subtitle}>
-                    Saran Order (pcs)
+                <div className={styles.avability_modal_subtitle}>
+                  Order (pcs)
+                </div>
+                <input
+                  onChange={(e) => {
+                    var value = e.target.value.split(".").join("");
+                    setOrder(value);
+                  }}
+                  placeholder="0"
+                  type="number"
+                  min={0}
+                  className={styles.input_order}
+                  value={parseInt(order).toLocaleString("id-ID")}
+                />
+                <div className={styles.avability_modal_subtitle}>
+                  Keterangan
+                </div>
+                {/* <input
+                  onChange={(e) => {
+                    setKet(e.target.value);
+                  }}
+                  placeholder="Ket."
+                  type="text"
+                  className={styles.input_order}
+                  value={ket}
+                /> */}
+                <div style={{ height: "24px" }}>{ket}</div>
+                <div className={styles.stock_order_container}>
+                  <div style={{ paddingRight: "10px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Satuan
+                    </div>
+                    <input
+                      type="text"
+                      className={styles.input_order}
+                      value={
+                        hargaEceran && hargaEceran.satuan
+                          ? hargaEceran.satuan
+                          : null
+                      }
+                      disabled={true}
+                    />
                   </div>
-                  <input
-                    onChange={(e) => {
-                      var value = e.target.value.split(".").join("");
-                      setSaranOrder(value);
-                    }}
-                    // placeholder="0"
-                    type="number"
-                    min={0}
-                    className={styles.input_order}
-                    value={parseInt(saranOrder).toLocaleString("id-ID")}
-                    disabled={true}
-                  />
+                  <div style={{}}>
+                    <div className={styles.avability_modal_subtitle}>HNA</div>
+                    <input
+                      placeholder="0"
+                      type="number"
+                      className={styles.input_order}
+                      value={
+                        hargaEceran && hargaEceran.hna
+                          ? hargaEceran.hna.toLocaleString("id-ID")
+                          : null
+                      }
+                      disabled={true}
+                    />
+                  </div>
+                  <div style={{ paddingLeft: "10px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Harga Eceran
+                    </div>
+                    <input
+                      placeholder="0"
+                      type="number"
+                      className={styles.input_order}
+                      value={
+                        hargaEceran && hargaEceran.hargaEceran
+                          ? hargaEceran.hargaEceran.toLocaleString("id-ID")
+                          : null
+                      }
+                      disabled={true}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.avability_modal_subtitle}>Order (pcs)</div>
-              <input
-                onChange={(e) => {
-                  var value = e.target.value.split(".").join("");
-                  setOrder(value);
-                }}
-                placeholder="0"
-                type="number"
-                min={0}
-                className={styles.input_order}
-                value={parseInt(order).toLocaleString("id-ID")}
-              />
-              <div className={styles.avability_modal_subtitle}>Keterangan</div>
-              {/* <input
-                onChange={(e) => {
-                  setKet(e.target.value);
-                }}
-                placeholder="Ket."
-                type="text"
-                className={styles.input_order}
-                value={ket}
-              /> */}
-              <div style={{ height: "24px" }}>{ket}</div>
-              <div style={{ marginTop: "20px" }}>
-                <Button
-                  text={"Add"}
-                  onClick={() => {
-                    var reg = new RegExp(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g);
-                    if (
-                      productFocus.namaProduk
-                      // order.match(reg)
-                      // order != 0
-                    ) {
-                      if (avabilityList.length > 0) {
-                        var sameDataIndex = avabilityList.findIndex(
-                          (val) =>
-                            val.productFocus.namaProduk ===
-                            productFocus.namaProduk
-                        );
-                        if (sameDataIndex + 1) {
-                          // avabilityList.splice(sameDataIndex, 1);
-                          // avabilityList.push({
-                          //   productFocus,
-                          //   stock: stock ? stock : 0,
-                          //   saranOrder: saranOrder ? saranOrder : 0,
-                          //   order: order ? order : 0,
-                          //   ket,
-                          //   pengiriman,
-                          //   minor,
-                          //   harga,
-                          // });
-                          avabilityList[sameDataIndex].stock = stock
-                            ? stock
-                            : 0;
-                          avabilityList[sameDataIndex].saranOrder = saranOrder
-                            ? saranOrder
-                            : 0;
-                          avabilityList[sameDataIndex].order = order
-                            ? order
-                            : 0;
-                          setModal(false);
-                          setStock("");
-                          setSaranOrder("");
-                          setOrder("");
-                          setKet("");
-                          setHarga("");
+                <div className={styles.avability_modal_subtitle}>Total</div>
+                <input
+                  placeholder="0"
+                  type="text"
+                  className={styles.input_order}
+                  value={
+                    order && hargaEceran && hargaEceran.hargaEceran
+                      ? (order * hargaEceran.hargaEceran).toLocaleString(
+                          "id-ID"
+                        )
+                      : 0
+                  }
+                  disabled={true}
+                />
+                <div style={{ marginTop: "20px" }}>
+                  <Button
+                    text={"Add"}
+                    onClick={() => {
+                      var reg = new RegExp(
+                        /^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g
+                      );
+                      if (
+                        productFocus.namaProduk
+                        // order.match(reg)
+                        // order != 0
+                      ) {
+                        if (avabilityList.length > 0) {
+                          var sameDataIndex = avabilityList.findIndex(
+                            (val) =>
+                              val.productFocus.namaProduk ===
+                              productFocus.namaProduk
+                          );
+                          if (sameDataIndex + 1) {
+                            // avabilityList.splice(sameDataIndex, 1);
+                            // avabilityList.push({
+                            //   productFocus,
+                            //   stock: stock ? stock : 0,
+                            //   saranOrder: saranOrder ? saranOrder : 0,
+                            //   order: order ? order : 0,
+                            //   ket,
+                            //   pengiriman,
+                            //   minor,
+                            //   harga,
+                            // });
+                            avabilityList[sameDataIndex].stock = stock
+                              ? stock
+                              : 0;
+                            avabilityList[sameDataIndex].saranOrder = saranOrder
+                              ? saranOrder
+                              : 0;
+                            avabilityList[sameDataIndex].order = order
+                              ? order
+                              : 0;
+                            setModal(false);
+                            setStock("");
+                            setSaranOrder("");
+                            setOrder("");
+                            setKet("");
+                            setHarga("");
+                          } else {
+                            avabilityList.push({
+                              productFocus,
+                              stock: stock ? stock : 0,
+                              saranOrder: saranOrder ? saranOrder : 0,
+                              order: order ? order : 0,
+                              ket,
+                              pengiriman,
+                              minor,
+                              harga,
+                            });
+                            setModal(false);
+                            setStock("");
+                            setSaranOrder("");
+                            setOrder("");
+                            setKet("");
+                            setHarga("");
+                          }
                         } else {
                           avabilityList.push({
                             productFocus,
@@ -638,32 +695,277 @@ export default function Avability({ type }) {
                           setKet("");
                           setHarga("");
                         }
-                      } else {
-                        avabilityList.push({
-                          productFocus,
-                          stock: stock ? stock : 0,
-                          saranOrder: saranOrder ? saranOrder : 0,
-                          order: order ? order : 0,
-                          ket,
-                          pengiriman,
-                          minor,
-                          harga,
-                        });
-                        setModal(false);
-                        setStock("");
-                        setSaranOrder("");
-                        setOrder("");
-                        setKet("");
-                        setHarga("");
                       }
-                    }
-                  }}
-                />
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <div
+              className={styles.modal_avability}
+              onClick={() => {
+                setModal(false);
+              }}
+            ></div>
+            <div className={styles.wrapper}>
+              <div className={styles.avability_modal_container}>
+                <div className={styles.add_title}>Add Product</div>
+                <div className={styles.avability_modal_subtitle}>Product</div>
+                <input
+                  onChange={(e) => {
+                    onSearchProduct(e.target.value);
+                  }}
+                  placeholder="Search"
+                  value={searchListProduct}
+                  className={styles.input_order_search}
+                  // onClick={() => {
+                  //   setProduct([]);
+                  // }}
+                  onFocus={() => setRenderProductList(true)}
+                />
+                {renderProductList ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      maxHeight: "180px",
+                      backgroundColor: "white",
+                      overflowY: "scroll",
+                      maxWidth: "400px",
+                      padding: "0 4px",
+                      zIndex: 999999,
+                    }}
+                  >
+                    {renderProductSearch()}
+                  </div>
+                ) : null}
+                {/* <div className={styles.stock_order_container}>
+                  <div style={{ paddingRight: "10px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Stock (pcs)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        setStock(e.target.value);
+                      }}
+                      placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={stock}
+                    />
+                  </div>
+                  <div style={{}}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Pengiriman (hari)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        setPengiriman(e.target.value);
+                      }}
+                      placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={pengiriman}
+                    />
+                  </div>
+                  <div style={{ paddingLeft: "10px" }}>
+                    <div className={styles.avability_modal_subtitle}>Minor</div>
+                    <input
+                      onChange={(e) => {
+                        setMinor(e.target.value);
+                      }}
+                      placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={minor}
+                    />
+                  </div>
+                </div> */}
+                {/* <div className={styles.avability_modal_subtitle}>Keterangan</div> */}
+                {/* <input
+                  onChange={(e) => {
+                    setKet(e.target.value);
+                  }}
+                  placeholder="Ket."
+                  type="text"
+                  className={styles.input_order}
+                  value={ket}
+                  
+                /> */}
+                <div className={styles.avability_modal_subtitle}>
+                  Stock (pcs)
+                </div>
+                <input
+                  onChange={(e) => {
+                    var value = e.target.value.split(".").join("");
+                    setStock(value);
+                  }}
+                  placeholder="0"
+                  type="number"
+                  min={0}
+                  className={styles.input_order}
+                  value={parseInt(stock).toLocaleString("id-ID")}
+                />
+                <div className={styles.avg_sales_container}>
+                  <div style={{ paddingRight: "5px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Avg Sales (pcs)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        var value = e.target.value.split(".").join("");
+                        setAvgSales(value);
+                      }}
+                      placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={parseInt(avgSales).toLocaleString("id-ID")}
+                      disabled={true}
+                    />
+                  </div>
+                  <div style={{ paddingLeft: "5px" }}>
+                    <div className={styles.avability_modal_subtitle}>
+                      Saran Order (pcs)
+                    </div>
+                    <input
+                      onChange={(e) => {
+                        var value = e.target.value.split(".").join("");
+                        setSaranOrder(value);
+                      }}
+                      // placeholder="0"
+                      type="number"
+                      min={0}
+                      className={styles.input_order}
+                      value={parseInt(saranOrder).toLocaleString("id-ID")}
+                      disabled={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.avability_modal_subtitle}>
+                  Order (pcs)
+                </div>
+                <input
+                  onChange={(e) => {
+                    var value = e.target.value.split(".").join("");
+                    setOrder(value);
+                  }}
+                  placeholder="0"
+                  type="number"
+                  min={0}
+                  className={styles.input_order}
+                  value={parseInt(order).toLocaleString("id-ID")}
+                />
+                <div className={styles.avability_modal_subtitle}>
+                  Keterangan
+                </div>
+                {/* <input
+                  onChange={(e) => {
+                    setKet(e.target.value);
+                  }}
+                  placeholder="Ket."
+                  type="text"
+                  className={styles.input_order}
+                  value={ket}
+                /> */}
+                <div style={{ height: "24px" }}>{ket}</div>
+                <div style={{ marginTop: "20px" }}>
+                  <Button
+                    text={"Add"}
+                    onClick={() => {
+                      var reg = new RegExp(
+                        /^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/g
+                      );
+                      if (
+                        productFocus.namaProduk
+                        // order.match(reg)
+                        // order != 0
+                      ) {
+                        if (avabilityList.length > 0) {
+                          var sameDataIndex = avabilityList.findIndex(
+                            (val) =>
+                              val.productFocus.namaProduk ===
+                              productFocus.namaProduk
+                          );
+                          if (sameDataIndex + 1) {
+                            // avabilityList.splice(sameDataIndex, 1);
+                            // avabilityList.push({
+                            //   productFocus,
+                            //   stock: stock ? stock : 0,
+                            //   saranOrder: saranOrder ? saranOrder : 0,
+                            //   order: order ? order : 0,
+                            //   ket,
+                            //   pengiriman,
+                            //   minor,
+                            //   harga,
+                            // });
+                            avabilityList[sameDataIndex].stock = stock
+                              ? stock
+                              : 0;
+                            avabilityList[sameDataIndex].saranOrder = saranOrder
+                              ? saranOrder
+                              : 0;
+                            avabilityList[sameDataIndex].order = order
+                              ? order
+                              : 0;
+                            setModal(false);
+                            setStock("");
+                            setSaranOrder("");
+                            setOrder("");
+                            setKet("");
+                            setHarga("");
+                          } else {
+                            avabilityList.push({
+                              productFocus,
+                              stock: stock ? stock : 0,
+                              saranOrder: saranOrder ? saranOrder : 0,
+                              order: order ? order : 0,
+                              ket,
+                              pengiriman,
+                              minor,
+                              harga,
+                            });
+                            setModal(false);
+                            setStock("");
+                            setSaranOrder("");
+                            setOrder("");
+                            setKet("");
+                            setHarga("");
+                          }
+                        } else {
+                          avabilityList.push({
+                            productFocus,
+                            stock: stock ? stock : 0,
+                            saranOrder: saranOrder ? saranOrder : 0,
+                            order: order ? order : 0,
+                            ket,
+                            pengiriman,
+                            minor,
+                            harga,
+                          });
+                          setModal(false);
+                          setStock("");
+                          setSaranOrder("");
+                          setOrder("");
+                          setKet("");
+                          setHarga("");
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      }
     }
   };
 

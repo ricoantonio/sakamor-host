@@ -370,6 +370,26 @@ const getSalesTarget75SMR = (userData, month, year) => {
     });
 };
 
+const getHargaEceran = (produkCode) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetHargaEceranByKodeProduk/${produkCode}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const postProfilePic = (userData, file) => {
   const formdata = new FormData();
   formdata.append("file", file);
@@ -425,9 +445,12 @@ const viewProfilePic = (username) => {
 };
 
 const viewOutletClass = (outletID) => {
+  console.log(outletID);
   return fetch(
-    API_URL + API_MASTER + `/MasterDataLokal/GetOutletClassification/3328085`,
-    // `/MasterDataLokal/GetOutletClassification/${outletID}`,
+    API_URL +
+      API_MASTER +
+      `/MasterDataLokal/GetOutletClassification/${outletID}`,
+    // API_URL + API_MASTER + `/MasterDataLokal/GetOutletClassification/47154`,
     {
       headers: {
         apiKey: TOKEN,
@@ -2567,6 +2590,7 @@ export {
   viewOutletClass,
   getNotificationbyUsername,
   getPimcaByCabang,
+  getHargaEceran,
   // VISIT PLAN
   getPlanList,
   getPlanId,

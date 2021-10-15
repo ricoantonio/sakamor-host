@@ -12,16 +12,6 @@ import Button from "../../../../components/Button";
 import Modal from "../../../../components/Modal";
 
 import {
-  approvalApprove,
-  approvalReject,
-  approvalRevise,
-  getInvoiceData,
-  getInvoiceDataPosm,
-  getInvoiceDataPosmSpreading,
-  getInvoiceDataPosmUnplan,
-  getInvoiceDataSpreading,
-  getInvoiceDataUnplan,
-  getUnplanById,
   insertFilePlan,
   insertFileSpreading,
   insertFileUnplan,
@@ -34,6 +24,9 @@ import {
   updateDataProdukPlan,
   updateDataProdukUnplan,
   updateDataProdukSpreading,
+  approvalSubmit,
+  getPimcaByCabang,
+  getPlanById,
 } from "../../../../helper";
 
 export default function index() {
@@ -41,13 +34,8 @@ export default function index() {
   const [loading, setLoading] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [modalConfirmApprove, setModalConfirmApprove] = useState(false);
-  const [modalConfirmNote, setModalConfirmNote] = useState(false);
-  const [confirmFocus, setConfirmFocus] = useState("");
   const [plan, setPlan] = useState([]);
-  const [visNotDone, setVisNotDone] = useState(false);
-  const [productList, setProductList] = useState([]);
-  const [posmList, setPosmList] = useState([]);
-  const [pdfDownload, setPdfDownload] = useState(false);
+  const [pimca, setPimca] = useState([]);
 
   const router = useRouter();
 
@@ -60,6 +48,19 @@ export default function index() {
       setLoading(false);
     } else {
       router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      getPimcaByCabang(userData.kodeCabang)
+        .then((data) => {
+          setPimca(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -424,6 +425,75 @@ export default function index() {
     );
   };
 
+  const onSubmitApproval = (plan) => {
+    const module =
+      router.query.type === "Plan"
+        ? "VISITPLAN"
+        : router.query.type === "UnPlan"
+        ? "VISITUNPLAN"
+        : router.query.type === "Spreading"
+        ? "SPREADING"
+        : "";
+    const approvalId =
+      router.query.type === "Plan"
+        ? 352
+        : router.query.type === "UnPlan"
+        ? 358
+        : router.query.type === "Spreading"
+        ? 359
+        : "";
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      const data = {
+        approvalTransactionDataModel: [
+          {
+            systemCode: "SAKAMOR",
+            moduleCode: module,
+            approvalLevel: 1,
+            id: plan.id,
+            approvalID: approvalId,
+            docNo: plan.nomorDokumen,
+            pic: pimca.username,
+            approvalLine: 0,
+            notes: "string",
+            needApprove: true,
+            approveDate: now.toISOString(),
+            status: "string",
+          },
+        ],
+        systemCode: "SAKAMOR",
+        moduleCode: module,
+        docNo: plan.nomorDokumen,
+        approverFrom: "string",
+        approverTo: "string",
+        status: "string",
+        description: "string",
+        notes: "string",
+        createdBy: userData.username,
+        createdDate: now.toISOString(),
+        emailData: {
+          systemCode: "SAKAMOR",
+          moduleCode: module,
+          documentNumber: plan.nomorDokumen,
+          emailTo: "string",
+          emailCC: "string",
+          emailBCC: "string",
+          emailSubject: "string",
+          emailBody: "string",
+        },
+      };
+
+      console.log(data);
+      approvalSubmit(data, plan.id, userData)
+        .then((data) => {
+          console.log(data);
+          actions.setDefaultRevise();
+          Router.push("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const onSubmit = () => {
     if (router.query.type === "Plan") {
       const visDone = state.reviseReducer.visibility.filter((val) => {
@@ -548,6 +618,12 @@ export default function index() {
           }
 
           if (i === files.length - 1) {
+            getPlanById(router.query.id)
+              .then((visit) => {
+                console.log(visit);
+                // onSubmitApproval(visit);
+              })
+              .catch((err) => console.log(err));
             updateDataProdukPlan(bodyProduct)
               .then((res) => {
                 router.push("/");
@@ -687,6 +763,14 @@ export default function index() {
               });
           }
           if (i === 5) {
+            getUnplanById(res.avp.id)
+              .then((unplan) => {
+                console.log("ini dataunplan", unplan);
+                // onSubmitApproval(unplan);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
             updateDataProdukUnplan(bodyProduct)
               .then((res) => {
                 router.push("/");
@@ -696,14 +780,6 @@ export default function index() {
               .catch((err) => {
                 console.log(err);
               });
-            // getUnplanById(res.avp.id)
-            //   .then((unplan) => {
-            //     console.log("ini dataunplan", unplan);
-            //     onSubmitApproval(unplan);
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //   });
           }
         }
       } else {
@@ -893,9 +969,9 @@ export default function index() {
                 disable={false}
               />
               <div className={styles.main}>
-                <div>
+                {/* <div>
                   {plan.usernameSMR} - {router.query.type}
-                </div>
+                </div> */}
                 {renderDetail()}
               </div>
             </div>
