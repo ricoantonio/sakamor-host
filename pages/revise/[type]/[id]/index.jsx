@@ -33,6 +33,7 @@ export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
   const [loading, setLoading] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [visNotDone, setVisNotDone] = useState(false);
   const [modalConfirmApprove, setModalConfirmApprove] = useState(false);
   const [plan, setPlan] = useState([]);
   const [pimca, setPimca] = useState([]);
@@ -500,7 +501,7 @@ export default function index() {
         return val.file !== null && val.type !== null && val.brand !== null;
       });
       if (visDone.length >= 6) {
-        // setLoadingSubmit(true);
+        setLoadingSubmit(true);
         setVisNotDone(false);
 
         const userData = JSON.parse(localStorage.getItem("user"));
@@ -652,7 +653,7 @@ export default function index() {
         return val.file !== null && val.type !== null && val.brand !== null;
       });
       if (visDone.length >= 6) {
-        // setLoadingSubmit(true);
+        setLoadingSubmit(true);
         setVisNotDone(false);
 
         const userData = JSON.parse(localStorage.getItem("user"));
@@ -790,7 +791,7 @@ export default function index() {
         return val.file !== null && val.type !== null && val.brand !== null;
       });
       if (visDone.length >= 2) {
-        // setLoadingSubmit(true);
+        setLoadingSubmit(true);
         setVisNotDone(false);
 
         const userData = JSON.parse(localStorage.getItem("user"));
