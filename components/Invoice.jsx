@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const Invoice = ({ data, plan }) => {
+const Invoice = ({ data, plan, type }) => {
   var total = 0;
   const renderProduct = () => {
     return data.map((val, index) => {
@@ -35,7 +35,9 @@ const Invoice = ({ data, plan }) => {
                 padding: "0 4px 0 0",
               }}
             >
-              {val.harga.toLocaleString("id-ID")}
+              {type === "SPREADING"
+                ? val.hargaEceran.toLocaleString("id-ID")
+                : val.harga.toLocaleString("id-ID")}
             </td>
             <td
               style={{

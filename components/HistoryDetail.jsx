@@ -164,6 +164,13 @@ export default function HistoryDetail({ type }) {
         return `${length}/6`;
       }
     };
+    const renderProgressAva = (length) => {
+      if (type === "SPREADING") {
+        return `${length}/1`;
+      } else {
+        return `${length}/25`;
+      }
+    };
     return (
       <div>
         <div className={styles.render_data}>
@@ -172,7 +179,7 @@ export default function HistoryDetail({ type }) {
             {subType === "Visibility"
               ? renderProgressVis(posmList.length)
               : subType === "Availability"
-              ? `${productList.length}/25`
+              ? renderProgressAva(productList.length)
               : ""}
           </div>
         </div>
@@ -202,9 +209,11 @@ export default function HistoryDetail({ type }) {
                       <div className={styles.progress_bar}></div>
                       <div
                         className={styles.progress_bar_now}
-                        style={{
-                          width: `${(productList.length / 25) * 100}%`,
-                        }}
+                        style={
+                          type === "SPREADING"
+                            ? { width: `${(productList.length / 1) * 100}%` }
+                            : { width: `${(productList.length / 25) * 100}%` }
+                        }
                       ></div>
                     </div>
                   ) : (
@@ -364,7 +373,7 @@ export default function HistoryDetail({ type }) {
                       margin: "100px auto",
                     }}
                   >
-                    <Invoice data={dataProduk} plan={plan} />
+                    <Invoice data={dataProduk} plan={plan} type={type} />
                     <div
                       style={{
                         padding: "10px",

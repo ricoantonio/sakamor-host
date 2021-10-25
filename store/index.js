@@ -37,6 +37,7 @@ import setSpreadingNewOutlet from "./actions/setSpreadingNewOutlet";
 import setSpreadingCheckIn from "./actions/setSpreadingCheckIn";
 import setSpreadingJenisChannel from "./actions/setSpreadingJenisChannel";
 import setSpreadingOutlet from "./actions/setSpreadingOutlet";
+import setSpreadingNearMe from "./actions/setSpreadingNearMe";
 
 import setDefaultVisitPlan from "./actions/setDefaultVisitPlan";
 import setDefaultVisitUnplan from "./actions/setDefaultVisitUnplan";
@@ -108,6 +109,7 @@ const Store = ({ children }) => {
       ...setSpreadingCheckIn(dispatch),
       ...setSpreadingJenisChannel(dispatch),
       ...setSpreadingOutlet(dispatch),
+      ...setSpreadingNearMe(dispatch),
       ...setDefaultVisitSpreading(dispatch),
 
       ...setFocusApproval(dispatch),

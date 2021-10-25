@@ -18,20 +18,27 @@ import {
   getSpreadingById,
   approvalSubmit,
   getPimcaByCabang,
+  getOutletSpreadingNearMe,
+  insertOutletSpreading,
 } from "../../../../helper";
 
 export default function index() {
   const { state, dispatch, actions } = useContext(Stores);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [newNOO, setNewNOO] = useState(false);
   const [plan, setPlan] = useState([]);
   const [searchJenisChannel, setSearchJenisChannel] = useState("");
+  const [searchNearMe, setSearchNearMe] = useState("");
   const [listJenisChannel, setListJenisChannel] = useState([]);
   const [renderListJenisChannel, setRenderListJenisChannel] = useState(false);
+  const [renderListOutletNearMe, setRenderListOutletNearMe] = useState(false);
   const [focusJenisChannel, setFocusJenisChannel] = useState({});
   const [visNotDone, setVisNotDone] = useState(false);
   const [pimca, setPimca] = useState([]);
+  const [position, setPosition] = useState({});
+  const [outletNearMe, setOutletNearMe] = useState([]);
+  const [error, setError] = useState("");
 
   const router = useRouter();
   var now = new Date();
@@ -39,21 +46,50 @@ export default function index() {
   useEffect(() => {
     if (router.query.new) {
       setNewNOO(true);
-      if (!state.visitSpreadingReducer.checkIn) {
-        actions.setSpreadingCheckIn(now);
+      const geo = navigator.geolocation;
+      if (!geo) {
+        setError("Geolocation is not supported");
+        Router.push("/");
+        return;
       }
-      setSearchJenisChannel(
-        state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+      var watcher = geo.watchPosition(
+        ({ coords }) => {
+          setPosition({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          });
+          if (!state.visitSpreadingReducer.checkIn) {
+            actions.setSpreadingCheckIn(now);
+          }
+          setSearchJenisChannel(
+            state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+          );
+          if (
+            state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
+            state.visitSpreadingReducer.outlet.namaOutlet
+          ) {
+            setSearchJenisChannel(
+              state.visitSpreadingReducer.jenisChannel.namaJenisChannel
+            );
+          }
+          console.log(coords);
+          getOutletSpreadingNearMe()
+            .then((data) => {
+              setOutletNearMe(data);
+              console.log(data);
+              setLoading(false);
+            })
+            .catch((err) => console.log(err));
+        },
+        (err) => {
+          window.alert("You have to enable you location");
+          Router.push("/visit/spreading");
+          setError(err.message);
+        }
       );
-      if (
-        state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
-        state.visitSpreadingReducer.outlet.namaOutlet
-      ) {
-        setSearchJenisChannel(
-          state.visitSpreadingReducer.jenisChannel.namaJenisChannel
-        );
-      }
+      return () => geo.clearWatch(watcher);
     } else {
+      setLoading(false);
       if (
         state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
         state.visitSpreadingReducer.outlet.namaOutlet
@@ -129,6 +165,7 @@ export default function index() {
       return (
         <div
           onClick={() => {
+            // console.log(val);
             setFocusJenisChannel(val);
             actions.setSpreadingJenisChannel(val);
             setSearchJenisChannel(val.namaJenisChannel);
@@ -147,6 +184,49 @@ export default function index() {
     return render;
   };
 
+  const renderOutletNearMe = () => {
+    const render = outletNearMe.map((val, index) => {
+      return (
+        <div
+          onClick={() => {
+            console.log("hai");
+            actions.setSpreadingNewOutlet(val.namaOutlet);
+            actions.setSpreadingAlamat(val.alamatOutlet);
+            actions.setSpreadingJenisChannel({
+              jenisChannelID: "14",
+              namaJenisChannel: "apotek",
+            });
+            actions.setSpreadingNearMe(true);
+            setSearchJenisChannel("blm ada");
+            setSearchNearMe(val.namaOutlet);
+          }}
+          key={index}
+          style={{
+            borderBottom: ".5px solid #f0f0f0",
+            width: "350px",
+          }}
+        >
+          {val.namaOutlet}
+        </div>
+      );
+    });
+
+    return (
+      <div>
+        <div
+          onClick={() => {
+            actions.setDefaultVisitSpreading();
+            actions.setSpreadingNearMe(false);
+            setSearchJenisChannel("");
+          }}
+        >
+          -
+        </div>
+        {render}
+      </div>
+    );
+  };
+
   const renderDataDetail = (type, data) => {
     const doneFormVis = state.visitSpreadingReducer.visibility.filter((val) => {
       return val.file !== null && val.type !== null && val.brand !== null;
@@ -161,68 +241,92 @@ export default function index() {
               {type === "Visibility"
                 ? `${doneFormVis.length}/2`
                 : type === "Availability"
-                ? `${doneFormAva.length}/25`
+                ? `${doneFormAva.length}/1`
                 : ""}
             </div>
           </div>
           {type === "Jenis Channel" ? (
-            <>
-              <input
-                onChange={(e) => {
-                  onSearchJenisChannel(e.target.value);
-                  actions.setSpreadingAvability([]);
-                }}
-                value={searchJenisChannel}
-                placeholder="Search"
-                className={styles.input}
-                onBlur={() => {
-                  setTimeout(() => {
-                    setRenderListJenisChannel(false);
-                  }, 200);
-                }}
-                onFocus={(e) => onSearchJenisChannel(e.target.value)}
-              />
-              {renderListJenisChannel ? (
-                <div
-                  style={{
-                    position: "absolute",
-                    maxHeight: "180px",
-                    backgroundColor: "white",
-                    overflowY: "scroll",
-                    maxWidth: "400px",
-                    padding: "0 4px",
-                    zIndex: 999999,
-                    marginTop: "-10px",
-                  }}
-                >
-                  {renderSearchJenisChannel()}
+            state.visitSpreadingReducer.nearMe ? (
+              <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+                <div className={styles.render_value}>
+                  {state.visitSpreadingReducer.jenisChannel.namaJenisChannel}
                 </div>
-              ) : null}
-            </>
+              </Card>
+            ) : (
+              <>
+                <input
+                  onChange={(e) => {
+                    onSearchJenisChannel(e.target.value);
+                    actions.setSpreadingAvability([]);
+                  }}
+                  value={searchJenisChannel}
+                  placeholder="Search"
+                  className={styles.input}
+                  onBlur={() => {
+                    setTimeout(() => {
+                      setRenderListJenisChannel(false);
+                    }, 200);
+                  }}
+                  onFocus={(e) => onSearchJenisChannel(e.target.value)}
+                />
+                {renderListJenisChannel ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      maxHeight: "180px",
+                      backgroundColor: "white",
+                      overflowY: "scroll",
+                      maxWidth: "400px",
+                      padding: "0 4px",
+                      zIndex: 999999,
+                      marginTop: "-10px",
+                    }}
+                  >
+                    {renderSearchJenisChannel()}
+                  </div>
+                ) : null}
+              </>
+            )
           ) : type === "Outlet" ? (
-            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
-              <div className={styles.render_value}>
-                <textarea
-                  style={{ width: "100%", border: "none", height: "20px" }}
-                  onChange={(e) => {
-                    actions.setSpreadingNewOutlet(e.target.value);
-                  }}
-                  value={state.visitSpreadingReducer.newOutlet}
-                ></textarea>
-              </div>
-            </Card>
+            state.visitSpreadingReducer.nearMe ? (
+              <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+                <div className={styles.render_value}>
+                  {state.visitSpreadingReducer.newOutlet}
+                </div>
+              </Card>
+            ) : (
+              <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+                <div className={styles.render_value}>
+                  <textarea
+                    style={{ width: "100%", border: "none", height: "20px" }}
+                    onChange={(e) => {
+                      actions.setSpreadingNewOutlet(e.target.value);
+                    }}
+                    value={state.visitSpreadingReducer.newOutlet}
+                  ></textarea>
+                </div>
+              </Card>
+            )
           ) : type === "Alamat" ? (
-            <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
-              <div className={styles.render_value}>
-                <textarea
-                  style={{ width: "100%", border: "none", height: "70px" }}
-                  onChange={(e) => {
-                    actions.setSpreadingAlamat(e.target.value);
-                  }}
-                  value={state.visitSpreadingReducer.alamat}
-                ></textarea>
-              </div>
-            </Card>
+            state.visitSpreadingReducer.nearMe ? (
+              <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+                <div className={styles.render_value}>
+                  {state.visitSpreadingReducer.alamat}
+                </div>
+              </Card>
+            ) : (
+              <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
+                <div className={styles.render_value}>
+                  <textarea
+                    style={{ width: "100%", border: "none", height: "70px" }}
+                    onChange={(e) => {
+                      actions.setSpreadingAlamat(e.target.value);
+                    }}
+                    value={state.visitSpreadingReducer.alamat}
+                  ></textarea>
+                </div>
+              </Card>
+            )
           ) : type === "Catatan" ? (
             <Card style={{ marginTop: "6px", borderRadius: "5px" }}>
               <div className={styles.render_value}>
@@ -255,7 +359,7 @@ export default function index() {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(doneFormAva.length / 25) * 100}%`,
+                          width: `${(doneFormAva.length / 1) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -302,7 +406,7 @@ export default function index() {
               {type === "Visibility"
                 ? `${doneFormVis.length}/2`
                 : type === "Availability"
-                ? `${doneFormAva.length}/25`
+                ? `${doneFormAva.length}/1`
                 : ""}
             </div>
           </div>
@@ -335,7 +439,7 @@ export default function index() {
                         <div
                           className={styles.progress_bar_now}
                           style={{
-                            width: `${(doneFormAva.length / 25) * 100}%`,
+                            width: `${(doneFormAva.length / 1) * 100}%`,
                           }}
                         ></div>
                       </div>
@@ -426,7 +530,7 @@ export default function index() {
     });
     if (
       visDone.length >= 2 &&
-      state.visitSpreadingReducer.avability.length >= 25
+      state.visitSpreadingReducer.avability.length >= 1
     ) {
       setLoadingSubmit(true);
       setVisNotDone(false);
@@ -496,6 +600,9 @@ export default function index() {
             keterangan: val.ket,
             createdBy: userData.username,
             updatedBy: userData.username,
+            totalHarga: val.totalHargaEceran,
+            satuan: val.satuan,
+            hargaEceran: val.hargaEceran,
           };
         }
       );
@@ -516,24 +623,53 @@ export default function index() {
           state.visitSpreadingReducer.jenisChannel.namaJenisChannel &&
           state.visitSpreadingReducer.alamat
         ) {
+          console.log("submit newnoo");
           submitVisitSpreading(dataNewNOO)
             .then((res) => {
               console.log("ini res", res);
               const bodyPosm = state.visitSpreadingReducer.visibility.map(
                 (val, index) => {
-                  return {
-                    activitySpreadingId: res.spreadingSave.id,
-                    nomor: index,
-                    tipe: val.type.program,
-                    namaFile: val.file.name,
-                    createdBy: userData.username,
-                    updatedBy: userData.username,
-                    brandId: val.brand.id,
-                    namaBrand: val.brand.namaBrand,
-                    isPopular: val.popular,
-                  };
+                  if (val.type && val.file && val.brand) {
+                    return {
+                      activitySpreadingId: res.spreadingSave.id,
+                      nomor: index,
+                      tipe: val.type.program,
+                      namaFile: val.file.name,
+                      createdBy: userData.username,
+                      updatedBy: userData.username,
+                      brandId: val.brand.id,
+                      namaBrand: val.brand.namaBrand,
+                      isPopular: val.popular,
+                    };
+                  }
                 }
               );
+              if (!state.visitSpreadingReducer.nearMe) {
+                console.log("insert spreading");
+                const dataInsert = {
+                  id: res.spreadingSave.id,
+                  outlet: state.visitSpreadingReducer.newOutlet,
+                  alamat: state.visitSpreadingReducer.alamat,
+                  latitude: position.latitude,
+                  longitude: position.longitude,
+                  kodeCabang: userData.kodeCabang,
+                  namaCabang: userData.namaCabang,
+                  idJenisChannel:
+                    state.visitSpreadingReducer.jenisChannel.jenisChannelID,
+                  namaJenisChannel:
+                    state.visitSpreadingReducer.jenisChannel.namaJenisChannel,
+                  createdBy: userData.username,
+                  updatedBy: userData.username,
+                };
+                insertOutletSpreading(dataInsert)
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              console.log(bodyPosm);
               for (let i = 0; i < files.length; i++) {
                 submitVisitSpreadingDposm(bodyPosm[i], files[i])
                   .then((res2) => {
@@ -638,7 +774,7 @@ export default function index() {
               }}
               disable={
                 visDone.length >= 2 &&
-                state.visitSpreadingReducer.avability.length >= 25
+                state.visitSpreadingReducer.avability.length >= 1
                   ? false
                   : true
               }
@@ -657,6 +793,45 @@ export default function index() {
               ) : (
                 ""
               )}
+              {newNOO ? (
+                <>
+                  <div className={styles.render_data}>Near Me</div>
+                  <input
+                    // onChange={(e) => {
+                    //   onSearchJenisChannel(e.target.value);
+                    //   onSearchNearMe(e.target.value)
+                    //   actions.setSpreadingAvability([]);
+                    // }}
+                    value={state.visitSpreadingReducer.newOutlet}
+                    placeholder="Outlet near me"
+                    className={styles.input}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setRenderListOutletNearMe(false);
+                      }, 200);
+                    }}
+                    onFocus={() => {
+                      setRenderListOutletNearMe(true);
+                    }}
+                  />
+                  {renderListOutletNearMe ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        maxHeight: "180px",
+                        backgroundColor: "white",
+                        overflowY: "scroll",
+                        maxWidth: "400px",
+                        padding: "0 4px",
+                        zIndex: 999999,
+                        marginTop: "-10px",
+                      }}
+                    >
+                      {renderOutletNearMe()}
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
               {renderDetail()}
             </div>
           </div>

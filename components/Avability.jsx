@@ -633,17 +633,6 @@ export default function Avability({ type }) {
                               productFocus.namaProduk
                           );
                           if (sameDataIndex + 1) {
-                            // avabilityList.splice(sameDataIndex, 1);
-                            // avabilityList.push({
-                            //   productFocus,
-                            //   stock: stock ? stock : 0,
-                            //   saranOrder: saranOrder ? saranOrder : 0,
-                            //   order: order ? order : 0,
-                            //   ket,
-                            //   pengiriman,
-                            //   minor,
-                            //   harga,
-                            // });
                             avabilityList[sameDataIndex].stock = stock
                               ? stock
                               : 0;
@@ -653,6 +642,20 @@ export default function Avability({ type }) {
                             avabilityList[sameDataIndex].order = order
                               ? order
                               : 0;
+                            avabilityList[sameDataIndex].satuan =
+                              hargaEceran.satuan ? hargaEceran.satuan : "";
+                            avabilityList[sameDataIndex].hna = hargaEceran.hna
+                              ? hargaEceran.hna
+                              : 0;
+                            avabilityList[sameDataIndex].hargaEceran =
+                              hargaEceran.hargaEceran
+                                ? hargaEceran.hargaEceran
+                                : 0;
+                            avabilityList[sameDataIndex].totalHargaEceran =
+                              hargaEceran.hargaEceran && order
+                                ? hargaEceran.hargaEceran * order
+                                : 0;
+                            console.log(avabilityList);
                             setModal(false);
                             setStock("");
                             setSaranOrder("");
@@ -669,13 +672,22 @@ export default function Avability({ type }) {
                               pengiriman,
                               minor,
                               harga,
+                              satuan: hargaEceran.satuan,
+                              hna: hargaEceran.hna,
+                              hargaEceran: hargaEceran.hargaEceran,
+                              totalHargaEceran:
+                                hargaEceran.hargaEceran && order
+                                  ? hargaEceran.hargaEceran * order
+                                  : 0,
                             });
+                            console.log(avabilityList);
                             setModal(false);
                             setStock("");
                             setSaranOrder("");
                             setOrder("");
                             setKet("");
                             setHarga("");
+                            setHargeEceran({});
                           }
                         } else {
                           avabilityList.push({
@@ -687,13 +699,22 @@ export default function Avability({ type }) {
                             pengiriman,
                             minor,
                             harga,
+                            satuan: hargaEceran.satuan,
+                            hna: hargaEceran.hna,
+                            hargaEceran: hargaEceran.hargaEceran,
+                            totalHargaEceran:
+                              hargaEceran.hargaEceran && order
+                                ? hargaEceran.hargaEceran * order
+                                : 0,
                           });
+                          console.log(avabilityList);
                           setModal(false);
                           setStock("");
                           setSaranOrder("");
                           setOrder("");
                           setKet("");
                           setHarga("");
+                          setHargeEceran({});
                         }
                       }
                     }}

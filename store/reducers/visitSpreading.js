@@ -7,6 +7,7 @@ const defaultVisitSpreading = {
   checkIn: "",
   jenisChannel: {},
   outlet: {},
+  nearMe: false,
 };
 
 const visitSpreadingReducer = (state, action) => {
@@ -27,6 +28,8 @@ const visitSpreadingReducer = (state, action) => {
       return { ...state, jenisChannel: action.payload };
     case "SET_SPREADING_OUTLET":
       return { ...state, outlet: action.payload };
+    case "SET_SPREADING_NEARME":
+      return { ...state, nearMe: action.payload };
     case "SET_DEFAULT_VISIT_SPREADING":
       return { ...defaultVisitSpreading };
     default:

@@ -493,6 +493,51 @@ const viewOutletClass = (outletID) => {
     });
 };
 
+const getOutletSpreadingNearMe = (longitude, latitude) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetOutletSpreadingNearMe?username=lukmanjkt&latitude=-6.20721126&longitude=106.92282457`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const insertOutletSpreading = (data) => {
+  // console.log(data);
+  return fetch(
+    API_URL + API_MASTER + "/MasterDataLokal/InsertOutletSpreading",
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // VISIT PLAN ======================================================================================================================
 
 const getPlanList = (userData) => {
@@ -2591,6 +2636,8 @@ export {
   getNotificationbyUsername,
   getPimcaByCabang,
   getHargaEceran,
+  getOutletSpreadingNearMe,
+  insertOutletSpreading,
   // VISIT PLAN
   getPlanList,
   getPlanId,

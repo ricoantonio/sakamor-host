@@ -105,7 +105,7 @@ export default function Plan() {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       setUserData(userData);
-      getAllAnnouncement(userData)
+      getAllAnnouncement(userData.kodeCabang)
         .then((data) => {
           const newAnnouncement = data.filter((val) => {
             return val.isRead === false;

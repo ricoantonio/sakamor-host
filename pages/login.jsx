@@ -27,6 +27,16 @@ export default function Login() {
     }
   });
 
+  const makeid = (length) => {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
   const onLoginClick = (values) => {
     setLoadingModal(true);
     setWrongUser(false);
@@ -37,6 +47,8 @@ export default function Login() {
           console.log(data);
           setLoadingModal(false);
         } else {
+          data.token = makeid(250);
+          console.log(data);
           setWrongUser(false);
           console.log(data);
           actions.userLogin(data);

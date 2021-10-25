@@ -70,7 +70,7 @@ export default function Announcement() {
                 };
                 updateReadAnnouncement(val.announcementStatusId, data)
                   .then((data) => {
-                    getAllAnnouncement(userData)
+                    userData
                       .then((data) => {
                         setAnnouncementList(data);
                       })
