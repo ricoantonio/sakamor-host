@@ -32,7 +32,7 @@ export default function Avability({ type }) {
   const [order, setOrder] = useState("");
   const [pengiriman, setPengiriman] = useState("");
   const [avgSales, setAvgSales] = useState("");
-  const [harga, setHarga] = useState("");
+  const [harga, setHarga] = useState("0");
   const [saranOrder, setSaranOrder] = useState("");
   const [stock, setStock] = useState("");
   const [minor, setMinor] = useState("");
@@ -661,7 +661,7 @@ export default function Avability({ type }) {
                             setSaranOrder("");
                             setOrder("");
                             setKet("");
-                            setHarga("");
+                            setHarga("0");
                           } else {
                             avabilityList.push({
                               productFocus,
@@ -671,7 +671,7 @@ export default function Avability({ type }) {
                               ket,
                               pengiriman,
                               minor,
-                              harga,
+                              harga: harga ? harga : 0,
                               satuan: hargaEceran.satuan
                                 ? hargaEceran.satuan
                                 : "",
@@ -700,7 +700,7 @@ export default function Avability({ type }) {
                             ket,
                             pengiriman,
                             minor,
-                            harga,
+                            harga: harga ? harga : 0,
                             satuan: hargaEceran.satuan
                               ? hargaEceran.satuan
                               : "",
