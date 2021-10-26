@@ -672,8 +672,10 @@ export default function Avability({ type }) {
                               pengiriman,
                               minor,
                               harga,
-                              satuan: hargaEceran.satuan,
-                              hna: hargaEceran.hna,
+                              satuan: hargaEceran.satuan
+                                ? hargaEceran.satuan
+                                : 0,
+                              hna: hargaEceran.hna ? hargaEceran.hna : 0,
                               hargaEceran: hargaEceran.hargaEceran,
                               totalHargaEceran:
                                 hargaEceran.hargaEceran && order
@@ -699,8 +701,8 @@ export default function Avability({ type }) {
                             pengiriman,
                             minor,
                             harga,
-                            satuan: hargaEceran.satuan,
-                            hna: hargaEceran.hna,
+                            satuan: hargaEceran.satuan ? hargaEceran.satuan : 0,
+                            hna: hargaEceran.hna ? hargaEceran.hna : 0,
                             hargaEceran: hargaEceran.hargaEceran,
                             totalHargaEceran:
                               hargaEceran.hargaEceran && order
@@ -1230,6 +1232,9 @@ export default function Avability({ type }) {
                       }}
                     >
                       {avabilityList.length} / {25}
+                      {type === "SPREADING"
+                        ? `${avabilityList.length}/ 1`
+                        : `${avabilityList.length} / 25}`}
                     </div>
                   </div>
                   <input
