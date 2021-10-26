@@ -29,10 +29,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/visit/spreading/history": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/visit/spreading/history.js"
+    ],
     "/visit/spreading/history/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/visit/spreading/history/[id].js"
+    ],
+    "/visit/spreading/history/[id]/avability": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/visit/spreading/history/[id]/avability.js"
     ]
   },
   "ampFirstPages": []

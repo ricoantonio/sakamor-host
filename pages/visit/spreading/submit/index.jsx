@@ -560,6 +560,7 @@ export default function index() {
       };
 
       const bodyPlanNewNOO = {
+        id: "",
         usernameSMR: userData.username,
         nomorDokumen: "",
         catatan: state.visitSpreadingReducer.catatan,
@@ -596,7 +597,10 @@ export default function index() {
             saranOrder: parseInt(val.saranOrder),
             jumlahOrder: parseInt(val.order),
             harga: val.harga === null ? 0 : parseInt(val.harga),
-            totalHarga: parseInt(val.harga) * parseInt(val.order),
+            totalHarga:
+              val.harga === null
+                ? 0
+                : parseInt(val.harga) * parseInt(val.order),
             keterangan: val.ket,
             createdBy: userData.username,
             updatedBy: userData.username,

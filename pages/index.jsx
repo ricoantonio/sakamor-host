@@ -1219,7 +1219,7 @@ export default function Home() {
                 >
                   <div className={styles.progress_title}>Frontliner</div>
                   <div className={styles.progress_number}>
-                    {frontliner.sales}
+                    {role === "SMR" ? frontliner.ach : frontliner.target}
                     <span style={{ fontSize: "12px", fontWeight: "400" }}>
                       {" / "}
                       {frontliner.target}

@@ -674,7 +674,7 @@ export default function Avability({ type }) {
                               harga,
                               satuan: hargaEceran.satuan
                                 ? hargaEceran.satuan
-                                : 0,
+                                : "",
                               hna: hargaEceran.hna ? hargaEceran.hna : 0,
                               hargaEceran: hargaEceran.hargaEceran,
                               totalHargaEceran:
@@ -701,7 +701,9 @@ export default function Avability({ type }) {
                             pengiriman,
                             minor,
                             harga,
-                            satuan: hargaEceran.satuan ? hargaEceran.satuan : 0,
+                            satuan: hargaEceran.satuan
+                              ? hargaEceran.satuan
+                              : "",
                             hna: hargaEceran.hna ? hargaEceran.hna : 0,
                             hargaEceran: hargaEceran.hargaEceran,
                             totalHargaEceran:
@@ -1220,7 +1222,10 @@ export default function Avability({ type }) {
                       <div
                         className={styles.progress_bar_now}
                         style={{
-                          width: `${(avabilityList.length / 25) * 100}%`,
+                          width:
+                            type === "SPREADING" || type === "HISTORY_SPREADING"
+                              ? `${(avabilityList.length / 1) * 100}%`
+                              : `${(avabilityList.length / 25) * 100}%`,
                         }}
                       ></div>
                     </div>
@@ -1231,8 +1236,7 @@ export default function Avability({ type }) {
                         marginTop: "-6px",
                       }}
                     >
-                      {avabilityList.length} / {25}
-                      {type === "SPREADING"
+                      {type === "SPREADING" || type === "HISTORY_SPREADING"
                         ? `${avabilityList.length}/ 1`
                         : `${avabilityList.length} / 25}`}
                     </div>

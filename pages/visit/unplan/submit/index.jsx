@@ -255,8 +255,11 @@ export default function index() {
             stok: parseInt(val.stock),
             saranOrder: parseInt(val.saranOrder),
             jumlahOrder: parseInt(val.order),
-            harga: parseInt(val.harga),
-            totalHarga: parseInt(val.harga) * parseInt(val.order),
+            harga: val.harga === null ? 0 : parseInt(val.harga),
+            totalHarga:
+              val.harga === null
+                ? 0
+                : parseInt(val.harga) * parseInt(val.order),
             keterangan: val.ket,
             createdBy: userData.username,
             updatedBy: userData.username,

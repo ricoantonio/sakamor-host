@@ -16,7 +16,7 @@ const securityHeaders = [
   // },S
   {
     key: "Content-Security-Policy",
-    value: `default-src https://m-one.kalbe.co.id:8243/t/kalbe.co.id https://sakamor.sakafarma.com http://sakamor-web-staging-kf-asd-sakamor-staging.apps.alpha.kalbe.co.id/ http://localhost:3000 'self'; connect-src * data: ws: wss:; style-src 'self' fonts.googleapis.com 'unsafe-inline' ; font-src fonts.gstatic.com; img-src 'self' blob: data:;`,
+    value: `default-src 'self' https://m-one.kalbe.co.id:8243/t/ fonts.googleapis.com fonts.gstatic.com 'unsafe-eval'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' blob: data:;`,
     // connect-src * data: ws: wss:;
     //  "style-src 'self' 'unsafe-inline' ; connect-src * data: ws: wss:;",
     // "default-src * ; script-src * ; style-src 'self' 'unsafe-hashes' 'sha256-nMxMqdZhkHxz5vAuW/PAoLvECzzsmeAxD/BNwG15HuA=' ; img-src *",

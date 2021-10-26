@@ -11,7 +11,6 @@ stages:
   - passMerge
   - createImages
   - deployToOCP
-  - upload
 
 Dev-Build:
   stage: createImages
@@ -64,6 +63,7 @@ Staging-Build:
   tags:
     - kf-dc1gitrun
   script:
+    - cat appsettings.json
     - export appVersion=$(cat appsettings.json | jq -r '.appVersion')
     - echo $appVersion
     - sed -i -e "s/{ARTIFACTORY_URL}/${ARTIFACTORY_URL}/g" Dockerfile
