@@ -82,7 +82,7 @@ export default function index() {
             .catch((err) => console.log(err));
         },
         (err) => {
-          window.alert("You have to enable you location");
+          window.alert("You have to enable your location");
           Router.push("/visit/spreading");
           setError(err.message);
         }
@@ -595,7 +595,7 @@ export default function index() {
             stok: parseInt(val.stock),
             saranOrder: parseInt(val.saranOrder),
             jumlahOrder: parseInt(val.order),
-            harga: parseInt(val.harga),
+            harga: val.harga === null ? 0 : parseInt(val.harga),
             totalHarga: parseInt(val.harga) * parseInt(val.order),
             keterangan: val.ket,
             createdBy: userData.username,
