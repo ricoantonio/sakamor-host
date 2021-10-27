@@ -190,7 +190,7 @@ export default function Plan() {
               }}
             >
               {/* <Invoice data={dataProduk} plan={plan} type={type} /> */}
-              <RecapOrder data={}/>
+              {/* <RecapOrder data={}/> */}
               <div
                 style={{
                   padding: "10px",
