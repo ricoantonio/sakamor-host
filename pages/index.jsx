@@ -235,6 +235,7 @@ export default function Home() {
           if (data[0].roleCode === "PIMCAB") {
             setRole("PIMCAB");
             setFocus("WORK-VISIT");
+            localStorage.setItem("role", "PIMCAB");
             getSalesTarget75Pimca(userData, month, year)
               .then((data) => {
                 if (data) {
@@ -259,7 +260,7 @@ export default function Home() {
           } else if (data[0].roleCode === "SMR") {
             setRole("SMR");
             setFocus("PLAN");
-
+            localStorage.setItem("role", "SMR");
             getRevisePlanListSmr(userData)
               .then((data) => {
                 setRevisePlan(data);

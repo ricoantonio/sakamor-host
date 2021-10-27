@@ -284,6 +284,8 @@ export default function HistoryDetail({ type }) {
 
       var innerPageWidth = imgWidth - margin[0] * 2;
       var innerPageHeight = pageHeight - margin[1] * 2;
+      // var innerPageHeight = imgWidth - margin[0] * 2;
+      // var innerPageWidth = pageHeight - margin[1] * 2;
 
       // Calculate the number of pages.
       var pxFullHeight = canvas.height;
@@ -301,6 +303,7 @@ export default function HistoryDetail({ type }) {
 
       // Initialize the PDF.
       var pdf = new jsPDF("p", "in", [8.5, 11]);
+      // var pdf = new jsPDF("l", "in", [8.5, 11]);
 
       for (var page = 0; page < nPages; page++) {
         // Trim the final page to reduce file size.

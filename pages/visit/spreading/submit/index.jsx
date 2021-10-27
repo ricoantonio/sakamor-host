@@ -73,13 +73,20 @@ export default function index() {
             );
           }
           console.log(coords);
-          getOutletSpreadingNearMe()
+          getOutletSpreadingNearMe(coords.latitude, coords.longitude)
             .then((data) => {
-              setOutletNearMe(data);
-              console.log(data);
-              setLoading(false);
+              if (data.length) {
+                setOutletNearMe(data);
+                console.log(data);
+                setLoading(false);
+              } else {
+                setLoading(false);
+              }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.log(err);
+              setLoading(false);
+            });
         },
         (err) => {
           window.alert("You have to enable your location");
@@ -193,11 +200,11 @@ export default function index() {
             actions.setSpreadingNewOutlet(val.namaOutlet);
             actions.setSpreadingAlamat(val.alamatOutlet);
             actions.setSpreadingJenisChannel({
-              jenisChannelID: "14",
-              namaJenisChannel: "apotek",
+              jenisChannelID: val.channelCode,
+              namaJenisChannel: val.namaChannel,
             });
             actions.setSpreadingNearMe(true);
-            setSearchJenisChannel("blm ada");
+            setSearchJenisChannel(val.namaChannel);
             setSearchNearMe(val.namaOutlet);
           }}
           key={index}
@@ -560,7 +567,6 @@ export default function index() {
       };
 
       const bodyPlanNewNOO = {
-        id: "",
         usernameSMR: userData.username,
         nomorDokumen: "",
         catatan: state.visitSpreadingReducer.catatan,
@@ -596,11 +602,9 @@ export default function index() {
             stok: parseInt(val.stock),
             saranOrder: parseInt(val.saranOrder),
             jumlahOrder: parseInt(val.order),
-            harga: val.harga === null ? 0 : parseInt(val.harga),
+            harga: val.harga == null ? 0 : parseInt(val.harga),
             totalHarga:
-              val.harga === null
-                ? 0
-                : parseInt(val.harga) * parseInt(val.order),
+              val.harga == null ? 0 : parseInt(val.harga) * parseInt(val.order),
             keterangan: val.ket,
             createdBy: userData.username,
             updatedBy: userData.username,

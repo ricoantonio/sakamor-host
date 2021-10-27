@@ -14,11 +14,6 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -29,20 +24,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/visit/spreading/history": [
+    "/visit/spreading": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/visit/spreading/history.js"
+      "static/chunks/pages/visit/spreading.js"
     ],
-    "/visit/spreading/history/[id]": [
+    "/visit/spreading/submit": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/visit/spreading/history/[id].js"
+      "static/chunks/pages/visit/spreading/submit.js"
     ],
-    "/visit/spreading/history/[id]/avability": [
+    "/visit/spreading/submit/availability": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/visit/spreading/history/[id]/avability.js"
+      "static/chunks/pages/visit/spreading/submit/availability.js"
     ]
   },
   "ampFirstPages": []

@@ -9,6 +9,7 @@ import { Stores } from "../store";
 import Router from "next/router";
 import { onLogin } from "../helper";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
   const { state, dispatch, actions } = useContext(Stores);
@@ -16,6 +17,7 @@ export default function Login() {
   const [passVisibility, setPassVisibility] = useState(true);
   const [wrongUser, setWrongUser] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
+  const [cookies, setCookie] = useCookies(["token"]);
 
   const toggleVisibility = () => {
     setPassVisibility(!passVisibility);
@@ -48,12 +50,12 @@ export default function Login() {
           setLoadingModal(false);
         } else {
           data.token = makeid(250);
-          console.log(data);
-          setWrongUser(false);
+          setCookie("token", makeid(250), { maxAge: 10800 });
           console.log(data);
           actions.userLogin(data);
           window.location.reload();
           setLoadingModal(false);
+          setWrongUser(false);
         }
       })
       .catch((err) => {

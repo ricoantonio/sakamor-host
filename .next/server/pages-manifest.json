@@ -2,8 +2,7 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/visit/spreading/history/[id]": "pages/visit/spreading/history/[id].js",
-  "/visit/spreading/history/[id]/avability": "pages/visit/spreading/history/[id]/avability.js",
-  "/": "pages/index.js",
-  "/visit/spreading/history": "pages/visit/spreading/history.js"
+  "/visit/spreading/submit": "pages/visit/spreading/submit.js",
+  "/visit/spreading/submit/availability": "pages/visit/spreading/submit/availability.js",
+  "/visit/spreading": "pages/visit/spreading.js"
 }

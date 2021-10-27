@@ -940,6 +940,9 @@ export default function Avability({ type }) {
                             avabilityList[sameDataIndex].order = order
                               ? order
                               : 0;
+                            avabilityList[sameDataIndex].harga = harga
+                              ? harga
+                              : 0;
                             setModal(false);
                             setStock("");
                             setSaranOrder("");
@@ -955,7 +958,7 @@ export default function Avability({ type }) {
                               ket,
                               pengiriman,
                               minor,
-                              harga,
+                              harga: harga ? harga : 0,
                             });
                             setModal(false);
                             setStock("");
@@ -973,7 +976,7 @@ export default function Avability({ type }) {
                             ket,
                             pengiriman,
                             minor,
-                            harga,
+                            harga: harga ? harga : 0,
                           });
                           setModal(false);
                           setStock("");

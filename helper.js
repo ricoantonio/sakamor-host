@@ -495,7 +495,8 @@ const viewOutletClass = (outletID) => {
 
 const getOutletSpreadingNearMe = (longitude, latitude) => {
   return fetch(
-    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetOutletSpreadingNearMe?username=lukmanjkt&latitude=-6.20721126&longitude=106.92282457`,
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetOutletSpreadingNearMe?username=lukmanjkt&latitude=${latitude}&longitude=${longitude}`,
+    // `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorMasterData/v1/api/MasterDataLokal/GetOutletSpreadingNearMe?username=lukmanjkt&latitude=-6.20721126&longitude=106.92282457`,
     {
       headers: {
         apiKey: TOKEN,
@@ -1034,6 +1035,28 @@ const getVisitPlanProduct = (id) => {
     API_URL +
       API_VISIT_PLAN +
       `/ActivityVisitPlanDProduct/GetVisitPlanProductBy?visitPlanId=${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getRecapOrder = (usernameSMR, dateFrom, dateTo) => {
+  return fetch(
+    API_URL +
+      API_VISIT_PLAN +
+      `/ActivityVisitPlan/GetRekapOrder?usernameSMR=abubakar&kodeCabang=32&dateStringFrom=2021-05-12&dateStringTo=2021-9-12`,
     {
       headers: {
         apiKey: TOKEN,
@@ -2659,6 +2682,7 @@ export {
   updateDataProdukPlan,
   insertFilePlan,
   getVisitPlanProduct,
+  getRecapOrder,
   // VISIT UNPLAN
   submitVisitUnplan,
   submitVisitUnplanDposm,

@@ -251,9 +251,9 @@ export default function index() {
           jumlahOrder: parseInt(val.order),
           createdBy: userData.username,
           updatedBy: userData.username,
-          harga: val.harga === null ? 0 : parseInt(val.harga),
+          harga: val.harga == null ? 0 : parseInt(val.harga),
           totalHarga:
-            val.harga === null ? 0 : parseInt(val.harga) * parseInt(val.order),
+            val.harga == null ? 0 : parseInt(val.harga) * parseInt(val.order),
           keterangan: val.ket,
         };
       });
