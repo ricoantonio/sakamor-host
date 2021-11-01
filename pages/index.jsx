@@ -9,6 +9,7 @@ import Spinner from "../components/Spinner";
 import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Modal from "../components/Modal";
 import CheckBox from "../components/Checkbox";
 
 import { firebaseCloudMessaging } from "../webpush";
@@ -22,6 +23,7 @@ import {
   getAuth,
   getFrontliner,
   getFrontlinerPimca,
+  getIncentiveApproval,
   getInvoiceData,
   getInvoiceDataPosm,
   getInvoiceDataPosmSpreading,
@@ -81,6 +83,8 @@ export default function Home() {
   const [revisePlan, setRevisePlan] = useState([]);
   const [reviseUnPlan, setReviseUnPlan] = useState([]);
   const [reviseSpreading, setReviseSpreading] = useState([]);
+  const [approvalSubMenu, setApprovalSubMenu] = useState("VISIT");
+  const [approvalSubLoading, setApprovalSubLoading] = useState(false);
 
   const [PP, setPP] = useState("");
   const isMounted = useRef(true);
@@ -234,7 +238,7 @@ export default function Home() {
         .then((data) => {
           if (data[0].roleCode === "PIMCAB") {
             setRole("PIMCAB");
-            setFocus("WORK-VISIT");
+            setFocus("SALES-TRACKING");
             localStorage.setItem("role", "PIMCAB");
             getSalesTarget75Pimca(userData, month, year)
               .then((data) => {
@@ -387,18 +391,35 @@ export default function Home() {
             console.log(err);
           });
       } else if (focus === "SALES-TRACKING") {
-        getApproval(userData)
-          .then((data) => {
-            var dataCheckBox = data.map((val) => {
-              return { ...val, checkBox: false };
+        setPendingApprove([]);
+        if (approvalSubMenu === "VISIT") {
+          getApproval(userData)
+            .then((data) => {
+              var dataCheckBox = data.map((val) => {
+                return { ...val, checkBox: false };
+              });
+              setPendingApprove(dataCheckBox);
+              // console.log(data);
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.log(err);
             });
-            setPendingApprove(dataCheckBox);
-            // console.log(data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        } else if (approvalSubMenu === "INCENTIVE") {
+          getIncentiveApproval(userData)
+            .then((data) => {
+              // var dataCheckBox = data.map((val) => {
+              //   return { ...val, checkBox: false };
+              // });
+              // setPendingApprove(dataCheckBox);
+              console.log(data);
+              setPendingApprove(data);
+              setLoading(false);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       } else if (focus === "UNPLAN") {
         getUnplanMonthlyHistory(userData)
           .then((data) => {
@@ -424,6 +445,40 @@ export default function Home() {
       Router.push("/");
     }
   }, [focus]);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setApprovalSubLoading(true);
+    if (userData) {
+      if (approvalSubMenu === "VISIT") {
+        getApproval(userData)
+          .then((data) => {
+            var dataCheckBox = data.map((val) => {
+              return { ...val, checkBox: false };
+            });
+            setPendingApprove(dataCheckBox);
+            // console.log(data);
+            setApprovalSubLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (approvalSubMenu === "INCENTIVE") {
+        getIncentiveApproval(userData)
+          .then((data) => {
+            // var dataCheckBox = data.map((val) => {
+            //   return { ...val, checkBox: false };
+            // });
+            // setPendingApprove(dataCheckBox);
+            console.log(data);
+            setPendingApprove(data);
+            setApprovalSubLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }, [approvalSubMenu]);
 
   const renderTopMenu = () => {
     var auth = topMenu.filter((val) => {
@@ -500,9 +555,18 @@ export default function Home() {
       );
     } else {
       return data.map((val, index) => {
+        console.log(val);
         return (
           <Link
-            href={focus === "PLAN" ? `/visit/plan/${data.idMasterPlan}` : "/"}
+            href={
+              focus === "PLAN"
+                ? `/visit/plan/${val.idMasterPlan}`
+                : focus === "UNPLAN"
+                ? `/visit/unplan/history/${val.id}`
+                : focus === "SPREADING"
+                ? `/visit/spreading/history/${val.id}`
+                : "/"
+            }
           >
             <a>
               <div
@@ -1023,10 +1087,236 @@ export default function Home() {
     }
   };
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
   const renderApproval = () => {
     var checkPending = pendingApprove.filter((val) => {
       return val.checkBox;
     });
+
+    var renderAppVisit = () => {
+      return (
+        <div style={{ margin: "22px 0" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "10% 90%",
+              paddingBottom: "10px",
+            }}
+          >
+            <div style={{ paddingTop: "10px" }}>
+              <CheckBox
+                onClick={() => {
+                  if (checkPending.length === pendingApprove.length) {
+                    var all = pendingApprove.map((val) => {
+                      return { ...val, checkBox: false };
+                    });
+                    setPendingApprove(all);
+                  } else {
+                    var all = pendingApprove.map((val) => {
+                      return { ...val, checkBox: true };
+                    });
+                    setPendingApprove(all);
+                  }
+                }}
+                checked={
+                  checkPending.length === pendingApprove.length ? true : false
+                }
+              />
+            </div>
+            <Button
+              onClick={() => {
+                onApprove();
+              }}
+              color={checkPending.length ? "green" : "disable"}
+              text={"Approve"}
+            />
+          </div>
+          {pendingApprove.map((val, index) => {
+            return (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "10% 90%",
+                  fontSize: "14px",
+                  margin: "8px 0",
+                }}
+              >
+                <>
+                  <div>
+                    <CheckBox
+                      checked={val.checkBox}
+                      onClick={() => {
+                        pendingApprove.splice(index, 1, {
+                          ...pendingApprove[index],
+                          checkBox: !val.checkBox,
+                        });
+                        setDummy(dummy + 1);
+                      }}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      console.log(val);
+                      actions.setFocusApproval(val);
+                      router.push(`/approval/${val.modul}/${val.id}`);
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontWeight: "700",
+                        display: "grid",
+                        gridTemplateColumns: "2fr 1fr",
+                      }}
+                    >
+                      <div>{val.usernameSMR}</div>
+                      <div
+                        style={{
+                          backgroundColor: "#feb800",
+                          color: "white",
+                          textAlign: "center",
+                          borderRadius: "20px",
+                          fontWeight: "500",
+                          fontSize: "12px",
+                          paddingTop: "1px",
+                        }}
+                      >
+                        {val.modul}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: "700",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {val.namaOutlet}
+                    </div>
+                    <div style={{ fontSize: "12px" }}>{val.alamatOutlet}</div>
+                  </div>
+                </>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
+    var renderAppIncentive = () => {
+      return (
+        <div style={{ margin: "22px 0" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "10% 90%",
+              paddingBottom: "10px",
+            }}
+          >
+            <div style={{ paddingTop: "10px" }}>
+              <CheckBox
+                onClick={() => {
+                  if (checkPending.length === pendingApprove.length) {
+                    var all = pendingApprove.map((val) => {
+                      return { ...val, checkBox: false };
+                    });
+                    setPendingApprove(all);
+                  } else {
+                    var all = pendingApprove.map((val) => {
+                      return { ...val, checkBox: true };
+                    });
+                    setPendingApprove(all);
+                  }
+                }}
+                checked={
+                  checkPending.length === pendingApprove.length ? true : false
+                }
+              />
+            </div>
+            <Button
+              onClick={() => {
+                onApprove();
+              }}
+              color={checkPending.length ? "green" : "disable"}
+              text={"Approve"}
+            />
+          </div>
+          {pendingApprove.map((val, index) => {
+            return (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "10% 90%",
+                  fontSize: "14px",
+                  margin: "8px 0",
+                }}
+              >
+                <>
+                  <div>
+                    <CheckBox
+                      checked={val.checkBox}
+                      onClick={() => {
+                        pendingApprove.splice(index, 1, {
+                          ...pendingApprove[index],
+                          checkBox: !val.checkBox,
+                        });
+                        setDummy(dummy + 1);
+                      }}
+                    />
+                  </div>
+                  <div
+                    onClick={() => {
+                      console.log(val);
+                      actions.setFocusApproval(val);
+                      router.push(`/approval/${val.modul}/${val.id}`);
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontWeight: "700",
+                        display: "grid",
+                        gridTemplateColumns: "2fr 1fr",
+                      }}
+                    >
+                      <div>{val.username}</div>
+                      <div
+                        style={{
+                          backgroundColor: "#feb800",
+                          color: "white",
+                          textAlign: "center",
+                          borderRadius: "20px",
+                          fontWeight: "500",
+                          fontSize: "12px",
+                          paddingTop: "1px",
+                        }}
+                      >
+                        Incentive
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: "700",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {moment(val.periode).format("MMMM YYYY")}
+                    </div>
+                    <div style={{ fontSize: "12px" }}>
+                      Total:{" "}
+                      {val && val.totalInsentif
+                        ? val.totalInsentif.toLocaleString("id-ID")
+                        : null}
+                    </div>
+                  </div>
+                </>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
     if (loading) {
       return <Spinner />;
     } else {
@@ -1036,6 +1326,39 @@ export default function Home() {
             <div className={styles.plan_container}>
               <div
                 style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  color: "#41867a",
+                  marginBottom: "20px",
+                }}
+              >
+                <div
+                  onClick={() => {
+                    setApprovalSubMenu("VISIT");
+                  }}
+                  style={
+                    approvalSubMenu === "VISIT"
+                      ? { borderBottom: "2px solid #41867a" }
+                      : {}
+                  }
+                >
+                  Visit
+                </div>
+                <div
+                  onClick={() => {
+                    setApprovalSubMenu("INCENTIVE");
+                  }}
+                  style={
+                    approvalSubMenu === "INCENTIVE"
+                      ? { borderBottom: "2px solid #41867a" }
+                      : {}
+                  }
+                >
+                  Incentive
+                </div>
+              </div>
+              <div
+                style={{
                   fontSize: "18px",
                   fontWeight: "500",
                   color: "#5E5873",
@@ -1043,113 +1366,15 @@ export default function Home() {
                 }}
               >
                 Pending Approval
-                <div style={{ margin: "22px 0" }}>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "10% 90%",
-                      paddingBottom: "10px",
-                    }}
-                  >
-                    <div style={{ paddingTop: "10px" }}>
-                      <CheckBox
-                        onClick={() => {
-                          if (checkPending.length === pendingApprove.length) {
-                            var all = pendingApprove.map((val) => {
-                              return { ...val, checkBox: false };
-                            });
-                            setPendingApprove(all);
-                          } else {
-                            var all = pendingApprove.map((val) => {
-                              return { ...val, checkBox: true };
-                            });
-                            setPendingApprove(all);
-                          }
-                        }}
-                        checked={
-                          checkPending.length === pendingApprove.length
-                            ? true
-                            : false
-                        }
-                      />
-                    </div>
-                    <Button
-                      onClick={() => {
-                        onApprove();
-                      }}
-                      color={checkPending.length ? "green" : "disable"}
-                      text={"Approve"}
-                    />
-                  </div>
-                  {pendingApprove.map((val, index) => {
-                    return (
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "10% 90%",
-                          fontSize: "14px",
-                          margin: "8px 0",
-                        }}
-                      >
-                        <>
-                          <div>
-                            <CheckBox
-                              checked={val.checkBox}
-                              onClick={() => {
-                                pendingApprove.splice(index, 1, {
-                                  ...pendingApprove[index],
-                                  checkBox: !val.checkBox,
-                                });
-                                setDummy(dummy + 1);
-                              }}
-                            />
-                          </div>
-                          <div
-                            onClick={() => {
-                              console.log(val);
-                              actions.setFocusApproval(val);
-                              router.push(`/approval/${val.modul}/${val.id}`);
-                            }}
-                          >
-                            <div
-                              style={{
-                                fontWeight: "700",
-                                display: "grid",
-                                gridTemplateColumns: "2fr 1fr",
-                              }}
-                            >
-                              <div>{val.usernameSMR}</div>
-                              <div
-                                style={{
-                                  backgroundColor: "#feb800",
-                                  color: "white",
-                                  textAlign: "center",
-                                  borderRadius: "20px",
-                                  fontWeight: "500",
-                                  fontSize: "12px",
-                                  paddingTop: "1px",
-                                }}
-                              >
-                                {val.modul}
-                              </div>
-                            </div>
-                            <div
-                              style={{
-                                fontWeight: "700",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {val.namaOutlet}
-                            </div>
-                            <div style={{ fontSize: "12px" }}>
-                              {val.alamatOutlet}
-                            </div>
-                          </div>
-                        </>
-                      </div>
-                    );
-                  })}
-                </div>
+                {!approvalSubLoading ? (
+                  approvalSubMenu === "VISIT" ? (
+                    renderAppVisit()
+                  ) : (
+                    renderAppIncentive()
+                  )
+                ) : (
+                  <div />
+                )}
               </div>
             </div>
           </Card>
@@ -1447,6 +1672,11 @@ export default function Home() {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <div className={styles.container}>
+            {approvalSubLoading ? (
+              <Modal>
+                <Spinner />
+              </Modal>
+            ) : null}
             <div className={styles.wrapper}>
               <div className={styles.bg_top} />
               <div className={styles.user_info_grid}>

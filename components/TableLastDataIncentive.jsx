@@ -5,10 +5,18 @@ import styles from "../styles/components/TableLastDataIncentive.module.css";
 const TabelLastDataIncentive = ({ data }) => {
   const total = () => {
     var totalIncentive = 0;
+    var targetSales = data.filter((val) => {
+      return val.kpi === "Target Sales in value";
+    });
+    console.log(targetSales);
     data.map((val) => {
-      var splitGroup = val.grup.split(".");
-      if (splitGroup[1] == 0) {
-        totalIncentive += val.insentif;
+      if (targetSales[0].achievement <= 89.8) {
+        totalIncentive == 0;
+      } else {
+        var splitGroup = val.grup.split(".");
+        if (splitGroup[1] == 0) {
+          totalIncentive += val.insentif;
+        }
       }
     });
     return totalIncentive;

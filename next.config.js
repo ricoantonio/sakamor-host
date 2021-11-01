@@ -47,5 +47,5 @@ const settingsProd = {
 };
 
 // module.exports =
-process.env.NODE_ENV === "development" ? settings : withPWA(settingsProd);
-// module.exports = withPWA(settingsProd);
+// process.env.NODE_ENV === "development" ? settings : withPWA(settingsProd);
+module.exports = withPWA(settingsProd);

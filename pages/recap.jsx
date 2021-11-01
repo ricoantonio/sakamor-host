@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import RecapOrder from "../components/RecapOrder";
 import Modal from "../components/Modal";
 
-import { getAuth, getSmrByCabang } from "../helper";
+import { getAuth, getRecapOrder, getSmrByCabang } from "../helper";
 import moment from "moment";
 import Card from "../components/Card";
 import html2canvas from "html2canvas";
@@ -22,11 +22,13 @@ export default function Plan() {
   const [serachNamaSmr, setSearchNamaSmr] = useState("");
   const [role, setRole] = useState("");
   const [smrFocus, setSmrFocus] = useState("");
+  const [dataOrder, setDataOrder] = useState([]);
   const [searchListSmr, setSearchListSmr] = useState("");
   const [dataUsernameSMR, setDataUserNameSMR] = useState([]);
   const [listNamaSmr, setListNamaSmr] = useState([]);
   const [focusNamaSmr, setFocusNamaSmr] = useState({});
   const [loading, setLoading] = useState(true);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [pdfDownload, setPdfDownload] = useState(false);
 
   let jsPDF = null;
@@ -62,8 +64,30 @@ export default function Plan() {
           });
       }, 1000);
       return () => clearTimeout(timeoutId);
+    } else {
+      Router.push("/");
     }
   }, [dispatch, serachNamaSmr]);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (dateView && userData.kodeCabang && dateViewUntil && smrFocus) {
+      setLoadingSubmit(true);
+      getRecapOrder(smrFocus, userData.kodeCabang, dateView, dateViewUntil)
+        .then((data) => {
+          var dataRecap = data.filter((val) => {
+            return val.jumlahOrder > 0;
+          });
+          setDataOrder(dataRecap);
+          setLoadingSubmit(false);
+          console.log(data);
+        })
+        .catch((err) => {
+          setLoadingSubmit(false);
+          console.log(err);
+        });
+    }
+  }, [dateView, dateViewUntil, smrFocus]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -87,7 +111,7 @@ export default function Plan() {
 
       // Calculate the number of pages.
       var pxFullHeight = canvas.height;
-      var pxPageHeight = Math.floor(canvas.width * (pageHeight / imgWidth));
+      var pxPageHeight = Math.floor(canvas.width * (imgWidth / pageHeight));
       var nPages = Math.ceil(pxFullHeight / pxPageHeight);
 
       // Define pageHeight separately so it can be trimmed on the final page.
@@ -118,7 +142,7 @@ export default function Plan() {
 
         // Add the page to the PDF.
         if (page > 0) pdf.addPage();
-        debugger;
+        // debugger;
         var imgData = pageCanvas.toDataURL(
           "image/" + image.type,
           image.quality
@@ -133,7 +157,11 @@ export default function Plan() {
         );
       }
 
-      pdf.save(`${"file"}.pdf`);
+      pdf.save(
+        `${smrFocus}-${moment(dateView).format("DD/MM/YYYY")}-${moment(
+          dateViewUntil
+        ).format("DD/MM/YYYY")}.pdf`
+      );
     });
   };
 
@@ -179,7 +207,7 @@ export default function Plan() {
               maxHeight: "100%",
               overflow: "auto",
               overflowX: "hidden",
-              overflowY: "hidden",
+              // overflowY: "hidden",
             }}
           >
             <div
@@ -189,8 +217,7 @@ export default function Plan() {
                 margin: "100px auto",
               }}
             >
-              {/* <Invoice data={dataProduk} plan={plan} type={type} /> */}
-              {/* <RecapOrder data={}/> */}
+              <RecapOrder data={dataOrder} smr={smrFocus} />
               <div
                 style={{
                   padding: "10px",
@@ -217,6 +244,11 @@ export default function Plan() {
       return (
         <>
           <div className={styles.container}>
+            {loadingSubmit ? (
+              <Modal>
+                <Spinner />
+              </Modal>
+            ) : null}
             {renderModalDownload()}
             <div className={styles.wrapper}>
               <Nav title="Recap" backHref="/" color="white" />
@@ -237,7 +269,7 @@ export default function Plan() {
                       onChange={(e) => {
                         setDateView(moment(e.target.value));
                       }}
-                      min={moment().format("YYYY-MM-DD")}
+                      // min={moment().format("YYYY-MM-DD")}
                     />
                     <div style={{ alignSelf: "center" }}>-</div>
                     <input
@@ -294,7 +326,17 @@ export default function Plan() {
                     </>
                   ) : null}
 
-                  <div style={{ margin: "20px 0 10px 0" }}>
+                  <div style={{ textAlign: "center", fontSize: "12px" }}>
+                    {dataOrder.length <= 800 ? (
+                      <div style={{ margin: "20px 0 10px 0" }}>
+                        {dataOrder.length} item
+                      </div>
+                    ) : (
+                      <div style={{ margin: "20px 0 10px 0", color: "red" }}>
+                        !! {dataOrder.length} item (might download a blank pdf)
+                        !!
+                      </div>
+                    )}
                     <Button
                       onClick={() => {
                         if (dateView && dateViewUntil && smrFocus)

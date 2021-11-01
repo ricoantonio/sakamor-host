@@ -1,12 +1,12 @@
 import React from "react";
-import moment from "moment";
+import moment, { now } from "moment";
 
-const Recap = ({ data, plan, type }) => {
+const Recap = ({ data, smr }) => {
   var total = 0;
   const renderProduct = () => {
     return data.map((val, index) => {
-      total += val.totalHarga;
-      if (val.jumlah > 0) {
+      total += val.total;
+      if (val.jumlahOrder > 0) {
         return (
           <tr style={{ borderBottom: "1px solid black" }}>
             {/* no */}
@@ -19,13 +19,13 @@ const Recap = ({ data, plan, type }) => {
                 paddingLeft: "2px",
               }}
             >
-              {moment(val.tanggal).format("D MMMM YYYY")}
+              {moment(val.tanggal).format("DD MMM YYYY")}
             </td>
             {/* Outlet */}
             <td
               style={{
                 borderRight: "1px solid black",
-                textAlign: "right",
+                textAlign: "left",
                 padding: "0 4px 0 0",
               }}
             >
@@ -35,7 +35,7 @@ const Recap = ({ data, plan, type }) => {
             <td
               style={{
                 borderRight: "1px solid black",
-                textAlign: "right",
+                textAlign: "left",
                 padding: "0 4px 0 0",
               }}
             >
@@ -45,23 +45,28 @@ const Recap = ({ data, plan, type }) => {
             <td
               style={{
                 borderRight: "1px solid black",
-                textAlign: "right",
+                textAlign: "left",
                 padding: "0 4px 0 0",
               }}
             >
               {val.kodeProduk}
-              {val.totalHarga.toLocaleString("id-ID")}
             </td>
             {/* Nama Produk */}
-            <td style={{ borderRight: "1px solid black" }}>{val.namaProduk}</td>
+            <td style={{ borderRight: "1px solid black", textAlign: "left" }}>
+              {val.namaProduk}
+            </td>
             {/* Jumlah */}
-            <td style={{ borderRight: "1px solid black" }}>
-              {val.jumlahOrder}
+            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+              {val.jumlahOrder.toLocaleString("id-ID")}
             </td>
             {/* Harga Satuan */}
-            <td style={{ borderRight: "1px solid black" }}>{val.harga}</td>
+            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+              {val.harga.toLocaleString("id-ID")}
+            </td>
             {/* Total */}
-            <td style={{ borderRight: "1px solid black" }}>{val.total}</td>
+            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+              {val.total.toLocaleString("id-ID")}
+            </td>
           </tr>
         );
       }
@@ -86,16 +91,11 @@ const Recap = ({ data, plan, type }) => {
         }}
       >
         Rekap Surat Pesanan
-        <div>SMR:</div>
       </div>
       <div style={{ fontSize: "6px", margin: "5px" }}>
-        <div style={{ textAlign: "right", margin: "0 10px" }}>
-          {moment(plan[0].tanggal).format("D MMMM YYYY")}
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "12% 88%" }}>
-          <div>
-            Tanggal Order:{moment(plan[0].tanggal).format("D MMMM YYYY")}
-          </div>
+        <div style={{}}>
+          <div>SMR: {smr}</div>
+          <div>Tanggal Order: {moment().format("D MMMM YYYY")}</div>
         </div>
       </div>
       <div style={{ fontSize: "6px", margin: "-2px" }}>
@@ -118,19 +118,19 @@ const Recap = ({ data, plan, type }) => {
               <th width={"10%"} style={{ borderRight: "1px solid black" }}>
                 Outlet
               </th>
-              <th width={"15%"} style={{ borderRight: "1px solid black" }}>
+              <th width={"30%"} style={{ borderRight: "1px solid black" }}>
                 Alamat
               </th>
-              <th width={"10%"} style={{ borderRight: "1px solid black" }}>
+              <th width={"5%"} style={{ borderRight: "1px solid black" }}>
                 Kode Produk
               </th>
               <th width={"20%"} style={{ borderRight: "1px solid black" }}>
                 Nama Produk
               </th>
-              <th width={"10%"} style={{ borderRight: "1px solid black" }}>
+              <th width={"5%"} style={{ borderRight: "1px solid black" }}>
                 Jumlah
               </th>
-              <th width={"10%"} style={{ borderRight: "1px solid black" }}>
+              <th width={"5%"} style={{ borderRight: "1px solid black" }}>
                 Harga Satuan
               </th>
               <th width={"10%"} style={{ borderRight: "1px solid black" }}>
@@ -138,7 +138,7 @@ const Recap = ({ data, plan, type }) => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ fontSize: "5px" }}>
             {renderProduct()}
             <tr style={{ borderBottom: "1px solid black" }}>
               <td
@@ -147,7 +147,7 @@ const Recap = ({ data, plan, type }) => {
                   textAlign: "right",
                   padding: "0 4px 0 0",
                 }}
-                colSpan={2}
+                colSpan={6}
               >
                 Grand Total
               </td>
@@ -160,15 +160,6 @@ const Recap = ({ data, plan, type }) => {
                 colSpan={3}
               >
                 {total.toLocaleString("id-ID")}
-              </td>
-              <td
-                style={{
-                  borderRight: "1px solid black",
-                  textAlign: "right",
-                  padding: "0 4px 0 4px",
-                }}
-              >
-                {" "}
               </td>
             </tr>
           </tbody>

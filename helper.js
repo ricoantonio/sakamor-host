@@ -1052,11 +1052,15 @@ const getVisitPlanProduct = (id) => {
     });
 };
 
-const getRecapOrder = (usernameSMR, dateFrom, dateTo) => {
+const getRecapOrder = (usernameSMR, kodeCabang, dateFrom, dateTo) => {
   return fetch(
     API_URL +
       API_VISIT_PLAN +
-      `/ActivityVisitPlan/GetRekapOrder?usernameSMR=abubakar&kodeCabang=32&dateStringFrom=2021-05-12&dateStringTo=2021-9-12`,
+      `/ActivityVisitPlan/GetRekapOrder?usernameSMR=${usernameSMR}&kodeCabang=${kodeCabang}&dateStringFrom=${moment(
+        dateFrom
+      ).format("YYYY-MM-DD")}&dateStringTo=${moment(dateTo).format(
+        "YYYY-MM-DD"
+      )}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -2335,6 +2339,53 @@ const getPimcaByCabang = (userData) => {
     });
 };
 
+const submitIncentiveSmr = (data) => {
+  return fetch(
+    API_URL + API_INCENTIVE + `/KpiIncentiveMonthly/InsertInsentifBulanan`,
+    {
+      method: "POST",
+      headers: {
+        apiKey: TOKEN,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getIncentiveApproval = (userData) => {
+  return fetch(
+    // API_URL +
+    //   API_INCENTIVE +
+    //   `/KpiIncentiveMonthly​/GetInsentifBulananForApproval​/${userData.kodeCabang}`,
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorIncentive/v1/api/KpiIncentiveMonthly/GetInsentifBulananForApproval/32`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
@@ -2739,6 +2790,8 @@ export {
   getSalesTargetPimca,
   getSalesTarget75Pimca,
   getFrontlinerPimca,
+  submitIncentiveSmr,
+  getIncentiveApproval,
   // BENEFIT
   getBenefitCodeCabang,
   // APPROVAL

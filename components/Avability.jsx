@@ -940,9 +940,6 @@ export default function Avability({ type }) {
                             avabilityList[sameDataIndex].order = order
                               ? order
                               : 0;
-                            avabilityList[sameDataIndex].harga = harga
-                              ? harga
-                              : 0;
                             setModal(false);
                             setStock("");
                             setSaranOrder("");
@@ -958,7 +955,7 @@ export default function Avability({ type }) {
                               ket,
                               pengiriman,
                               minor,
-                              harga: harga ? harga : 0,
+                              harga,
                             });
                             setModal(false);
                             setStock("");
@@ -976,7 +973,7 @@ export default function Avability({ type }) {
                             ket,
                             pengiriman,
                             minor,
-                            harga: harga ? harga : 0,
+                            harga,
                           });
                           setModal(false);
                           setStock("");
@@ -1241,7 +1238,7 @@ export default function Avability({ type }) {
                     >
                       {type === "SPREADING" || type === "HISTORY_SPREADING"
                         ? `${avabilityList.length}/ 1`
-                        : `${avabilityList.length} / 25}`}
+                        : `${avabilityList.length} / 25`}
                     </div>
                   </div>
                   <input
