@@ -3,14 +3,18 @@ import Link from "next/link";
 import styles from "../styles/components/TableLastDataIncentive.module.css";
 
 const TabelLastDataIncentive = ({ data }) => {
+  console.log(data);
   const total = () => {
     var totalIncentive = 0;
     var targetSales = data.filter((val) => {
-      return val.kpi === "Target Sales in value";
+      return (
+        val.kpi == "Target Sales in value" ||
+        val.kpiIncentive == "Target Sales in value"
+      );
     });
     console.log(targetSales);
     data.map((val) => {
-      if (targetSales[0].achievement <= 89.8) {
+      if (targetSales[0] && targetSales[0].achievement <= 89.8) {
         totalIncentive == 0;
       } else {
         var splitGroup = val.grup.split(".");
@@ -37,7 +41,7 @@ const TabelLastDataIncentive = ({ data }) => {
               fontWeight: "600",
             }}
           >
-            <td colSpan="7">{val.kpi}</td>
+            <td colSpan="7">{val.kpi ? val.kpi : val.kpiIncentive}</td>
             <td></td>
             <td></td>
             <td>{val.insentif.toLocaleString("id-ID")}</td>
@@ -46,7 +50,7 @@ const TabelLastDataIncentive = ({ data }) => {
       } else {
         return (
           <tr>
-            <td colSpan="7">{val.kpi}</td>
+            <td colSpan="7">{val.kpi ? val.kpi : val.kpiIncentive}</td>
             <td>{Math.round(val.achievement * 10) / 10}%</td>
             <td>{Math.round(val.gradasi * 10) / 10}%</td>
             <td>{val.insentif.toLocaleString("id-ID")}</td>

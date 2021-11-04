@@ -2159,9 +2159,9 @@ const getKpiInventiveMonthlyPimca = (userData, date) => {
   return fetch(
     API_URL +
       API_INCENTIVE +
-      `/KpiIncentiveMonthly/IncentiveCalculatorPimca/${
-        userData.kodeCabang
-      }/${moment(date).format("YYYY-MM")}-01/ABM`,
+      `/KpiIncentiveMonthly/IncentiveCalculatorPimca/20/${moment(date).format(
+        "YYYY-MM"
+      )}-01/ABM`,
     {
       headers: {
         apiKey: TOKEN,
@@ -2386,6 +2386,49 @@ const getIncentiveApproval = (userData) => {
       console.log(err);
     });
 };
+
+const getIncentiveStatus = (userData, date) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorIncentive/v1/api/KpiIncentiveMonthly/GetInsentifDetailBy?username=${userData.username}&periode=${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getIncentiveDetailbyID = (id) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorIncentive/v1/api/KpiIncentiveMonthly/GetInsentifDetailBy/${id}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // BENEFIT ==============================================================================================================================================
 
 const getBenefitCodeCabang = (userData) => {
@@ -2792,6 +2835,8 @@ export {
   getFrontlinerPimca,
   submitIncentiveSmr,
   getIncentiveApproval,
+  getIncentiveStatus,
+  getIncentiveDetailbyID,
   // BENEFIT
   getBenefitCodeCabang,
   // APPROVAL

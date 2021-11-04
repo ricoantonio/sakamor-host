@@ -348,6 +348,7 @@ export default function HistoryDetail({ type }) {
       return val.jumlah > 0;
     });
     console.log(dataProduk);
+    console.log(plan);
 
     if (loading) {
       return <Spinner />;
@@ -407,7 +408,13 @@ export default function HistoryDetail({ type }) {
                 }}
                 disable={false}
               />
-              <div className={styles.main}>{renderDetail()}</div>
+              <div className={styles.main}>
+                Status:{" "}
+                {plan[0].status === "Submit"
+                  ? "Waiting for approval"
+                  : plan[0].status}
+                {renderDetail()}
+              </div>
             </div>
           </div>
         </>

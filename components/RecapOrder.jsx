@@ -1,7 +1,7 @@
 import React from "react";
 import moment, { now } from "moment";
 
-const Recap = ({ data, smr }) => {
+const Recap = ({ data, smr, dateFrom, dateUntil }) => {
   var total = 0;
   const renderProduct = () => {
     return data.map((val, index) => {
@@ -56,15 +56,33 @@ const Recap = ({ data, smr }) => {
               {val.namaProduk}
             </td>
             {/* Jumlah */}
-            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 4px",
+              }}
+            >
               {val.jumlahOrder.toLocaleString("id-ID")}
             </td>
             {/* Harga Satuan */}
-            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 4px",
+              }}
+            >
               {val.harga.toLocaleString("id-ID")}
             </td>
             {/* Total */}
-            <td style={{ borderRight: "1px solid black", textAlign: "right" }}>
+            <td
+              style={{
+                borderRight: "1px solid black",
+                textAlign: "right",
+                padding: "0 4px 0 4px",
+              }}
+            >
               {val.total.toLocaleString("id-ID")}
             </td>
           </tr>
@@ -95,7 +113,9 @@ const Recap = ({ data, smr }) => {
       <div style={{ fontSize: "6px", margin: "5px" }}>
         <div style={{}}>
           <div>SMR: {smr}</div>
-          <div>Tanggal Order: {moment().format("D MMMM YYYY")}</div>
+          <div>
+            Tanggal Order: {dateFrom} - {dateUntil}
+          </div>
         </div>
       </div>
       <div style={{ fontSize: "6px", margin: "-2px" }}>

@@ -1004,92 +1004,91 @@ export default function Home() {
       const userData = JSON.parse(localStorage.getItem("user"));
       if (userData) {
         setLoadingApprove(true);
-        for (let i = 0; i < checkPending.length; i++) {
-          const module =
-            checkPending[i].modul === "Plan"
-              ? "VISITPLAN"
-              : checkPending[i].modul === "UnPlan"
-              ? "VISITUNPLAN"
-              : checkPending[i].modul === "Spreading"
-              ? "SPREADING"
-              : "";
+        if (approvalSubMenu === "VISIT") {
+          for (let i = 0; i < checkPending.length; i++) {
+            const module =
+              checkPending[i].modul === "Plan"
+                ? "VISITPLAN"
+                : checkPending[i].modul === "UnPlan"
+                ? "VISITUNPLAN"
+                : checkPending[i].modul === "Spreading"
+                ? "SPREADING"
+                : "";
 
-          const data = {
-            approvalTransactionDataModel: [
-              {
-                systemCode: "SAKAMOR",
-                moduleCode: module,
-                approvalLevel: 1,
-                id: checkPending[i].id,
-                approvalID:
-                  checkPending[i].modul === "Plan"
-                    ? 352
-                    : checkPending[i].modul === "UnPlan"
-                    ? 358
-                    : checkPending[i].modul === "Spreading"
-                    ? 359
-                    : "",
-                docNo: checkPending[i].nomorDokumen,
-                pic: "string",
-                approvalLine: 0,
-                notes: "string",
-                needApprove: true,
-                approveDate: now.toISOString(),
-                status: "string",
-              },
-            ],
-            systemCode: "SAKAMOR",
-            moduleCode: module,
-            docNo: checkPending[i].nomorDokumen,
-            approverFrom: "string",
-            approverTo: "string",
-            status: "string",
-            description: "string",
-            notes: "string",
-            createdBy: userData.username,
-            createdDate: now.toISOString(),
-            emailData: {
+            const data = {
+              approvalTransactionDataModel: [
+                {
+                  systemCode: "SAKAMOR",
+                  moduleCode: module,
+                  approvalLevel: 1,
+                  id: checkPending[i].id,
+                  approvalID:
+                    checkPending[i].modul === "Plan"
+                      ? 352
+                      : checkPending[i].modul === "UnPlan"
+                      ? 358
+                      : checkPending[i].modul === "Spreading"
+                      ? 359
+                      : "",
+                  docNo: checkPending[i].nomorDokumen,
+                  pic: "string",
+                  approvalLine: 0,
+                  notes: "string",
+                  needApprove: true,
+                  approveDate: now.toISOString(),
+                  status: "string",
+                },
+              ],
               systemCode: "SAKAMOR",
               moduleCode: module,
-              documentNumber: checkPending[i].nomorDokumen,
-              emailTo: "string",
-              emailCC: "string",
-              emailBCC: "string",
-              emailSubject: "string",
-              emailBody: "string",
-            },
-          };
-          approvalApprove(
-            data,
-            checkPending[i].modul,
-            checkPending[i].id,
-            userData
-          )
-            .then((data) => {
-              if (i === checkPending.length - 1) {
-                setLoadingApprove(false);
-                getApproval(userData)
-                  .then((data) => {
-                    var dataCheckBox = data.map((val) => {
-                      return { ...val, checkBox: false };
+              docNo: checkPending[i].nomorDokumen,
+              approverFrom: "string",
+              approverTo: "string",
+              status: "string",
+              description: "string",
+              notes: "string",
+              createdBy: userData.username,
+              createdDate: now.toISOString(),
+              emailData: {
+                systemCode: "SAKAMOR",
+                moduleCode: module,
+                documentNumber: checkPending[i].nomorDokumen,
+                emailTo: "string",
+                emailCC: "string",
+                emailBCC: "string",
+                emailSubject: "string",
+                emailBody: "string",
+              },
+            };
+            approvalApprove(
+              data,
+              checkPending[i].modul,
+              checkPending[i].id,
+              userData
+            )
+              .then((data) => {
+                if (i === checkPending.length - 1) {
+                  setLoadingApprove(false);
+                  getApproval(userData)
+                    .then((data) => {
+                      var dataCheckBox = data.map((val) => {
+                        return { ...val, checkBox: false };
+                      });
+                      setPendingApprove(dataCheckBox);
+                      setLoading(false);
+                    })
+                    .catch((err) => {
+                      console.log(err);
                     });
-                    setPendingApprove(dataCheckBox);
-                    setLoading(false);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
-            })
-            .catch((err) => console.log(err));
+                }
+              })
+              .catch((err) => console.log(err));
+          }
         }
+      } else if (approvalSubMenu === "INCENTIVE") {
       }
     }
   };
-
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
 
   const renderApproval = () => {
     var checkPending = pendingApprove.filter((val) => {
@@ -1268,8 +1267,7 @@ export default function Home() {
                   <div
                     onClick={() => {
                       console.log(val);
-                      actions.setFocusApproval(val);
-                      router.push(`/approval/${val.modul}/${val.id}`);
+                      router.push(`/approval-incentive/${val.id}`);
                     }}
                   >
                     <div
@@ -1306,7 +1304,7 @@ export default function Home() {
                       Total:{" "}
                       {val && val.totalInsentif
                         ? val.totalInsentif.toLocaleString("id-ID")
-                        : null}
+                        : 0}
                     </div>
                   </div>
                 </>
@@ -1656,6 +1654,47 @@ export default function Home() {
     return g;
   };
 
+  const renderWarMap = () => {
+    if (role === "SMR") {
+      return (
+        <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+          <Link href="/">
+            <a style={{ textDecoration: "none" }}>
+              <div className={styles.reward_grid2}>
+                <div className={styles.add_reward}>
+                  <div style={{ marginTop: "-11px" }}>
+                    <img src={"/alert-circle.svg"} />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    color: "#FEB800",
+                  }}
+                >
+                  War Map
+                  {/* <div
+                    style={{
+                      color: "#B9B9C3",
+                      fontWeight: "300",
+                      fontSize: "13px",
+                    }}
+                  >
+                    See you recap here
+                  </div>{" "} */}
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <img src={"/next.svg"} />
+                </div>
+              </div>
+            </a>
+          </Link>
+        </Card>
+      );
+    }
+  };
+
   const renderPage = () => {
     if (loading && loadingMenu) {
       return (
@@ -1726,6 +1765,7 @@ export default function Home() {
                 </div>
                 <div className={styles.main}>
                   {renderTopMenu()}
+                  {renderWarMap()}
                   {focus === "PLAN"
                     ? renderPlan()
                     : focus === "UNPLAN"

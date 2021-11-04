@@ -217,7 +217,12 @@ export default function Plan() {
                 margin: "100px auto",
               }}
             >
-              <RecapOrder data={dataOrder} smr={smrFocus} />
+              <RecapOrder
+                data={dataOrder}
+                smr={smrFocus}
+                dateFrom={moment(dateView).format("DD MMM YYYY")}
+                dateUntil={moment(dateViewUntil).format("DD MMM YYYY")}
+              />
               <div
                 style={{
                   padding: "10px",

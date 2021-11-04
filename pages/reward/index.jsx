@@ -5,6 +5,7 @@ import Router from "next/router";
 import { Stores } from "../../store";
 import {
   getAuth,
+  getIncentiveStatus,
   getIncentiveYearly,
   getKpiInventiveMonthlyPimca,
   getKpiInventiveMonthlySMR,
@@ -26,6 +27,7 @@ export default function Reward() {
   const [dataKpi, setDataKpi] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dataGraph, setDataGraph] = useState([]);
+  const [incentiveStatus, setIncentiveStatus] = useState([]);
   const [loadingModal, setLoadingModal] = useState(false);
   const [now, setNow] = useState(new Date());
 
@@ -72,23 +74,44 @@ export default function Reward() {
     hover: { mode: null },
   };
 
+  const getDataTabelIncentiveSMR = (userData, now) => {
+    return getKpiInventiveMonthlySMR(userData, now)
+      .then((dataKpi) => {
+        setDataKpi(dataKpi);
+        // console.log(dataKpi);
+        setLoading(false);
+        setLoadingModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setLoadingModal(false);
+      });
+  };
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userRole = localStorage.getItem("role");
     setLoadingModal(true);
-    console.log(userData, now);
+    setDataKpi([]);
+    // console.log(userData, now);
     if (userData) {
       if (userRole === "PIMCAB") {
         getKpiInventiveMonthlyPimca(userData, now)
           .then((dataKpi) => {
             setDataKpi(dataKpi);
             console.log(dataKpi);
+            setLoading(false);
+            setLoadingModal(false);
           })
           .catch((err) => {
+            setLoading(false);
+            setLoadingModal(false);
             console.log(err);
           });
         getIncentiveYearly(userData)
           .then((data) => {
+            console.log(data);
             if (data.length) {
               data.sort(function (a, b) {
                 return a.periode - b.periode;
@@ -109,25 +132,12 @@ export default function Reward() {
                 );
               });
               setDataGraph(arrIncentive);
-              setLoading(false);
-              setLoadingModal(false);
-            } else {
-              setLoading(false);
-              setLoadingModal(false);
             }
           })
           .catch((err) => {
             console.log(err);
           });
       } else if (userRole === "SMR") {
-        getKpiInventiveMonthlySMR(userData, now)
-          .then((dataKpi) => {
-            setDataKpi(dataKpi);
-            console.log(dataKpi);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
         getIncentiveYearly(userData)
           .then((data) => {
             if (data.length) {
@@ -150,11 +160,23 @@ export default function Reward() {
                 );
               });
               setDataGraph(arrIncentive);
-              setLoading(false);
-              setLoadingModal(false);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getIncentiveStatus(userData, moment(now).format("YYYY-MM"))
+          .then((data) => {
+            if (data.status !== 404) {
+              if (data.status === "Approved") {
+              } else {
+                getDataTabelIncentiveSMR(userData, now);
+              }
+              console.log("status", data);
+              setIncentiveStatus(data);
             } else {
-              setLoading(false);
-              setLoadingModal(false);
+              setIncentiveStatus([]);
+              getDataTabelIncentiveSMR(userData, now);
             }
           })
           .catch((err) => {
@@ -169,10 +191,13 @@ export default function Reward() {
   const total = () => {
     var totalIncentive = 0;
     var targetSales = dataKpi.filter((val) => {
-      return val.kpi === "Target Sales in value";
+      return (
+        val.kpi == "Target Sales in value" ||
+        val.kpiIncentive == "Target Sales in value"
+      );
     });
     dataKpi.map((val) => {
-      if (targetSales[0].achievement <= 89.8) {
+      if (targetSales[0] && targetSales[0].achievement <= 89.8) {
         totalIncentive == 0;
       } else {
         var splitGroup = val.grup.split(".");
@@ -216,6 +241,18 @@ export default function Reward() {
     submitIncentiveSmr(dataSubmit)
       .then((res) => {
         console.log(res);
+        getIncentiveStatus(userData, moment(now).format("YYYY-MM"))
+          .then((data) => {
+            if (data.status !== 404) {
+              console.log("status", data);
+              setIncentiveStatus(data);
+            } else {
+              setIncentiveStatus([]);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -383,15 +420,24 @@ export default function Reward() {
 
               <Button
                 color={
-                  (moment(now).add(1, "month").format("MM") <=
-                    moment().format("MM") &&
-                    moment().format("DD") >= "01" &&
-                    moment().format("DD") <= "30") ||
-                  moment(now).format("MM") < moment().format("MM")
+                  incentiveStatus.status === "Submit" ||
+                  incentiveStatus.status === "Approved"
+                    ? "disable"
+                    : (moment(now).add(1, "month").format("MM") <=
+                        moment().format("MM") &&
+                        moment().format("DD") >= "01" &&
+                        moment().format("DD") <= "30") ||
+                      moment(now).format("MM") < moment().format("MM")
                     ? "green"
                     : "disable"
                 }
-                text={"SUBMIT"}
+                text={
+                  incentiveStatus.status === "Submit"
+                    ? "Waiting for approval"
+                    : incentiveStatus.status === "Approved"
+                    ? "APPROVED"
+                    : "SUBMIT"
+                }
                 onClick={() => {
                   submitReward();
                 }}
