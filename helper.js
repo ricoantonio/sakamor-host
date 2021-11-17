@@ -98,7 +98,6 @@ const onLogin = (values) => {
     })
     .catch((err) => {
       console.log(err);
-      setWrongUser(true);
     });
 };
 
@@ -2155,6 +2154,30 @@ const getKpiInventiveMonthlySMR = (userData, date) => {
     });
 };
 
+const getKpiInventiveMonthlyMonitortingSMR = (username, month, year) => {
+  return fetch(
+    API_URL +
+      API_INCENTIVE +
+      `/KpiIncentiveMonthly/GetIncentiveCalculator/${year}-${moment()
+        .month(month)
+        .format("MM")}-01/SMR?usernameSMR=${username}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const getKpiInventiveMonthlyPimca = (userData, date) => {
   return fetch(
     API_URL +
@@ -2390,6 +2413,27 @@ const getIncentiveApproval = (userData) => {
 const getIncentiveStatus = (userData, date) => {
   return fetch(
     `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorIncentive/v1/api/KpiIncentiveMonthly/GetInsentifDetailBy?username=${userData.username}&periode=${date}`,
+    {
+      headers: {
+        apiKey: TOKEN,
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getIncentiveStatusMonitoring = (username, date) => {
+  return fetch(
+    `https://m-one.kalbe.co.id:8243/t/kalbe.co.id/SakamorIncentive/v1/api/KpiIncentiveMonthly/GetInsentifDetailBy?username=${username}&periode=${date}`,
     {
       headers: {
         apiKey: TOKEN,
@@ -2828,6 +2872,7 @@ export {
   getNoo,
   getWorkDay,
   getKpiInventiveMonthlySMR,
+  getKpiInventiveMonthlyMonitortingSMR,
   getKpiInventiveMonthlyPimca,
   getIncentiveYearly,
   getSalesTargetPimca,
@@ -2836,6 +2881,7 @@ export {
   submitIncentiveSmr,
   getIncentiveApproval,
   getIncentiveStatus,
+  getIncentiveStatusMonitoring,
   getIncentiveDetailbyID,
   // BENEFIT
   getBenefitCodeCabang,

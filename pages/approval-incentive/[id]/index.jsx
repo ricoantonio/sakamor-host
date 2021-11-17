@@ -102,10 +102,13 @@ export default function index() {
   const total = () => {
     var totalIncentive = 0;
     var targetSales = dataIncentive.filter((val) => {
-      return val.kpiIncentive === "Target Sales in value";
+      return (
+        val.kpi == "Target Sales in value" ||
+        val.kpiIncentive == "Target Sales in value"
+      );
     });
     dataIncentive.map((val) => {
-      if (targetSales[0].achievement <= 89.8) {
+      if (targetSales[0] && targetSales[0].achievement <= 89.8) {
         totalIncentive == 0;
       } else {
         var splitGroup = val.grup.split(".");

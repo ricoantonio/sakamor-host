@@ -6,6 +6,7 @@ import Router from "next/router";
 import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
 import { getAllAnnouncement } from "../helper";
+import { Provider } from "next-auth/client";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -36,9 +37,11 @@ function MyApp({ Component, pageProps }) {
     }
   });
   return (
-    <Store>
-      <Component {...pageProps} />
-    </Store>
+    <Provider session={pageProps.session}>
+      <Store>
+        <Component {...pageProps} />
+      </Store>
+    </Provider>
   );
 }
 

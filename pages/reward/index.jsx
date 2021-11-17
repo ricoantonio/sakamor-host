@@ -168,7 +168,7 @@ export default function Reward() {
         getIncentiveStatus(userData, moment(now).format("YYYY-MM"))
           .then((data) => {
             if (data.status !== 404) {
-              if (data.status === "Approved") {
+              if (data.status == "Approved") {
               } else {
                 getDataTabelIncentiveSMR(userData, now);
               }
@@ -259,10 +259,119 @@ export default function Reward() {
       });
   };
 
+  const renderMenuRecap = () => {
+    return (
+      <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+        <Link href="/recap">
+          <a style={{ textDecoration: "none" }}>
+            <div className={styles.reward_grid2}>
+              <div className={styles.add_reward}>
+                <div style={{ marginTop: "-11px" }}>
+                  <img src={"/alert-circle.svg"} />
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  color: "#FEB800",
+                }}
+              >
+                Recap
+                <div
+                  style={{
+                    color: "#B9B9C3",
+                    fontWeight: "300",
+                    fontSize: "13px",
+                  }}
+                >
+                  See you recap here
+                </div>{" "}
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <img src={"/next.svg"} />
+              </div>
+            </div>
+          </a>
+        </Link>
+      </Card>
+    );
+  };
+  const renderMenuBenefits = () => {
+    return (
+      <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+        <Link href="/reward/benefits">
+          <a style={{ textDecoration: "none" }}>
+            <div className={styles.reward_grid2}>
+              <div className={styles.add_reward}>
+                <div style={{ marginTop: "-11px" }}>
+                  <img src={"/alert-circle.svg"} />
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  color: "#FEB800",
+                }}
+              >
+                Benefits
+                <div
+                  style={{
+                    color: "#B9B9C3",
+                    fontWeight: "300",
+                    fontSize: "13px",
+                  }}
+                >
+                  See you benefits here
+                </div>{" "}
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <img src={"/next.svg"} />
+              </div>
+            </div>
+          </a>
+        </Link>
+      </Card>
+    );
+  };
+  const renderMenuMonitoring = () => {
+    const userRole = localStorage.getItem("role");
+    if (userRole === "PIMCAB") {
+      return (
+        <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
+          <Link href="/reward/monitoring">
+            <a style={{ textDecoration: "none" }}>
+              <div className={styles.reward_grid2}>
+                <div className={styles.add_reward}>
+                  <div style={{ marginTop: "-11px" }}>
+                    <img src={"/alert-circle.svg"} />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    color: "#FEB800",
+                  }}
+                >
+                  Monitoring KPI SMR
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <img src={"/next.svg"} />
+                </div>
+              </div>
+            </a>
+          </Link>
+        </Card>
+      );
+    }
+  };
+
   if (loading) {
     return (
       <>
-        <Spinner />;
+        <Spinner />
         <BotNav />
       </>
     );
@@ -277,74 +386,9 @@ export default function Reward() {
         <div className={styles.wrapper}>
           <Nav title={"Reward"} color={"white"} noBack />
           <div className={styles.main}>
-            <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
-              <Link href="/reward/benefits">
-                <a style={{ textDecoration: "none" }}>
-                  <div className={styles.reward_grid2}>
-                    <div className={styles.add_reward}>
-                      <div style={{ marginTop: "-11px" }}>
-                        <img src={"/alert-circle.svg"} />
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        color: "#FEB800",
-                      }}
-                    >
-                      Benefits
-                      <div
-                        style={{
-                          color: "#B9B9C3",
-                          fontWeight: "300",
-                          fontSize: "13px",
-                        }}
-                      >
-                        See you benefits here
-                      </div>{" "}
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                      <img src={"/next.svg"} />
-                    </div>
-                  </div>
-                </a>
-              </Link>
-            </Card>
-            <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
-              <Link href="/recap">
-                <a style={{ textDecoration: "none" }}>
-                  <div className={styles.reward_grid2}>
-                    <div className={styles.add_reward}>
-                      <div style={{ marginTop: "-11px" }}>
-                        <img src={"/alert-circle.svg"} />
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        color: "#FEB800",
-                      }}
-                    >
-                      Recap
-                      <div
-                        style={{
-                          color: "#B9B9C3",
-                          fontWeight: "300",
-                          fontSize: "13px",
-                        }}
-                      >
-                        See you recap here
-                      </div>{" "}
-                    </div>
-                    <div style={{ textAlign: "center" }}>
-                      <img src={"/next.svg"} />
-                    </div>
-                  </div>
-                </a>
-              </Link>
-            </Card>
+            {renderMenuBenefits()}
+            {renderMenuRecap()}
+            {renderMenuMonitoring()}
             <Card style={{ borderRadius: "6px", marginTop: "20px" }}>
               <Line data={data} options={options} />
             </Card>
@@ -420,8 +464,8 @@ export default function Reward() {
 
               <Button
                 color={
-                  incentiveStatus.status === "Submit" ||
-                  incentiveStatus.status === "Approved"
+                  incentiveStatus.status == "Submit" ||
+                  incentiveStatus.status == "Approved"
                     ? "disable"
                     : (moment(now).add(1, "month").format("MM") <=
                         moment().format("MM") &&
@@ -432,9 +476,9 @@ export default function Reward() {
                     : "disable"
                 }
                 text={
-                  incentiveStatus.status === "Submit"
+                  incentiveStatus.status == "Submit"
                     ? "Waiting for approval"
-                    : incentiveStatus.status === "Approved"
+                    : incentiveStatus.status == "Approved"
                     ? "APPROVED"
                     : "SUBMIT"
                 }

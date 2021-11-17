@@ -23,7 +23,7 @@ const Dropdown = ({ options = [], onChange, value, type }) => {
                 ? val.namaBrand
                 : type === "NILAI_WORKVISIT"
                 ? val
-                : ""}
+                : val}
             </option>
           )
       )}

@@ -9,6 +9,8 @@ import Spinner from "../components/Spinner";
 import BotNav from "../components/BotNav";
 import Button from "../components/Button";
 
+import { signIn, signOut, useSession, providers } from "next-auth/client";
+
 import {
   getAuth,
   getSearchOutlet,
@@ -44,6 +46,7 @@ export default function Plan() {
   const onLogOut = () => {
     if (confirm("You will be returned to login screen.")) {
       localStorage.clear();
+      // signOut();
       Router.push("/login");
     }
   };
@@ -66,17 +69,18 @@ export default function Plan() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
-      getAuth(userData)
-        .then((data) => {
-          if (data[0].roleCode === "PIMCAB") {
-            setRole("PIMCAB");
-          } else if (data[0].roleCode === "SMR") {
-            setRole("SMR");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      setRole(userData.role);
+      // getAuth(userData)
+      //   .then((data) => {
+      //     if (data[0].roleCode === "PIMCAB") {
+      //       setRole("PIMCAB");
+      //     } else if (data[0].roleCode === "SMR") {
+      //       setRole("SMR");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     } else {
       Router.push("/");
     }

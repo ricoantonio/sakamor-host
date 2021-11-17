@@ -23,6 +23,20 @@ export default function Login() {
     setPassVisibility(!passVisibility);
   };
 
+  // useEffect(() => {
+  //   if (session) {
+  //     if (session.user.status == 404) {
+  //       setWrongUser(true);
+  //       setLoadingModal(false);
+  //     } else {
+  //       setLoadingModal(false);
+  //       setWrongUser(false);
+  //       actions.userLogin(session.user);
+  //       Router.push("/");
+  //     }
+  //   }
+  // }, [session]);
+
   useEffect(() => {
     if (localStorage.getItem("user")) {
       return Router.push("/");
@@ -93,6 +107,10 @@ export default function Login() {
               }}
               onSubmit={async (values) => {
                 if (values.username !== "" && values.password !== "") {
+                  // signIn("credentials", {
+                  //   username: values.username,
+                  //   password: values.password,
+                  // });
                   onLoginClick(values);
                 } else {
                   setWrongUser(true);
@@ -131,3 +149,7 @@ export default function Login() {
     </>
   );
 }
+
+// export async function getServerSideProps(context) {
+//   return { props: { providers: await providers() } };
+// }

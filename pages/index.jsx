@@ -12,6 +12,8 @@ import Card from "../components/Card";
 import Modal from "../components/Modal";
 import CheckBox from "../components/Checkbox";
 
+import { useSession, getSession } from "next-auth/client";
+
 import { firebaseCloudMessaging } from "../webpush";
 import firebase from "firebase/app";
 
@@ -86,6 +88,8 @@ export default function Home() {
   const [approvalSubMenu, setApprovalSubMenu] = useState("VISIT");
   const [approvalSubLoading, setApprovalSubLoading] = useState(false);
 
+  const [session, loadingSession] = useSession();
+
   const [PP, setPP] = useState("");
   const isMounted = useRef(true);
 
@@ -100,6 +104,7 @@ export default function Home() {
       },
     ],
   };
+
   const dataSpreading = {
     datasets: [
       {
@@ -222,6 +227,7 @@ export default function Home() {
           setLoadingMenu(false);
         })
         .catch((err) => {
+          setLoadingMenu(false);
           console.log(err);
         });
     } else {
@@ -234,117 +240,235 @@ export default function Home() {
     var month = moment().format("M");
     var year = moment().format("Y");
     if (userData) {
-      getAuth(userData)
-        .then((data) => {
-          if (data[0].roleCode === "PIMCAB") {
-            setRole("PIMCAB");
-            setFocus("SALES-TRACKING");
-            localStorage.setItem("role", "PIMCAB");
-            getSalesTarget75Pimca(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setSalesTarget75(data);
-                }
-              })
-              .catch((err) => console.log(err));
-            getSalesTargetPimca(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setSalesTarget(data);
-                }
-              })
-              .catch((err) => console.log(err));
-            getFrontlinerPimca(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setFrontliner(data);
-                }
-              })
-              .catch((err) => console.log(err));
-          } else if (data[0].roleCode === "SMR") {
-            setRole("SMR");
-            setFocus("PLAN");
-            localStorage.setItem("role", "SMR");
-            getRevisePlanListSmr(userData)
-              .then((data) => {
-                setRevisePlan(data);
-                console.log("revise plan", data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getReviseUnPlanListSmr(userData)
-              .then((data) => {
-                setReviseUnPlan(data);
-                console.log("revise unplan", data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getReviseSpreadingListSmr(userData)
-              .then((data) => {
-                setReviseSpreading(data);
-                console.log("revise spreading", data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+      if (userData.roleCode === "PIMCAB") {
+        setRole(userData.roleCode);
+        localStorage.setItem("role", userData.roleCode);
+        setFocus("WORK-VISIT");
+        getSalesTarget75Pimca(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setSalesTarget75(data);
+            }
+          })
+          .catch((err) => console.log(err));
+        getSalesTargetPimca(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setSalesTarget(data);
+            }
+          })
+          .catch((err) => console.log(err));
+        getFrontlinerPimca(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setFrontliner(data);
+            }
+          })
+          .catch((err) => console.log(err));
+      } else if (userData.roleCode === "SMR") {
+        setRole(userData.roleCode);
+        localStorage.setItem("role", userData.roleCode);
+        setFocus("PLAN");
+        getRevisePlanListSmr(userData)
+          .then((data) => {
+            setRevisePlan(data);
+            console.log("revise plan", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getReviseUnPlanListSmr(userData)
+          .then((data) => {
+            setReviseUnPlan(data);
+            console.log("revise unplan", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getReviseSpreadingListSmr(userData)
+          .then((data) => {
+            setReviseSpreading(data);
+            console.log("revise spreading", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getSalesTargetSMR(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setSalesTarget(data);
+              // console.log(data);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getSalesTarget75SMR(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setSalesTarget75(data);
+              // console.log(data);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getProduktifitas(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setProduktifitas(data);
+              // console.log(data);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getFrontliner(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setFrontliner(data);
+              // console.log(data);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getNoo(userData, month, year)
+          .then((data) => {
+            if (data) {
+              setNOO(data);
+              // console.log(data);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else if (userData.roleCode === "ABMSR") {
+        setFocus("APPROVAL_ABMSR");
+        setRole(userData.roleCode);
+        localStorage.setItem("role", userData.roleCode);
+      } else if (userData.roleCode === "RBM") {
+        setFocus("APPROVAL_RBM");
+        setRole(userData.roleCode);
+        localStorage.setItem("role", userData.roleCode);
+      } else if (userData.roleCode === "BOSM") {
+        setFocus("APPROVAL_BOSM");
+        setRole(userData.roleCode);
+        localStorage.setItem("role", userData.roleCode);
+      }
 
-            getSalesTargetSMR(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setSalesTarget(data);
-                  // console.log(data);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getSalesTarget75SMR(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setSalesTarget75(data);
-                  // console.log(data);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getProduktifitas(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setProduktifitas(data);
-                  // console.log(data);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getFrontliner(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setFrontliner(data);
-                  // console.log(data);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            getNoo(userData, month, year)
-              .then((data) => {
-                if (data) {
-                  setNOO(data);
-                  // console.log(data);
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // getAuth(userData)
+      //   .then((data) => {
+      //     if (data[0].roleCode === "PIMCAB") {
+      //       setRole("PIMCAB");
+      //       localStorage.setItem("role", "PIMCAB");
+      //       // setFocus("APPROVAL");
+      //       setFocus("WORK-VISIT");
+      //       getSalesTarget75Pimca(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setSalesTarget75(data);
+      //           }
+      //         })
+      //         .catch((err) => console.log(err));
+      //       getSalesTargetPimca(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setSalesTarget(data);
+      //           }
+      //         })
+      //         .catch((err) => console.log(err));
+      //       getFrontlinerPimca(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setFrontliner(data);
+      //           }
+      //         })
+      //         .catch((err) => console.log(err));
+      //     } else if (data[0].roleCode === "SMR") {
+      //       setRole("SMR");
+      //       localStorage.setItem("role", "SMR");
+      //       setFocus("PLAN");
+      //       getRevisePlanListSmr(userData)
+      //         .then((data) => {
+      //           setRevisePlan(data);
+      //           console.log("revise plan", data);
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getReviseUnPlanListSmr(userData)
+      //         .then((data) => {
+      //           setReviseUnPlan(data);
+      //           console.log("revise unplan", data);
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getReviseSpreadingListSmr(userData)
+      //         .then((data) => {
+      //           setReviseSpreading(data);
+      //           console.log("revise spreading", data);
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+
+      //       getSalesTargetSMR(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setSalesTarget(data);
+      //             // console.log(data);
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getSalesTarget75SMR(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setSalesTarget75(data);
+      //             // console.log(data);
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getProduktifitas(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setProduktifitas(data);
+      //             // console.log(data);
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getFrontliner(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setFrontliner(data);
+      //             // console.log(data);
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //       getNoo(userData, month, year)
+      //         .then((data) => {
+      //           if (data) {
+      //             setNOO(data);
+      //             // console.log(data);
+      //           }
+      //         })
+      //         .catch((err) => {
+      //           console.log(err);
+      //         });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     } else {
       Router.push("/");
     }
@@ -390,7 +514,7 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
-      } else if (focus === "SALES-TRACKING") {
+      } else if (focus === "APPROVAL") {
         setPendingApprove([]);
         if (approvalSubMenu === "VISIT") {
           getApproval(userData)
@@ -440,11 +564,18 @@ export default function Home() {
           .catch((err) => {
             console.log(err);
           });
+      } else if (focus === "APPROVAL_ABMSR") {
+        setLoading(false);
+      } else if (focus === "APPROVAL_RBM") {
+        setLoading(false);
+      } else if (focus === "APPROVAL_BOSM") {
+        setLoading(false);
       }
     } else {
       Router.push("/");
     }
   }, [focus]);
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setApprovalSubLoading(true);
@@ -481,20 +612,60 @@ export default function Home() {
   }, [approvalSubMenu]);
 
   const renderTopMenu = () => {
-    var auth = topMenu.filter((val) => {
-      if (role === "SMR") {
-        return (
-          val.moduleCode === "PLAN" ||
-          val.moduleCode === "UNPLAN" ||
-          val.moduleCode === "SPREADING"
-        );
-      } else if (role === "PIMCAB") {
-        return (
-          val.moduleCode === "WORK-VISIT" || val.moduleCode === "SALES-TRACKING"
-        );
-      }
-    });
-
+    // var auth = topMenu.filter((val) => {
+    //   if (role === "SMR") {
+    //     return (
+    //       val.moduleCode === "PLAN" ||
+    //       val.moduleCode === "UNPLAN" ||
+    //       val.moduleCode === "SPREADING"
+    //     );
+    //   } else if (role === "PIMCAB") {
+    //     return (
+    //       val.moduleCode === "WORK-VISIT" || val.moduleCode === "APPROVAL"
+    //     );
+    //   }
+    // });
+    if (role == "SMR") {
+      var auth = [
+        {
+          moduleCode: "PLAN",
+        },
+        {
+          moduleCode: "UNPLAN",
+        },
+        {
+          moduleCode: "SPREADING",
+        },
+      ];
+    } else if (role == "PIMCAB") {
+      var auth = [
+        {
+          moduleCode: "WORK-VISIT",
+        },
+        {
+          moduleCode: "APPROVAL",
+        },
+      ];
+    } else if (role == "ABMSR") {
+      var auth = [
+        {
+          moduleCode: "APPROVAL_ABMSR",
+        },
+      ];
+    } else if (role == "RBM") {
+      var auth = [
+        {
+          moduleCode: "APPROVAL_RBM",
+        },
+      ];
+    } else if (role == "BOSM") {
+      var auth = [
+        {
+          moduleCode: "APPROVAL_BOSM",
+        },
+      ];
+    }
+    // console.log("auth", auth);
     const render = () => {
       return auth.map((val, index) => {
         return (
@@ -515,7 +686,10 @@ export default function Home() {
               ? "Spreading"
               : val.moduleCode === "WORK-VISIT"
               ? "Work Visit"
-              : val.moduleCode === "SALES-TRACKING"
+              : val.moduleCode === "APPROVAL" ||
+                val.moduleCode === "APPROVAL_ABMSR" ||
+                val.moduleCode === "APPROVAL_RBM" ||
+                val.moduleCode === "APPROVAL_BOSM"
               ? "Approval"
               : ""}
           </div>
@@ -528,7 +702,7 @@ export default function Home() {
           className={
             auth.length === 3
               ? styles.menu_grid3
-              : auth.length === 2
+              : auth.length === 2 || auth.length === 1
               ? styles.menu_grid1
               : ""
           }
@@ -1381,6 +1555,12 @@ export default function Home() {
     }
   };
 
+  const renderApprovalABMSR = () => {
+    return <div></div>;
+  };
+  const renderApprovalRBM = () => {};
+  const renderApprovalBOSM = () => {};
+
   const renderWorkDay = () => {
     if (workDay.length !== 0 && !loading && !loadingMenu) {
       return (
@@ -1401,6 +1581,7 @@ export default function Home() {
       );
     }
   };
+
   const renderProgress = () => {
     const renderSales = (title, data) => {
       return (
@@ -1704,6 +1885,10 @@ export default function Home() {
         </>
       );
     } else {
+      // if (loadingSession === "loading") {
+      //   return <Spinner />;
+      // } else {
+      // }
       return (
         <div>
           <Head>
@@ -1774,8 +1959,14 @@ export default function Home() {
                     ? renderSpreading()
                     : focus === "WORK-VISIT"
                     ? renderWorkVisit()
-                    : focus === "SALES-TRACKING"
+                    : focus === "APPROVAL"
                     ? renderApproval()
+                    : focus === "APPROVAL_ABMSR"
+                    ? renderApprovalABMSR()
+                    : focus === "APPROVAL_RBM"
+                    ? renderApprovalRBM()
+                    : focus === "APPROVAL_BOSM"
+                    ? renderApprovalBOSM()
                     : ""}
                   {renderReviseList()}
                   {renderWorkDay()}
@@ -1792,3 +1983,8 @@ export default function Home() {
   };
   return renderPage();
 }
+
+// export async function getServerSideProps(ctx) {
+//   const session = await getSession(ctx);
+//   return { props: { session } };
+// }
